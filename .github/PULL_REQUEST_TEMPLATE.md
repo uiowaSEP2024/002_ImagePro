@@ -3,7 +3,8 @@ _What is the purpose of this pull request?_
 
 # User Story
 _What user story does this pull request contribute to?_
-* ["As a ..., so that ..., I want ..."](#LINK_TO_USER_STORY)
+<!--Replace XYZ below with the user story number. It will expand to the user story in the PR saved/previewed-->
+* #XYZ 
 
 # Implementation
 _What steps were taken to achieve/implement this pull request?_
@@ -34,7 +35,7 @@ _What sad scenarios (edge-cases) have been tested?_
 _Example_:
 * If the job fails to start, a user does not see it in their dashboard
 
-# Screenshots
+# Screenshots/Demo
 _Any screenshots/videos demonstrating the functioning of the changes made in this pull request?_
 
 
