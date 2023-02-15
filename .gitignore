@@ -1,0 +1,4 @@
+venv
+
+# Ignore mocksript live logs for clean commits
+MockJson/logs.txt
