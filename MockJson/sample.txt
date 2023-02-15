@@ -1,241 +1,60 @@
-{
-   "client_id": "b70f7b25-01ba-462f-a3b0-d278506b863c",
-   "job_id": "5af37c55-0e3b-4a23-abeb-0b112ad0bf66",
-   "client_name": "RandomName",
-   "step": 1,
-   "job_time": "2023-02-14 21:45:58.848055"
-}{
-   "client_id": "b70f7b25-01ba-462f-a3b0-d278506b863c",
-   "job_id": "5af37c55-0e3b-4a23-abeb-0b112ad0bf66",
-   "client_name": "RandomName",
-   "step": 2,
-   "job_time": "2023-02-14 21:45:58.848099"
-}{
-   "client_id": "b70f7b25-01ba-462f-a3b0-d278506b863c",
-   "job_id": "5af37c55-0e3b-4a23-abeb-0b112ad0bf66",
-   "client_name": "RandomName",
-   "step": 3,
-   "job_time": "2023-02-14 21:45:58.848109"
-}{
-   "client_id": "b70f7b25-01ba-462f-a3b0-d278506b863c",
-   "job_id": "5af37c55-0e3b-4a23-abeb-0b112ad0bf66",
-   "client_name": "RandomName",
-   "step": 4,
-   "job_time": "2023-02-14 21:45:58.848119"
-}{
-   "client_id": "b70f7b25-01ba-462f-a3b0-d278506b863c",
-   "job_id": "5af37c55-0e3b-4a23-abeb-0b112ad0bf66",
-   "client_name": "RandomName",
-   "step": 5,
-   "job_time": "2023-02-14 21:45:58.848126"
-}{
-   "client_id": "b70f7b25-01ba-462f-a3b0-d278506b863c",
-   "job_id": "5af37c55-0e3b-4a23-abeb-0b112ad0bf66",
-   "client_name": "RandomName",
-   "step": 6,
-   "job_time": "2023-02-14 21:45:58.848132"
-}{
-   "client_id": "b70f7b25-01ba-462f-a3b0-d278506b863c",
-   "job_id": "5af37c55-0e3b-4a23-abeb-0b112ad0bf66",
-   "client_name": "RandomName",
-   "step": 7,
-   "job_time": "2023-02-14 21:45:58.848138"
-}{
-   "client_id": "b70f7b25-01ba-462f-a3b0-d278506b863c",
-   "job_id": "5af37c55-0e3b-4a23-abeb-0b112ad0bf66",
-   "client_name": "RandomName",
-   "step": 8,
-   "job_time": "2023-02-14 21:45:58.848147"
-}{
-   "client_id": "b70f7b25-01ba-462f-a3b0-d278506b863c",
-   "job_id": "5af37c55-0e3b-4a23-abeb-0b112ad0bf66",
-   "client_name": "RandomName",
-   "step": 9,
-   "job_time": "2023-02-14 21:45:58.848153"
-}{
-   "client_id": "b70f7b25-01ba-462f-a3b0-d278506b863c",
-   "job_id": "5af37c55-0e3b-4a23-abeb-0b112ad0bf66",
-   "client_name": "RandomName",
-   "step": 10,
-   "job_time": "2023-02-14 21:45:58.848161"
-}{
-   "client_id": "b70f7b25-01ba-462f-a3b0-d278506b863c",
-   "job_id": "5af37c55-0e3b-4a23-abeb-0b112ad0bf66",
-   "client_name": "RandomName",
-   "step": 11,
-   "job_time": "2023-02-14 21:45:58.848168"
-}{
-   "client_id": "b70f7b25-01ba-462f-a3b0-d278506b863c",
-   "job_id": "5af37c55-0e3b-4a23-abeb-0b112ad0bf66",
-   "client_name": "RandomName",
-   "step": 12,
-   "job_time": "2023-02-14 21:45:58.848174"
-}{
-   "client_id": "b70f7b25-01ba-462f-a3b0-d278506b863c",
-   "job_id": "5af37c55-0e3b-4a23-abeb-0b112ad0bf66",
-   "client_name": "RandomName",
-   "step": 13,
-   "job_time": "2023-02-14 21:45:58.848180"
-}{
-   "client_id": "b70f7b25-01ba-462f-a3b0-d278506b863c",
-   "job_id": "5af37c55-0e3b-4a23-abeb-0b112ad0bf66",
-   "client_name": "RandomName",
-   "step": 14,
-   "job_time": "2023-02-14 21:45:58.848186"
-}{
-   "client_id": "b70f7b25-01ba-462f-a3b0-d278506b863c",
-   "job_id": "5af37c55-0e3b-4a23-abeb-0b112ad0bf66",
-   "client_name": "RandomName",
-   "step": 15,
-   "job_time": "2023-02-14 21:45:58.848192"
-}{
-   "client_id": "b70f7b25-01ba-462f-a3b0-d278506b863c",
-   "job_id": "5af37c55-0e3b-4a23-abeb-0b112ad0bf66",
-   "client_name": "RandomName",
-   "step": 16,
-   "job_time": "2023-02-14 21:45:58.848198"
-}{
-   "client_id": "b70f7b25-01ba-462f-a3b0-d278506b863c",
-   "job_id": "5af37c55-0e3b-4a23-abeb-0b112ad0bf66",
-   "client_name": "RandomName",
-   "step": 17,
-   "job_time": "2023-02-14 21:45:58.848204"
-}{
-   "client_id": "b70f7b25-01ba-462f-a3b0-d278506b863c",
-   "job_id": "5af37c55-0e3b-4a23-abeb-0b112ad0bf66",
-   "client_name": "RandomName",
-   "step": 18,
-   "job_time": "2023-02-14 21:45:58.848210"
-}{
-   "client_id": "b70f7b25-01ba-462f-a3b0-d278506b863c",
-   "job_id": "5af37c55-0e3b-4a23-abeb-0b112ad0bf66",
-   "client_name": "RandomName",
-   "step": 19,
-   "job_time": "2023-02-14 21:45:58.848216"
-}{
-   "client_id": "b70f7b25-01ba-462f-a3b0-d278506b863c",
-   "job_id": "5af37c55-0e3b-4a23-abeb-0b112ad0bf66",
-   "client_name": "RandomName",
-   "step": 20,
-   "job_time": "2023-02-14 21:45:58.848222"
-}{
-   "client_id": "b49372f0-473a-4bbc-aaeb-9d41e41c9ea0",
-   "job_id": "e96fe623-61e9-49d7-ac9d-3c833b86dca9",
-   "client_name": "RandomName",
-   "step": 1,
-   "job_time": "2023-02-14 21:47:48.623998"
-}{
-   "client_id": "b49372f0-473a-4bbc-aaeb-9d41e41c9ea0",
-   "job_id": "e96fe623-61e9-49d7-ac9d-3c833b86dca9",
-   "client_name": "RandomName",
-   "step": 2,
-   "job_time": "2023-02-14 21:47:48.624034"
-}{
-   "client_id": "b49372f0-473a-4bbc-aaeb-9d41e41c9ea0",
-   "job_id": "e96fe623-61e9-49d7-ac9d-3c833b86dca9",
-   "client_name": "RandomName",
-   "step": 3,
-   "job_time": "2023-02-14 21:47:48.624043"
-}{
-   "client_id": "b49372f0-473a-4bbc-aaeb-9d41e41c9ea0",
-   "job_id": "e96fe623-61e9-49d7-ac9d-3c833b86dca9",
-   "client_name": "RandomName",
-   "step": 4,
-   "job_time": "2023-02-14 21:47:48.624050"
-}{
-   "client_id": "b49372f0-473a-4bbc-aaeb-9d41e41c9ea0",
-   "job_id": "e96fe623-61e9-49d7-ac9d-3c833b86dca9",
-   "client_name": "RandomName",
-   "step": 5,
-   "job_time": "2023-02-14 21:47:48.624056"
-}{
-   "client_id": "b49372f0-473a-4bbc-aaeb-9d41e41c9ea0",
-   "job_id": "e96fe623-61e9-49d7-ac9d-3c833b86dca9",
-   "client_name": "RandomName",
-   "step": 6,
-   "job_time": "2023-02-14 21:47:48.624061"
-}{
-   "client_id": "b49372f0-473a-4bbc-aaeb-9d41e41c9ea0",
-   "job_id": "e96fe623-61e9-49d7-ac9d-3c833b86dca9",
-   "client_name": "RandomName",
-   "step": 7,
-   "job_time": "2023-02-14 21:47:48.624067"
-}{
-   "client_id": "b49372f0-473a-4bbc-aaeb-9d41e41c9ea0",
-   "job_id": "e96fe623-61e9-49d7-ac9d-3c833b86dca9",
-   "client_name": "RandomName",
-   "step": 8,
-   "job_time": "2023-02-14 21:47:48.624074"
-}{
-   "client_id": "b49372f0-473a-4bbc-aaeb-9d41e41c9ea0",
-   "job_id": "e96fe623-61e9-49d7-ac9d-3c833b86dca9",
-   "client_name": "RandomName",
-   "step": 9,
-   "job_time": "2023-02-14 21:47:48.624080"
-}{
-   "client_id": "b49372f0-473a-4bbc-aaeb-9d41e41c9ea0",
-   "job_id": "e96fe623-61e9-49d7-ac9d-3c833b86dca9",
-   "client_name": "RandomName",
-   "step": 10,
-   "job_time": "2023-02-14 21:47:48.624087"
-}{
-   "client_id": "b49372f0-473a-4bbc-aaeb-9d41e41c9ea0",
-   "job_id": "e96fe623-61e9-49d7-ac9d-3c833b86dca9",
-   "client_name": "RandomName",
-   "step": 11,
-   "job_time": "2023-02-14 21:47:48.624092"
-}{
-   "client_id": "b49372f0-473a-4bbc-aaeb-9d41e41c9ea0",
-   "job_id": "e96fe623-61e9-49d7-ac9d-3c833b86dca9",
-   "client_name": "RandomName",
-   "step": 12,
-   "job_time": "2023-02-14 21:47:48.624098"
-}{
-   "client_id": "b49372f0-473a-4bbc-aaeb-9d41e41c9ea0",
-   "job_id": "e96fe623-61e9-49d7-ac9d-3c833b86dca9",
-   "client_name": "RandomName",
-   "step": 13,
-   "job_time": "2023-02-14 21:47:48.624103"
-}{
-   "client_id": "b49372f0-473a-4bbc-aaeb-9d41e41c9ea0",
-   "job_id": "e96fe623-61e9-49d7-ac9d-3c833b86dca9",
-   "client_name": "RandomName",
-   "step": 14,
-   "job_time": "2023-02-14 21:47:48.624109"
-}{
-   "client_id": "b49372f0-473a-4bbc-aaeb-9d41e41c9ea0",
-   "job_id": "e96fe623-61e9-49d7-ac9d-3c833b86dca9",
-   "client_name": "RandomName",
-   "step": 15,
-   "job_time": "2023-02-14 21:47:48.624114"
-}{
-   "client_id": "b49372f0-473a-4bbc-aaeb-9d41e41c9ea0",
-   "job_id": "e96fe623-61e9-49d7-ac9d-3c833b86dca9",
-   "client_name": "RandomName",
-   "step": 16,
-   "job_time": "2023-02-14 21:47:48.624120"
-}{
-   "client_id": "b49372f0-473a-4bbc-aaeb-9d41e41c9ea0",
-   "job_id": "e96fe623-61e9-49d7-ac9d-3c833b86dca9",
-   "client_name": "RandomName",
-   "step": 17,
-   "job_time": "2023-02-14 21:47:48.624125"
-}{
-   "client_id": "b49372f0-473a-4bbc-aaeb-9d41e41c9ea0",
-   "job_id": "e96fe623-61e9-49d7-ac9d-3c833b86dca9",
-   "client_name": "RandomName",
-   "step": 18,
-   "job_time": "2023-02-14 21:47:48.624131"
-}{
-   "client_id": "b49372f0-473a-4bbc-aaeb-9d41e41c9ea0",
-   "job_id": "e96fe623-61e9-49d7-ac9d-3c833b86dca9",
-   "client_name": "RandomName",
-   "step": 19,
-   "job_time": "2023-02-14 21:47:48.624136"
-}{
-   "client_id": "b49372f0-473a-4bbc-aaeb-9d41e41c9ea0",
-   "job_id": "e96fe623-61e9-49d7-ac9d-3c833b86dca9",
-   "client_name": "RandomName",
-   "step": 20,
-   "job_time": "2023-02-14 21:47:48.624142"
-}
+{"job_id": "a8b0595f-f31d-471a-a028-eed38b533eec", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "1", "time": "2023-02-14 23:38:12.013225"}
+{"job_id": "a8b0595f-f31d-471a-a028-eed38b533eec", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "2", "time": "2023-02-14 23:38:14.018284"}
+{"job_id": "a8b0595f-f31d-471a-a028-eed38b533eec", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "3", "time": "2023-02-14 23:38:16.023298"}
+{"job_id": "a8b0595f-f31d-471a-a028-eed38b533eec", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "4", "time": "2023-02-14 23:38:18.028256"}
+{"job_id": "a8b0595f-f31d-471a-a028-eed38b533eec", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "5", "time": "2023-02-14 23:38:19.032873"}
+{"job_id": "a8b0595f-f31d-471a-a028-eed38b533eec", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "6", "time": "2023-02-14 23:38:20.037949"}
+{"job_id": "a8b0595f-f31d-471a-a028-eed38b533eec", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "7", "time": "2023-02-14 23:38:21.042814"}
+{"job_id": "a8b0595f-f31d-471a-a028-eed38b533eec", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "8", "time": "2023-02-14 23:38:23.047317"}
+{"job_id": "a8b0595f-f31d-471a-a028-eed38b533eec", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "9", "time": "2023-02-14 23:38:24.052234"}
+{"job_id": "a8b0595f-f31d-471a-a028-eed38b533eec", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "10", "time": "2023-02-14 23:38:26.056674"}
+{"job_id": "a8b0595f-f31d-471a-a028-eed38b533eec", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "11", "time": "2023-02-14 23:38:27.061657"}
+{"job_id": "a8b0595f-f31d-471a-a028-eed38b533eec", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "12", "time": "2023-02-14 23:38:29.066478"}
+{"job_id": "a8b0595f-f31d-471a-a028-eed38b533eec", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "13", "time": "2023-02-14 23:38:31.071456"}
+{"job_id": "a8b0595f-f31d-471a-a028-eed38b533eec", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "14", "time": "2023-02-14 23:38:33.076504"}
+{"job_id": "a8b0595f-f31d-471a-a028-eed38b533eec", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "15", "time": "2023-02-14 23:38:35.080748"}
+{"job_id": "a8b0595f-f31d-471a-a028-eed38b533eec", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "16", "time": "2023-02-14 23:38:37.085679"}
+{"job_id": "a8b0595f-f31d-471a-a028-eed38b533eec", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "17", "time": "2023-02-14 23:38:38.090150"}
+{"job_id": "a8b0595f-f31d-471a-a028-eed38b533eec", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "18", "time": "2023-02-14 23:38:40.094544"}
+{"job_id": "a8b0595f-f31d-471a-a028-eed38b533eec", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "19", "time": "2023-02-14 23:38:42.099482"}
+{"job_id": "a8b0595f-f31d-471a-a028-eed38b533eec", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "20", "time": "2023-02-14 23:38:44.104531"}
+{"job_id": "c3fa7fc2-f62b-46f8-bf4c-a6b94680185e", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "1", "time": "2023-02-14 23:39:01.502929"}
+{"job_id": "c3fa7fc2-f62b-46f8-bf4c-a6b94680185e", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "2", "time": "2023-02-14 23:39:02.507648"}
+{"job_id": "c3fa7fc2-f62b-46f8-bf4c-a6b94680185e", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "3", "time": "2023-02-14 23:39:04.512117"}
+{"job_id": "c3fa7fc2-f62b-46f8-bf4c-a6b94680185e", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "4", "time": "2023-02-14 23:39:06.516993"}
+{"job_id": "c3fa7fc2-f62b-46f8-bf4c-a6b94680185e", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "5", "time": "2023-02-14 23:39:07.521538"}
+{"job_id": "c3fa7fc2-f62b-46f8-bf4c-a6b94680185e", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "6", "time": "2023-02-14 23:39:08.526339"}
+{"job_id": "c3fa7fc2-f62b-46f8-bf4c-a6b94680185e", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "7", "time": "2023-02-14 23:39:09.530931"}
+{"job_id": "c3fa7fc2-f62b-46f8-bf4c-a6b94680185e", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "8", "time": "2023-02-14 23:39:11.535722"}
+{"job_id": "c3fa7fc2-f62b-46f8-bf4c-a6b94680185e", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "9", "time": "2023-02-14 23:39:13.540415"}
+{"job_id": "c3fa7fc2-f62b-46f8-bf4c-a6b94680185e", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "10", "time": "2023-02-14 23:39:14.545383"}
+{"job_id": "c3fa7fc2-f62b-46f8-bf4c-a6b94680185e", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "11", "time": "2023-02-14 23:39:16.550393"}
+{"job_id": "c3fa7fc2-f62b-46f8-bf4c-a6b94680185e", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "12", "time": "2023-02-14 23:39:18.555201"}
+{"job_id": "c3fa7fc2-f62b-46f8-bf4c-a6b94680185e", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "13", "time": "2023-02-14 23:39:20.559756"}
+{"job_id": "c3fa7fc2-f62b-46f8-bf4c-a6b94680185e", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "14", "time": "2023-02-14 23:39:22.564656"}
+{"job_id": "c3fa7fc2-f62b-46f8-bf4c-a6b94680185e", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "15", "time": "2023-02-14 23:39:23.569119"}
+{"job_id": "c3fa7fc2-f62b-46f8-bf4c-a6b94680185e", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "16", "time": "2023-02-14 23:39:24.574131"}
+{"job_id": "c3fa7fc2-f62b-46f8-bf4c-a6b94680185e", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "17", "time": "2023-02-14 23:39:25.579005"}
+{"job_id": "c3fa7fc2-f62b-46f8-bf4c-a6b94680185e", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "18", "time": "2023-02-14 23:39:27.583864"}
+{"job_id": "c3fa7fc2-f62b-46f8-bf4c-a6b94680185e", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "19", "time": "2023-02-14 23:39:29.588868"}
+{"job_id": "c3fa7fc2-f62b-46f8-bf4c-a6b94680185e", "customer_id": "56b5794e-a0f9-49be-877b-c5728d3ae388", "step": "20", "time": "2023-02-14 23:39:31.593222"}
+{"job_id": "0b6b1bcb-6166-4c2c-a676-64580ade1de6", "customer_id": "a74d4f87-762a-48b0-9a41-ee57640cc790", "step": "1", "time": "2023-02-14 23:42:21.438751"}
+{"job_id": "0b6b1bcb-6166-4c2c-a676-64580ade1de6", "customer_id": "a74d4f87-762a-48b0-9a41-ee57640cc790", "step": "2", "time": "2023-02-14 23:42:22.443457"}
+{"job_id": "0b6b1bcb-6166-4c2c-a676-64580ade1de6", "customer_id": "a74d4f87-762a-48b0-9a41-ee57640cc790", "step": "3", "time": "2023-02-14 23:42:23.448072"}
+{"job_id": "0b6b1bcb-6166-4c2c-a676-64580ade1de6", "customer_id": "a74d4f87-762a-48b0-9a41-ee57640cc790", "step": "4", "time": "2023-02-14 23:42:24.453022"}
+{"job_id": "0b6b1bcb-6166-4c2c-a676-64580ade1de6", "customer_id": "a74d4f87-762a-48b0-9a41-ee57640cc790", "step": "5", "time": "2023-02-14 23:42:26.457873"}
+{"job_id": "0b6b1bcb-6166-4c2c-a676-64580ade1de6", "customer_id": "a74d4f87-762a-48b0-9a41-ee57640cc790", "step": "6", "time": "2023-02-14 23:42:27.462779"}
+{"job_id": "0b6b1bcb-6166-4c2c-a676-64580ade1de6", "customer_id": "a74d4f87-762a-48b0-9a41-ee57640cc790", "step": "7", "time": "2023-02-14 23:42:29.467606"}
+{"job_id": "0b6b1bcb-6166-4c2c-a676-64580ade1de6", "customer_id": "a74d4f87-762a-48b0-9a41-ee57640cc790", "step": "8", "time": "2023-02-14 23:42:31.470086"}
+{"job_id": "0b6b1bcb-6166-4c2c-a676-64580ade1de6", "customer_id": "a74d4f87-762a-48b0-9a41-ee57640cc790", "step": "9", "time": "2023-02-14 23:42:32.473666"}
+{"job_id": "0b6b1bcb-6166-4c2c-a676-64580ade1de6", "customer_id": "a74d4f87-762a-48b0-9a41-ee57640cc790", "step": "10", "time": "2023-02-14 23:42:34.476291"}
+{"job_id": "0b6b1bcb-6166-4c2c-a676-64580ade1de6", "customer_id": "a74d4f87-762a-48b0-9a41-ee57640cc790", "step": "11", "time": "2023-02-14 23:42:35.478432"}
+{"job_id": "0b6b1bcb-6166-4c2c-a676-64580ade1de6", "customer_id": "a74d4f87-762a-48b0-9a41-ee57640cc790", "step": "12", "time": "2023-02-14 23:42:36.482358"}
+{"job_id": "0b6b1bcb-6166-4c2c-a676-64580ade1de6", "customer_id": "a74d4f87-762a-48b0-9a41-ee57640cc790", "step": "13", "time": "2023-02-14 23:42:38.485152"}
+{"job_id": "0b6b1bcb-6166-4c2c-a676-64580ade1de6", "customer_id": "a74d4f87-762a-48b0-9a41-ee57640cc790", "step": "14", "time": "2023-02-14 23:42:40.488740"}
+{"job_id": "0b6b1bcb-6166-4c2c-a676-64580ade1de6", "customer_id": "a74d4f87-762a-48b0-9a41-ee57640cc790", "step": "15", "time": "2023-02-14 23:42:42.492470"}
+{"job_id": "0b6b1bcb-6166-4c2c-a676-64580ade1de6", "customer_id": "a74d4f87-762a-48b0-9a41-ee57640cc790", "step": "16", "time": "2023-02-14 23:42:44.495535"}
+{"job_id": "0b6b1bcb-6166-4c2c-a676-64580ade1de6", "customer_id": "a74d4f87-762a-48b0-9a41-ee57640cc790", "step": "17", "time": "2023-02-14 23:42:45.499052"}
+{"job_id": "0b6b1bcb-6166-4c2c-a676-64580ade1de6", "customer_id": "a74d4f87-762a-48b0-9a41-ee57640cc790", "step": "18", "time": "2023-02-14 23:42:47.503199"}
+{"job_id": "0b6b1bcb-6166-4c2c-a676-64580ade1de6", "customer_id": "a74d4f87-762a-48b0-9a41-ee57640cc790", "step": "19", "time": "2023-02-14 23:42:49.505807"}
+{"job_id": "0b6b1bcb-6166-4c2c-a676-64580ade1de6", "customer_id": "a74d4f87-762a-48b0-9a41-ee57640cc790", "step": "20", "time": "2023-02-14 23:42:50.510131"}
