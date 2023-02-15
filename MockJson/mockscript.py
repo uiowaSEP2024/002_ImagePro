@@ -14,7 +14,7 @@ steps = 20
 with open("MockJson/sample.txt", "a") as outfile:
     # outfile.write(json_begin)
     for i in range(steps):
-        time.sleep(3)
+        # time.sleep(3)
         json_object = json.dumps(
             {
                 "client_id": client_id, 
@@ -27,9 +27,9 @@ with open("MockJson/sample.txt", "a") as outfile:
             # separators=(',',': ')
         )
         outfile.write(json_object)
-        if i != (steps - 1):  
-            outfile.write(",")
-        outfile.write("\n")
+        # if i != (steps - 1):  
+        #     outfile.write(",")
+        # outfile.write("\n")
     
     # outfile.write(json_end)
         
