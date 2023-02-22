@@ -7,4 +7,9 @@ VALUES
     (4, 'anandgopal08');
 
 
-
+INSERT INTO jobs
+    (id, user_id, completed_steps, remaining_steps)
+VALUES
+    (1, 2, 13, 7),
+    (2, 4, 12, 8),
+    (3, 1, 13, 7);
