@@ -5,4 +5,5 @@ venv
 MockJson/logs.txt
 
 #Ignore pycache 
-backend/__pycache__
+__pycache__
+.pytest_cache
