@@ -2,8 +2,11 @@
 venv
 
 # Ignore mocksript live logs for clean commits
-MockJson/logs.txt
+logs.txt
 
 #Ignore pycache 
 __pycache__
 .pytest_cache
+
+# Idea files
+.idea
