@@ -8,8 +8,5 @@ MockJson/logs.txt
 __pycache__
 .pytest_cache
 
-#ignores vscode settings
-.vscode
-
 #ignores .idea dir
 .idea
