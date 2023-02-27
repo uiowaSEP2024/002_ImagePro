@@ -20,6 +20,7 @@ CREATE table events
     job_id VARCHAR(25) NOT NULL,
     name VARCHAR(25) NOT NULL,
     created_at timestamp NOT NULL default now(),
+    info json,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id) on DELETE CASCADE
 );
@@ -35,14 +36,14 @@ VALUES
 
 
 INSERT INTO events
-    (user_id, job_id, kind, name)
+    (user_id, job_id, kind, name, info)
 VALUES
-    (1, 'abc', 'step', 'kidney scan'),
-    (1, 'abc', 'info', 'kidney scan info'),
-    (1, 'abc', 'step', 'image processing'),
-    (2, 'def', 'step', 'mri scan'),
-    (2, 'def', 'error', 'mri scan error'),
-    (3, 'ghi', 'step', 'lung exterior scan'),
-    (3, 'ghi', 'step', 'lung interior scan'),
-    (4, 'klm', 'step', 'prostate scan');
+    (1, 'abc', 'step', 'kidney scan', null),
+    (1, 'abc', 'info', 'kidney scan info', '[{ "name": "Size", "value": "100mm"}, {"name": "Verdict", "value": "Healthy"}]'),
+    (1, 'abc', 'step', 'image processing', null),
+    (2, 'def', 'step', 'mri scan', null),
+    (2, 'def', 'error', 'mri scan error', null),
+    (3, 'ghi', 'step', 'lung exterior scan', null),
+    (3, 'ghi', 'info', 'lung exterior scan info', '[{ "name": "Size", "value": "100mm"}, {"name": "Verdict", "value": "Needs Improvement"}]'),
+    (4, 'klm', 'step', 'prostate scan', null);
 
