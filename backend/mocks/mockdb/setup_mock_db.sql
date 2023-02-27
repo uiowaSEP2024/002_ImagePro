@@ -16,7 +16,7 @@ CREATE table events
 (
     id serial,
     user_id int not null,
-    event event_kind NOT NULL,
+    kind event_kind NOT NULL,
     job_id VARCHAR(25) NOT NULL,
     name VARCHAR(25) NOT NULL,
     created_at timestamp NOT NULL default now(),
@@ -35,7 +35,7 @@ VALUES
 
 
 INSERT INTO events
-    (user_id, job_id, event, name)
+    (user_id, job_id, kind, name)
 VALUES
     (1, 'abc', 'step', 'kidney scan'),
     (1, 'abc', 'info', 'kidney scan info'),
