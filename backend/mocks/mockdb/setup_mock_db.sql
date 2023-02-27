@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS events;
+DROP TABLE IF EXISTS users;
 DROP TYPE IF EXISTS event_kind;
 
 CREATE TYPE event_kind AS ENUM ('step', 'info', 'error');
