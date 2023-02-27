@@ -20,7 +20,7 @@ CREATE table events
     job_id VARCHAR(25) NOT NULL,
     name VARCHAR(25) NOT NULL,
     created_at timestamp NOT NULL default now(),
-    info json,
+    info jsonb,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id) on DELETE CASCADE
 );
