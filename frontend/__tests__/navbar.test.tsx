@@ -1,20 +1,14 @@
 // __tests__/navbar.test.jsx
 
 import { render, screen } from "@testing-library/react";
-import NavBar from "@/pages/index";
+import { Navbar, Button, Link, Text, Card, Radio } from "@nextui-org/react";
+import TopNavbar from "../src/pages/navbar"
 import "@testing-library/jest-dom";
 
 describe("NavBar", () => {
-  it("renders a navbar with links", () => {
-    render(<NavBar />);
-    const link1 = screen.getByRole("link", {
-      name: /Contact/i,
-    });
-    expect(link1).toBeInTheDocument();
-  });
 
   it("renders navbar unchanged", () => {
-    const { container } = render(<NavBar />);
+    const { container } = render(<TopNavbar />);
     expect(container).toMatchSnapshot();
   });
 });

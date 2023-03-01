@@ -2,47 +2,6 @@
 
 exports[`Home renders homepage unchanged 1`] = `
 <div>
-  <header>
-    <nav
-      class="nav"
-    >
-      <div
-        class="nav__menu-bar"
-      >
-        <div />
-        <div />
-        <div />
-      </div>
-      <div
-        class=" nav__menu-list"
-      >
-        <div>
-          <a
-            class="nav__item "
-            href="/"
-          >
-            Home
-          </a>
-        </div>
-        <div>
-          <a
-            class="nav__item "
-            href="/about"
-          >
-            About Us
-          </a>
-        </div>
-        <div>
-          <a
-            class="nav__item "
-            href="/contact"
-          >
-            Contact
-          </a>
-        </div>
-      </div>
-    </nav>
-  </header>
   <main
     class="main"
   >
