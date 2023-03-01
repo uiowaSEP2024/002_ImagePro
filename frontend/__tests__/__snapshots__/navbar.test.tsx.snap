@@ -2,55 +2,103 @@
 
 exports[`NavBar renders navbar unchanged 1`] = `
 <div>
-  <header>
-    <nav
-      class="nav"
-    >
-      <div
-        class="nav__menu-bar"
-      >
-        <div />
-        <div />
-        <div />
-      </div>
-      <div
-        class=" nav__menu-list"
-      >
-        <div>
-          <a
-            class="nav__item "
-            href="/"
-          >
-            Home
-          </a>
-        </div>
-        <div>
-          <a
-            class="nav__item "
-            href="/about"
-          >
-            About Us
-          </a>
-        </div>
-        <div>
-          <a
-            class="nav__item "
-            href="/contact"
-          >
-            Contact
-          </a>
-        </div>
-      </div>
-    </nav>
-  </header>
-  <main
-    class="main"
+  <nav
+    class="nextui-c-hhqfap nextui-c-hhqfap-gaIaSO-variant-static nextui-c-hhqfap-beFEYN-maxWidth-lg nextui-c-hhqfap-kAwfsS-disableShadow-false nextui-c-hhqfap-gqZKcP-disableBlur-false nextui-c-hhqfap-iPJLV-css nextui-navbar"
   >
-    <h1
-      class="className"
+    <div
+      class="nextui-c-egxOLa nextui-navbar-container"
     >
-      Welcome to the tracking system.
-    </h1>
-  </main>
+      <ul
+        class="nextui-c-jklhtj nextui-c-dGYPDG nextui-c-PJLV nextui-c-PJLV-ghzjVU-hideIn-xs nextui-c-jklhtj-ijFvnTw-css nextui-navbar-content"
+        style="--nextui--transitionDuration: 0ms; --nextui--opacity: 0; --nextui--width: 0px; --nextui--left: calc(var(--nextui--navbarContentItemHorizontalPadding) * 0.5 * -1);"
+      >
+        <li
+          class="nextui-c-kOXsPe nextui-c-yrlUe nextui-c-PJLV nextui-c-yrlUe-kJGdUE-activeColor-default nextui-c-yrlUe-hYJzFf-underlineHeight-normal nextui-c-kOXsPe-iPJLV-css nextui-navbar-item"
+          id="react-aria4933258092-1"
+        >
+          <a
+            class="nextui-c-kzikkm nextui-c-gulvcB nextui-c-kzikkm-hfnKRU-color-default nextui-c-kzikkm-isWIbj-animated-true nextui-c-kzikkm-iejNGLI-css nextui-link nextui-navbar-link"
+            href="#"
+            id="react-aria4933258092-1"
+          >
+            Features
+          </a>
+        </li>
+        <li
+          class="nextui-c-kOXsPe nextui-c-yrlUe nextui-c-PJLV nextui-c-yrlUe-kJGdUE-activeColor-default nextui-c-yrlUe-cdrGrt-isActive-true nextui-c-yrlUe-hYJzFf-underlineHeight-normal nextui-c-kOXsPe-ifJiMky-css nextui-navbar-item"
+          id="react-aria4933258092-2"
+        >
+          <a
+            class="nextui-c-kzikkm nextui-c-gulvcB nextui-c-kzikkm-hfnKRU-color-default nextui-c-kzikkm-isWIbj-animated-true nextui-c-kzikkm-iejNGLI-css nextui-link nextui-navbar-link"
+            href="#"
+            id="react-aria4933258092-2"
+          >
+            Customers
+          </a>
+        </li>
+        <li
+          class="nextui-c-kOXsPe nextui-c-yrlUe nextui-c-PJLV nextui-c-yrlUe-kJGdUE-activeColor-default nextui-c-yrlUe-hYJzFf-underlineHeight-normal nextui-c-kOXsPe-iPJLV-css nextui-navbar-item"
+          id="react-aria4933258092-3"
+        >
+          <a
+            class="nextui-c-kzikkm nextui-c-gulvcB nextui-c-kzikkm-hfnKRU-color-default nextui-c-kzikkm-isWIbj-animated-true nextui-c-kzikkm-iejNGLI-css nextui-link nextui-navbar-link"
+            href="#"
+            id="react-aria4933258092-3"
+          >
+            Pricing
+          </a>
+        </li>
+        <li
+          class="nextui-c-kOXsPe nextui-c-yrlUe nextui-c-PJLV nextui-c-yrlUe-kJGdUE-activeColor-default nextui-c-yrlUe-hYJzFf-underlineHeight-normal nextui-c-kOXsPe-iPJLV-css nextui-navbar-item"
+          id="react-aria4933258092-4"
+        >
+          <a
+            class="nextui-c-kzikkm nextui-c-gulvcB nextui-c-kzikkm-hfnKRU-color-default nextui-c-kzikkm-isWIbj-animated-true nextui-c-kzikkm-iejNGLI-css nextui-link nextui-navbar-link"
+            href="#"
+            id="react-aria4933258092-4"
+          >
+            Company
+          </a>
+        </li>
+      </ul>
+      <ul
+        class="nextui-c-jklhtj nextui-c-dGYPDG nextui-c-PJLV nextui-c-jklhtj-ijFvnTw-css nextui-navbar-content"
+        style="--nextui--transitionDuration: 0ms; --nextui--opacity: 0; --nextui--width: 0px; --nextui--left: calc(var(--nextui--navbarContentItemHorizontalPadding) * 0.5 * -1);"
+      >
+        <li
+          class="nextui-c-kOXsPe nextui-c-yrlUe nextui-c-PJLV nextui-c-yrlUe-kJGdUE-activeColor-default nextui-c-yrlUe-hYJzFf-underlineHeight-normal nextui-c-kOXsPe-iPJLV-css nextui-navbar-item"
+          id="react-aria4933258092-5"
+        >
+          <a
+            class="nextui-c-kzikkm nextui-c-gulvcB nextui-c-kzikkm-gwVlaX-color-inherit nextui-c-kzikkm-isWIbj-animated-true nextui-c-kzikkm-ihhXzBB-css nextui-link nextui-navbar-link"
+            href="#"
+            id="react-aria4933258092-5"
+          >
+            Login
+          </a>
+        </li>
+        <li
+          class="nextui-c-kOXsPe nextui-c-yrlUe nextui-c-PJLV nextui-c-yrlUe-kJGdUE-activeColor-default nextui-c-yrlUe-hYJzFf-underlineHeight-normal nextui-c-kOXsPe-iPJLV-css nextui-navbar-item"
+          id="react-aria4933258092-6"
+        >
+          <a
+            class="nextui-c-kzikkm nextui-c-gulvcB nextui-c-kzikkm-hfnKRU-color-default nextui-c-kzikkm-isWIbj-animated-true nextui-c-kzikkm-idoMxUs-css nextui-link nextui-c-iWjDFM nextui-c-iWjDFM-hkKLfu-color-default nextui-c-iWjDFM-gkIlwi-size-md nextui-c-iWjDFM-cwXrJp-borderWeight-normal nextui-c-iWjDFM-cyFBRX-flat-true nextui-c-iWjDFM-exaRme-auto-true nextui-c-iWjDFM-gglxka-cv nextui-c-iWjDFM-kaRBtV-cv nextui-c-iWjDFM-iPJLV-css nextui-button nextui-button--ready"
+            data-state="ready"
+            href="#"
+            id="react-aria4933258092-6"
+            role="button"
+            tabindex="0"
+            type="button"
+          >
+            <span
+              class="nextui-button-text"
+            >
+              Sign Up
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
 </div>
 `;
