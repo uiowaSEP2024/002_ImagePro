@@ -21,4 +21,3 @@ def ensure_tables_created():
 
 def ensure_tables_dropped():
     Base.metadata.drop_all(bind=engine)
-
