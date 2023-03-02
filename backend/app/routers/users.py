@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 
 router = APIRouter()
-router.tags = ['users']
+router.tags = ["users"]
 
 
 @router.post("/users/", response_model=schemas.User)
