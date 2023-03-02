@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 from app.config.database import ensure_tables_created
-from app.routers import users_router, apikeys_router
+from app.routers import users_router
 
 app = FastAPI()
 
@@ -14,4 +14,3 @@ def read_root():
 ensure_tables_created()
 
 app.include_router(users_router)
-app.include_router(apikeys_router)
