@@ -1,4 +1,4 @@
-from app.schemas.users import User, UserCreate
+from app.schemas import User, UserCreate
 from app.db import crud
 from app.db.database import SessionLocal
 from fastapi import APIRouter, Depends, HTTPException
