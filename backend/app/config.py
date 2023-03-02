@@ -8,8 +8,8 @@ load_dotenv(dotenv_path=env_path)
 
 
 class Settings:
-    # PROJECT_NAME:str = "Job Board"
-    # PROJECT_VERSION: str = "1.0.0"
+    PROJECT_NAME: str = "team03"
+    PROJECT_VERSION: str = "0.0.1"
 
     POSTGRES_USER: str = os.getenv("POSTGRES_USER")
     POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
@@ -18,7 +18,8 @@ class Settings:
         "POSTGRES_PORT", 5432
     )  # default postgres port is 5432
     POSTGRES_DB: str = os.getenv("POSTGRES_DB")
-    DATABASE_URL = os.getenv("DATABASE_URL")
+
+    DATABASE_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}/{POSTGRES_DB}"
 
 
 settings = Settings()
