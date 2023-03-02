@@ -4,7 +4,7 @@ from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
 from app.db.database import SessionLocal, ensure_tables_created
-from app.schemas import UserCreate
+from app.schemas.users import UserCreate
 from app.db.crud import create_user
 
 
