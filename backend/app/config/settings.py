@@ -1,26 +1,28 @@
 import os
 from pathlib import Path
+from typing import Optional
 
-from dotenv import load_dotenv
+from pydantic import BaseSettings
+
 from root import ROOT_DIR
 
-env_path = Path(ROOT_DIR) / ".env"
-load_dotenv(dotenv_path=env_path)
 
+class Settings(BaseSettings):
+    project_name: str = "team03"
+    project_version: str = "0.0.1"
 
-class Settings:
-    PROJECT_NAME: str = "team03"
-    PROJECT_VERSION: str = "0.0.1"
+    postgres_user: Optional[str] = "postgres"
+    postgres_password: Optional[str] = ""
+    postgres_server: Optional[str] = "localhost"
+    postgres_port: Optional[str] = 5432  # default postgres port is 5432
+    postgres_dbname: Optional[str] = ""
 
-    POSTGRES_USER: str = os.getenv("POSTGRES_USER")
-    POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
-    POSTGRES_SERVER: str = os.getenv("POSTGRES_SERVER")
-    POSTGRES_PORT: str = os.getenv(
-        "POSTGRES_PORT", 5432
-    )  # default postgres port is 5432
-    POSTGRES_DB: str = os.getenv("POSTGRES_DB")
+    @property
+    def database_url(self) -> str:
+        return f"postgresql://{self.postgres_user}:{self.postgres_password}@{self.postgres_server}/{self.postgres_dbname}"
 
-    DATABASE_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}/{POSTGRES_DB}"
+    class Config:
+        env_file = Path(ROOT_DIR) / ".env"
 
 
 settings = Settings()
