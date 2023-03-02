@@ -1,4 +1,4 @@
-from app.schemas.users import UserCreate
+from app.schemas import UserCreate
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
