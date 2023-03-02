@@ -1,5 +1,3 @@
-
-
 def test_create_user(app_client):
     data = {
         "email": "janedoe@example.com",
@@ -16,10 +14,7 @@ def test_read_user(app_client):
         "password": "abc",
     }
     create_user_response = app_client.post("/users/", json=data)
-    created_user_id = create_user_response.json()['id']
+    created_user_id = create_user_response.json()["id"]
 
-    read_user_response = app_client.get(f'/users/{created_user_id}')
-    assert read_user_response.json()['id'] == created_user_id
-
-
-
+    read_user_response = app_client.get(f"/users/{created_user_id}")
+    assert read_user_response.json()["id"] == created_user_id

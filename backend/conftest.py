@@ -15,4 +15,3 @@ def run_around_tests():
 @pytest.fixture
 def app_client():
     return TestClient(app)
-
