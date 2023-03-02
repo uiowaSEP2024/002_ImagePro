@@ -2,8 +2,9 @@ import os
 from pathlib import Path
 
 from dotenv import load_dotenv
+from root import ROOT_DIR
 
-env_path = Path(".") / ".env"
+env_path = Path(ROOT_DIR) / ".env"
 load_dotenv(dotenv_path=env_path)
 
 

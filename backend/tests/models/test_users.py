@@ -1,9 +1,9 @@
 import pytest
 import sqlalchemy
 
-from app.db.database import SessionLocal
+from app.config.database import SessionLocal
 from app.schemas import UserCreate
-from app.db.crud import create_user
+from app.services.users import create_user
 
 
 def test_users():

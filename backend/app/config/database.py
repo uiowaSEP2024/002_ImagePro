@@ -1,7 +1,6 @@
 from sqlalchemy import create_engine, text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-
 from app.config import settings
 
 engine = create_engine(settings.DATABASE_URL)
@@ -21,3 +20,4 @@ def ensure_tables_created():
 
 def ensure_tables_dropped():
     Base.metadata.drop_all(bind=engine)
+
