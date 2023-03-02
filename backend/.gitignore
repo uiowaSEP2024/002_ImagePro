@@ -10,3 +10,8 @@ __pycache__
 
 #ignores .idea dir
 .idea
+
+#Ignore Env variables
+.env
+
+.coverage
