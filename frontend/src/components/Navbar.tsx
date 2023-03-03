@@ -1,4 +1,4 @@
-import { Navbar, Button, Link, useTheme } from "@nextui-org/react";
+import { Navbar } from "@nextui-org/react";
 
 function TopNavbar() {
   return (
