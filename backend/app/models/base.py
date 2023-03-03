@@ -1,6 +1,6 @@
 from sqlalchemy import text
 from sqlalchemy.ext.declarative import declarative_base
-from app.config.database import engine, SessionLocal
+from config.database import engine, SessionLocal
 
 Base = declarative_base()
 
