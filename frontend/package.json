@@ -9,6 +9,7 @@
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "test": "jest --watch",
+    "ci-test":"jest",
     "snapshot:update": "jest --updateSnapshot"
   },
   "dependencies": {
