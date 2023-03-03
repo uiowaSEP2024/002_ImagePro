@@ -14,7 +14,6 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Spacer/>
       <Grid.Container gap={2} justify="center">
           <Text h1 align-items="center">Welcome to the tracking site.</Text>
       </Grid.Container>

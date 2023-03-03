@@ -14,19 +14,19 @@ export default function SignUp() {
             <Textarea
                 underlined
                 color="primary"
-                labelPlaceholder="First Name"
+                label="First Name"
               />
             <Spacer y={1}/>
             <Textarea
                 underlined
                 color="primary"
-                labelPlaceholder="Last Name"
+                label="Last Name"
               />
             <Spacer y={1} />
             <Textarea
                 underlined
                 color="primary"
-                labelPlaceholder="Email"
+                label="Email"
               />
             </Container>
             <Spacer y={1}/>
