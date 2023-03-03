@@ -2,14 +2,10 @@
 
 exports[`Home renders homepage unchanged 1`] = `
 <div>
-  <main
-    class="main"
+  <h1
+    class="nextui-c-PJLV nextui-c-PJLV-ijnlmIz-css"
   >
-    <h1
-      class="className"
-    >
-      Welcome to the tracking system.
-    </h1>
-  </main>
+    Welcome to the tracking site.
+  </h1>
 </div>
 `;
