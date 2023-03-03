@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NavBar renders navbar unchanged 1`] = `
+<div>
+  <nav
+    class="nextui-c-hhqfap nextui-c-hhqfap-ehawcb-variant-sticky nextui-c-hhqfap-beFEYN-maxWidth-lg nextui-c-hhqfap-kAwfsS-disableShadow-false nextui-c-hhqfap-gqZKcP-disableBlur-false nextui-c-hhqfap-iPJLV-css nextui-navbar"
+  >
+    <div
+      class="nextui-c-egxOLa nextui-navbar-container"
+    >
+      <ul
+        class="nextui-c-jklhtj nextui-c-dGYPDG nextui-c-PJLV nextui-c-dGYPDG-hHixqa-enableCursorHighlight-true nextui-c-PJLV-ghzjVU-hideIn-xs nextui-c-jklhtj-ijFvnTw-css nextui-navbar-content"
+        style="--nextui--transitionDuration: 0ms; --nextui--opacity: 0; --nextui--width: 0px; --nextui--left: calc(var(--nextui--navbarContentItemHorizontalPadding) * 0.5 * -1);"
+      >
+        <li
+          class="nextui-c-kOXsPe nextui-c-dAPDu nextui-c-dAPDu-kJGdUE-color-default nextui-c-kOXsPe-iPJLV-css nextui-navbar-cursor-highlight"
+        />
+        <li
+          class="nextui-c-kOXsPe nextui-c-yrlUe nextui-c-PJLV nextui-c-yrlUe-kJGdUE-activeColor-default nextui-c-yrlUe-cdrGrt-isActive-true nextui-c-yrlUe-hYJzFf-underlineHeight-normal nextui-c-kOXsPe-ikPzmPl-css nextui-navbar-item"
+          id="react-aria4616176951-1"
+        >
+          <a
+            class="nextui-c-kzikkm nextui-c-gulvcB nextui-c-kzikkm-hfnKRU-color-default nextui-c-kzikkm-isWIbj-animated-true nextui-c-kzikkm-iejNGLI-css nextui-link nextui-navbar-link"
+            href="/"
+            id="react-aria4616176951-1"
+          >
+            Home
+          </a>
+        </li>
+        <li
+          class="nextui-c-kOXsPe nextui-c-yrlUe nextui-c-PJLV nextui-c-yrlUe-kJGdUE-activeColor-default nextui-c-yrlUe-hYJzFf-underlineHeight-normal nextui-c-kOXsPe-ifzFbZK-css nextui-navbar-item"
+          id="react-aria4616176951-2"
+        >
+          <a
+            class="nextui-c-kzikkm nextui-c-gulvcB nextui-c-kzikkm-hfnKRU-color-default nextui-c-kzikkm-isWIbj-animated-true nextui-c-kzikkm-iejNGLI-css nextui-link nextui-navbar-link"
+            href="#"
+            id="react-aria4616176951-2"
+          >
+            Dashboard
+          </a>
+        </li>
+        <li
+          class="nextui-c-kOXsPe nextui-c-yrlUe nextui-c-PJLV nextui-c-yrlUe-kJGdUE-activeColor-default nextui-c-yrlUe-hYJzFf-underlineHeight-normal nextui-c-kOXsPe-ifzFbZK-css nextui-navbar-item"
+          id="react-aria4616176951-3"
+        >
+          <a
+            class="nextui-c-kzikkm nextui-c-gulvcB nextui-c-kzikkm-hfnKRU-color-default nextui-c-kzikkm-isWIbj-animated-true nextui-c-kzikkm-iejNGLI-css nextui-link nextui-navbar-link"
+            href="#"
+            id="react-aria4616176951-3"
+          >
+            Billing
+          </a>
+        </li>
+      </ul>
+      <ul
+        class="nextui-c-jklhtj nextui-c-dGYPDG nextui-c-PJLV nextui-c-dGYPDG-hHixqa-enableCursorHighlight-true nextui-c-PJLV-ghzjVU-hideIn-xs nextui-c-jklhtj-ijFvnTw-css nextui-navbar-content"
+        style="--nextui--transitionDuration: 0ms; --nextui--opacity: 0; --nextui--width: 0px; --nextui--left: calc(var(--nextui--navbarContentItemHorizontalPadding) * 0.5 * -1);"
+      >
+        <li
+          class="nextui-c-kOXsPe nextui-c-dAPDu nextui-c-dAPDu-kJGdUE-color-default nextui-c-kOXsPe-iPJLV-css nextui-navbar-cursor-highlight"
+        />
+        <li
+          class="nextui-c-kOXsPe nextui-c-yrlUe nextui-c-PJLV nextui-c-yrlUe-kJGdUE-activeColor-default nextui-c-yrlUe-hYJzFf-underlineHeight-normal nextui-c-kOXsPe-ifzFbZK-css nextui-navbar-item"
+          id="react-aria4616176951-4"
+        >
+          <a
+            class="nextui-c-kzikkm nextui-c-gulvcB nextui-c-kzikkm-hfnKRU-color-default nextui-c-kzikkm-isWIbj-animated-true nextui-c-kzikkm-iejNGLI-css nextui-link nextui-navbar-link"
+            href="#"
+            id="react-aria4616176951-4"
+          >
+            Login
+          </a>
+        </li>
+        <li
+          class="nextui-c-kOXsPe nextui-c-yrlUe nextui-c-PJLV nextui-c-yrlUe-kJGdUE-activeColor-default nextui-c-yrlUe-cdrGrt-isActive-true nextui-c-yrlUe-hYJzFf-underlineHeight-normal nextui-c-kOXsPe-ikPzmPl-css nextui-navbar-item"
+          id="react-aria4616176951-5"
+        >
+          <a
+            class="nextui-c-kzikkm nextui-c-gulvcB nextui-c-kzikkm-hfnKRU-color-default nextui-c-kzikkm-isWIbj-animated-true nextui-c-kzikkm-iejNGLI-css nextui-link nextui-navbar-link"
+            href="/signup"
+            id="react-aria4616176951-5"
+          >
+            Sign up
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+`;
