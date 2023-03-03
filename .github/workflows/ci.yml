@@ -1,0 +1,4 @@
+name: Continuous integration workflow
+on:
+  workflow_dispatch:
+    jobs:
