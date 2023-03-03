@@ -1,9 +1,9 @@
-name: Backend lint workflow
+name: backend test workflow
 on:
   workflow_call:
 jobs:
-  execute_black:
-    name: Execute black
+  unit_tests:
+    name: Backend unit tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -17,8 +17,8 @@ jobs:
       - name: Install python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install black
+          pip install pytest
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: Execute black
-        run: black --check .
+      - name: Test with pytest
+        run: pytest
