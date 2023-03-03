@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     project_name: str = "team03"
     project_version: str = "0.0.1"
 
-    environment: str = "local"
+    environment: str
 
     postgres_user: Optional[str] = "postgres"
     postgres_password: Optional[str] = ""
@@ -54,4 +54,4 @@ settings_cls = settings_dict[ENVIRONMENT.lower()]
 
 settings: Union[LocalSettings, Settings, TestSettings] = settings_cls()
 
-print(settings.dict())
+print(f"Running in environment: {settings.environment}")
