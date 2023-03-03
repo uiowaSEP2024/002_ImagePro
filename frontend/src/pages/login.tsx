@@ -37,6 +37,7 @@ export default function Login() {
             color="primary"
             size="lg"
             placeholder="Email"
+            aria-label="Email"
           />
           <Spacer y={1} />
           <Input
@@ -46,6 +47,7 @@ export default function Login() {
             color="primary"
             size="lg"
             placeholder="Password"
+            aria-label="Password"
             css={{ mb: '6px' }}
           />
           <Row justify="space-between">
