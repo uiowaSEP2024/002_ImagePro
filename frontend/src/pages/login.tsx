@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Card,
   Spacer,
@@ -8,7 +8,7 @@ import {
   Row,
   Link,
   Container,
-} from '@nextui-org/react';
+} from "@nextui-org/react";
 
 export default function Login() {
   return (
@@ -17,15 +17,15 @@ export default function Login() {
         display="flex"
         alignItems="center"
         justify="center"
-        css={{ minHeight: '100vh' }}
+        css={{ minHeight: "100vh" }}
       >
-        <Card css={{ mw: '420px', p: '20px' }} variant="bordered">
+        <Card css={{ mw: "420px", p: "20px" }} variant="bordered">
           <Text
             size={24}
             weight="bold"
             css={{
-              as: 'center',
-              mb: '20px',
+              as: "center",
+              mb: "20px",
             }}
           >
             Login
@@ -48,10 +48,10 @@ export default function Login() {
             size="lg"
             placeholder="Password"
             aria-label="Password"
-            css={{ mb: '6px' }}
+            css={{ mb: "6px" }}
           />
           <Row justify="space-between">
-          <Link block color="secondary" href="/signup">New user? Create Account. </Link>
+            <Link block color="secondary" href="/signup">New user? Create Account. </Link>
           </Row>
           <Spacer y={1} />
           <Button>Log in</Button>
