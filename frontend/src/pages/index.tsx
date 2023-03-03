@@ -1,9 +1,5 @@
-import Head from "next/head"
-import { Inter } from "@next/font/google"
-import styles from "@/styles/Home.module.css"
-import { Text, Container, Grid, Spacer } from "@nextui-org/react";
-
-const inter = Inter({ subsets: ["latin"] })
+import Head from "next/head";
+import { Text, Grid, Spacer } from "@nextui-org/react";
 
 export default function Home() {
   return (
@@ -15,8 +11,10 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Grid.Container gap={2} justify="center">
-          <Text h1 align-items="center">Welcome to the tracking site.</Text>
+        <Text h1 align-items="center">
+          Welcome to the tracking site.
+        </Text>
       </Grid.Container>
     </>
-  )
+  );
 }
