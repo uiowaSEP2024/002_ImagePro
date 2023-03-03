@@ -22,3 +22,4 @@ jobs:
 
       - name: test with jest
         run: npm run ci-test
+      - run: run `npm run ci-test -- -u`
