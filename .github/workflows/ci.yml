@@ -17,5 +17,3 @@ jobs:
   frontend_test:
     name: Frontend tests
     uses: ./.github/workflows/frontend-tests.yml
-
-
