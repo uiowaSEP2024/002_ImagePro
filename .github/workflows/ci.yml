@@ -5,3 +5,6 @@ jobs:
     backend_lint:
       name: Backend lints
       uses: ./.github/workflows/backend-lints.yml
+    backend_test:
+      name: Backend tests
+      uses: ./.github/workflows/backend-tests.yml
