@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
   Card,
   Spacer,
@@ -10,37 +10,43 @@ import {
   Container,
 } from "@nextui-org/react";
 
-export default function SignUp() { 
+export default function SignUp() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
+  const [notificationMessage, setNotificationMessage] = useState("");
 
-  const sendSignupReq = () => {
-    if(confirmPassword !== password) {
-      console.log("Passwords Do Not Match")
-      return
+  const sendSignUpReq = () => {
+    if (confirmPassword !== password) {
+      console.log("Passwords Do Not Match");
+      return;
     }
-  
+
     fetch("http://localhost:8000/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        data: {
-          email: email,
-          passsword: password
-        },
+        email: email,
+        password: password,
       }),
     })
-      .then(response => response.json())
-      .then(data => console.log(data));
-  
-  }
+      .then((response) => response.json())
+      .then((data) => {
+        setNotificationMessage("Sign up successful!");
+        console.log(data);
+      })
+      .catch((e) => {
+        console.log(e);
+        setNotificationMessage("Sign up failed!");
+      });
+  };
 
   return (
     <div>
+      {!!notificationMessage && <Text>{notificationMessage}</Text>}
       <Container
         display="flex"
         alignItems="center"
@@ -88,7 +94,7 @@ export default function SignUp() {
             aria-label="Email"
             css={{ mb: "6px" }}
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <Spacer y={1} />
           <Input
@@ -99,9 +105,10 @@ export default function SignUp() {
             size="lg"
             placeholder="Password"
             aria-label="Password"
+            type="password"
             css={{ mb: "6px" }}
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <Spacer y={1} />
           <Input
@@ -112,15 +119,18 @@ export default function SignUp() {
             size="lg"
             placeholder="Confirm Password"
             aria-label="Confirm Password"
+            type="password"
             css={{ mb: "6px" }}
             value={confirmPassword}
-            onChange={e => setConfirmPassword(e.target.value)}
+            onChange={(e) => setConfirmPassword(e.target.value)}
           />
           <Row justify="space-between">
-            <Link block color="secondary" href="/login">Existing user? Log in. </Link>
+            <Link block color="secondary" href="/login">
+              Existing user? Log in.{" "}
+            </Link>
           </Row>
           <Spacer y={1} />
-          <Button onClick={sendSignupReq}>Create Account</Button>
+          <Button onPress={sendSignUpReq}>Create Account</Button>
         </Card>
       </Container>
     </div>
