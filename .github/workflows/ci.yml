@@ -2,3 +2,6 @@ name: Continuous integration workflow
 on:
   workflow_dispatch:
     jobs:
+      backend_lint:
+        name: Backend lints
+        uses: ./.github/workflows/backend-lints.yml
