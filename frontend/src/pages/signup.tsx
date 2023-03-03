@@ -34,7 +34,7 @@ export default function SignUp() {
               Sign Up
             </Button>
             <Spacer y={1}/>
-            <Link block color="secondary" href="#">
+            <Link block color="secondary" href="/login">
               Existing user? Go to Login
             </Link>
           </Col>
