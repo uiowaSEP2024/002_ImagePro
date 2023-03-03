@@ -11,19 +11,19 @@ export default function SignUp() {
             <Text h3>Create Account</Text>
             <Spacer y={1}/>
             <Container justify="center" >
-            <Textarea
+              <Textarea
                 underlined
                 color="primary"
                 labelPlaceholder="First Name"
               />
-            <Spacer y={1}/>
-            <Textarea
+              <Spacer y={1}/>
+              <Textarea
                 underlined
                 color="primary"
                 labelPlaceholder="Last Name"
               />
-            <Spacer y={1} />
-            <Textarea
+              <Spacer y={1} />
+              <Textarea
                 underlined
                 color="primary"
                 labelPlaceholder="Email"
