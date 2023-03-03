@@ -4,25 +4,13 @@ on:
 jobs:
   frontend_lint:
     name: Frontend lints
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: frontend
     uses: ./.github/workflows/frontend-lints.yml
 
   backend_lint:
       name: Backend lints
-      runs-on: ubuntu-latest
-      defaults:
-        run:
-          working-directory: backend
       uses: ./.github/workflows/backend-lints.yml
 
   backend_test:
       name: Backend tests
-      runs-on: ubuntu-latest
-      defaults:
-        run:
-          working-directory: backend
       uses: ./.github/workflows/backend-tests.yml
 
