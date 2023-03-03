@@ -2,15 +2,20 @@ name: Continuous integration workflow
 on:
   workflow_dispatch:
 jobs:
+  backend_lint:
+    name: Backend lints
+    uses: ./.github/workflows/backend-lints.yml
+
+  backend_test:
+    name: Backend tests
+    uses: ./.github/workflows/backend-tests.yml
+
   frontend_lint:
     name: Frontend lints
     uses: ./.github/workflows/frontend-lints.yml
 
-  backend_lint:
-      name: Backend lints
-      uses: ./.github/workflows/backend-lints.yml
+  frontend_test:
+    name: Frontend tests
+    uses: ./.github/workflows/frontend-tests.yml
 
-  backend_test:
-      name: Backend tests
-      uses: ./.github/workflows/backend-tests.yml
 
