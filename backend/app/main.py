@@ -11,7 +11,4 @@ def read_root():
     return {"msg": "Hello World"}
 
 
-# TODO: take this out once we have migrations
-ensure_tables_created()
-
 app.include_router(users_router)
