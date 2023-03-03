@@ -1,23 +1,20 @@
-import { Navbar, Button, Link } from "@nextui-org/react";
+import { Navbar, Button, Link, useTheme } from "@nextui-org/react";
  
 function TopNavbar() {
   return (
-    <Navbar>
-      <Navbar.Content hideIn="xs">
-        <Navbar.Link href="#">Features</Navbar.Link>
-        <Navbar.Link isActive href="#">Customers</Navbar.Link>
-        <Navbar.Link href="#">Pricing</Navbar.Link>
-        <Navbar.Link href="#">Company</Navbar.Link>
+    <Navbar variant="sticky" >
+      <Navbar.Content enableCursorHighlight hideIn="xs" >
+        <Navbar.Link isActive href="../index">Home</Navbar.Link>
+        <Navbar.Link href="#">Dashboard</Navbar.Link>
+        <Navbar.Link href="#">Billing</Navbar.Link>
       </Navbar.Content>
-      <Navbar.Content>
-        <Navbar.Link color="inherit" href="#">
+      <Navbar.Content enableCursorHighlight hideIn="xs">
+        <Navbar.Link href="#">
             Login
         </Navbar.Link>
-        <Navbar.Item>
-          <Button auto flat as={Link} href="/signup">
-              Sign Up
-          </Button>
-        </Navbar.Item>
+        <Navbar.Link isActive href="../signup">
+            Sign up
+        </Navbar.Link>
       </Navbar.Content>
     </Navbar>
   );
