@@ -10,7 +10,7 @@ import {
   Container,
 } from '@nextui-org/react';
 
-export default function SignUp() {
+export default function Login() {
   return (
     <div>
       <Container
@@ -28,28 +28,8 @@ export default function SignUp() {
               mb: '20px',
             }}
           >
-            Sign Up
+            Login
           </Text>
-          <Input
-            clearable
-            underlined
-            fullWidth
-            color="primary"
-            size="lg"
-            placeholder="First Name"
-            aria-label="First Name"
-          />
-          <Spacer y={1} />
-          <Input
-            clearable
-            underlined
-            fullWidth
-            color="primary"
-            size="lg"
-            placeholder="Last Name"
-            aria-label="Last Name"
-          />
-           <Spacer y={1} />
           <Input
             clearable
             underlined
@@ -58,9 +38,8 @@ export default function SignUp() {
             size="lg"
             placeholder="Email"
             aria-label="Email"
-            css={{ mb: '6px' }}
           />
-           <Spacer y={1} />
+          <Spacer y={1} />
           <Input
             clearable
             underlined
@@ -71,22 +50,11 @@ export default function SignUp() {
             aria-label="Password"
             css={{ mb: '6px' }}
           />
-          <Spacer y={1} />
-          <Input
-            clearable
-            underlined
-            fullWidth
-            color="primary"
-            size="lg"
-            placeholder="Confirm Password"
-            aria-label="Confirm Password"
-            css={{ mb: '6px' }}
-          />
           <Row justify="space-between">
-          <Link block color="secondary" href="/login">Existing user? Log in. </Link>
+          <Link block color="secondary" href="/signup">New user? Create Account. </Link>
           </Row>
           <Spacer y={1} />
-          <Button>Create Account</Button>
+          <Button>Log in</Button>
         </Card>
       </Container>
     </div>
