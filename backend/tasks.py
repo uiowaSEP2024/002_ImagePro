@@ -4,7 +4,7 @@ import os
 import psycopg2
 
 
-def setup_app_config_settings(app_env):
+def setup_app_settings(app_env):
     """
     Programmatically sets the APP_ENV variable for the application
     So that when settings are initialized, they are initialized with a known APP_ENV.
@@ -16,7 +16,7 @@ def setup_app_config_settings(app_env):
 
 
 def create_conn(app_env):
-    settings = setup_app_config_settings(app_env)
+    settings = setup_app_settings(app_env)
 
     conn = psycopg2.connect(
         user=settings.postgres_user,
