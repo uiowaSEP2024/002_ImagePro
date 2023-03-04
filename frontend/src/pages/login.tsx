@@ -1,3 +1,4 @@
+import React from "react";
 import React, { useState } from "react";
 import { useRouter } from 'next/router';
 import {
@@ -9,7 +10,7 @@ import {
   Row,
   Link,
   Container,
-} from '@nextui-org/react';
+} from "@nextui-org/react";
 
 export default function Login() {
   const router = useRouter();
@@ -18,7 +19,7 @@ export default function Login() {
 
   const [notificationMessage, setNotificationMessage] = useState("");
 
-  
+
   const sendSignUpReq = () => {
     fetch("http://localhost:8000/login", {
       credentials: 'include',
@@ -49,15 +50,15 @@ export default function Login() {
         display="flex"
         alignItems="center"
         justify="center"
-        css={{ minHeight: '100vh' }}
+        css={{ minHeight: "100vh" }}
       >
-        <Card css={{ mw: '420px', p: '20px' }} variant="bordered">
+        <Card css={{ mw: "420px", p: "20px" }} variant="bordered">
           <Text
             size={24}
             weight="bold"
             css={{
-              as: 'center',
-              mb: '20px',
+              as: "center",
+              mb: "20px",
             }}
           >
             Login

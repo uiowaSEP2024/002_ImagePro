@@ -1,4 +1,4 @@
-import { Text, Grid, Spacer } from "@nextui-org/react";
+import { Text, Grid } from "@nextui-org/react";
 
 export default function Dashboard() {
   return (
