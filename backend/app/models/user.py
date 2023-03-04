@@ -11,6 +11,6 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
 
-    apikeys = relationship(
+    api_keys = relationship(
         "Apikey", back_populates="user", cascade="all, delete-orphan"
     )
