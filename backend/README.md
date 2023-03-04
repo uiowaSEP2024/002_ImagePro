@@ -3,6 +3,19 @@ This is the backend project for Team03's SEP project.
 
 
 # Get Started
+
+Before starting the application, make sure to start a Virtual Environment for your project by using the command:
+
+```bash
+source venv/bin/activate
+```
+
+Once the Venv is fired up, make sure to install all requirements required for the project:
+
+```bash
+pip install -r requirements.txt
+```
+
 To start the application, run:
 
 ```bash
