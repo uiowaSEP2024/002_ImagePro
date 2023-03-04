@@ -4,32 +4,36 @@ import os
 import psycopg2
 
 
-def setup_config(environment):
-    os.environ["ENVIRONMENT"] = environment
-    import config
+def setup_app_config_settings(app_env):
+    """
+    Programmatically sets the APP_ENV variable for the application
+    So that when settings are initialized, they are initialized with a known APP_ENV.
+    """
+    os.environ["APP_ENV"] = app_env
+    import config.settings
 
-    return config
+    return config.settings
 
 
-def create_conn(environment):
-    config = setup_config(environment)
+def create_conn(app_env):
+    settings = setup_app_config_settings(app_env)
 
     conn = psycopg2.connect(
-        user=config.settings.postgres_user,
-        password=config.settings.postgres_password,
-        host=config.settings.postgres_server,
-        port=config.settings.postgres_port,
+        user=settings.postgres_user,
+        password=settings.postgres_password,
+        host=settings.postgres_server,
+        port=settings.postgres_port,
     )
 
     conn.autocommit = True
     return conn
 
 
-def create_db(name, environment):
+def create_db(name, app_env):
     conn = None
 
     try:
-        conn = create_conn(environment)
+        conn = create_conn(app_env)
 
         # Creating a cursor object using the cursor() method
         cursor = conn.cursor()
@@ -49,10 +53,10 @@ def create_db(name, environment):
         conn.close() if conn else None
 
 
-def drop_db(name, environment):
+def drop_db(name, app_env):
     conn = None
     try:
-        conn = create_conn(environment)
+        conn = create_conn(app_env)
 
         # Creating a cursor object using the cursor() method
         cursor = conn.cursor()
@@ -106,7 +110,8 @@ def db_test_migrate(revision="head"):
     os.system(f"alembic upgrade {revision}")
 
 
-def db_migrate(environment, direction, revision):
+def db_migrate(app_env, direction, revision):
+    os.environ["APP_ENV"] = app_env
     os.system(f"alembic {direction} {revision}")
 
 
