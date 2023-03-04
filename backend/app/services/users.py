@@ -11,6 +11,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
 
+
 def get_user_email(db: Session, email: str):
     return db.query(models.User).filter(models.User.email == email).first()
 
@@ -25,7 +26,9 @@ def create_user(db: Session, user: schemas.UserCreate):
     return db_user
 
 
-def authenticate_user(username: str, password: str, db: Session = Depends(dependencies.get_db)):
+def authenticate_user(
+    username: str, password: str, db: Session = Depends(dependencies.get_db)
+):
     user = get_user_email(email=username, db=db)
     print(user)
     if not user:

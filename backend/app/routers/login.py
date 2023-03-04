@@ -17,9 +17,9 @@ from ..config import settings
 from jose import JWTError
 
 
-
 router = APIRouter()
 router.tags = ["login"]
+
 
 @router.post("/login", response_model=Token)
 def login_for_access_token(
