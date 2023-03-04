@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useRouter } from 'next/router';
 import {
   Card,
   Spacer,
@@ -11,6 +12,7 @@ import {
 } from '@nextui-org/react';
 
 export default function Login() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -19,6 +21,7 @@ export default function Login() {
   
   const sendSignUpReq = () => {
     fetch("http://localhost:8000/login", {
+      credentials: 'include',
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
@@ -30,8 +33,11 @@ export default function Login() {
     })
     .then((response) => {
       if(response.status == 200){
-        console.log("Success")
+        router.push('/dashboard')
       }
+    })
+    .catch((e) => {
+      console.log(e)
     })
   }
 
