@@ -9,7 +9,7 @@ from alembic import context
 # to make sure all modules containing models are loaded
 # int Base as well.
 from app.models import Base
-from app.config import settings
+from config import settings
 
 
 # this is the Alembic Config object, which provides
@@ -47,6 +47,8 @@ def run_migrations_offline() -> None:
     """
     # Use URL from config
     url = settings.database_url
+    print("hiiii")
+    print(url)
     context.configure(
         url=url,
         target_metadata=target_metadata,
@@ -68,6 +70,7 @@ def run_migrations_online() -> None:
     connectable = engine_from_config(
         config.get_section(config.config_ini_section, {}),
         prefix="sqlalchemy.",
+        url=settings.database_url,
         poolclass=pool.NullPool,
     )
 
