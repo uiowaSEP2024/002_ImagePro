@@ -1,5 +1,5 @@
 import pytest
-from app.config.database import ensure_tables_created, ensure_tables_dropped
+from app.models.base import ensure_tables_created, ensure_tables_dropped
 from app.main import app
 
 from fastapi.testclient import TestClient
