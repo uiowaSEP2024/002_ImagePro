@@ -1,0 +1,166 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Login renders Login unchanged 1`] = `
+<div>
+  <div>
+    <div
+      class="nextui-c-fdHeMm nextui-c-fdHeMm-dwxLNB-responsive-true nextui-c-fdHeMm-iblJuSr-css"
+    >
+      <div
+        class="nextui-c-BDLTQ nextui-c-jMTBsW nextui-c-gulvcB nextui-c-BDLTQ-kUADSW-variant-bordered nextui-c-BDLTQ-fmlsco-borderWeight-light nextui-c-BDLTQ-cuwTXc-disableAnimation-false nextui-c-BDLTQ-ilimyxf-css"
+        role="section"
+        tabindex="-1"
+      >
+        <p
+          class="nextui-c-PJLV nextui-c-PJLV-hyvuql-weight-bold nextui-c-PJLV-ibsXxfh-css"
+        >
+          Login
+        </p>
+        <div
+          class="nextui-c-iwmZdB nextui-c-iwmZdB-jTlWbp-color-primary nextui-c-iwmZdB-jTfqsF-helperColor-default nextui-c-iwmZdB-dpkacN-borderWeight-normal nextui-c-iwmZdB-bkiCag-size-lg nextui-c-iwmZdB-ifGHEql-css nextui-input-main-container nextui-input-main-container--normal"
+          data-state="normal"
+        >
+          <div
+            class="nextui-c-boZsAS nextui-c-boZsAS-fjttfO-isTextarea-false nextui-c-boZsAS-iNKybL-animated-true nextui-c-boZsAS-AmGUN-cv nextui-input-container nextui-input-container--normal nextui-input-container--input"
+          >
+            <label
+              class="nextui-c-eXOOPO nextui-c-eXOOPO-iNKybL-shadow-true nextui-c-eXOOPO-gWufxv-underlined-true nextui-c-eXOOPO-lkBNdM-isTextarea-false nextui-input-wrapper nextui-input-wrapper--normal nextui-input-wrapper--underlined nextui-input-wrapper--shadow"
+            >
+              <span
+                class="nextui-c-PJLV nextui-c-iFHsrU nextui-input-placeholder"
+              >
+                Email
+              </span>
+              <input
+                aria-label="Email"
+                aria-multiline="false"
+                aria-placeholder="Email"
+                aria-readonly="false"
+                aria-required="false"
+                autocomplete="off"
+                class="nextui-c-jeuecp nextui-input"
+                data-state="normal"
+                id="react-aria8428947043-1"
+                placeholder="Email"
+                type="text"
+                value=""
+              />
+              <button
+                aria-label="clear"
+                class="nextui-c-ctQnhE nextui-c-ctQnhE-kClpVX-underlined-true nextui-input-clear-button"
+                lang="en"
+                type="button"
+              >
+                <span
+                  class="nextui-c-gDSmsE nextui-c-gulvcB"
+                >
+                  <svg
+                    class=""
+                    height="24"
+                    viewBox="0 0 24 24"
+                    width="24"
+                  >
+                    <path
+                      d="M12 2a10 10 0 1010 10A10.016 10.016 0 0012 2zm3.36 12.3a.754.754 0 010 1.06.748.748 0 01-1.06 0l-2.3-2.3-2.3 2.3a.748.748 0 01-1.06 0 .754.754 0 010-1.06l2.3-2.3-2.3-2.3A.75.75 0 019.7 8.64l2.3 2.3 2.3-2.3a.75.75 0 011.06 1.06l-2.3 2.3z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
+              </button>
+            </label>
+          </div>
+          <div
+            class="nextui-c-gJvMas nextui-input-helper-text-container"
+          />
+        </div>
+        <span
+          aria-hidden="true"
+          class="nextui-c-gNVTSf nextui-c-gNVTSf-hakyQ-inline-false nextui-c-gNVTSf-igvLppd-css"
+        />
+        <div
+          class="nextui-c-iwmZdB nextui-c-iwmZdB-jTlWbp-color-primary nextui-c-iwmZdB-jTfqsF-helperColor-default nextui-c-iwmZdB-dpkacN-borderWeight-normal nextui-c-iwmZdB-bkiCag-size-lg nextui-c-iwmZdB-idXLuPy-css nextui-input-main-container nextui-input-main-container--normal"
+          data-state="normal"
+        >
+          <div
+            class="nextui-c-boZsAS nextui-c-boZsAS-fjttfO-isTextarea-false nextui-c-boZsAS-iNKybL-animated-true nextui-c-boZsAS-AmGUN-cv nextui-input-container nextui-input-container--normal nextui-input-container--input"
+          >
+            <label
+              class="nextui-c-eXOOPO nextui-c-eXOOPO-iNKybL-shadow-true nextui-c-eXOOPO-gWufxv-underlined-true nextui-c-eXOOPO-lkBNdM-isTextarea-false nextui-input-wrapper nextui-input-wrapper--normal nextui-input-wrapper--underlined nextui-input-wrapper--shadow"
+            >
+              <span
+                class="nextui-c-PJLV nextui-c-iFHsrU nextui-input-placeholder"
+              >
+                Password
+              </span>
+              <input
+                aria-label="Password"
+                aria-multiline="false"
+                aria-placeholder="Password"
+                aria-readonly="false"
+                aria-required="false"
+                autocomplete="off"
+                class="nextui-c-jeuecp nextui-input"
+                data-state="normal"
+                id="react-aria8428947043-3"
+                placeholder="Password"
+                type="text"
+                value=""
+              />
+              <button
+                aria-label="clear"
+                class="nextui-c-ctQnhE nextui-c-ctQnhE-kClpVX-underlined-true nextui-input-clear-button"
+                lang="en"
+                type="button"
+              >
+                <span
+                  class="nextui-c-gDSmsE nextui-c-gulvcB"
+                >
+                  <svg
+                    class=""
+                    height="24"
+                    viewBox="0 0 24 24"
+                    width="24"
+                  >
+                    <path
+                      d="M12 2a10 10 0 1010 10A10.016 10.016 0 0012 2zm3.36 12.3a.754.754 0 010 1.06.748.748 0 01-1.06 0l-2.3-2.3-2.3 2.3a.748.748 0 01-1.06 0 .754.754 0 010-1.06l2.3-2.3-2.3-2.3A.75.75 0 019.7 8.64l2.3 2.3 2.3-2.3a.75.75 0 011.06 1.06l-2.3 2.3z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
+              </button>
+            </label>
+          </div>
+          <div
+            class="nextui-c-gJvMas nextui-input-helper-text-container"
+          />
+        </div>
+        <div
+          class="nextui-c-dfbgCO nextui-c-dfbgCO-fGHEql-fluid-true nextui-c-dfbgCO-igmUkpg-css"
+        >
+          <a
+            class="nextui-c-kzikkm nextui-c-gulvcB nextui-c-kzikkm-iVlgeG-color-secondary nextui-c-kzikkm-fZgbCn-block-true nextui-c-kzikkm-isWIbj-animated-true nextui-c-kzikkm-jSBLRj-cv nextui-c-kzikkm-iclraoi-css nextui-link"
+            href="/signup"
+          >
+            New user? Create Account. 
+          </a>
+        </div>
+        <span
+          aria-hidden="true"
+          class="nextui-c-gNVTSf nextui-c-gNVTSf-hakyQ-inline-false nextui-c-gNVTSf-igvLppd-css"
+        />
+        <button
+          class="nextui-c-iWjDFM nextui-c-gulvcB nextui-c-iWjDFM-hkKLfu-color-default nextui-c-iWjDFM-gkIlwi-size-md nextui-c-iWjDFM-cwXrJp-borderWeight-normal nextui-c-iWjDFM-iPJLV-css nextui-button nextui-button--ready"
+          data-state="ready"
+          type="button"
+        >
+          <span
+            class="nextui-button-text"
+          >
+            Log in
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
