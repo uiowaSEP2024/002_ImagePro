@@ -29,4 +29,4 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
-# print("DATABSE URL: ", settings.database_url)
+print("DATABSE URL: ", settings.database_url)
