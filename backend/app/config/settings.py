@@ -12,9 +12,7 @@ class Settings(BaseSettings):
 
     postgres_user: Optional[str] = "postgres"
     postgres_password: Optional[str] = ""
-    postgres_server: Optional[
-        str
-    ] = ""
+    postgres_server: Optional[str] = ""
     postgres_port: Optional[str] = 5432  # default postgres port is 5432
     postgres_db: Optional[str] = ""
 
