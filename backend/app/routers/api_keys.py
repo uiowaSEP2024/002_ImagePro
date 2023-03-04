@@ -1,4 +1,4 @@
-from app.dependencies import get_db, get_user_from_api_key
+from app.dependencies import get_db, get_user_from_api_key, API_KEY_HEADER_NAME
 from app import schemas, services
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
@@ -23,7 +23,11 @@ def read_apikeys(user_id: str, db: Session = Depends(get_db)):
     return services.get_api_keys_for_user(db, int(user_id))
 
 
-@router.get("/api-keys/protected", response_model=str)
+@router.get(
+    "/api-keys/protected",
+    response_model=str,
+    openapi_extra={API_KEY_HEADER_NAME: "your-api-key"},
+)
 def read_api_key_protected_route(user=Depends(get_user_from_api_key)):
     print(user)
     return "Authorized!"
