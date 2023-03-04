@@ -1,7 +1,7 @@
 import pytest
 import sqlalchemy
 
-from app.config.database import SessionLocal
+from config.database import SessionLocal
 from app.schemas import UserCreate
 from app.services.users import create_user
 
