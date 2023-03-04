@@ -1,6 +1,10 @@
 from pydantic import BaseModel
 
 
+class ApiKeyCreateRequest(BaseModel):
+    user_id: int
+
+
 class ApikeyBase(BaseModel):
     key: str
 
