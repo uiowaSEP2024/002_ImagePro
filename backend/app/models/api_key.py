@@ -5,10 +5,10 @@ from .base import Base
 
 
 class Apikey(Base):
-    __tablename__ = "apikeys"
+    __tablename__ = "api_keys"
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
     key = Column(String, unique=True)
 
-    user = relationship("User", back_populates="apikeys")
+    user = relationship("User", back_populates="api_keys")

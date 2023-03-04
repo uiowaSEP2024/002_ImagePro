@@ -1,3 +1,3 @@
 from .base import Base
 from .user import User
-from .apikey import Apikey
+from .api_key import Apikey
