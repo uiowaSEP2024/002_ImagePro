@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from "react";
 import {
   Card,
   Spacer,
@@ -8,24 +8,58 @@ import {
   Row,
   Link,
   Container,
-} from '@nextui-org/react';
+} from "@nextui-org/react";
 
 export default function SignUp() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [notificationMessage, setNotificationMessage] = useState("");
+
+  const sendSignUpReq = () => {
+    if (confirmPassword !== password) {
+      console.log("Passwords Do Not Match");
+      return;
+    }
+
+    fetch("http://localhost:8000/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setNotificationMessage("Sign up successful!");
+        console.log(data);
+      })
+      .catch((e) => {
+        console.log(e);
+        setNotificationMessage("Sign up failed!");
+      });
+  };
+
   return (
     <div>
+      {!!notificationMessage && <Text>{notificationMessage}</Text>}
       <Container
         display="flex"
         alignItems="center"
         justify="center"
-        css={{ minHeight: '100vh' }}
+        css={{ minHeight: "100vh" }}
       >
-        <Card css={{ mw: '420px', p: '20px' }} variant="bordered">
+        <Card css={{ mw: "420px", p: "20px" }} variant="bordered">
           <Text
             size={24}
             weight="bold"
             css={{
-              as: 'center',
-              mb: '20px',
+              as: "center",
+              mb: "20px",
             }}
           >
             Sign Up
@@ -49,7 +83,7 @@ export default function SignUp() {
             placeholder="Last Name"
             aria-label="Last Name"
           />
-           <Spacer y={1} />
+          <Spacer y={1} />
           <Input
             clearable
             underlined
@@ -58,9 +92,11 @@ export default function SignUp() {
             size="lg"
             placeholder="Email"
             aria-label="Email"
-            css={{ mb: '6px' }}
+            css={{ mb: "6px" }}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
-           <Spacer y={1} />
+          <Spacer y={1} />
           <Input
             clearable
             underlined
@@ -69,7 +105,10 @@ export default function SignUp() {
             size="lg"
             placeholder="Password"
             aria-label="Password"
-            css={{ mb: '6px' }}
+            type="password"
+            css={{ mb: "6px" }}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <Spacer y={1} />
           <Input
@@ -80,13 +119,18 @@ export default function SignUp() {
             size="lg"
             placeholder="Confirm Password"
             aria-label="Confirm Password"
-            css={{ mb: '6px' }}
+            type="password"
+            css={{ mb: "6px" }}
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
           />
           <Row justify="space-between">
-          <Link block color="secondary" href="/login">Existing user? Log in. </Link>
+            <Link block color="secondary" href="/login">
+              Existing user? Log in.{" "}
+            </Link>
           </Row>
           <Spacer y={1} />
-          <Button>Create Account</Button>
+          <Button onPress={sendSignUpReq}>Create Account</Button>
         </Card>
       </Container>
     </div>
