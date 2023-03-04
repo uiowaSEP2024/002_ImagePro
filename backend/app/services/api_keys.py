@@ -1,4 +1,5 @@
 from passlib.context import CryptContext
+from pydantic import validate_arguments
 from sqlalchemy.orm import Session
 
 from app import models
@@ -8,12 +9,16 @@ from app.services import get_user
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-def get_user_apikeys(db: Session, user_id: int):
-    return get_user(db, user_id).apikeys
+def get_api_keys_for_user(db: Session, user_id: int):
+    return get_user(db, user_id).api_keys
 
 
+@validate_arguments(config=dict(arbitrary_types_allowed=True))
 def get_user_from_api_key(db: Session, api_key: str):
-    return db.query(models.Apikey).filter(models.Apikey.id == api_key).first().user
+    # TODO: only allow fetching for api keys that have not expired
+    api_key = db.query(models.Apikey).filter(models.Apikey.key == api_key)
+    if api_key.first():
+        return api_key.one().user
 
 
 def create_apikey_for_user(db: Session, user_id: int):
