@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     postgres_db: Optional[str] = ""
 
     algorithm: str = ""
-    access_token_expire_minutes = int
+    access_token_expire_minutes: float = 60 * 3
     secret_key: str = ""
 
     @property

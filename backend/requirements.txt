@@ -76,3 +76,5 @@ watchfiles==0.18.1
 websockets==10.4
 wrapt==1.14.1
 yarl==1.8.2
+
+psycopg2~=2.9.5

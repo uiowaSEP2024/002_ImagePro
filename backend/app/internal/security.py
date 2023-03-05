@@ -1,21 +1,17 @@
 from datetime import datetime
 from datetime import timedelta
-from typing import Optional
-
-from config import settings
 from jose import jwt
 
 
-def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
+def create_access_token(
+    data: dict, expires_minutes: float, secret: str, algorithm: str
+):
     to_encode = data.copy()
-    if expires_delta:
-        expire = datetime.utcnow() + expires_delta
-    else:
-        expire = datetime.utcnow() + timedelta(
-            minutes=settings.access_token_expire_minutes
-        )
-    to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(
-        to_encode, settings.secret_key, algorithm=settings.algorithm
-    )
+    expires_delta = timedelta(minutes=float(expires_minutes))
+
+    expire_time = datetime.utcnow() + expires_delta
+
+    to_encode.update({"exp": expire_time})
+
+    encoded_jwt = jwt.encode(to_encode, secret, algorithm=algorithm)
     return encoded_jwt
