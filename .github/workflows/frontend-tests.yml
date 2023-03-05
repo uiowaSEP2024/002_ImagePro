@@ -6,11 +6,13 @@ jobs:
     name: Frontend unit tests
     strategy:
       matrix:
+        os: ['ubuntu-latest', 'macos-latest', 'windows-latest']
         node-version: [ '12.x', '14.x', '16.x', '18.x' ]
-    runs-on: ubuntu-latest
+    runs-on: ${{matrix.os}}
     defaults:
       run:
-        working-directory: frontend/tests
+        working-directory: frontend
+        shell: bash
 
     steps:
       - name: Checkout
