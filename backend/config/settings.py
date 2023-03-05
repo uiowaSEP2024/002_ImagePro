@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     project_name: str = "team03"
     project_version: str = "0.0.1"
 
-    app_env: str
+    app_env: str = "development"
 
     postgres_user: Optional[str] = "postgres"
     postgres_password: Optional[str] = ""
@@ -21,7 +21,7 @@ class Settings(BaseSettings):
 
     algorithm: str = "HS256"
     access_token_expire_minutes: float = 60 * 3
-    secret_key: str
+    secret_key: str = "H3llo"
 
     @property
     def database_url(self) -> str:
@@ -33,6 +33,7 @@ class Settings(BaseSettings):
 
 class ProdSettings(Settings):
     app_env: str
+    secret_key: str
 
     class Config:
         env_file = root_path(".env"), root_path(".env.prod")
