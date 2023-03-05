@@ -4,7 +4,7 @@ on:
 jobs:
   execute_lint:
     name: Execute lint
-    specify:
+    strategy:
       matrix:
         node-version: [ '12.x', '14.x', '16.x', '18.x' ]
     runs-on: ubuntu-latest
