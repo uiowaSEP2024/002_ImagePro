@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: backend\tests
+        working-directory: backend/tests
 
     steps:
       - name: Checkout
