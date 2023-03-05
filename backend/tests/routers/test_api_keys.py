@@ -7,19 +7,17 @@ from app.dependencies import (
 
 
 def test_create_api_key(app_client, random_test_user):
-    data = {
-        "user_id": random_test_user.id,
-    }
+    data = {"username": random_test_user.email, "password": "abc"}
+    app_client.post("/login", data=data)
 
-    response = app_client.post("/api-keys/", json=data)
+    response = app_client.post("/api-keys/")
     assert response.status_code == 200
     assert response.json()["user_id"] == random_test_user.id
 
 
 def test_get_api_keys(app_client, random_test_user):
-    data = {
-        "user_id": random_test_user.id,
-    }
+    data = {"username": random_test_user.email, "password": "abc"}
+    app_client.post("/login", data=data)
 
     app_client.post("/api-keys/", json=data)
 
