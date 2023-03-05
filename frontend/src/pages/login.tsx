@@ -33,6 +33,7 @@ export default function Login() {
     })
       .then((response) => {
         if (response.status == 200) {
+          setNotificationMessage("Login successful. Redirecting...");
           router.push("/dashboard");
         }
       })
