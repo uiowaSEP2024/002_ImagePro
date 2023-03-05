@@ -2,7 +2,7 @@ from datetime import datetime
 from datetime import timedelta
 from typing import Optional
 
-from ..config import settings
+from config import settings
 from jose import jwt
 
 
