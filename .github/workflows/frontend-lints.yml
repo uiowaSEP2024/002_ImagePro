@@ -4,6 +4,9 @@ on:
 jobs:
   execute_lint:
     name: Execute lint
+    specify:
+      matrix:
+        node-version: [ '12.x', '14.x', '16.x', '18.x' ]
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -12,10 +15,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Set up node 18.x
+      - name: Set up node
         uses: actions/setup-node@v3
         with:
-          node-version: '18.x'
+          version: ${{ matrix.node-version }}
 
       - name: Install dependencies
         run: npm install
