@@ -39,11 +39,15 @@ class ProdSettings(Settings):
 
 
 class TestSettings(Settings):
+    app_env: str = "testing"
+
     class Config:
         env_file = root_path(".env.test")
 
 
 class LocalSettings(Settings):
+    app_env: str = "development"
+
     class Config:
         env_file = root_path(".env.local")
 
@@ -54,7 +58,8 @@ settings_dict = dict(
     development=LocalSettings, production=ProdSettings, test=TestSettings
 )
 
-settings_cls = settings_dict[APP_ENV.lower()]
+DEFAULT_ENVIRONMENT = "development"
+settings_cls = settings_dict.get(APP_ENV.lower(), DEFAULT_ENVIRONMENT)
 
 settings: Union[LocalSettings, Settings, TestSettings] = settings_cls()
 
