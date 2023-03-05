@@ -19,9 +19,9 @@ class Settings(BaseSettings):
     postgres_port: Optional[str] = 5432  # default postgres port is 5432
     postgres_db: Optional[str] = ""
 
-    algorithm: str = ""
+    algorithm: str = "HS256"
     access_token_expire_minutes: float = 60 * 3
-    secret_key: str = ""
+    secret_key: str
 
     @property
     def database_url(self) -> str:
