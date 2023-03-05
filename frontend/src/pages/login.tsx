@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 import {
   Card,
   Spacer,
@@ -19,29 +19,27 @@ export default function Login() {
 
   const [notificationMessage, setNotificationMessage] = useState("");
 
-
-  const sendSignUpReq = () => {
+  const sendLoginReq = () => {
     fetch("http://localhost:8000/login", {
-      credentials: 'include',
+      credentials: "include",
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
       },
       body: new URLSearchParams({
-        'username': email,
-        'password': password
+        username: email,
+        password: password,
+      }),
+    })
+      .then((response) => {
+        if (response.status == 200) {
+          router.push("/dashboard");
+        }
       })
-    })
-    .then((response) => {
-      if(response.status == 200){
-        router.push('/dashboard')
-      }
-    })
-    .catch((e) => {
-      console.log(e)
-    })
-  }
-
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   return (
     <div>
@@ -83,15 +81,17 @@ export default function Login() {
             size="lg"
             placeholder="Password"
             aria-label="Password"
-            css={{ mb: '6px' }}
+            css={{ mb: "6px" }}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           <Row justify="space-between">
-          <Link block color="secondary" href="/signup">New user? Create Account. </Link>
+            <Link block color="secondary" href="/signup">
+              New user? Create Account.{" "}
+            </Link>
           </Row>
           <Spacer y={1} />
-          <Button onPress={sendSignUpReq}>Log in</Button>
+          <Button onPress={sendLoginReq}>Log in</Button>
         </Card>
       </Container>
     </div>
