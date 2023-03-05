@@ -4,8 +4,8 @@ on:
 jobs:
   unit_tests:
     name: Backend unit tests
-    specify:
-      matrix:
+  strategy:
+    matrix:
         python-version: [ '3.8', '3.9', '3.10' ]
     runs-on: ubuntu-latest
     defaults:
