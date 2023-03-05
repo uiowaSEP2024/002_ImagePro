@@ -8,6 +8,7 @@ setup_app_settings("test")
 from app import services, schemas
 import pytest
 from app.models.base import truncate_all_tables
+
 from fastapi.testclient import TestClient
 
 

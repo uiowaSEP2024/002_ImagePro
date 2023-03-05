@@ -1,4 +1,9 @@
-from app.dependencies import get_db, get_user_from_api_key, API_KEY_HEADER_NAME
+from app.dependencies import (
+    get_db,
+    get_user_from_api_key,
+    API_KEY_HEADER_NAME,
+    get_current_user_from_token,
+)
 from app import schemas, services
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
@@ -11,16 +16,20 @@ router.tags = ["api-keys"]
 #   accessible by logged in user
 # create API Key
 @router.post("/api-keys", response_model=schemas.Apikey)
-def generate_api_key(body: schemas.ApiKeyCreateRequest, db: Session = Depends(get_db)):
-    return services.create_apikey_for_user(db, body.user_id)
+def generate_api_key(
+    user=Depends(get_current_user_from_token), db: Session = Depends(get_db)
+):
+    return services.create_apikey_for_user(db, user.id)
 
 
 # TODO: add current_user/authenticated_user dependency to ensure only
 #   accessible by logged in user
 # get all API keys for current user
 @router.get("/api-keys", response_model=list[schemas.Apikey])
-def read_apikeys(user_id: str, db: Session = Depends(get_db)):
-    return services.get_api_keys_for_user(db, int(user_id))
+def read_apikeys(
+    user=Depends(get_current_user_from_token), db: Session = Depends(get_db)
+):
+    return services.get_api_keys_for_user(db, user.id)
 
 
 @router.get(
