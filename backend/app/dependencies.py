@@ -25,6 +25,11 @@ def get_db():
 
 
 class OAuth2HttpCookieBearer(OAuth2):
+    """
+    Source: Adapted from FastAPI OAuth2PasswordBearer. Instead of getting authorization
+    string from request header, instead gets it from cookie's "access_token" field.
+    """
+
     def __init__(
         self,
         tokenUrl: str,
