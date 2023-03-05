@@ -8,6 +8,7 @@ jobs:
 
   backend_test:
     name: Backend tests
+    needs: backend_lint
     uses: ./.github/workflows/backend-tests.yml
 
   frontend_lint:
@@ -16,4 +17,5 @@ jobs:
 
   frontend_test:
     name: Frontend tests
+    needs: frontend_lint
     uses: ./.github/workflows/frontend-tests.yml
