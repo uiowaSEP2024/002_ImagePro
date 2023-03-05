@@ -10,7 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: frontend
+        working-directory: frontend\tests
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
