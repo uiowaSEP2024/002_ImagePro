@@ -1,6 +1,6 @@
 name: Continuous integration workflow
 on:
-  workflow_dispatch:
+  push:
 jobs:
   backend_lint:
     name: Backend lints

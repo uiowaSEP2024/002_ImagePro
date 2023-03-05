@@ -4,18 +4,21 @@ on:
 jobs:
   execute_black:
     name: Execute black
+    specify:
+      matrix:
+        python-version: ['3.8', '3.9', '3.10']
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: frontend
+        working-directory: backend
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Set up Python 3.9
+      - name: Set up Python
         uses: actions/setup-python@v3
         with:
-          python-version: '3.9'
+          version: ${{ matrix.python-version}}
 
       - name: Install python dependencies
         run: |
