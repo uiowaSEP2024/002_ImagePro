@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     project_name: str = "team03"
     project_version: str = "0.0.1"
 
-    environment: str
+    app_env: str
 
     postgres_user: Optional[str] = "postgres"
     postgres_password: Optional[str] = ""
@@ -32,7 +32,7 @@ class Settings(BaseSettings):
 
 
 class ProdSettings(Settings):
-    environment: str
+    app_env: str
 
     class Config:
         env_file = root_path(".env"), root_path(".env.prod")
@@ -48,14 +48,14 @@ class LocalSettings(Settings):
         env_file = root_path(".env.local")
 
 
-ENVIRONMENT = os.environ.get("ENVIRONMENT", "development")
+APP_ENV = os.environ.get("APP_ENV", "development")
 
 settings_dict = dict(
     development=LocalSettings, production=ProdSettings, test=TestSettings
 )
 
-settings_cls = settings_dict[ENVIRONMENT.lower()]
+settings_cls = settings_dict[APP_ENV.lower()]
 
 settings: Union[LocalSettings, Settings, TestSettings] = settings_cls()
 
-print(f"Running in environment: {settings.environment}")
+print(f"Running in app_env: {settings.app_env}")
