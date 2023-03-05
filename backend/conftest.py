@@ -1,6 +1,7 @@
 import pytest
 from app.main import app
 from app.models.base import truncate_all_tables
+
 from fastapi.testclient import TestClient
 
 

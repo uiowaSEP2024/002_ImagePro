@@ -14,7 +14,7 @@ from app.services.users import authenticate_user, get_user_email
 from fastapi import HTTPException
 from fastapi import status
 from jose import jwt
-from ..config import settings
+from config import settings
 from jose import JWTError
 from fastapi.responses import JSONResponse
 
@@ -46,7 +46,7 @@ def login_for_access_token(
         return {"access_token": access_token, "token_type": "bearer"}
     except:
         print("Server Error")
-       
+        # return {"access_token": "", "token_type": ""}
     # response.status_code = 200
     # response.body = {"access_token": access_token, "token_type": "bearer"}
     # return response
