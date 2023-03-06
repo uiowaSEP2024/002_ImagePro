@@ -11,13 +11,17 @@ class Settings(BaseSettings):
     project_name: str = "team03"
     project_version: str = "0.0.1"
 
-    environment: str
+    app_env: str = "development"
 
     postgres_user: Optional[str] = "postgres"
     postgres_password: Optional[str] = ""
     postgres_server: Optional[str] = "localhost"
     postgres_port: Optional[str] = 5432  # default postgres port is 5432
     postgres_db: Optional[str] = ""
+
+    algorithm: str = "HS256"
+    access_token_expire_minutes: float = 60 * 3
+    secret_key: str = "H3llo"
 
     @property
     def database_url(self) -> str:
@@ -28,30 +32,36 @@ class Settings(BaseSettings):
 
 
 class ProdSettings(Settings):
-    environment: str
+    app_env: str
+    secret_key: str
 
     class Config:
         env_file = root_path(".env"), root_path(".env.prod")
 
 
 class TestSettings(Settings):
+    app_env: str = "testing"
+
     class Config:
         env_file = root_path(".env.test")
 
 
 class LocalSettings(Settings):
+    app_env: str = "development"
+
     class Config:
         env_file = root_path(".env.local")
 
 
-ENVIRONMENT = os.environ.get("ENVIRONMENT", "development")
+APP_ENV = os.environ.get("APP_ENV", "development")
 
 settings_dict = dict(
     development=LocalSettings, production=ProdSettings, test=TestSettings
 )
 
-settings_cls = settings_dict[ENVIRONMENT.lower()]
+DEFAULT_ENVIRONMENT = "development"
+settings_cls = settings_dict.get(APP_ENV.lower(), DEFAULT_ENVIRONMENT)
 
 settings: Union[LocalSettings, Settings, TestSettings] = settings_cls()
 
-print(f"Running in environment: {settings.environment}")
+print(f"Running in app_env: {settings.app_env}")
