@@ -32,6 +32,7 @@ isort==5.12.0
 lazy-object-proxy==1.9.0
 Mako==1.2.4
 mando==0.6.4
+mangum==0.17.0
 MarkupSafe==2.1.2
 mccabe==0.7.0
 multidict==6.0.4
@@ -43,7 +44,7 @@ pathspec==0.11.0
 pipdeptree==2.5.0
 platformdirs==3.0.0
 pluggy==1.0.0
-psycopg2-binary==2.9.5
+psycopg2~=2.9.5
 pyasn1==0.4.8
 pycodestyle==2.10.0
 pydantic==1.10.5
@@ -76,5 +77,3 @@ watchfiles==0.18.1
 websockets==10.4
 wrapt==1.14.1
 yarl==1.8.2
-
-psycopg2~=2.9.5
