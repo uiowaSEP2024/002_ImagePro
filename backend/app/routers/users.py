@@ -10,8 +10,7 @@ router.tags = ["users"]
 
 @router.post("/users/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    data = services.create_user(db=db, user=user)
-    return data
+    return services.create_user(db=db, user=user)
 
 
 @router.get("/users/{user_id}", response_model=schemas.User)
