@@ -16,4 +16,6 @@ __pycache__
 *.env
 .env.*
 
+#ignores coverage
 .coverage
+coverage.xml
