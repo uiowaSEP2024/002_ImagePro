@@ -63,7 +63,7 @@ jobs:
           alembic upgrade head
           pytest --cov-report "xml:coverage.xml" --cov=tests/
 
-      - name: Pytest coverage comment
-        uses: MishaKav/pytest-coverage-comment@main
-        with:
-          pytest-xml-coverage-path: backend/coverage.xml
+#      - name: Pytest coverage comment
+#        uses: MishaKav/pytest-coverage-comment@main
+#        with:
+#          pytest-xml-coverage-path: backend/coverage.xml
