@@ -1,6 +1,12 @@
 name: backend test workflow
 on:
   workflow_call:
+env:
+  POSTGRES_USER: postgres
+  POSTGRES_SERVER: localhost
+  POSTGRES_PORT: 5432
+  POSTGRES_DB: db_dev
+  POSTGRES_PASSWORD: postgres
 jobs:
   unit_tests:
     name: Backend unit tests
@@ -44,13 +50,7 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: Database Setup
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_SERVER: localhost
-          POSTGRES_PORT: 5432
-          POSTGRES_DB: db_dev
-          POSTGRES_PASSWORD: postgres
+      - name: Database setup and build coverage file
         run: |
           touch .env.local
           echo POSTGRES_USER="$POSTGRES_USER" >> .env.local
@@ -61,9 +61,6 @@ jobs:
           python tasks.py db:dev:reset
           python tasks.py db:dev:upgrade
           alembic upgrade head
-
-      - name: Build coverage file
-        run: |
           pytest tests --cov-report "xml:coverage.xml" --cov=src tests/
 
       - name: Pytest coverage comment
