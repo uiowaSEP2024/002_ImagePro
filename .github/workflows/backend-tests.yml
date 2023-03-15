@@ -50,7 +50,7 @@ jobs:
           POSTGRES_SERVER: localhost
           POSTGRES_PORT: 5432
           POSTGRES_DB: db_dev
-          POSTGRES_PASSWORD:
+          POSTGRES_PASSWORD: postgres
         run: |
           touch .env.local
           echo POSTGRES_USER="$POSTGRES_USER" >> .env.local
