@@ -5,7 +5,7 @@ env:
   POSTGRES_USER: postgres
   POSTGRES_SERVER: localhost
   POSTGRES_PORT: 5432
-  POSTGRES_DB: db_dev
+  POSTGRES_DB: db_test
   POSTGRES_PASSWORD: postgres
 jobs:
   unit_tests:
@@ -52,18 +52,20 @@ jobs:
 
       - name: Database setup and build coverage file
         run: |
-          touch .env.local
-          echo POSTGRES_USER="$POSTGRES_USER" >> .env.local
-          echo POSTGRES_SERVER="$POSTGRES_SERVER" >> .env.local
-          echo POSTGRES_PORT="$POSTGRES_PORT" >> .env.local
-          echo POSTGRES_DB="$POSTGRES_DB" >> .env.local
-          echo POSTGRES_PASSWORD="$POSTGRES_PASSWORD" >> .env.local
-          python tasks.py db:dev:reset
-          python tasks.py db:dev:upgrade
+          touch .env.test
+          echo POSTGRES_USER="$POSTGRES_USER" >> .env.test
+          echo POSTGRES_SERVER="$POSTGRES_SERVER" >> .env.test
+          echo POSTGRES_PORT="$POSTGRES_PORT" >> .env.test
+          echo POSTGRES_DB="$POSTGRES_DB" >> .env.test
+          echo POSTGRES_PASSWORD="$POSTGRES_PASSWORD" >> .env.test
+          python tasks.py db:test:reset
+          python tasks.py db:test:upgrade
           alembic upgrade head
-          pytest tests --cov-report "xml:coverage.xml" --cov=src tests/
+          bash run-test.sh
 
-      - name: Pytest coverage comment
-        uses: MishaKav/pytest-coverage-comment@main
-        with:
-          pytest-xml-coverage-path: ./coverage.xml
+#          pytest tests --cov-report "xml:coverage.xml" --cov=src tests/
+#
+#      - name: Pytest coverage comment
+#        uses: MishaKav/pytest-coverage-comment@main
+#        with:
+#          pytest-xml-coverage-path: ./coverage.xml
