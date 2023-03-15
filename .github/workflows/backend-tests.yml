@@ -7,7 +7,7 @@ jobs:
     strategy:
       matrix:
         os: ['ubuntu-latest']
-        python-version: [ '3.8', '3.9', '3.10' ]
+        version: [ '3.8', '3.9', '3.10' ]
     runs-on: ${{matrix.os}}
     defaults:
       run:
@@ -38,12 +38,12 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
-          version: ${{ matrix.python-version }}
+          python-version: ${{ matrix.version }}
           cache: 'pip'
 
       - name: Install python dependencies
         run: |
-          pip install -r requirements.txt; fi
+          pip install -r requirements.txt
 
       - name: Database Setup
         env:
