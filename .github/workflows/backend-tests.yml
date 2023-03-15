@@ -10,6 +10,7 @@ env:
 jobs:
   unit_tests:
     name: Backend unit tests
+    permissions: read-all|write-all
     strategy:
       matrix:
         os: ['ubuntu-latest']
