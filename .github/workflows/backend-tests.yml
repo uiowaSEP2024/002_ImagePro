@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         os: ['ubuntu-latest']
-        version: [ '3.8', '3.9', '3.10' ]
+        version: ['3.9', '3.10' ]
     runs-on: ${{matrix.os}}
     defaults:
       run:
@@ -61,11 +61,9 @@ jobs:
           python tasks.py db:test:reset
           python tasks.py db:test:upgrade
           alembic upgrade head
-          bash run-test.sh
+          pytest tests --cov-report "xml:coverage.xml" --cov=src tests/
 
-#          pytest tests --cov-report "xml:coverage.xml" --cov=src tests/
-#
-#      - name: Pytest coverage comment
-#        uses: MishaKav/pytest-coverage-comment@main
-#        with:
-#          pytest-xml-coverage-path: ./coverage.xml
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-xml-coverage-path: ./coverage.xml
