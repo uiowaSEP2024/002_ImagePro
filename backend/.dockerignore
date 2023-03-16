@@ -1,0 +1,9 @@
+tests
+pg_data
+venv
+.pytest_cache
+.gitignore
+conftest.py
+.env
+.env.local
+.env.test

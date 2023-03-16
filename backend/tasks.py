@@ -85,7 +85,7 @@ def db_test_drop():
 
 
 def db_dev_drop():
-    drop_db("db_dev", "test")
+    drop_db("db_dev", "development")
 
 
 def db_test_create():
