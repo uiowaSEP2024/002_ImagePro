@@ -17,3 +17,7 @@ __pycache__
 .env.*
 
 .coverage
+
+pg_data
+
+scratch.sh
