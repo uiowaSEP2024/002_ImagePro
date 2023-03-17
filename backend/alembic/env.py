@@ -47,8 +47,6 @@ def run_migrations_offline() -> None:
     """
     # Use URL from config
     url = settings.database_url
-    print("hiiii")
-    print(url)
     context.configure(
         url=url,
         target_metadata=target_metadata,
