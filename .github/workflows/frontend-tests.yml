@@ -44,5 +44,5 @@ jobs:
           hide-summary: false
           junitxml-title: Junit Summary
           junitxml-path: frontend/coverage/junit.xml
-          coverage-title: My Coverage Title
+          coverage-title: Coverage Report
           coverage-path: frontend/coverage.txt
