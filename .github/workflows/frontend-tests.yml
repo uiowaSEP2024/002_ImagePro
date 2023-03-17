@@ -43,6 +43,6 @@ jobs:
           create-new-comment: false
           hide-summary: false
           junitxml-title: Junit Summary
-          junitxml-path: frontend/coverage/junit.xml
+          junitxml-path: frontend/junit.xml
           coverage-title: Coverage Report
           coverage-path: frontend/coverage.txt
