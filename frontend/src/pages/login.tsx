@@ -11,11 +11,13 @@ import {
   Link,
   Container,
 } from "@nextui-org/react";
+import useCookie from "src/components/useCookie";
 
 export default function Login() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [cookie, updateCookie] = useCookie("email", "");
 
   const [notificationMessage, setNotificationMessage] = useState("");
 
@@ -92,7 +94,7 @@ export default function Login() {
             </Link>
           </Row>
           <Spacer y={1} />
-          <Button onPress={sendLoginReq}>Log in</Button>
+          <Button onPress={sendLoginReq} onClick={() => {updateCookie(email, 10);}}>Log in</Button>
         </Card>
       </Container>
     </div>
