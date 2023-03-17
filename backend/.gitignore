@@ -19,3 +19,7 @@ __pycache__
 #ignores coverage
 .coverage
 coverage.xml
+
+pg_data
+
+scratch.sh
