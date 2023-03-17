@@ -10,7 +10,8 @@
     "lint:fix": "next lint --fix",
     "test": "jest",
     "test:watch": "jest --watch",
-    "ci-test": "jest --ci",
+    "json-summary": "jest --coverage --coverageReporters json-summary",
+    "coverage-report":"jest --coverage --reporters=default --reporters=jest-junit | tee ./coverage.txt && exit ${PIPESTATUS[0]}",
     "snapshot:update": "jest --updateSnapshot"
   },
   "dependencies": {
@@ -21,6 +22,7 @@
     "@types/react-dom": "18.0.11",
     "eslint-config-next": "13.1.6",
     "eslint-plugin-unused-imports": "^2.0.0",
+    "jest-junit": "^15.0.0",
     "next": "13.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0"

@@ -27,5 +27,22 @@ jobs:
         run: npm install
 
       - name: test with jest
-        run: npm run ci-test
+        run: |
+          npm run json-summary
+          npm run coverage-report
+        
 
+      - name: Jest Coverage Comment
+        uses: MishaKav/jest-coverage-comment@main
+        with:
+          coverage-summary-path: frontend/coverage/coverage-summary.json
+          title: Jest Coverage
+          summary-title: Summary
+          badge-title: Coverage
+          hide-comment: false
+          create-new-comment: false
+          hide-summary: false
+          junitxml-title: Junit Summary
+          junitxml-path: frontend/coverage/junit.xml
+          coverage-title: My Coverage Title
+          coverage-path: frontend/coverage.txt
