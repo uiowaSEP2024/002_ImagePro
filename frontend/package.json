@@ -11,7 +11,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "json-summary": "jest --coverage --coverageReporters json-summary",
-    "coverage-report":"jest --coverage --reporters=default --reporters=jest-junit | tee frontend/coverage.txt && exit ${PIPESTATUS[0]}",
+    "coverage-report":"jest --coverage --reporters=default --reporters=jest-junit | tee ./coverage.txt && exit $(PIPESTATUS[0])",
     "snapshot:update": "jest --updateSnapshot"
   },
   "dependencies": {
