@@ -58,6 +58,10 @@
     "production": {
       "AppEnv": "production",
       "ApiGatewayStage": "prod"
+    },
+    "test": {
+      "AppEnv": "test",
+      "ApiGatewayStage": "test"
     }
   }
 }
