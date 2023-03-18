@@ -14,7 +14,8 @@ class CdkInfraStack(cdk.Stack):
 
         # The code that defines your stack goes here
 
-        function_name = "Team8CDKFunction" + "-" + build_config.AppEnv
+        function_name = "Team8CDKFunction" + build_config.AppEnv.capitalize()
+
         team8_lambda = aws_lambda.Function(
             self,
             function_name,
