@@ -21,3 +21,5 @@ __pycache__
 pg_data
 
 scratch.sh
+
+event.json
