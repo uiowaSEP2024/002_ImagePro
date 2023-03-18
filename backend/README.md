@@ -2,58 +2,88 @@
 This is the backend project for Team03's SEP project.
 
 
-# Get Started
+# Getting Started
+1. Make sure you have Python installed (preferably v3.10), which you can download from [here](https://www.python.org/downloads/)
+2. Before starting the application, make sure to create a virtual environment for the project:
+   ```bash
+   python -m venv .venv 
+   ```
+3. Next, activate the virtual environment. **NB: You will have to do this step every time you start/open a fresh terminal**
+   ```bash
+   source venv/bin/activate
+   ```
+   > If you are working in PyCharm, steps 2 and 3 should be performed automatically for you.
 
-Before starting the application, make sure to start a Virtual Environment for your project by using the command:
+4. Once the virtual environment is started, make sure to install all requirements required for the project:
+   ```bash
+   pip install -r requirements.txt
+   ```
+   
+5. Create a file called .env.local, and then copy and paste the contents from .env.example file
+   into it, replacing with your own values as appropriate.
 
+6. Finally, to start the application, run the following script:
+   ```bash
+   bash run-dev.sh
+   ```
+
+# Application Environments
+The environment that the application runs in determines the application's configuration,
+including secrets, the database's URL and more.
+
+When starting the application, or running other application commands
+you will need to provide an appropriate `APP_ENV`, so the application
+loads environment variables from corresponding environment variables files.
+
+This table outlines the different application environments, and where environment variables for that environment
+are loaded from:
+
+| Environment   | Environment Variables File |
+|:--------------|:---------------------------|
+| `production`  | .env, .env.prod            |
+| `development` | .env.local                 |
+| `test`        | .env.test                  |
+
+> NB: If you don't provide an environment variable, the app will fail to start.
+
+> NB: For security reasons, a `SECRET_KEY` is also required when `APP_ENV` is production.
+> For the simple scenario of generating something such as a migration, you may set this to
+> any string locally inside your .env or .env.prod. The real SECRET_KEY would be configured securely
+> from an AWS console.
+
+# Working with Database Migrations
+Here are some scripts for working with migrations. For all the following commands,
+using we are setting `APP_ENV` to some environment (namely: `development`, `production`, or `test`).
+
+### Auto-generating a Migration
 ```bash
-source venv/bin/activate
+APP_ENV=<environment> alembic revision --autogenerate -m "migration_name"
+```
+> NB: In general we want to auto-generate migrations against the state of the
+> production database, as the source of truth for the state of the application's database.
+
+### Running Migrations
+Use the following command to apply all migrations to the database in the targeted environment
+```bash
+APP_ENV=<environment> alembic upgrade head
+```
+In the above, `head` is a 'revision', and can be swapped for a specific revision id
+or be relative, such a `+1` for upgrading to the next revision.
+
+### Reset Migrations
+Use the following script to revert migrations
+```bash
+APP_ENV=<environment> alembic downgrade base
 ```
 
-Once the Venv is fired up, make sure to install all requirements required for the project:
+In the above, `base` is a 'revision' is the very first revision. 
+It can be replaced with a specific revision id
+or be relative, such a `-1` for downgrading to the last revision.
 
-```bash
-pip install -r requirements.txt
-```
+> NB: In general, we do not want to run this command targeted against the production
+> environment (that is, the production database).
 
-To start the application, run:
-
-```bash
-bash run-dev.sh
-```
-
-OR
-
-```bash
-uvicorn app.main:app --reload
-```
-
-
-# Running Migrations
-Here are some scripts for working with migrations:
-
-**Autogenerate a new migration**
-```bash
-alembic revision --autogenerate -m "<migration_name>"
-```
-
-**Apply all migrations**
-```bash
-alembic upgrade head
-```
-
-**Reset all migrations**
-
-```bash
-alembic downgrade base
-```
-
-**Reset last migration**
-```bash
-alembic downgrade -1
-```
-
-# Run Tests
+# Testing
 To execute tests, run:
 
 (With test coverage)
@@ -67,95 +97,58 @@ OR
 pytest
 ```
 
-# Deployment (⚠️ In Progress)
-The backend for this project can be deployed to AWS Lambda service with the
-following step:
+> NB: The file, `conftest.py` is `pytest`'s entrypoint to running tests
+> and has logic to automatically configure the application to run in the `test` environment.
+
+# Deployment 
+For deployment instructions to AWS, see `cdk-infra` project!
+
+However, for simulating a deployment locally you can follow the follow these
+steps to spin up the application in a Docker container.
+
+There are two ways to start the application: 
+1. Manually Using Docker 
+2. Using Docker Compose (which automatically also spins up a Postgres Database in another Docker container)
+
+### Manually Using Docker
 
 1. Build the docker image
     ```bash
-   docker build --build-arg APP_ENV=production -t team8-backend .    
+   docker build --build-arg APP_ENV=development -t team8-backend .    
    ```
-2. Authenticate local docker CLI to AWS Elastic Container Registry
-    ```bash
-   aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <aws-account-id>.dkr.ecr.us-east-1.amazonaws.com
-    ```
-3. Create a repository on AWS ECR
-    ```bash
-   aws ecr create-repository --repository-name team8backend --image-scanning-configuration scanOnPush=true --image-tag-mutability MUTABLE
-    ```
-4. Tag the locally created image (from step 1), to match the ECR repository name
-    ```bash
-   docker tag  team8-backend:latest <aws-account-id>.dkr.ecr.us-east-1.amazonaws.com/team8-backend:latest
-    ```
-5. Push the tagged container to the ECR repository
-    ```bash
-   docker push <aws-account-id>.dkr.ecr.us-east-1.amazonaws.com/team8-backend:latest
-   ```
-
-
-
-Once the docker image has been deployed to AWS Lambda, we need to also set up an AWS API Gateway
-trigger for the Lambda function. To do so, we use the following commands. [source](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-awscli.html):
-
-1. Go to the AWS ECR dashboard and identify the container you have just deployed. It should have a 'latest' tag
-2. Copy the URI of the image
-3. Create a role for the lambda function we will be deploying (if it does not exist already)
+2. Run the docker image
    ```bash
-   aws iam create-role --role-name lambda-ex \
-   --assume-role-policy-document '{"Version": "2012-10-17","Statement": [{ "Effect": "Allow", "Principal": {"Service": "lambda.amazonaws.com"}, "Action": "sts:AssumeRole"}]}'
+   docker run --env-file .env.local -e APP_ENV=development -p 9000:8080 team8-backend
    ```
-4. Attach permissions to the created role, to allow the function to write logs to CloudWatch (if it does not exist already)
-   ```bash
-   aws iam attach-role-policy --role-name lambda-ex --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-   ```
-5. Create the lambda function (if it does not exist already)
-   ```bash
-   aws lambda create-function --region sa-east-1 --function-name Team8Function \
-    --package-type Image  \
-    --code ImageUri=<aws-account-id>.dkr.ecr.us-east-1.amazonaws.com/team8-backend:latest   \
-    --role arn:aws:iam::<aws-account-id>:role/lambda-ex 
-   ```
+3. Now you may interact with the running container by making a cURL request with
+   an API Gateway event payload such as in the `event.json` file.
+
+   Modify the `resources` and `path` keys to target different endpoints of the application.
    
-Once your function is created, you will need to create an API Gateway that will trigger the lambda when it receives a
-request over the browser. For doing so follow the following commands:
-
-1. Create the RESt API (if it does not exist yet)
-   ```bash
-   aws apigateway create-rest-api --name 'Team8RestApi' --description 'The Team 8 REST API'
-   ```
-2. Get the ID of the newly created rest-api
-   ```bash
-   aws apigateway get-rest-apis --query '(items[?name==`Team8RestApi`].id)[0]'
-   ```
+   Once you have edited the `event.json` to suite the request you would like to make, use the following command to issue
+   the request to the running container:
    
-3. Get the root resource id
    ```bash
-   aws apigateway get-resources --rest-api-id <the-rest-api-id> --query '(items[?path==`/`])[0].id'
+   curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d @event.json
    ```
-   
-4. Create an ANY HTTP Method on the REST API (if it does not exist yet)
-   ```bash
-   aws apigateway put-method --rest-api-id <the-rest-api-id> \
-     --resource-id <the-root-resource-id> \
-     --http-method ANY \
-     --authorization-type "NONE" \
-     --no-api-key-required 
-   ```
+ 
+> Note: The above instructions have been adapted from AWS documentation [here](https://docs.aws.amazon.com/lambda/latest/dg/images-create.html). See "Creating images from AWS base images" section.  
 
-5. Create the Lambda Integration on the API Gateway (if it does not exist yet)
-   ```bash
-   aws apigateway put-integration --rest-api-id <the-rest-api-id> \
-   --resource-id <the-resource-id> --http-method ANY --type AWS \
-   --integration-http-method POST \
-   --uri 'arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:<the-aws-account-id>:function:<the-lambda-function-name>/invocations'
-   ```
+> Note: In this approach, you are responsible for making sure that you have a database up and running
+> for the application to use.
 
-6. Create the method response for the ANY method on the root resource
+### Using Docker Compose
+1. Build the docker images for the application and database using
    ```bash
-   aws apigateway put-method-response --rest-api-id <the-rest-api-id> \
-     --resource-id <the-root-resource-id> --http-method ANY \
-     --status-code 200 \
-     --response-models "application/json=Empty"
+   docker compose build
    ```
-   
-// TODO: create stage and then create deployment at the end of the entire process
+2. Start containers for both the application and database using
+   ```bash
+   docker compose up
+   ```
+3. Finally, you can make requests similar to the above in Step 3 with `curl` or using an HTTP client such as Postman or Insomnia.
+
+> NB: This approach is currently only configured for the 'development' environment. The database contents are
+> persisted in a `pg_data` file within the same directory, so that data placed in the development environment
+> during local development remains after the container is destroyed.
+> If you want to start with a fresh database, you can delete `pg_data` directory.
