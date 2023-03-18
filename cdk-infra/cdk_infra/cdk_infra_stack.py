@@ -9,7 +9,13 @@ from models import BuildConfig
 
 
 class CdkInfraStack(cdk.Stack):
-    def __init__(self, scope: cdk.App, construct_id: str, build_config: BuildConfig = None, **kwargs) -> None:
+    def __init__(
+        self,
+        scope: cdk.App,
+        construct_id: str,
+        build_config: BuildConfig = None,
+        **kwargs
+    ) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
         # The code that defines your stack goes here
@@ -22,17 +28,15 @@ class CdkInfraStack(cdk.Stack):
             function_name=function_name,
             handler=aws_lambda.Handler.FROM_IMAGE,
             runtime=aws_lambda.Runtime.FROM_IMAGE,
-            code=aws_lambda.Code.from_asset_image(
-                directory="../backend"
-            ),
+            code=aws_lambda.Code.from_asset_image(directory="../backend"),
             timeout=cdk.Duration.seconds(15),
             environment={
                 "APP_ENV": build_config.AppEnv,
                 "POSTGRES_DB": build_config.PostgresDbName,
                 "POSTGRES_USER": build_config.PostgresUser,
                 "POSTGRES_PORT": str(build_config.PostgresPort),
-                "ALGORITHM": build_config.JwtAlgorithm
-            }
+                "ALGORITHM": build_config.JwtAlgorithm,
+            },
         )
 
         team8_rest_api = aws_apigateway.LambdaRestApi(
@@ -41,5 +45,7 @@ class CdkInfraStack(cdk.Stack):
             rest_api_name="Team8CDKRestApi",
             handler=team8_lambda,
             proxy=True,
-            deploy_options=aws_apigateway.StageOptions(stage_name=build_config.ApiGatewayStage)
+            deploy_options=aws_apigateway.StageOptions(
+                stage_name=build_config.ApiGatewayStage
+            ),
         )
