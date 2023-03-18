@@ -18,13 +18,12 @@ class CdkInfraStack(cdk.Stack):
     ) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        # The code that defines your stack goes here
-
-        function_name = "Team8CDKFunction" + build_config.AppEnv.capitalize()
+        function_name = "Team8CDKFunction" + "-" + build_config.AppEnv
+        cdk_function_name = "Team8CDKFunction" + build_config.AppEnv.capitalize()
 
         team8_lambda = aws_lambda.Function(
             self,
-            function_name,
+            cdk_function_name,
             function_name=function_name,
             handler=aws_lambda.Handler.FROM_IMAGE,
             runtime=aws_lambda.Runtime.FROM_IMAGE,
@@ -39,13 +38,15 @@ class CdkInfraStack(cdk.Stack):
             },
         )
 
+        team8_rest_api_deployment_stage = aws_apigateway.StageOptions(
+            stage_name=build_config.ApiGatewayStage
+        )
+
         team8_rest_api = aws_apigateway.LambdaRestApi(
             self,
             "Team8CDKRestApi",
             rest_api_name="Team8CDKRestApi",
             handler=team8_lambda,
             proxy=True,
-            deploy_options=aws_apigateway.StageOptions(
-                stage_name=build_config.ApiGatewayStage
-            ),
+            deploy_options=team8_rest_api_deployment_stage,
         )

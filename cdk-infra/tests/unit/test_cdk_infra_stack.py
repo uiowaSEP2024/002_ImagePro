@@ -22,7 +22,7 @@ def test_stack_created():
     template.has_resource_properties(
         "AWS::Lambda::Function",
         {
-            "FunctionName": "Team8CDKFunctionTest",
+            "FunctionName": "Team8CDKFunction-test",
             "PackageType": "Image",
             "Environment": {"Variables": {"APP_ENV": "test"}},
         },
