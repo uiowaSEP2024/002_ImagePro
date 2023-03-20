@@ -1,0 +1,48 @@
+name: frontend tests workflow
+on:
+  workflow_call:
+jobs:
+  unit_tests:
+    name: Frontend unit tests
+    strategy:
+      matrix:
+        os: ['ubuntu-latest']
+        version: [ '14.x', '16.x', '18.x' ]
+    runs-on: ${{matrix.os}}
+    defaults:
+      run:
+        working-directory: frontend
+        shell: bash
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up node
+        uses: actions/setup-node@v3
+        with:
+           node-version: ${{ matrix.version }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: test with jest
+        run: |
+          npm run json-summary
+          npm run coverage-report
+        
+
+      - name: Jest Coverage Comment
+        uses: MishaKav/jest-coverage-comment@main
+        with:
+          coverage-summary-path: frontend/coverage/coverage-summary.json
+          title: Jest Coverage
+          summary-title: Summary
+          badge-title: Coverage
+          hide-comment: false
+          create-new-comment: false
+          hide-summary: false
+          junitxml-title: Junit Summary
+          junitxml-path: frontend/junit.xml
+          coverage-title: Coverage Report
+          coverage-path: frontend/coverage.txt
