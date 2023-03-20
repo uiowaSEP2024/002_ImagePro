@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional
 
 from pydantic import BaseSettings
 
@@ -32,7 +32,7 @@ class Settings(BaseSettings):
 
 
 class ProdSettings(Settings):
-    app_env: str
+    app_env: str = "production"
     secret_key: str
 
     class Config:
@@ -53,15 +53,25 @@ class LocalSettings(Settings):
         env_file = root_path(".env.local")
 
 
-APP_ENV = os.environ.get("APP_ENV", "development")
-
 settings_dict = dict(
     development=LocalSettings, production=ProdSettings, test=TestSettings
 )
 
-DEFAULT_ENVIRONMENT = "development"
-settings_cls = settings_dict.get(APP_ENV.lower(), DEFAULT_ENVIRONMENT)
+APP_ENV = os.environ.get("APP_ENV")
 
-settings: Union[LocalSettings, Settings, TestSettings] = settings_cls()
+# Load settings corresponding to the APP_ENV
+settings_cls = settings_dict.get(APP_ENV.lower())
 
+if not settings_cls:
+    valid_keys = " | ".join(settings_dict.keys())
+    raise EnvironmentError(
+        f"Invalid value for APP_ENV environment variable. Expected any of: {valid_keys} \n"
+        f"If running command from a shell, run the command as follows:\n"
+        f"\tAPP_ENV=<environment> <command>\n"
+        f"Alternatively, if running via AWS Lambda, set the APP_ENV at\n"
+        f"\tConfiguration->Environment variables->Edit"
+    )
+
+# Initialize application settings
+settings = settings_cls()
 print(f"Running in app_env: {settings.app_env}")
