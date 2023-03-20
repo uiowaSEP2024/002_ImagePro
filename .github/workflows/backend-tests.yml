@@ -7,6 +7,7 @@ env:
   POSTGRES_PORT: 5432
   POSTGRES_DB: db_test
   POSTGRES_PASSWORD: postgres
+  APP_ENV: 'test'
 jobs:
   unit_tests:
     name: Backend unit tests
@@ -58,6 +59,7 @@ jobs:
           echo POSTGRES_PORT="$POSTGRES_PORT" >> .env.test
           echo POSTGRES_DB="$POSTGRES_DB" >> .env.test
           echo POSTGRES_PASSWORD="$POSTGRES_PASSWORD" >> .env.test
+          echo APP_ENV="$APP_ENV">> .env.test 
           python tasks.py db:test:reset
           python tasks.py db:test:upgrade
           alembic upgrade head
