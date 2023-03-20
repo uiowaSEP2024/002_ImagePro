@@ -1,0 +1,41 @@
+name: Backend lint workflow
+on:
+  workflow_call:
+jobs:
+  execute_black:
+    name: Execute black
+    strategy:
+      matrix:
+        os: ['ubuntu-latest']
+        version: ['3.9', '3.10']
+    runs-on: ${{matrix.os}}
+    defaults:
+      run:
+        working-directory: backend
+        shell: bash
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install python dependencies
+        run: | 
+          pip install -r requirements.txt
+
+      - name: Execute black
+        run: black --check .
+
+  shellcheck:
+    name: Shellcheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
