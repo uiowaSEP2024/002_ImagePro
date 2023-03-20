@@ -57,19 +57,25 @@ class OAuth2HttpCookieBearer(OAuth2):
         )
 
     async def __call__(self, request: Request) -> Optional[str]:
+        # print("Cookies: ", request.cookies)
         authorization = request.cookies.get("access_token")
         scheme, param = get_authorization_scheme_param(authorization)
+        # print("Auth:", authorization)
 
         if not authorization or scheme.lower() != "bearer":
             if self.auto_error:
+                # print("Not Auth")
                 raise HTTPException(
                     status_code=HTTP_401_UNAUTHORIZED,
                     detail="Not authenticated",
                     headers={"WWW-Authenticate": "Bearer"},
+                    # print("Not Auth")
                 )
             else:
                 return None
         return param
+
+        
 
 
 oauth2_http_cookie_bearer_scheme = OAuth2HttpCookieBearer(tokenUrl="login")
