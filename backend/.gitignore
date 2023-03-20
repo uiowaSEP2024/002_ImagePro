@@ -16,10 +16,13 @@ __pycache__
 *.env
 .env.*
 
+#ignores coverage
 .coverage
+coverage.xml
 
 pg_data
 
 scratch.sh
 
 event.json
+
