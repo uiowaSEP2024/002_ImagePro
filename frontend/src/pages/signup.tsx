@@ -12,6 +12,8 @@ import {
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
+  const [first_name, setFirstName] = useState("");
+  const [last_name, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -31,6 +33,8 @@ export default function SignUp() {
       body: JSON.stringify({
         email: email,
         password: password,
+        first_name: first_name,
+        last_name: last_name
       }),
     })
       .then((response) => response.json())
@@ -72,6 +76,8 @@ export default function SignUp() {
             size="lg"
             placeholder="First Name"
             aria-label="First Name"
+            value={first_name}
+            onChange={(e) => setFirstName(e.target.value)}
           />
           <Spacer y={1} />
           <Input
@@ -82,6 +88,8 @@ export default function SignUp() {
             size="lg"
             placeholder="Last Name"
             aria-label="Last Name"
+            value={last_name}
+            onChange={(e) => setLastName(e.target.value)}
           />
           <Spacer y={1} />
           <Input

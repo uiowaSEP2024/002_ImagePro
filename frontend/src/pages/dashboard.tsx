@@ -13,7 +13,7 @@ export default function Dashboard() {
       method: "GET",
     }
     ).then((result) => result.json()).then((data) => {
-      setData(data.user.email)
+      setData(data.user.first_name)
       
     })
   })

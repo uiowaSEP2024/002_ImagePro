@@ -82,6 +82,7 @@ export default function Login() {
             size="lg"
             placeholder="Password"
             aria-label="Password"
+            type={"password"}
             css={{ mb: "6px" }}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
