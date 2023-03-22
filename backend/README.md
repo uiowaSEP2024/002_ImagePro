@@ -30,8 +30,14 @@ Here are some steps to get started running the application locally:
    ```
    > If you get errors in this step, make sure you have installed docker first with `docker -v` in your terminal. If not,
    > you can download Docker [here](https://docs.docker.com/get-docker/).
+   > If error 'Docker Daemon not running' is raised, then start the docker desktop application and try again.
    
-7. Finally, to start the application, run the following script:
+7. Apply migrations to the database to set it up using the command:
+   ```bash
+   APP_ENV=development alembic upgrade head
+   ```
+   
+8. Finally, to start the application, run the following script:
    ```bash
    bash run-dev.sh
    ```
