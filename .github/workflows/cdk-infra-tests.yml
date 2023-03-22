@@ -1,0 +1,48 @@
+name: CDK Infra Tests
+on:
+  workflow_call:
+jobs:
+  unit_tests:
+    name: CDK Infra unit tests
+    strategy:
+      matrix:
+        os: ["ubuntu-latest"]
+        version: ["3.10"]
+    runs-on: ${{matrix.os}}
+    defaults:
+      run:
+        working-directory: cdk-infra
+        shell: bash
+        # Service containers to run with `runner-job`
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.version }}
+
+      - name: Install python dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+
+      - name: Run tests with Coverage
+        run: |
+          pytest --cov-report "xml:coverage.xml" --cov
+          pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov | tee pytest-coverage.txt
+
+      - name: Pytest Coverage comment
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-coverage-path: cdk-infra/pytest-coverage.txt
+          pytest-xml-coverage-path: cdk-infra/coverage.xml
+          hide-badge: false
+          hide-report: false
+          create-new-comment: false
+          hide-comment: false
+          report-only-changed-files: false
+          remove-link-from-badge: false
+          junitxml-path: cdk-infra/pytest.xml
+          junitxml-title: Test Summary
