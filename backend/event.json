@@ -1,0 +1,32 @@
+{
+  "resource": "/",
+  "path": "/",
+  "httpMethod": "GET",
+  "body": "{ \"email\": \"johndoe@example.com\", \"password\": \"12345\"}",
+  "isBase64Encoded": false,
+  "queryStringParameters": {},
+  "multiValueQueryStringParameters": {},
+  "pathParameters": {},
+  "stageVariables": {},
+  "requestContext": {},
+  "headers": {
+    "Accept": "*/*",
+    "Accept-Encoding": "gzip, deflate",
+    "cache-control": "no-cache",
+    "Content-Type": "application/json"
+  },
+  "multiValueHeaders": {
+    "Accept": [
+      "*/*"
+    ],
+    "Accept-Encoding": [
+      "gzip, deflate"
+    ],
+    "cache-control": [
+      "no-cache"
+    ],
+    "Content-Type": [
+      "application/json"
+    ]
+  }
+}

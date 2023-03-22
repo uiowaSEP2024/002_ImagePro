@@ -1,0 +1,81 @@
+name: backend test workflow
+on:
+  workflow_call:
+env:
+  POSTGRES_USER: postgres
+  POSTGRES_SERVER: localhost
+  POSTGRES_PORT: 5432
+  POSTGRES_DB: db_test
+  POSTGRES_PASSWORD: postgres
+  APP_ENV: 'test'
+jobs:
+  unit_tests:
+    name: Backend unit tests
+    strategy:
+      matrix:
+        os: ['ubuntu-latest']
+        version: ['3.9', '3.10' ]
+    runs-on: ${{matrix.os}}
+    defaults:
+      run:
+        working-directory: backend
+        shell: bash
+        # Service containers to run with `runner-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.version }}
+
+      - name: Install python dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Database setup and build coverage file
+        run: |
+          touch .env.test
+          echo POSTGRES_USER="$POSTGRES_USER" >> .env.test
+          echo POSTGRES_SERVER="$POSTGRES_SERVER" >> .env.test
+          echo POSTGRES_PORT="$POSTGRES_PORT" >> .env.test
+          echo POSTGRES_DB="$POSTGRES_DB" >> .env.test
+          echo POSTGRES_PASSWORD="$POSTGRES_PASSWORD" >> .env.test
+          echo APP_ENV="$APP_ENV">> .env.test 
+          python tasks.py db:test:reset
+          python tasks.py db:test:upgrade
+          alembic upgrade head
+          pytest --cov-report "xml:coverage.xml" --cov
+          pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov | tee pytest-coverage.txt
+
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-coverage-path: backend/pytest-coverage.txt
+          pytest-xml-coverage-path: backend/coverage.xml
+          hide-badge: false
+          hide-report: false
+          create-new-comment: false
+          hide-comment: false
+          report-only-changed-files: false
+          remove-link-from-badge: false
+          junitxml-path: backend/pytest.xml
+          junitxml-title: Test Summary

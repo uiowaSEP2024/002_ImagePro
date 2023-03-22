@@ -1,0 +1,39 @@
+version: "3.8"
+services:
+  app :
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        APP_ENV: development
+    ports:
+      - "9000:8080"
+    networks:
+      - application-network
+    depends_on:
+      - database
+    environment:
+      - POSTGRES_PASSWORD=dev_password
+      - POSTGRES_USER=postgres
+      - POSTGRES_SERVER=database
+
+
+  database:
+    image: postgres:14
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=dev_password
+      - POSTGRES_USER=postgres
+    networks:
+      - application-network
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data
+
+networks:
+  application-network: {}
+
+volumes:
+  pg_data:
+
