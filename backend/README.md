@@ -3,6 +3,8 @@ This is the backend project for Team03's SEP project.
 
 
 # Getting Started
+Here are some steps to get started running the application locally:
+
 1. Make sure you have Python installed (preferably v3.10), which you can download from [here](https://www.python.org/downloads/)
 2. Before starting the application, make sure to create a virtual environment for the project:
    ```bash
@@ -22,7 +24,14 @@ This is the backend project for Team03's SEP project.
 5. Create a file called .env.local, and then copy and paste the contents from .env.example file
    into it, replacing with your own values as appropriate.
 
-6. Finally, to start the application, run the following script:
+6. Next, we start a local database using Docker with the following script in a terminal:
+   ```bash
+   bash run-db.sh
+   ```
+   > If you get errors in this step, make sure you have installed docker first with `docker -v` in your terminal. If not,
+   > you can download Docker [here](https://docs.docker.com/get-docker/).
+   
+7. Finally, to start the application, run the following script:
    ```bash
    bash run-dev.sh
    ```
