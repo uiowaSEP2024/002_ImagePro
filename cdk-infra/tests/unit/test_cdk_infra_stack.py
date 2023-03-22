@@ -3,7 +3,6 @@ import aws_cdk.assertions as assertions
 
 from cdk_infra.cdk_infra_stack import CdkInfraStack
 from app import get_config_for_app_env
-import pytest
 
 import json
 
@@ -22,7 +21,7 @@ def test_stack_created():
     template.has_resource_properties(
         "AWS::Lambda::Function",
         {
-            "FunctionName": "Team8CDKFunction-test",
+            "FunctionName": "Team3CDKFunction-test",
             "PackageType": "Image",
             "Environment": {"Variables": {"APP_ENV": "test"}},
         },

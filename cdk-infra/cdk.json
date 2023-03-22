@@ -45,7 +45,7 @@
     "@aws-cdk/aws-secretsmanager:useAttachedSecretResourcePolicyForSecretTargetAttachments": true,
     "@aws-cdk/aws-redshift:columnId": true,
     "default": {
-      "AppName": "Team8CdkInfraStack",
+      "AppName": "Team3CdkInfraStack",
       "PostgresUser": "postgres",
       "PostgresPort": 5432,
       "PostgresDbName": "postgres",
