@@ -1,9 +1,6 @@
-import os
-
 import aws_cdk as cdk
 import aws_cdk.aws_lambda as aws_lambda
 import aws_cdk.aws_apigateway as aws_apigateway
-import aws_cdk.aws_ecr as aws_ecr
 
 from models import BuildConfig
 
@@ -18,8 +15,8 @@ class CdkInfraStack(cdk.Stack):
     ) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        function_name = "Team8CDKFunction" + "-" + build_config.AppEnv
-        cdk_function_name = "Team8CDKFunction" + build_config.AppEnv.capitalize()
+        function_name = "Team3CDKFunction" + "-" + build_config.AppEnv
+        cdk_function_name = "Team3CDKFunction" + build_config.AppEnv.capitalize()
 
         team8_lambda = aws_lambda.Function(
             self,
@@ -42,10 +39,10 @@ class CdkInfraStack(cdk.Stack):
             stage_name=build_config.ApiGatewayStage
         )
 
-        rest_api_name = "Team8CDKRestApi" + "-" + build_config.AppEnv
-        cdk_rest_api_name = "Team8CDKRestApi" + build_config.AppEnv.capitalize()
+        rest_api_name = "Team3CDKRestApi" + "-" + build_config.AppEnv
+        cdk_rest_api_name = "Team3CDKRestApi" + build_config.AppEnv.capitalize()
 
-        team8_rest_api = aws_apigateway.LambdaRestApi(
+        aws_apigateway.LambdaRestApi(
             self,
             cdk_rest_api_name,
             rest_api_name=rest_api_name,
