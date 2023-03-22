@@ -3,6 +3,7 @@ on:
   pull_request:
     branches:
       - "main"
+      - "*" # TODO: Remove
 jobs:
   backend_lint:
     name: Backend lints
