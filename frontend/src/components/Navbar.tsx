@@ -1,4 +1,4 @@
-import { Navbar } from "@nextui-org/react";
+import { Navbar, Button } from "@nextui-org/react";
 import React from "react";
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/router";
@@ -48,7 +48,7 @@ function TopNavbar() {
           <Navbar.Link href="/billing">Billing</Navbar.Link>
         </Navbar.Content>
         <Navbar.Content enableCursorHighlight hideIn="xs">
-          <Navbar.Link href="/">Logout</Navbar.Link>
+        <Button onPress={sendLogOutReq}>Log Out</Button>
         </Navbar.Content>
       </Navbar>
     );
