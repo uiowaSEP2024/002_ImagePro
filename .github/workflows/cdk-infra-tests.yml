@@ -36,6 +36,7 @@ jobs:
       - name: Pytest Coverage comment
         uses: MishaKav/pytest-coverage-comment@main
         with:
+          title: CDK-Infra Coverage Report
           pytest-coverage-path: cdk-infra/pytest-coverage.txt
           pytest-xml-coverage-path: cdk-infra/coverage.xml
           hide-badge: false
