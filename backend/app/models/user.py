@@ -14,3 +14,5 @@ class User(Base):
     api_keys = relationship(
         "Apikey", back_populates="user", cascade="all, delete-orphan"
     )
+
+    jobs = relationship("Job", back_populates="customer", cascade="all, delete-orphan")
