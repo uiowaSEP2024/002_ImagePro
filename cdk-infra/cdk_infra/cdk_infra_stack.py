@@ -42,10 +42,13 @@ class CdkInfraStack(cdk.Stack):
             stage_name=build_config.ApiGatewayStage
         )
 
+        rest_api_name = "Team8CDKRestApi" + "-" + build_config.AppEnv
+        cdk_rest_api_name = "Team8CDKRestApi" + build_config.AppEnv.capitalize()
+
         team8_rest_api = aws_apigateway.LambdaRestApi(
             self,
-            "Team8CDKRestApi",
-            rest_api_name="Team8CDKRestApi",
+            cdk_rest_api_name,
+            rest_api_name=rest_api_name,
             handler=team8_lambda,
             proxy=True,
             deploy_options=team8_rest_api_deployment_stage,
