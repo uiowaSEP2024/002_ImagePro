@@ -24,11 +24,11 @@ export default function Profile() {
       setFirst_Name(data.user.first_name)
       setLast_Name(data.user.last_name)
       setEmail(data.user.email)
-      setMsg(data.message)
+      setMsg(data.detail)
     })
   })
 
-  if (msg != "already logged in!") {
+  if (msg == "Not authenticated") {
     return (
       redirect()
     );
