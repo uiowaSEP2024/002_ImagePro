@@ -40,3 +40,16 @@ def random_test_user(db):
         schemas.UserCreate(email=f"testuser_{random_tag}@example.com", password="abc"),
     )
     return test_user
+
+
+@pytest.fixture
+def random_provider_user(db):
+    # TODO: update to actually create a 'provider' user
+    random_tag = random.randint(0, 10000)
+    test_provider_user = services.create_user(
+        db,
+        schemas.UserCreate(
+            email=f"test-provider-user_{random_tag}@example.com", password="abc"
+        ),
+    )
+    return test_provider_user
