@@ -10,7 +10,7 @@ class JobCreate(JobBase):
     provider_job_name: str
 
 
-class Job(JobBase):
+class Job(JobCreate):
     id: int
     provider_id: int
 
