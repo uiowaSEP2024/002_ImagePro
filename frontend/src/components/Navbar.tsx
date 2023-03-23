@@ -48,6 +48,7 @@ function TopNavbar() {
           <Navbar.Link href="/billing">Billing</Navbar.Link>
         </Navbar.Content>
         <Navbar.Content enableCursorHighlight hideIn="xs">
+        <Navbar.Link href="/profile">Profile</Navbar.Link>
         <Button flat light color="default" onPress={sendLogOutReq}>Log Out</Button>
         </Navbar.Content>
       </Navbar>
