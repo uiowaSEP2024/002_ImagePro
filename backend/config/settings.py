@@ -75,3 +75,4 @@ if not settings_cls:
 # Initialize application settings
 settings = settings_cls()
 print(f"Running in app_env: {settings.app_env}")
+print(f"Running with postgres_server: {settings.postgres_server}")
