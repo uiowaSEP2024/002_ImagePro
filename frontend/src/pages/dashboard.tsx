@@ -20,11 +20,12 @@ export default function Dashboard() {
     }
     ).then((result) => result.json()).then((data) => {
       setData(data.user.first_name)
-      setMsg(data.message)
+      setMsg(data.detail)
+      console.log(data.detail)
     })
   })
 
-  if (msg != "already logged in!") {
+  if (msg == "Not authenticated") {
     return (
       redirect()
     );
@@ -33,12 +34,12 @@ export default function Dashboard() {
       <>
         <Grid.Container gap={2} justify="center">
           <Text h1 align-items="center">
-            Welcome { data }
+            Welcome {data}
           </Text>
         </Grid.Container>
       </>
     );
-  } 
+  }
 }
 
 

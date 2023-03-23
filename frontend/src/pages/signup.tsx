@@ -33,8 +33,8 @@ export default function SignUp() {
       method: "GET",
     }
     ).then((result) => result.json()).then((data) => {
-      setData(data.detail)
-      console.log(data.detail)
+      setData(data.message)
+      console.log(data.message)
     })
   })
 
@@ -68,7 +68,7 @@ export default function SignUp() {
   };
 
 
-  if (data != "Not authenticated") {
+  if (data == "already logged in!") {
     return (
       redirect()
     );
