@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey
+from sqlalchemy import Column, ForeignKey, UniqueConstraint
 from sqlalchemy.sql.sqltypes import String, Integer
 from sqlalchemy.orm import relationship
 
@@ -7,6 +7,7 @@ from .base import Base
 
 class Job(Base):
     __tablename__ = "jobs"
+    __table_args__ = (UniqueConstraint("provider_id", "provider_job_id"),)
 
     # Auto-generated internal job id
     id = Column(Integer, primary_key=True, index=True)
