@@ -5,10 +5,9 @@ from tasks import setup_app_settings
 # NB: this should happen before any app imports to ensure the environment is set
 setup_app_settings("test")
 
-from app import services, schemas
 import pytest
+from app import schemas, services
 from app.models.base import truncate_all_tables
-
 from fastapi.testclient import TestClient
 
 
@@ -40,6 +39,13 @@ def random_test_user(db):
         schemas.UserCreate(email=f"testuser_{random_tag}@example.com", password="abc"),
     )
     return test_user
+
+
+@pytest.fixture
+def random_test_user_with_api_key(db, random_test_user):
+    services.create_apikey_for_user(db, random_test_user.id)
+    db.refresh(random_test_user)
+    return random_test_user
 
 
 @pytest.fixture
