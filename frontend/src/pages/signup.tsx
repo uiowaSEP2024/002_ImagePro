@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import {
   Card,
   Spacer,
@@ -18,6 +19,24 @@ export default function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [notificationMessage, setNotificationMessage] = useState("");
+
+  const router = useRouter();
+  const [data, setData] = useState(null)
+
+  const redirect = () => {
+    router.push("/")
+  }
+
+  useEffect(() => {
+    fetch("http://localhost:8000/login", {
+      credentials: "include",
+      method: "GET",
+    }
+    ).then((result) => result.json()).then((data) => {
+      setData(data.detail)
+      console.log(data.detail)
+    })
+  })
 
   const sendSignUpReq = () => {
     if (confirmPassword !== password) {
@@ -48,99 +67,106 @@ export default function SignUp() {
       });
   };
 
-  return (
-    <div>
-      {!!notificationMessage && <Text>{notificationMessage}</Text>}
-      <Container
-        display="flex"
-        alignItems="center"
-        justify="center"
-        css={{ minHeight: "100vh" }}
-      >
-        <Card css={{ mw: "420px", p: "20px" }} variant="bordered">
-          <Text
-            size={24}
-            weight="bold"
-            css={{
-              as: "center",
-              mb: "20px",
-            }}
-          >
-            Sign Up
-          </Text>
-          <Input
-            clearable
-            underlined
-            fullWidth
-            color="primary"
-            size="lg"
-            placeholder="First Name"
-            aria-label="First Name"
-            value={first_name}
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-          <Spacer y={1} />
-          <Input
-            clearable
-            underlined
-            fullWidth
-            color="primary"
-            size="lg"
-            placeholder="Last Name"
-            aria-label="Last Name"
-            value={last_name}
-            onChange={(e) => setLastName(e.target.value)}
-          />
-          <Spacer y={1} />
-          <Input
-            clearable
-            underlined
-            fullWidth
-            color="primary"
-            size="lg"
-            placeholder="Email"
-            aria-label="Email"
-            css={{ mb: "6px" }}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <Spacer y={1} />
-          <Input
-            clearable
-            underlined
-            fullWidth
-            color="primary"
-            size="lg"
-            placeholder="Password"
-            aria-label="Password"
-            type="password"
-            css={{ mb: "6px" }}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Spacer y={1} />
-          <Input
-            clearable
-            underlined
-            fullWidth
-            color="primary"
-            size="lg"
-            placeholder="Confirm Password"
-            aria-label="Confirm Password"
-            type="password"
-            css={{ mb: "6px" }}
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-          <Row justify="space-between">
-            <Link block color="secondary" href="/login">
-              Existing user? Log in.{" "}
-            </Link>
-          </Row>
-          <Spacer y={1} />
-          <Button onPress={sendSignUpReq}>Create Account</Button>
-        </Card>
-      </Container>
-    </div>
-  );
+
+  if (data != "Not authenticated") {
+    return (
+      redirect()
+    );
+  } else {
+    return (
+      <div>
+        {!!notificationMessage && <Text>{notificationMessage}</Text>}
+        <Container
+          display="flex"
+          alignItems="center"
+          justify="center"
+          css={{ minHeight: "100vh" }}
+        >
+          <Card css={{ mw: "420px", p: "20px" }} variant="bordered">
+            <Text
+              size={24}
+              weight="bold"
+              css={{
+                as: "center",
+                mb: "20px",
+              }}
+            >
+              Sign Up
+            </Text>
+            <Input
+              clearable
+              underlined
+              fullWidth
+              color="primary"
+              size="lg"
+              placeholder="First Name"
+              aria-label="First Name"
+              value={first_name}
+              onChange={(e) => setFirstName(e.target.value)}
+            />
+            <Spacer y={1} />
+            <Input
+              clearable
+              underlined
+              fullWidth
+              color="primary"
+              size="lg"
+              placeholder="Last Name"
+              aria-label="Last Name"
+              value={last_name}
+              onChange={(e) => setLastName(e.target.value)}
+            />
+            <Spacer y={1} />
+            <Input
+              clearable
+              underlined
+              fullWidth
+              color="primary"
+              size="lg"
+              placeholder="Email"
+              aria-label="Email"
+              css={{ mb: "6px" }}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Spacer y={1} />
+            <Input
+              clearable
+              underlined
+              fullWidth
+              color="primary"
+              size="lg"
+              placeholder="Password"
+              aria-label="Password"
+              type="password"
+              css={{ mb: "6px" }}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Spacer y={1} />
+            <Input
+              clearable
+              underlined
+              fullWidth
+              color="primary"
+              size="lg"
+              placeholder="Confirm Password"
+              aria-label="Confirm Password"
+              type="password"
+              css={{ mb: "6px" }}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+            <Row justify="space-between">
+              <Link block color="secondary" href="/login">
+                Existing user? Log in.{" "}
+              </Link>
+            </Row>
+            <Spacer y={1} />
+            <Button onPress={sendSignUpReq}>Create Account</Button>
+          </Card>
+        </Container>
+      </div>
+    );
+  }
 }
