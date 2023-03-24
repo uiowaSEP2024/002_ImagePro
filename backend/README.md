@@ -72,6 +72,12 @@ Here are some scripts for working with migrations. For all the following command
 using we are setting `APP_ENV` to some environment (namely: `development`, `production`, or `test`).
 
 ### Auto-generating a Migration
+To autogenerate a migration, first add your new model to `app/models`, or edit an existing model.
+
+> NB: If you are adding a new model, you will have to explicitly import it inside of `app/models/__init__.py`,
+> so that it is included in the runtime, when alembic is performing the auto-generation.
+
+Finally, run the following command to auto-generate the migrations:
 ```bash
 APP_ENV=<environment> alembic revision --autogenerate -m "migration_name"
 ```
