@@ -15,6 +15,7 @@ Here are some steps to get started running the application locally:
    source venv/bin/activate
    ```
    > If you are working in PyCharm, steps 2 and 3 should be performed automatically for you.
+   > Note the above may be .venv or venv depending on PyCharm
 
 4. Once the virtual environment is started, make sure to install all requirements required for the project:
    ```bash
