@@ -8,6 +8,10 @@ jobs:
     name: Backend CI
     uses: ./.github/workflows/backend-ci.yml
 
+  backend_black:
+    name: Backend Black CI
+    uses: ./.github/workflows/backend-black.yml
+
   frontend_lint:
     name: Frontend CI
     uses: ./.github/workflows/frontend-ci.yml
