@@ -9,10 +9,5 @@ jobs:
     uses: ./.github/workflows/backend-ci.yml
 
   frontend_lint:
-    name: Frontend lints
-    uses: ./.github/workflows/frontend-lints.yml
-
-  frontend_test:
-    name: Frontend tests
-    needs: frontend_lint
-    uses: ./.github/workflows/frontend-tests.yml
+    name: Frontend CI
+    uses: ./.github/workflows/frontend-ci.yml
