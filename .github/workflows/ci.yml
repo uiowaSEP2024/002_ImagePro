@@ -2,16 +2,11 @@ name: Continuous integration workflow
 on:
   pull_request:
     branches:
-      - 'main'
+      - "main"
 jobs:
-  backend_lint:
-    name: Backend lints
-    uses: ./.github/workflows/backend-lints.yml
-
-  backend_test:
-    name: Backend tests
-    needs: backend_lint
-    uses: ./.github/workflows/backend-tests.yml
+  backend_ci:
+    name: Backend CI
+    uses: ./.github/workflows/backend-ci.yml
 
   frontend_lint:
     name: Frontend lints
