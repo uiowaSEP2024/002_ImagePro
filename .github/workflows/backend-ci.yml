@@ -88,6 +88,7 @@ jobs:
         os: ["ubuntu-latest"]
         version: ["3.10"]
     runs-on: ${{matrix.os}}
+
     defaults:
       run:
         working-directory: backend
@@ -108,7 +109,9 @@ jobs:
           pip install -r requirements.txt
 
       - name: Execute black
-        run: black --check .
+        run: | 
+          pwd
+          black --check .
 
   shellcheck:
     name: Shellcheck
