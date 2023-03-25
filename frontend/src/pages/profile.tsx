@@ -30,7 +30,10 @@ export default function Profile() {
 
   if (msg == "Not authenticated") {
     return (
-      redirect()
+      <>
+      <Text>You are not logged in</Text>
+      redirect();
+      </>
     );
   } else {
     return (
