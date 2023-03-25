@@ -1,10 +1,10 @@
+from app import models
+from app.internal import generate_apikey
 from passlib.context import CryptContext
 from pydantic import validate_arguments
 from sqlalchemy.orm import Session
 
-from app import models
-from app.internal import generate_apikey
-from app.services import get_user
+from .users import get_user
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
