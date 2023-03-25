@@ -27,7 +27,10 @@ export default function Dashboard() {
 
   if (msg == "Not authenticated") {
     return (
-      redirect()
+      <>
+      <Text>You are not logged in</Text>
+      redirect();
+      </>
     );
   } else {
     return (
