@@ -42,6 +42,13 @@ def random_test_user(db):
 
 
 @pytest.fixture
+def random_test_user_with_api_key(db, random_test_user):
+    services.create_apikey_for_user(db, random_test_user.id)
+    db.refresh(random_test_user)
+    return random_test_user
+
+
+@pytest.fixture
 def random_provider_user(db):
     # TODO: update to actually create a 'provider' user
     random_tag = random.randint(0, 10000)

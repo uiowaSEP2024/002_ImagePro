@@ -1,9 +1,7 @@
+from app.routers import apikeys_router, auth_router, jobs_router, users_router
 from fastapi import FastAPI
-
 from fastapi.middleware.cors import CORSMiddleware
 from mangum import Mangum
-
-from app.routers import users_router, auth_router, apikeys_router
 
 app = FastAPI()
 
@@ -28,6 +26,7 @@ def read_root():
 app.include_router(users_router)
 app.include_router(apikeys_router)
 app.include_router(auth_router)
+app.include_router(jobs_router)
 
 # Create handler for AWS lambda
 handler = Mangum(app, lifespan="off")
