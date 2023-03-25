@@ -23,7 +23,10 @@ export default function Billing() {
 
   if (data == "Not authenticated") {
     return (
-      redirect()
+      <>
+      <Text>You are not logged in</Text>
+      redirect();
+      </>
     );
   } else {
     return (
