@@ -33,7 +33,7 @@ def db():
 
 @pytest.fixture
 def random_test_user(db):
-    random_tag = random.randint(0, 10000)
+    random_tag = random.randint(0, 1000000)
     test_user = services.create_user(
         db,
         schemas.UserCreate(email=f"testuser_{random_tag}@example.com", password="abc"),
