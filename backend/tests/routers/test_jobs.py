@@ -10,7 +10,7 @@ def test_create_job(app_client, random_test_user_with_api_key):
     }
 
     response = app_client.post(
-        "/jobs/",
+        "/jobs",
         json=data,
         headers={API_KEY_HEADER_NAME: random_test_user_with_api_key.api_keys[0].key},
     )
