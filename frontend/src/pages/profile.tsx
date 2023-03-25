@@ -1,4 +1,4 @@
-import { Text, Grid } from "@nextui-org/react";
+import { Grid, Container, Text } from "@nextui-org/react";
 // import { Cookies } from 'react-cookie';
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/router";
@@ -34,14 +34,22 @@ export default function Profile() {
     );
   } else {
     return (
-      <>
+      <Container>
         <Grid.Container gap={2} justify="center">
-          <Text h1 align-items="center">
-            Profile for { first_name } { last_name }
-            Email: { email }
-          </Text>
+          <Grid xs={12} md={6}>
+            <Text h4>First Name</Text>
+            <Text>{first_name}</Text>
+          </Grid>
+          <Grid xs={12} md={6}>
+            <Text h4>Last Name</Text>
+            <Text>{last_name}</Text>
+          </Grid>
+          <Grid xs={12}>
+            <Text h4>Email</Text>
+            <Text>{email}</Text>
+          </Grid>
         </Grid.Container>
-      </>
+      </Container>
     );
   } 
 }
