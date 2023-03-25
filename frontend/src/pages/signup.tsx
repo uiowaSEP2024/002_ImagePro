@@ -70,10 +70,7 @@ export default function SignUp() {
 
   if (data == "already logged in!") {
     return (
-      <>
-      <Text>You are already logged in</Text>
-      redirect();
-      </>
+      redirect()
     );
   } else {
     return (
