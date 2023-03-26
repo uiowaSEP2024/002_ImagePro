@@ -1,9 +1,9 @@
 from app import services
 from app.dependencies import API_KEY_HEADER_NAME
-from app import schemas, services
+from app import models, schemas
 
 
-def test_create_event(app_client, job_for_random_user_with_api_key):
+def test_create_event(app_client, job_for_random_user_with_api_key, db):
     job = job_for_random_user_with_api_key
     data = {
         "kind": "step",
@@ -19,9 +19,15 @@ def test_create_event(app_client, job_for_random_user_with_api_key):
             ].key
         },
     )
-
     assert response.status_code == 200
     assert response.json()["kind"] == "step"
     assert response.json()["name"] == "Scanning"
-    assert response.json()["id"] == job.id
-    assert response.json()["job_id"] == job.provider_id
+    db.refresh(job)
+    assert response.json()["id"] == job.events[0].id
+    assert (
+            response.json()["job_id"]
+            == services.get_job_by_provider_job_id(
+        db=db, provider_job_id=job.provider_job_id, provider_id=job.provider_id
+    ).id
+    )
+
