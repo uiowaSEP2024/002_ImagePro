@@ -48,19 +48,19 @@ export default function JobPage() {
 
   const renderCell = (event: JobEventWithNumber, column: ColumnName) => {
     switch (column) {
-    case "name":
-      return <Text>{event.name}</Text>;
-    case "date":
-      return (
-        <Text>{new Date(event.created_at).toISOString().split("T")[0]}</Text>
-      );
-    case "time":
-      return <Text>{new Date(event.created_at).toLocaleTimeString()}</Text>;
+      case "name":
+        return <Text>{event.name}</Text>;
+      case "date":
+        return (
+          <Text>{new Date(event.created_at).toISOString().split("T")[0]}</Text>
+        );
+      case "time":
+        return <Text>{new Date(event.created_at).toLocaleTimeString()}</Text>;
 
-    case "event_number":
-      return <Text>{event.event_number}</Text>;
-    default:
-      return null;
+      case "event_number":
+        return <Text>{event.event_number}</Text>;
+      default:
+        return null;
     }
   };
 
@@ -84,7 +84,7 @@ export default function JobPage() {
           bordered
           shadow={false}
           color="primary"
-          aria-label="Jobs"
+          aria-label="Events"
           css={{
             height: "auto",
             minWidth: "100%",
