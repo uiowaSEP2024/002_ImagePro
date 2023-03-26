@@ -9,10 +9,6 @@ export default function Dashboard() {
   const [data, setData] = useState(null)
   const [msg, setMsg] = useState(null)
 
-  const redirect = () => {
-    router.push("/login")
-  }
-
   useEffect(() => {
     fetch("http://localhost:8000/login", {
       credentials: "include",
@@ -27,24 +23,21 @@ export default function Dashboard() {
       else {
         setData(data.user.first_name)
       }
+      if (msg == "Not authenticated") {
+        router.push('/login')
+      }
     })
   })
 
-  if (msg == "Not authenticated") {
-    return (
-      redirect()
-    );
-  } else {
-    return (
-      <>
-        <Grid.Container gap={2} justify="center">
-          <Text h1 align-items="center">
-            Welcome {data}
-          </Text>
-        </Grid.Container>
-      </>
-    );
-  }
+  return (
+    <>
+      <Grid.Container gap={2} justify="center">
+        <Text h1 align-items="center">
+          Welcome {data}
+        </Text>
+      </Grid.Container>
+    </>
+  );
 }
 
 

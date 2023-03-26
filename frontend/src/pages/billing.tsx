@@ -6,10 +6,6 @@ export default function Billing() {
   const router = useRouter();
   const [data, setData] = useState(null)
 
-  const redirect = () => {
-    router.push("/login")
-  }
-
   useEffect(() => {
     fetch("http://localhost:8000/login", {
       credentials: "include",
@@ -18,23 +14,19 @@ export default function Billing() {
     ).then((result) => result.json()).then((data) => {
       setData(data.detail)
       console.log(data.detail)
+      if (data == "Not authenticated") {
+        router.push('/login')
+      }
     })
   })
 
-  if (data == "Not authenticated") {
-    return (
-      redirect()
-    );
-  } else {
-    return (
-      <>
-        <Grid.Container gap={2} justify="center">
-          <Text h1 align-items="center">
-            Billing page
-          </Text>
-        </Grid.Container>
-      </>
-    );
-  }
-  
+  return (
+    <>
+      <Grid.Container gap={2} justify="center">
+        <Text h1 align-items="center">
+          Billing page
+        </Text>
+      </Grid.Container>
+    </>
+  );
 }
