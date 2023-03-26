@@ -1,6 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import Billing from "@/pages/billing";
 import "@testing-library/jest-dom";
+import fetch from 'node-fetch';
+
 
 
 jest.mock('next/router', () => require('next-router-mock'));
