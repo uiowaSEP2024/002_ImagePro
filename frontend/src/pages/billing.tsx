@@ -1,22 +1,19 @@
 import { Text, Grid } from "@nextui-org/react";
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/router";
+import { checkUserLoggedIn } from "@/utils/auth";
 
 export default function Billing() {
   const router = useRouter();
-  const [data, setData] = useState(null)
 
   useEffect(() => {
-    fetch("http://localhost:8000/login", {
-      credentials: "include",
-      method: "GET",
-    }
-    ).then((result) => result.json()).then((data) => {
-      setData(data.detail)
-      console.log(data.detail)
-      if (data == "Not authenticated") {
+    checkUserLoggedIn().then((data) => {
+      if (data.detail == "Not authenticated") {
         router.push('/login')
       }
+    }).catch((error) => {
+      router.push('/login')
+      console.log(error)
     })
   })
 
