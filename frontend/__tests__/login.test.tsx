@@ -2,6 +2,8 @@ import { render, screen, RenderResult } from "@testing-library/react";
 import 'core-js/es/modules/es.promise';
 import Login from "@/pages/login";
 import "@testing-library/jest-dom";
+import fetch from 'node-fetch';
+
 
 jest.mock("next/router", () => require("next-router-mock"));
 let documentBody: RenderResult;
