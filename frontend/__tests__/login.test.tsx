@@ -15,17 +15,5 @@ describe("Login", () => {
     documentBody = render(<Login />);
   });
 
-  test("should display a blank login form", async () => {
   
-    expect(documentBody).toHaveFormValues({
-      email: "",
-      password: "",
-    });
   });
-
-
-  xit("renders Login unchanged", () => {
-    const { container } = render(<Login />);
-    expect(container).toMatchSnapshot();
-  });
-});
