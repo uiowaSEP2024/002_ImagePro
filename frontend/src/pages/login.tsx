@@ -20,10 +20,6 @@ export default function Login() {
 
   const [notificationMessage, setNotificationMessage] = useState("");
 
-  const redirect = () => {
-    router.push("/")
-  }
-
   useEffect(() => {
     fetch("http://localhost:8000/login", {
       credentials: "include",
@@ -32,6 +28,9 @@ export default function Login() {
     ).then((result) => result.json()).then((data) => {
       setData(data.message)
       console.log(data.message)
+      if (data == "already logged in!") {
+        router.push("/")
+      }
     })
   })
 
@@ -58,66 +57,61 @@ export default function Login() {
       });
   };
 
-  if (data == "already logged in!") {
-    return (
-      redirect()
-    );
-  } else {
-    return (
-      <div>
-        {!!notificationMessage && <Text>{notificationMessage}</Text>}
-        <Container
-          display="flex"
-          alignItems="center"
-          justify="center"
-          css={{ minHeight: "100vh" }}
-        >
-          <Card css={{ mw: "420px", p: "20px" }} variant="bordered">
-            <Text
-              size={24}
-              weight="bold"
-              css={{
-                as: "center",
-                mb: "20px",
-              }}
-            >
-              Login
-            </Text>
-            <Input
-              clearable
-              underlined
-              fullWidth
-              color="primary"
-              size="lg"
-              placeholder="Email"
-              aria-label="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <Spacer y={1} />
-            <Input
-              clearable
-              underlined
-              fullWidth
-              color="primary"
-              size="lg"
-              placeholder="Password"
-              aria-label="Password"
-              type={"password"}
-              css={{ mb: "6px" }}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <Row justify="space-between">
-              <Link block color="secondary" href="/signup">
-                New user? Create Account.{" "}
-              </Link>
-            </Row>
-            <Spacer y={1} />
-            <Button onPress={sendLoginReq}>Log in</Button>
-          </Card>
-        </Container>
-      </div>
-    );
-  }
+  return (
+    <div>
+      {!!notificationMessage && <Text>{notificationMessage}</Text>}
+      <Container
+        display="flex"
+        alignItems="center"
+        justify="center"
+        css={{ minHeight: "100vh" }}
+      >
+        <Card css={{ mw: "420px", p: "20px" }} variant="bordered">
+          <Text
+            size={24}
+            weight="bold"
+            css={{
+              as: "center",
+              mb: "20px",
+            }}
+          >
+            Login
+          </Text>
+          <Input
+            clearable
+            underlined
+            fullWidth
+            color="primary"
+            size="lg"
+            placeholder="Email"
+            aria-label="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <Spacer y={1} />
+          <Input
+            clearable
+            underlined
+            fullWidth
+            color="primary"
+            size="lg"
+            placeholder="Password"
+            aria-label="Password"
+            type={"password"}
+            css={{ mb: "6px" }}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Row justify="space-between">
+            <Link block color="secondary" href="/signup">
+              New user? Create Account.{" "}
+            </Link>
+          </Row>
+          <Spacer y={1} />
+          <Button onPress={sendLoginReq}>Log in</Button>
+        </Card>
+      </Container>
+    </div>
+  );
+
 }
