@@ -13,3 +13,14 @@ def create_job(db: Session, job: schemas.JobCreate, provider):
     db.commit()
     db.refresh(db_job)
     return db_job
+
+
+def get_job_by_provider_job_id(db: Session, provider_job_id: str, provider_id: int):
+    return (
+        db.query(models.Job)
+        .filter(
+            models.Job.provider_job_id == provider_job_id,
+            models.Job.provider_id == provider_id,
+        )
+        .first()
+    )
