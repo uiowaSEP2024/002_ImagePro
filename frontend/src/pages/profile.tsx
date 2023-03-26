@@ -9,7 +9,7 @@ export default function Profile() {
   const [email, setEmail] = useState(null)
   const router = useRouter();
   const [msg, setMsg] = useState(null)
-  const [data, setData] = useState(null)
+  // const [data, setData] = useState(null)
 
   const redirect = () => {
     router.push("/login")
@@ -21,10 +21,14 @@ export default function Profile() {
       method: "GET",
     }
     ).then((result) => result.json()).then((data) => {
-      setFirst_Name(data.user.first_name)
-      setLast_Name(data.user.last_name)
-      setEmail(data.user.email)
-      setMsg(data.detail)
+      if ('detail' in data) {
+        setMsg(data.detail)
+      }
+      else{
+        setFirst_Name(data.user.first_name)
+        setLast_Name(data.user.last_name)
+        setEmail(data.user.email)
+      }
     })
   })
 
