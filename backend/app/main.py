@@ -1,4 +1,10 @@
-from app.routers import apikeys_router, auth_router, jobs_router, users_router,events_router
+from app.routers import (
+    apikeys_router,
+    auth_router,
+    jobs_router,
+    users_router,
+    events_router,
+)
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from mangum import Mangum
