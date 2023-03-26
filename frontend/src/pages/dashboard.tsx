@@ -19,9 +19,14 @@ export default function Dashboard() {
       method: "GET",
     }
     ).then((result) => result.json()).then((data) => {
-      setData(data.user.first_name)
-      setMsg(data.detail)
-      console.log(data.detail)
+      // console.log(data.status_code)
+      if('detail' in data) {
+        setMsg(data.detail)
+        console.log(data.detail)
+      }
+      else {
+        setData(data.user.first_name)
+      }
     })
   })
 
