@@ -70,6 +70,7 @@ export default function Login() {
           <Text
             size={24}
             weight="bold"
+            h1 align-items="center"
             css={{
               as: "center",
               mb: "20px",

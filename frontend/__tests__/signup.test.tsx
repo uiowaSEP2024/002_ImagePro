@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import Signup from "@/pages/signup";
 import "@testing-library/jest-dom";
 import { useRouter } from "next/router";
@@ -32,7 +32,18 @@ jest.mock('@/utils/auth', () => ({
 
 // TODO: explore fixing snapshot testing with https://github.com/mui/material-ui/issues/21293#issuecomment-654921524
 describe("Signup", () => {
-  it("renders Signup unchanged", () => {
-    // expect(container).toMatchSnapshot();
+  it("renders text", async () => {
+  
+    render(<Signup />);
+
+    expect(router.push).not.toBeCalledWith('/');
+
+    const text = await waitFor(() =>
+    screen.getByRole("heading", {
+      name: /Sign Up/i,
+    }));
+
+    expect(text).toBeInTheDocument();
+  
   });
 });
