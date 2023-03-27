@@ -1,10 +1,10 @@
-// __tests__/index.test.jsx
-
-import { render, screen, waitFor } from "@testing-library/react";
-import Home from "@/pages/index";
+import { render, RenderResult, screen, waitFor } from "@testing-library/react";
+import Profile from "@/pages/profile";
 import "@testing-library/jest-dom";
 import { useRouter } from "next/router";
 
+let documentBody: RenderResult;
+ 
 jest.mock('next/router', () => ({
   useRouter() {
     return ({
@@ -32,17 +32,18 @@ jest.mock('@/utils/auth', () => ({
   },
 }));
 
+describe("Profile", () => {
 
-// TODO: explore fixing snapshot testing with https://github.com/mui/material-ui/issues/21293#issuecomment-654921524
-describe("Home", () => {
-  it("renders a heading", async () => {
-    render(<Home />);
+    it('shows initial messages', async () => {
+        expect(router.push).not.toBeCalledWith('/login');
+        render(<Profile />);
+        let documentBody: RenderResult;
 
-    const heading = await waitFor(() =>
-    screen.getByRole("heading", {
-      name: /welcome to the tracking site/i,
-    }));
-
-    expect(heading).toBeInTheDocument();
-  });
+        const heading = await waitFor(() =>
+        screen.getByRole("heading", {
+          name: /First Name/i,
+        }));
+    
+        expect(heading).toBeInTheDocument();
+      });
 });
