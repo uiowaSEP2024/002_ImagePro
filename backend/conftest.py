@@ -94,7 +94,7 @@ def random_test_user_factory(db):
             test_user = services.create_user(
                 db,
                 schemas.UserCreate(
-                    email=f"testuser_{random_tag}@example.com", password="abc"
+                    email=f"testuser_{random_tag}@example.com", password="abc", first_name="first", last_name="last"
                 ),
             )
             return test_user
