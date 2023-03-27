@@ -73,3 +73,22 @@ def random_provider_user(db):
         ),
     )
     return test_provider_user
+
+
+# Convenience fixture factory for generating multiple
+# users for a test. See https://stackoverflow.com/a/21590140
+@pytest.fixture
+def random_test_user_factory(db):
+    class ThingFactory(object):
+        @staticmethod
+        def get():
+            random_tag = random.randint(0, 1000000)
+            test_user = services.create_user(
+                db,
+                schemas.UserCreate(
+                    email=f"testuser_{random_tag}@example.com", password="abc"
+                ),
+            )
+            return test_user
+
+    return ThingFactory()
