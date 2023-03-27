@@ -26,3 +26,10 @@ class Job(Base):
     # The customer that this job belongs to. Must be a user in the system
     customer_id = Column(Integer, ForeignKey("users.id"), index=True, nullable=False)
     customer = relationship("User", back_populates="jobs", foreign_keys=[customer_id])
+
+    events = relationship(
+        "Event",
+        back_populates="job",
+        foreign_keys="Event.job_id",
+        cascade="all, delete-orphan",
+    )
