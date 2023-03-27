@@ -1,5 +1,4 @@
-import { render, screen, RenderResult } from "@testing-library/react";
-import 'core-js/es/modules/es.promise';
+import { render, screen, RenderResult, waitFor } from "@testing-library/react";
 import Login from "@/pages/login";
 import "@testing-library/jest-dom";
 import { useRouter } from "next/router";
@@ -32,20 +31,22 @@ jest.mock('@/utils/auth', () => ({
   },
 }));
 
-let documentBody: RenderResult;
-
-// TODO: explore fixing snapshot testing with https://github.com/mui/material-ui/issues/21293#issuecomment-654921524
-// https://www.pluralsight.com/guides/how-to-test-react-components-in-typescript
 describe("Login", () => {
 
-  beforeAll(() => {
-    (global as any).fetch = fetch as (input: RequestInfo, init?: RequestInit) => Promise<Response>;
-  });
+  it("renders text", async () => {
+  
+    render(<Login />);
 
-  beforeEach(() => {
-    // Arrange
-    documentBody = render(<Login />);
-  });
+    expect(router.push).not.toBeCalledWith('/');
 
+    const text = await waitFor(() =>
+    screen.getByRole("heading", {
+      name: /Login/i,
+    }));
+
+    expect(text).toBeInTheDocument();
   
   });
+
+  });
+

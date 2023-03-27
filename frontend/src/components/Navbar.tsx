@@ -2,6 +2,7 @@ import { Navbar, Button } from "@nextui-org/react";
 import React from "react";
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/router";
+import { checkUserLoggedIn } from "@/utils/auth";
 
 
 function TopNavbar() {
@@ -18,13 +19,11 @@ function TopNavbar() {
   }
 
   useEffect(() => {
-    fetch("http://localhost:8000/login", {
-      credentials: "include",
-      method: "GET",
-    }
-    ).then((result) => result.json()).then((data) => {
+    checkUserLoggedIn().then((data) => {
       setData(data.detail)
-      console.log(data.detail)
+    }).catch((error) => {
+      router.push('/login')
+      console.log(error)
     })
   })
 
