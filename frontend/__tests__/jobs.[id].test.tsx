@@ -14,6 +14,37 @@ jest.mock("next/router", () => ({
   },
 }));
 
+jest.mock("@/data", () => ({
+
+  fetchJobById() {
+  
+    return new Promise((resolve) => {
+  
+      resolve( {
+        id: 1,
+        provider_job_name: "Kidney Cancer Detection",
+        customer_id: 1,
+        provider_job_id: "236",
+        provider_id: 2,
+        created_at: "2021-03-01T00:00:00.000Z",
+      } )
+  
+    });
+  
+  },
+
+  fetchEvents() {
+  
+    return new Promise((resolve) => {
+  
+      resolve([])
+  
+    });
+  
+  },
+  
+}));
+
 describe("Job Page", () => {
   it("renders a heading", async () => {
     render(<JobPage />);
