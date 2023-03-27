@@ -80,7 +80,7 @@ export type JobEvent = {
 };
 
 export const fetchJobs = async (): Promise<Job[] | void> => {
-  fetch("http://localhost:8000/jobs", {
+  return fetch("http://localhost:8000/jobs", {
     credentials: "include",
     method: "GET",
   })
@@ -92,12 +92,11 @@ export const fetchJobs = async (): Promise<Job[] | void> => {
     .catch((e) => {
       console.log(e);
     });
-  //return Object.values(jobs);
 };
 
 // TODO: Replace with actual API call
 export const fetchJobById = async (id: number): Promise<Job | void> => {
-  fetch(`http://localhost:8000/jobs/${id}`, {
+  return await fetch(`http://localhost:8000/jobs/${id}`, {
     credentials: "include",
     method: "GET",
   })
@@ -109,7 +108,6 @@ export const fetchJobById = async (id: number): Promise<Job | void> => {
     .catch((e) => {
       console.log(e);
     });
-  //return jobs[id];
 };
 
 export const fetchEvents = async (jobId: number): Promise<JobEvent[]> => {
