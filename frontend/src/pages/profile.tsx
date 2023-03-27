@@ -2,6 +2,7 @@ import { Grid, Container, Text } from "@nextui-org/react";
 // import { Cookies } from 'react-cookie';
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/router";
+import { checkUserLoggedIn } from "@/utils/auth";
 
 export default function Profile() {
   const [first_name, setFirst_Name] = useState(null)
@@ -11,16 +12,8 @@ export default function Profile() {
   const [msg, setMsg] = useState(null)
   // const [data, setData] = useState(null)
 
-  const redirect = () => {
-    router.push("/login")
-  }
-
   useEffect(() => {
-    fetch("http://localhost:8000/login", {
-      credentials: "include",
-      method: "GET",
-    }
-    ).then((result) => result.json()).then((data) => {
+    checkUserLoggedIn().then((data) => {
       if ('detail' in data) {
         setMsg(data.detail)
       }
@@ -32,6 +25,9 @@ export default function Profile() {
       if (msg == "Not authenticated") {
         router.push("/login")
       }
+    }).catch((error) => {
+      router.push('/login')
+      console.log(error)
     })
   })
 

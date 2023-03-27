@@ -2,6 +2,7 @@ import { Text, Grid } from "@nextui-org/react";
 // import { Cookies } from 'react-cookie';
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/router";
+import { checkUserLoggedIn } from "@/utils/auth";
 
 
 export default function Dashboard() {
@@ -10,12 +11,7 @@ export default function Dashboard() {
   const [msg, setMsg] = useState(null)
 
   useEffect(() => {
-    fetch("http://localhost:8000/login", {
-      credentials: "include",
-      method: "GET",
-    }
-    ).then((result) => result.json()).then((data) => {
-      // console.log(data.status_code)
+    checkUserLoggedIn().then((data) => {
       if('detail' in data) {
         setMsg(data.detail)
         console.log(data.detail)
@@ -26,6 +22,9 @@ export default function Dashboard() {
       if (msg == "Not authenticated") {
         router.push('/login')
       }
+    }).catch((error) => {
+      router.push('/login')
+      console.log(error)
     })
   })
 
@@ -39,22 +38,3 @@ export default function Dashboard() {
     </>
   );
 }
-
-
-// export async function getServerSideProps() {
-//   const cookie = new Cookies()
-//   const result = await fetch("http://localhost:8000/login", {
-//     credentials: "include",
-//     method: "GET",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     // body: {cookie.get('Value')}
-//   })
-//   const data = result.json()
-
-//   return { props: { data } }
-// }
-
-// export default Dashboard
-

@@ -10,6 +10,7 @@ import {
   Link,
   Container,
 } from "@nextui-org/react";
+import { checkUserLoggedIn } from "@/utils/auth";
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
@@ -23,17 +24,17 @@ export default function SignUp() {
   const router = useRouter();
   const [data, setData] = useState(null)
 
+
   useEffect(() => {
-    fetch("http://localhost:8000/login", {
-      credentials: "include",
-      method: "GET",
-    }
-    ).then((result) => result.json()).then((data) => {
+    checkUserLoggedIn().then((data) => {
       setData(data.message)
       console.log(data.message)
       if (data == "already logged in!") {
         router.push("/")
       }
+    }).catch((error) => {
+      router.push('/')
+      console.log(error)
     })
   })
 
