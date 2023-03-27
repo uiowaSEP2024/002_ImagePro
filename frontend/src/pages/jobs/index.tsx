@@ -18,7 +18,7 @@ export default function Jobs() {
   useEffect(() => {
     async function loadJobs() {
       const data = await fetchJobs();
-      setJobs(data);
+      if (data) setJobs(data);
     }
 
     loadJobs();
