@@ -107,3 +107,38 @@ def test_get_jobs_as_customer(
     assert response.json()[1]["customer_id"] == job2.customer_id
     assert response.json()[1]["provider_id"] == job2.provider_id
     assert response.json()[1]["provider_job_name"] == job2.provider_job_name
+
+
+def test_get_job_as_different_customer(
+    app_client, db, random_provider_user_with_api_key, random_test_user_factory
+):
+    customer_a = random_test_user_factory.get()
+    customer_b = random_test_user_factory.get()
+
+    job = services.create_job(
+        db,
+        schemas.JobCreate(
+            provider_job_id="145254",
+            customer_id=customer_a.id,
+            provider_job_name="Scanning",
+        ),
+        provider=random_provider_user_with_api_key,
+    )
+
+    db.commit()
+    db.refresh(job)
+
+    # Simulate user log in as customer b (different customer from the
+    # one who the job was made for)
+    response = app_client.post(
+        "/login", data={"username": customer_b.email, "password": "abc"}
+    )
+
+    # Grab access token for the different customer
+    access_token = response.json()["access_token"]
+
+    # Use access token in the request to get a job
+    response = app_client.get(f"/jobs/{job.id}", cookies={"access_token": access_token})
+
+    # Response should be rejected
+    assert response.status_code == 403
