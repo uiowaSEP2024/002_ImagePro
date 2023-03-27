@@ -1,35 +1,36 @@
 import { Grid, Container, Text } from "@nextui-org/react";
 // import { Cookies } from 'react-cookie';
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { checkUserLoggedIn } from "@/utils/auth";
 
 export default function Profile() {
-  const [first_name, setFirst_Name] = useState(null)
-  const [last_name, setLast_Name] = useState(null)
-  const [email, setEmail] = useState(null)
+  const [first_name, setFirst_Name] = useState(null);
+  const [last_name, setLast_Name] = useState(null);
+  const [email, setEmail] = useState(null);
   const router = useRouter();
-  const [msg, setMsg] = useState(null)
+  const [msg, setMsg] = useState(null);
   // const [data, setData] = useState(null)
 
   useEffect(() => {
-    checkUserLoggedIn().then((data) => {
-      if ('detail' in data) {
-        setMsg(data.detail)
-      }
-      else{
-        setFirst_Name(data.user.first_name)
-        setLast_Name(data.user.last_name)
-        setEmail(data.user.email)
-      }
-      if (msg == "Not authenticated") {
-        router.push("/login")
-      }
-    }).catch((error) => {
-      router.push('/login')
-      console.log(error)
-    })
-  })
+    checkUserLoggedIn()
+      .then((data) => {
+        if ("detail" in data) {
+          setMsg(data.detail);
+        } else {
+          setFirst_Name(data.user.first_name);
+          setLast_Name(data.user.last_name);
+          setEmail(data.user.email);
+        }
+        if (msg == "Not authenticated") {
+          router.push("/login");
+        }
+      })
+      .catch((error) => {
+        router.push("/login");
+        console.log(error);
+      });
+  }, [router]);
 
   return (
     <Container>
@@ -49,4 +50,4 @@ export default function Profile() {
       </Grid.Container>
     </Container>
   );
-} 
+}
