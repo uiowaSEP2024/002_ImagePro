@@ -1,4 +1,4 @@
-import { fetchJobs, Job, providers } from "@/data";
+import { fetchJobs, Job } from "@/data";
 import { Container, Table, Text } from "@nextui-org/react";
 import NextLink from "next/link";
 import { useState, useEffect } from "react";
@@ -18,7 +18,7 @@ export default function Jobs() {
   useEffect(() => {
     async function loadJobs() {
       const data = await fetchJobs();
-      setJobs(data);
+      if (data) setJobs(data);
     }
 
     loadJobs();
@@ -35,9 +35,9 @@ export default function Jobs() {
         </NextLink>
       );
     case "provider_name":
-      return providers[job.provider_id].name;
+      return "--";
     case "status":
-      return "Complete";
+      return "--";
     default:
       return null;
     }

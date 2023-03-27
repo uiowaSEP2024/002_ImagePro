@@ -1,10 +1,10 @@
-// __tests__/navbar.test.jsx
-
-import { render, screen, RenderResult } from "@testing-library/react";
-import Navbar from "../src/components/Navbar";
+import { render, RenderResult, screen, waitFor } from "@testing-library/react";
+import Profile from "@/pages/profile";
 import "@testing-library/jest-dom";
 import { useRouter } from "next/router";
 
+let documentBody: RenderResult;
+ 
 jest.mock('next/router', () => ({
   useRouter() {
     return ({
@@ -32,9 +32,18 @@ jest.mock('@/utils/auth', () => ({
   },
 }));
 
-describe("NavBar", () => {
+describe("Profile", () => {
 
-  it("renders navbar unchanged", () => {
-    render(<Navbar />);
-  });
+    it('shows initial messages', async () => {
+        expect(router.push).not.toBeCalledWith('/login');
+        render(<Profile />);
+        let documentBody: RenderResult;
+
+        const heading = await waitFor(() =>
+        screen.getByRole("heading", {
+          name: /First Name/i,
+        }));
+    
+        expect(heading).toBeInTheDocument();
+      });
 });

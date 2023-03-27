@@ -31,15 +31,15 @@ export default function JobPage() {
 
   useEffect(() => {
     async function loadJobEvents() {
-      const data = await fetchEvents(jobId as string);
+      const data = await fetchEvents(jobId as unknown as number);
       setEvents(
         data.map((event, index) => ({ ...event, event_number: index + 1 }))
       );
     }
 
     async function loadJob() {
-      const data = await fetchJobById(jobId as string);
-      setJob(data);
+      const data = await fetchJobById(jobId as unknown as number);
+      if (data) setJob(data);
     }
 
     loadJob();
@@ -48,19 +48,19 @@ export default function JobPage() {
 
   const renderCell = (event: JobEventWithNumber, column: ColumnName) => {
     switch (column) {
-      case "name":
-        return <Text>{event.name}</Text>;
-      case "date":
-        return (
-          <Text>{new Date(event.created_at).toISOString().split("T")[0]}</Text>
-        );
-      case "time":
-        return <Text>{new Date(event.created_at).toLocaleTimeString()}</Text>;
+    case "name":
+      return <Text>{event.name}</Text>;
+    case "date":
+      return (
+        event.created_at? <Text>{new Date(event.created_at).toISOString().split("T")[0]}</Text> : null
+      );
+    case "time":
+      return ( event.created_at? <Text>{new Date(event.created_at).toLocaleTimeString()}</Text> : null );
 
-      case "event_number":
-        return <Text>{event.event_number}</Text>;
-      default:
-        return null;
+    case "event_number":
+      return <Text>{event.event_number}</Text>;
+    default:
+      return null;
     }
   };
 
