@@ -42,22 +42,22 @@ def random_test_user(db):
 
 
 @pytest.fixture
-def random_test_user_with_api_key(db, random_test_user):
-    services.create_apikey_for_user(db, random_test_user.id)
-    db.refresh(random_test_user)
-    return random_test_user
+def random_provider_user_with_api_key(db, random_provider_user):
+    services.create_apikey_for_user(db, random_provider_user.id)
+    db.refresh(random_provider_user)
+    return random_provider_user
 
 
 @pytest.fixture
-def job_for_random_user_with_api_key(db, random_test_user_with_api_key):
+def job_for_random_user_with_api_key(db, random_provider_user_with_api_key):
     job = services.create_job(
         db,
         schemas.JobCreate(
             provider_job_id="145254",
-            customer_id=random_test_user_with_api_key.id,
+            customer_id=random_provider_user_with_api_key.id,
             provider_job_name="Scanning",
         ),
-        provider=random_test_user_with_api_key,
+        provider=random_provider_user_with_api_key,
     )
     return job
 
