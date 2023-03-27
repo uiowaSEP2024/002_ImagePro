@@ -36,7 +36,12 @@ def random_test_user(db):
     random_tag = random.randint(0, 1000000)
     test_user = services.create_user(
         db,
-        schemas.UserCreate(email=f"testuser_{random_tag}@example.com", password="abc"),
+        schemas.UserCreate(
+            email=f"testuser_{random_tag}@example.com",
+            password="abc",
+            first_name="random",
+            last_name="last",
+        ),
     )
     return test_user
 
@@ -55,7 +60,10 @@ def random_provider_user(db):
     test_provider_user = services.create_user(
         db,
         schemas.UserCreate(
-            email=f"test-provider-user_{random_tag}@example.com", password="abc"
+            email=f"test-provider-user_{random_tag}@example.com",
+            password="abc",
+            first_name="first",
+            last_name="last",
         ),
     )
     return test_provider_user
