@@ -22,21 +22,22 @@ export default function SignUp() {
   const [notificationMessage, setNotificationMessage] = useState("");
 
   const router = useRouter();
-  const [data, setData] = useState(null)
-
+  const [data, setData] = useState(null);
 
   useEffect(() => {
-    checkUserLoggedIn().then((data) => {
-      setData(data.message)
-      console.log(data.message)
-      if (data == "already logged in!") {
-        router.push("/")
-      }
-    }).catch((error) => {
-      router.push('/')
-      console.log(error)
-    })
-  })
+    checkUserLoggedIn()
+      .then((data) => {
+        setData(data.message);
+        console.log(data.message);
+        if (data == "already logged in!") {
+          router.push("/");
+        }
+      })
+      .catch((error) => {
+        router.push("/");
+        console.log(error);
+      });
+  }, [router]);
 
   const sendSignUpReq = () => {
     if (confirmPassword !== password) {
@@ -53,7 +54,7 @@ export default function SignUp() {
         email: email,
         password: password,
         first_name: first_name,
-        last_name: last_name
+        last_name: last_name,
       }),
     })
       .then((response) => response.json())
@@ -80,7 +81,8 @@ export default function SignUp() {
           <Text
             size={24}
             weight="bold"
-            h1 align-items="center"
+            h1
+            align-items="center"
             css={{
               as: "center",
               mb: "20px",
@@ -163,5 +165,4 @@ export default function SignUp() {
       </Container>
     </div>
   );
- 
 }

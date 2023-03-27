@@ -1,5 +1,5 @@
 import { Text, Grid } from "@nextui-org/react";
-import { useState, useEffect } from 'react';
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { checkUserLoggedIn } from "@/utils/auth";
 
@@ -7,15 +7,17 @@ export default function Billing() {
   const router = useRouter();
 
   useEffect(() => {
-    checkUserLoggedIn().then((data) => {
-      if (data.detail == "Not authenticated") {
-        router.push('/login')
-      }
-    }).catch((error) => {
-      router.push('/login')
-      console.log(error)
-    })
-  })
+    checkUserLoggedIn()
+      .then((data) => {
+        if (data.detail == "Not authenticated") {
+          router.push("/login");
+        }
+      })
+      .catch((error) => {
+        router.push("/login");
+        console.log(error);
+      });
+  }, [router]);
 
   return (
     <>
