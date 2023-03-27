@@ -15,9 +15,7 @@ def setup_app_settings(app_env):
     return config.settings
 
 
-def create_conn(app_env):
-    settings = setup_app_settings(app_env)
-
+def create_conn(settings):
     conn = psycopg2.connect(
         user=settings.postgres_user,
         password=settings.postgres_password,
@@ -29,47 +27,47 @@ def create_conn(app_env):
     return conn
 
 
-def create_db(name, app_env):
+def create_db(settings):
     conn = None
 
     try:
-        conn = create_conn(app_env)
+        conn = create_conn(settings)
 
         # Creating a cursor object using the cursor() method
         cursor = conn.cursor()
 
         # Preparing query to create a database
-        sql = f"""CREATE DATABASE {name}"""
+        sql = f"""CREATE DATABASE {settings.postgres_db}"""
 
         # Creating a database
         cursor.execute(sql)
-        print(f"Database {name} created successfully...")
+        print(f"Database {settings.postgres_db} created successfully...")
 
     except Exception as e:
-        print(f"Database {name} creation failed.")
+        print(f"Database {settings.postgres_db} creation failed.")
         print(e)
 
     finally:
         conn.close() if conn else None
 
 
-def drop_db(name, app_env):
+def drop_db(settings):
     conn = None
     try:
-        conn = create_conn(app_env)
+        conn = create_conn(settings)
 
         # Creating a cursor object using the cursor() method
         cursor = conn.cursor()
 
         # Preparing query to create a database
-        sql = f"""DROP DATABASE IF EXISTS {name}"""
+        sql = f"""DROP DATABASE IF EXISTS {settings.postgres_db}"""
 
         # Creating a database
         cursor.execute(sql)
-        print(f"Database {name} dropped successfully...")
+        print(f"Database {settings.postgres_db} dropped successfully...")
     except Exception as e:
         print(e)
-        print(f"Database {name} creation failed")
+        print(f"Database {settings.postgres_db} creation failed")
 
     finally:
         conn.close() if conn else None
@@ -81,23 +79,28 @@ DB Creations
 
 
 def db_test_drop():
-    drop_db("db_test", "test")
+    settings = setup_app_settings("test")
+    drop_db(settings)
 
 
 def db_dev_drop():
-    drop_db("db_dev", "development")
+    settings = setup_app_settings("development")
+    drop_db(settings)
 
 
 def db_test_create():
-    create_db("db_test", "test")
+    settings = setup_app_settings("test")
+    create_db(settings)
 
 
 def db_dev_create():
-    create_db("db_dev", "development")
+    settings = setup_app_settings("development")
+    create_db(settings)
 
 
 def db_prod_create():
-    create_db("postgres", "production")
+    settings = setup_app_settings("production")
+    create_db(settings)
 
 
 """
@@ -145,10 +148,137 @@ def db_dev_reset():
     db_dev_create()
 
 
+users_data = [
+    # Customers
+    dict(email="johndoe@gmail.com", password="abc"),
+    dict(email="janeblack@gmail.com", password="abc"),
+    # Providers
+    dict(email="noodlesco@gmail.com", password="abc"),
+    dict(email="botimage@gmail.com", password="abc"),
+]
+
+jobs_data = [
+    # Job 1
+    dict(
+        customer_email="johndoe@gmail.com",
+        provider_email="botimage@gmail.com",
+        provider_job_id="botimage-123",
+        provider_job_name="KidneyV1",
+    ),
+    # Job 2
+    dict(
+        customer_email="janeblack@gmail.com",
+        provider_email="botimage@gmail.com",
+        provider_job_id="noodlesco-123",
+        provider_job_name="LungsV3",
+    ),
+]
+
+
+events_data = [
+    #  Job botimage-123, Event 2
+    dict(
+        provider_job_id="botimage-123",
+        kind="step",
+        name="Scanning Left Kidney",
+    ),
+    #  Job botimage-123, Event 3
+    dict(
+        provider_job_id="botimage-123",
+        kind="step",
+        name="Scanning Right Kidney",
+    ),
+    #  Job botimage-123, Event 4
+    dict(
+        provider_job_id="botimage-123",
+        kind="step",
+        name="Analyze Kidney Results",
+    ),
+    #  Job noodlesco-123, Event 2
+    dict(
+        provider_job_id="noodlesco-123",
+        kind="step",
+        name="Scanning Left Lung",
+    ),
+    #  Job noodlesco-123, Event 3
+    dict(
+        provider_job_id="noodlesco-123",
+        kind="step",
+        name="Scanning Right Lung",
+    ),
+    #  Job noodlesco-123, Event 4
+    dict(
+        provider_job_id="noodlesco-123",
+        kind="step",
+        name="Analyze Lung Results",
+    ),
+]
+
+
+def db_dev_seed():
+    db_dev_drop()
+    db_dev_create()
+    db_dev_migrate_up()
+
+    from app import models
+    from config.database import SessionLocal
+    from app.internal import get_password_hash
+
+    db = SessionLocal()
+
+    users = {}
+    jobs = {}
+    events = {}
+
+    for data in users_data:
+        user = models.User(
+            email=data["email"], hashed_password=get_password_hash(data["password"])
+        )
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+
+        users[user.email] = user
+
+    for data in jobs_data:
+        customer_id = users[data["customer_email"]].id
+        provider_id = users[data["provider_email"]].id
+
+        job = models.Job(
+            customer_id=customer_id,
+            provider_id=provider_id,
+            provider_job_name=data["provider_job_name"],
+            provider_job_id=data["provider_job_id"],
+        )
+
+        db.add(job)
+        db.commit()
+        db.refresh(job)
+
+        jobs[job.provider_job_id] = job
+
+    for data in events_data:
+        job = jobs[data["provider_job_id"]]
+
+        event = models.Event(
+            job_id=job.id,
+            kind=data["kind"],
+            name=data["name"],
+        )
+
+        db.add(event)
+        db.commit()
+        db.refresh(event)
+
+        events[event.id] = event
+
+
 # fmt: off
 commands = {
     "db:test:reset": db_test_reset,
     "db:dev:reset": db_dev_reset,
+
+    "db:dev:seed": db_dev_seed,
 
     "db:dev:upgrade": db_dev_migrate_up,
     "db:test:upgrade": db_test_migrate_up,
