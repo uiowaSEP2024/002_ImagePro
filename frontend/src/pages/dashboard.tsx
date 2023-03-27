@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from "next/router";
 import { checkUserLoggedIn } from "@/utils/auth";
 
+import { Card, Container, Link } from "@nextui-org/react";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -30,11 +31,22 @@ export default function Dashboard() {
 
   return (
     <>
-      <Grid.Container gap={2} justify="center">
+      <Container gap={2} justify="center">
         <Text h1 align-items="center">
           Welcome {data}
         </Text>
-      </Grid.Container>
+
+        <Card>
+          <Card.Header>
+            <Link css={{ display: "block", width: "100%" }} href="/jobs">
+              <Text h3>Jobs ↗️</Text>
+            </Link>
+          </Card.Header>
+          <Card.Body>
+            <Text>View past and currently active jobs</Text>
+          </Card.Body>
+        </Card>
+      </Container>
     </>
   );
 }
