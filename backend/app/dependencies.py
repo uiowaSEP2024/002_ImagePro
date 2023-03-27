@@ -71,8 +71,6 @@ class OAuth2HttpCookieBearer(OAuth2):
                 return None
         return param
 
-        
-
 
 oauth2_http_cookie_bearer_scheme = OAuth2HttpCookieBearer(tokenUrl="login")
 
