@@ -15,7 +15,7 @@ export type Job = {
   customer_id: number;
   provider_job_id: string;
   provider_id: number;
-  created_at: string;
+  created_at?: string;
 };
 
 export const jobs: Record<string, Job> = {
@@ -47,35 +47,71 @@ export const jobs: Record<string, Job> = {
   },
 };
 
-export const events = [
+export const events: JobEvent[] = [
   {
     id: 1,
+    job_id: 5,
+    kind: "Step",
     name: "Lung scan created",
     created_at: "2023-03-22T00:00:00.000Z",
   },
   {
     id: 2,
+    job_id: 5,
+    kind: "Step",
     name: "Lung scan started",
     created_at: "2023-03-23T00:00:00.000Z",
   },
   {
     id: 3,
+    job_id: 5,
+    kind: "Step",
     name: "Lung scan completed",
     created_at: "2023-03-24T00:00:00.000Z",
   },
 ];
 
-export type JobEvent = typeof events[number];
+export type JobEvent = {
+  kind: string;
+  name: string;
+  job_id: number;
+  id: number;
+  created_at?: string;
+};
 
-export const fetchJobs = async (): Promise<Job[]> => {
-  return Object.values(jobs);
+export const fetchJobs = async (): Promise<Job[] | void> => {
+  fetch("http://localhost:8000/jobs", {
+    credentials: "include",
+    method: "GET",
+  })
+    .then(async (response) => {
+      if (response.status == 200) {
+        return (await response.json()) as Job[];
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+  //return Object.values(jobs);
 };
 
 // TODO: Replace with actual API call
-export const fetchJobById = async (id: string): Promise<Job> => {
-  return jobs[id];
+export const fetchJobById = async (id: number): Promise<Job | void> => {
+  fetch(`http://localhost:8000/jobs/${id}`, {
+    credentials: "include",
+    method: "GET",
+  })
+    .then(async (response) => {
+      if (response.status == 200) {
+        return (await response.json()) as Job;
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+  //return jobs[id];
 };
 
-export const fetchEvents = async (jobId: string): Promise<JobEvent[]> => {
+export const fetchEvents = async (jobId: number): Promise<JobEvent[]> => {
   return events.map((event) => ({ ...event, job_id: jobId }));
 };
