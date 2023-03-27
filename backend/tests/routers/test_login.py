@@ -6,7 +6,10 @@ from config.database import SessionLocal
 def test_login(app_client):
     db = SessionLocal()
     test_user = models.User(
-        email="test123@example.com", hashed_password=get_password_hash("abc")
+        email="test123@example.com",
+        hashed_password=get_password_hash("abc"),
+        first_name="test",
+        last_name="123",
     )
     db.add(test_user)
     db.commit()
