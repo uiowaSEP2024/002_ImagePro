@@ -25,9 +25,8 @@ def test_create_event(app_client, job_for_random_user_with_api_key, db):
     db.refresh(job)
     assert response.json()["id"] == job.events[0].id
     assert (
-            response.json()["job_id"]
-            == services.get_job_by_provider_job_id(
-        db=db, provider_job_id=job.provider_job_id, provider_id=job.provider_id
-    ).id
+        response.json()["job_id"]
+        == services.get_job_by_provider_job_id(
+            db=db, provider_job_id=job.provider_job_id, provider_id=job.provider_id
+        ).id
     )
-
