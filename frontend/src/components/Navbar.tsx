@@ -3,6 +3,7 @@ import React from "react";
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/router";
 
+
 function TopNavbar() {
   const router = useRouter();
   const [data, setData] = useState(null)
@@ -26,6 +27,7 @@ function TopNavbar() {
       console.log(data.detail)
     })
   })
+
   if (data == "Not authenticated") {
     return (
       <Navbar variant="sticky">
