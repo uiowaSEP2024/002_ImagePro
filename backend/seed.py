@@ -2,6 +2,7 @@
 users = {}
 jobs = {}
 events = {}
+api_keys = {}
 
 # Data to be seeded for each entity
 USERS_DATA = [
@@ -11,6 +12,12 @@ USERS_DATA = [
     # Providers
     dict(email="noodlesco@gmail.com", password="abc"),
     dict(email="botimage@gmail.com", password="abc"),
+]
+
+API_KEYS_DATA = [
+    # Providers
+    dict(email="noodlesco@gmail.com", key="VCm4-RBXxgtg__yqxf0SYGLHGn8"),
+    dict(email="botimage@gmail.com", key="q-jAqPWCRGr2u6SeK6r6U0LBfJA"),
 ]
 
 JOBS_DATA = [
@@ -88,6 +95,24 @@ def seed_users(db):
         users[user.email] = user
 
 
+def seed_api_keys(db):
+    print("Seeding Api Keys")
+    from app import models
+
+    for api_key_data in API_KEYS_DATA:
+        print(f"  Seeding api key: {str(api_key_data)}")
+        user = users[api_key_data["email"]]
+        api_key = models.Apikey(
+            user_id=user.id,
+            key=api_key_data["key"],
+        )
+        db.add(api_key)
+        db.commit()
+        db.refresh(api_key)
+
+        api_keys[api_key.id] = api_key
+
+
 def seed_jobs(db):
     print("Seeding Jobs")
     from app import models
@@ -138,5 +163,6 @@ def seed_db():
 
     db = SessionLocal()
     seed_users(db)
+    seed_api_keys(db)
     seed_jobs(db)
     seed_events(db)
