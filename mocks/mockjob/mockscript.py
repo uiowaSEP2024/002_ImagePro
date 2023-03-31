@@ -36,7 +36,7 @@ def run_mock_job(customer_id=None):
     create_job_response = requests.post('http://localhost:8000/jobs',
                                         json={
                                             "provider_job_id": job_id,
-                                            "customer_id": 1,
+                                            "customer_id": customer_id,
                                             "provider_job_name": "MockscriptJob"
                                         },
                                         headers={"x-api_key": TEAM3_API_KEY}
@@ -68,21 +68,26 @@ def run_mock_job(customer_id=None):
             # just so we don't have to sit and wait for file to be logged to
             print(json_str)
 
-            requests.post('http://localhost:8000/events', 
-            json = {
-                "kind": "step",
-                "name": "step {}".format(i),
-                "provider_job_id": job_id
-            },
-            headers={"x-api_key": TEAM3_API_KEY}
-            )
+            is_last_step = i == steps - 1
+            if is_last_step:
+                kind = 'complete'
+            else:
+                kind = 'step'
+
+            requests.post('http://localhost:8000/events',
+                          json={
+                              "kind": kind,
+                              "name": "step {}".format(i),
+                              "provider_job_id": job_id
+                          },
+                          headers={"x-api_key": TEAM3_API_KEY}
+                          )
 
 
 if __name__ == "__main__":
     sample_customer_ids = [
-        "7896378e-7f3e-4d59-8ff9-82cd3058ab61",
-        "56b5794e-a0f9-49be-877b-c5728d3ae388",
-        "a74d4f87-762a-48b0-9a41-ee57640cc790",
+        1,  # johndoe@gmail.com see backend/seed.py
+        2,  # janeblack@gmail.com see backend/seed.py
     ]
 
     # Select a random customer
