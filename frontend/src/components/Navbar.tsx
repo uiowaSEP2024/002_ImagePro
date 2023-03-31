@@ -57,6 +57,7 @@ function TopNavbar() {
           <Navbar.Link href="/">Home</Navbar.Link>
           <Navbar.Link href="/dashboard">Dashboard</Navbar.Link>
           <Navbar.Link href="/billing">Billing</Navbar.Link>
+          <Navbar.Link href="/apikeys">Generate API Keys</Navbar.Link>
         </Navbar.Content>
         <Navbar.Content enableCursorHighlight hideIn="xs">
           <Navbar.Link href="/profile">My Profile</Navbar.Link>
