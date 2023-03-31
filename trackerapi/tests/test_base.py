@@ -1,6 +1,6 @@
 import pytest
 
-from api import TrackerAPI
+from trackerapi import TrackerAPI
 
 
 def test_init():
