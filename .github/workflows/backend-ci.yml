@@ -80,6 +80,7 @@ jobs:
           remove-link-from-badge: false
           junitxml-path: backend/pytest.xml
           junitxml-title: Backend Test Summary
+          unique-id-for-comment: "backend-unit-tests"
 
   shellcheck:
     name: Shellcheck
