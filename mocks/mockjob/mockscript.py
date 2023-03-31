@@ -1,8 +1,16 @@
+import os
 import uuid
 import json
 import time
 from datetime import datetime
 import random
+
+from dotenv import load_dotenv
+import requests
+
+load_dotenv()
+
+TEAM3_API_KEY = os.environ.get('TEAM3_API_KEY')
 
 LOG_FILE_PATH = "logs.txt"
 
@@ -17,9 +25,25 @@ def printf(file, data):
     file.write(data)
 
 
+# Send request to create the JOB
+# Replace with send_event(....)
+
 def run_mock_job(customer_id=None):
     steps = 20
     job_id = generate_uuid()
+
+    # Send request to create job
+    create_job_response = requests.post('http://localhost:8000/jobs',
+                                        json={
+                                            "provider_job_id": job_id,
+                                            "customer_id": 1,
+                                            "provider_job_name": "MockscriptJob"
+                                        },
+                                        headers={"x-api_key": TEAM3_API_KEY}
+                                        )
+
+    if create_job_response.status_code != 200:
+        raise Exception("Failed to initialize job with service!")
 
     with open(LOG_FILE_PATH, "a+") as outfile:
         # Do a dummy job for N steps
