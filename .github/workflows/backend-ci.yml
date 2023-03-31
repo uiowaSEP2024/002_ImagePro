@@ -78,7 +78,8 @@ jobs:
           report-only-changed-files: false
           remove-link-from-badge: false
           junitxml-path: backend/pytest.xml
-          junitxml-title: Test Summary
+          junitxml-title: Backend Test Summary
+          unique-id-for-comment: "backend-unit-tests"
 
   shellcheck:
     name: Shellcheck
