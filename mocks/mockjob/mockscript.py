@@ -55,18 +55,27 @@ def run_mock_job(customer_id=None):
             json_data = {
                 "job_id": job_id,
                 "customer_id": customer_id,
-                "step": str(i + 1),
+                "step": "step {}".format(i),
                 "time": str(datetime.now()),
             }
 
             json_str = json.dumps(json_data)
 
             # Print json to file
-            printf(outfile, json_str + "\n")
+            # printf(outfile, json_str + "\n")
 
             # Convenience print to console for live log
             # just so we don't have to sit and wait for file to be logged to
             print(json_str)
+
+            requests.post('http://localhost:8000/events', 
+            json = {
+                "kind": "step",
+                "name": "step {}".format(i),
+                "provider_job_id": job_id
+            },
+            headers={"x-api_key": TEAM3_API_KEY}
+            )
 
 
 if __name__ == "__main__":
