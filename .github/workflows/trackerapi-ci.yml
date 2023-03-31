@@ -46,6 +46,7 @@ jobs:
           remove-link-from-badge: false
           junitxml-path: trackerapi/pytest.xml
           junitxml-title: Tracker API Test Summary
+          unique-id-for-comment: "trackerapi-unit-tests"
 
   shellcheck:
     name: Shellcheck
