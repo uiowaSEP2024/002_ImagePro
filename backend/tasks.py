@@ -15,9 +15,7 @@ def setup_app_settings(app_env):
     return config.settings
 
 
-def create_conn(app_env):
-    settings = setup_app_settings(app_env)
-
+def create_conn(settings):
     conn = psycopg2.connect(
         user=settings.postgres_user,
         password=settings.postgres_password,
@@ -29,47 +27,47 @@ def create_conn(app_env):
     return conn
 
 
-def create_db(name, app_env):
+def create_db(settings):
     conn = None
 
     try:
-        conn = create_conn(app_env)
+        conn = create_conn(settings)
 
         # Creating a cursor object using the cursor() method
         cursor = conn.cursor()
 
         # Preparing query to create a database
-        sql = f"""CREATE DATABASE {name}"""
+        sql = f"""CREATE DATABASE {settings.postgres_db}"""
 
         # Creating a database
         cursor.execute(sql)
-        print(f"Database {name} created successfully...")
+        print(f"Database {settings.postgres_db} created successfully...")
 
     except Exception as e:
-        print(f"Database {name} creation failed.")
+        print(f"Database {settings.postgres_db} creation failed.")
         print(e)
 
     finally:
         conn.close() if conn else None
 
 
-def drop_db(name, app_env):
+def drop_db(settings):
     conn = None
     try:
-        conn = create_conn(app_env)
+        conn = create_conn(settings)
 
         # Creating a cursor object using the cursor() method
         cursor = conn.cursor()
 
         # Preparing query to create a database
-        sql = f"""DROP DATABASE IF EXISTS {name}"""
+        sql = f"""DROP DATABASE IF EXISTS {settings.postgres_db}"""
 
         # Creating a database
         cursor.execute(sql)
-        print(f"Database {name} dropped successfully...")
+        print(f"Database {settings.postgres_db} dropped successfully...")
     except Exception as e:
         print(e)
-        print(f"Database {name} creation failed")
+        print(f"Database {settings.postgres_db} creation failed")
 
     finally:
         conn.close() if conn else None
@@ -81,23 +79,28 @@ DB Creations
 
 
 def db_test_drop():
-    drop_db("db_test", "test")
+    settings = setup_app_settings("test")
+    drop_db(settings)
 
 
 def db_dev_drop():
-    drop_db("db_dev", "development")
+    settings = setup_app_settings("development")
+    drop_db(settings)
 
 
 def db_test_create():
-    create_db("db_test", "test")
+    settings = setup_app_settings("test")
+    create_db(settings)
 
 
 def db_dev_create():
-    create_db("db_dev", "development")
+    settings = setup_app_settings("development")
+    create_db(settings)
 
 
 def db_prod_create():
-    create_db("postgres", "production")
+    settings = setup_app_settings("production")
+    create_db(settings)
 
 
 """
@@ -145,10 +148,19 @@ def db_dev_reset():
     db_dev_create()
 
 
+def db_dev_seed():
+    setup_app_settings("development")
+    from seed import seed_db
+
+    seed_db()
+
+
 # fmt: off
 commands = {
     "db:test:reset": db_test_reset,
     "db:dev:reset": db_dev_reset,
+
+    "db:dev:seed": db_dev_seed,
 
     "db:dev:upgrade": db_dev_migrate_up,
     "db:test:upgrade": db_test_migrate_up,
