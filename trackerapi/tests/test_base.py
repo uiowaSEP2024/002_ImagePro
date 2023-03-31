@@ -1,6 +1,6 @@
 import pytest
 
-from api import *
+from api import TrackerAPI
 
 
 def test_init():
@@ -10,5 +10,5 @@ def test_init():
 
 
 def test_init_without_api_key():
-    with pytest.raises(TypeError) as exc:
+    with pytest.raises(TypeError):
         trackerapi = TrackerAPI()
