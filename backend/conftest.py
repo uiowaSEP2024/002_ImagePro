@@ -1,14 +1,19 @@
+import os
 import random
 
-from tasks import setup_app_settings
-
-# NB: this should happen before any app imports to ensure the environment is set
-setup_app_settings("test")
 
 import pytest
 from app import schemas, services
 from app.models.base import truncate_all_tables
 from fastapi.testclient import TestClient
+
+from config import config
+
+from app.main import app
+
+# NB: this should happen before any app imports to ensure the environment is set
+
+config.setup("test")
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -19,16 +24,12 @@ def run_around_tests():
 
 @pytest.fixture
 def app_client():
-    from app.main import app
-
     return TestClient(app)
 
 
 @pytest.fixture
 def db():
-    from config.database import SessionLocal
-
-    return SessionLocal()
+    return config.db.SessionLocal()
 
 
 @pytest.fixture
