@@ -35,6 +35,7 @@ class Config:
 
         print(f"Running in app_env: {self.settings.app_env}")
         print(f"Running with postgres_server: {self.settings.postgres_server}")
+        print(f"Running with postgres_db: {self.settings.postgres_db}")
 
         return self.settings
 
