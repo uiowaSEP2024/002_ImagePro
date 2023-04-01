@@ -1,13 +1,13 @@
 import pytest
 import sqlalchemy
 
-from config.database import SessionLocal
+from config import config
 from app.schemas import UserCreate
 from app.services.users import create_user
 
 
 def test_users():
-    db = SessionLocal()
+    db = config.db.SessionLocal()
     db_user = create_user(
         db,
         UserCreate.parse_obj(
@@ -28,7 +28,7 @@ def test_users():
 
 def test_unique_user_email():
     with pytest.raises(sqlalchemy.exc.IntegrityError):
-        db = SessionLocal()
+        db = config.db.SessionLocal()
         create_user(
             db,
             UserCreate.parse_obj(

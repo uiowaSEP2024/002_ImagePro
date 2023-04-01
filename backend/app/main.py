@@ -8,6 +8,7 @@ from app.routers import (
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from mangum import Mangum
+from config import config
 
 app = FastAPI()
 
@@ -29,11 +30,17 @@ def read_root():
     return {"msg": "Hello World"}
 
 
+@app.on_event("startup")
+async def startup_event():
+    config.setup()
+
+
 app.include_router(users_router)
 app.include_router(apikeys_router)
 app.include_router(auth_router)
 app.include_router(jobs_router)
 app.include_router(events_router)
+
 
 # Create handler for AWS lambda
 handler = Mangum(app, lifespan="off")

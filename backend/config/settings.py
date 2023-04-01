@@ -1,10 +1,6 @@
-import os
-from pathlib import Path
 from typing import Optional
-
 from pydantic import BaseSettings
-
-from root import ROOT_DIR, root_path
+from root import root_path
 
 
 class Settings(BaseSettings):
@@ -28,7 +24,7 @@ class Settings(BaseSettings):
         return f"postgresql://{self.postgres_user}:{self.postgres_password}@{self.postgres_server}/{self.postgres_db}"
 
     class Config:
-        env_file = Path(ROOT_DIR) / ".env"
+        env_file = root_path(".env")
 
 
 class ProdSettings(Settings):
@@ -40,7 +36,7 @@ class ProdSettings(Settings):
 
 
 class TestSettings(Settings):
-    app_env: str = "testing"
+    app_env: str = "test"
 
     class Config:
         env_file = root_path(".env.test")
@@ -56,23 +52,3 @@ class LocalSettings(Settings):
 settings_dict = dict(
     development=LocalSettings, production=ProdSettings, test=TestSettings
 )
-
-APP_ENV = os.environ.get("APP_ENV")
-
-# Load settings corresponding to the APP_ENV
-settings_cls = settings_dict.get(APP_ENV.lower())
-
-if not settings_cls:
-    valid_keys = " | ".join(settings_dict.keys())
-    raise EnvironmentError(
-        f"Invalid value for APP_ENV environment variable. Expected any of: {valid_keys} \n"
-        f"If running command from a shell, run the command as follows:\n"
-        f"\tAPP_ENV=<environment> <command>\n"
-        f"Alternatively, if running via AWS Lambda, set the APP_ENV at\n"
-        f"\tConfiguration->Environment variables->Edit"
-    )
-
-# Initialize application settings
-settings = settings_cls()
-print(f"Running in app_env: {settings.app_env}")
-print(f"Running with postgres_server: {settings.postgres_server}")
