@@ -1,8 +1,6 @@
 # Ignore Python Venv
 venv
 
-# Ignore mocksript live logs for clean commits
-logs.txt
 
 #Ignore pycache
 __pycache__
