@@ -19,9 +19,7 @@ def create_job(
 
 
 # TODO: another route for get_provider_jobs
-@router.get(
-    "/jobs",
-)
+@router.get("/jobs", response_model=List[schemas.Job])
 def get_customer_jobs(
     db: Session = Depends(get_db),
     user=Depends(get_current_user_from_token),
