@@ -58,7 +58,7 @@ EVENTS_DATA = [
     #  Job 1, Event 3
     dict(
         provider_job_id="botimage-123",
-        kind="step",
+        kind="complete",
         name="Analyze Kidney Results",
     ),
     #  Job 2, Event 1
@@ -76,7 +76,7 @@ EVENTS_DATA = [
     #  Job 2, Event 3
     dict(
         provider_job_id="noodlesco-123",
-        kind="step",
+        kind="complete",
         name="Analyze Lung Results",
     ),
 ]
