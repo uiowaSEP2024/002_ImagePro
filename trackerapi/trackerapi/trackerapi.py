@@ -44,6 +44,18 @@ class TrackerAPI:
         )
         return Job(provider_job_id=id, api=self)
 
+    def send_event(self, id=None, kind=None, name=None, provider_job_id=None):
+        response = self.__post_request(
+            "http://localhost:8000/events",
+            {"kind": kind, "name": name, "provider_job_id": provider_job_id},
+        )
+        return Event(event_id=response["id"], api=self)
+
+    def send_event_metadata(self, event_id, metadata):
+        response = self.__patch_request(
+            "http://localhost:8000/events", {"id": event_id, "metadata": metadata}
+        )
+
 
 class Job:
     def __init__(self, api: TrackerAPI, provider_job_id=None):
