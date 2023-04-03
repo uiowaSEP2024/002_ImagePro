@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 const columns = [
   { name: "Event No.", uid: "event_number" },
   { name: "Name", uid: "name" },
+  { name: "Kind", uid: "kind" },
   { name: "Date", uid: "date" },
   { name: "Time", uid: "time" },
 ];
@@ -52,6 +53,8 @@ export default function JobPage() {
     switch (column) {
       case "name":
         return <Text>{event.name}</Text>;
+      case "kind":
+        return <Text>{event.kind}</Text>;
       case "date":
         return event.created_at ? (
           <Text>{new Date(event.created_at).toISOString().split("T")[0]}</Text>
