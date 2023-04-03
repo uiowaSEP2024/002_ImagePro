@@ -15,8 +15,8 @@ USERS_DATA = [
         last_name="Black",
     ),
     # Providers
-    dict(email="noodlesco@gmail.com", password="abc", first_name="BotImage"),
-    dict(email="botimage@gmail.com", password="abc", last_name="NoodlesCo"),
+    dict(email="noodlesco@gmail.com", password="abc", first_name="NoodlesCo"),
+    dict(email="botimage@gmail.com", password="abc", first_name="BotImage"),
 ]
 
 API_KEYS_DATA = [
