@@ -3,16 +3,17 @@ import sys
 import os
 import psycopg2
 
+from config import config
+from seed import seed_db
 
-def setup_app_settings(app_env):
-    """
-    Programmatically sets the APP_ENV variable for the application
-    So that when settings are initialized, they are initialized with a known APP_ENV.
-    """
-    os.environ["APP_ENV"] = app_env
-    import config.settings
 
-    return config.settings
+def task(func):
+    def logged(*args, **kwargs):
+        print(f"---- {func.__name__} ---")
+        result = func(*args, **kwargs)
+        return result
+
+    return logged
 
 
 def create_conn(settings):
@@ -79,28 +80,31 @@ DB Creations
 
 
 def db_test_drop():
-    settings = setup_app_settings("test")
-    drop_db(settings)
+    config.setup("test")
+    drop_db(config.settings)
 
 
 def db_dev_drop():
-    settings = setup_app_settings("development")
-    drop_db(settings)
+    config.setup("development")
+    drop_db(config.settings)
 
 
+@task
 def db_test_create():
-    settings = setup_app_settings("test")
-    create_db(settings)
+    config.setup("test")
+    create_db(config.settings)
 
 
+@task
 def db_dev_create():
-    settings = setup_app_settings("development")
-    create_db(settings)
+    config.setup("development")
+    create_db(config.settings)
 
 
+@task
 def db_prod_create():
-    settings = setup_app_settings("production")
-    create_db(settings)
+    config.setup("production")
+    create_db(config.settings)
 
 
 """
@@ -108,50 +112,55 @@ Migrations
 """
 
 
-def db_test_migrate(revision="head"):
-    db_test_create()
-    os.system(f"alembic upgrade {revision}")
+def run_migration(direction, revision):
+    os.system(f"APP_ENV={config.settings.app_env} alembic {direction} {revision}")
 
 
-def db_migrate(app_env, direction, revision):
-    os.environ["APP_ENV"] = app_env
-    os.system(f"alembic {direction} {revision}")
+@task
+def db_dev_upgrade(revision="head"):
+    config.setup("development")
+    run_migration("upgrade", revision)
 
 
-def db_dev_migrate_up(revision="head"):
-    db_migrate("development", "upgrade", revision)
+@task
+def db_dev_downgrade(revision="base"):
+    config.setup("development")
+    run_migration("downgrade", revision)
 
 
-def db_dev_migrate_down(revision="base"):
-    db_migrate("development", "downgrade", revision)
+@task
+def db_test_downgrade(revision="base"):
+    config.setup("test")
+    run_migration("downgrade", revision)
 
 
-def db_test_migrate_down(revision="base"):
-    db_migrate("test", "downgrade", revision)
+@task
+def db_test_upgrade(revision="head"):
+    config.setup("test")
+    run_migration("upgrade", revision)
 
 
-def db_test_migrate_up(revision="head"):
-    db_migrate("test", "upgrade", revision)
+@task
+def db_prod_upgrade(revision="head"):
+    config.setup("production")
+    run_migration("upgrade", revision)
 
 
-def db_prod_migrate_up(revision="head"):
-    db_migrate("production", "upgrade", revision)
-
-
+@task
 def db_test_reset():
     db_test_drop()
     db_test_create()
 
 
+@task
 def db_dev_reset():
     db_dev_drop()
     db_dev_create()
 
 
+@task
 def db_dev_seed():
-    setup_app_settings("development")
-    from seed import seed_db
-
+    config.setup("development")
     seed_db()
 
 
@@ -162,12 +171,12 @@ commands = {
 
     "db:dev:seed": db_dev_seed,
 
-    "db:dev:upgrade": db_dev_migrate_up,
-    "db:test:upgrade": db_test_migrate_up,
-    "db:prod:upgrade": db_prod_migrate_up,
+    "db:dev:upgrade": db_dev_upgrade,
+    "db:test:upgrade": db_test_upgrade,
+    "db:prod:upgrade": db_prod_upgrade,
 
-    "db:dev:downgrade": db_dev_migrate_down,
-    "db:test:downgrade": db_test_migrate_down,
+    "db:dev:downgrade": db_dev_downgrade,
+    "db:test:downgrade": db_test_downgrade,
 }
 
 parser = argparse.ArgumentParser(prog="botimage")
@@ -175,6 +184,9 @@ parser = argparse.ArgumentParser(prog="botimage")
 parser.add_argument('command', choices=commands.keys())
 
 if __name__ == "__main__":
+    file_name = __file__.split("/")[-1]
+    print(f'--- {file_name} ---')
+
     args = sys.argv[1:]
     print(f'Received args: {args}')
 
