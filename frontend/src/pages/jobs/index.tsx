@@ -47,6 +47,7 @@ export default function Jobs() {
     <Container>
       <Text h1>Jobs</Text>
       <Table
+        lined
         bordered
         shadow={false}
         color="primary"
