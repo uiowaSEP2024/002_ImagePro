@@ -47,3 +47,21 @@ def get_job(
         raise HTTPException(status_code=403, detail="Not allowed")
 
     return job
+
+
+@router.get("/jobs/{job_id}/events", response_model=List[schemas.Event])
+def get_job_events(
+    job_id: int,
+    db: Session = Depends(get_db),
+    user=Depends(get_current_user_from_token),
+):
+    # TODO: see comments from /jobs/{job_id}
+    job = services.get_job_by_id(db, job_id=job_id)
+
+    if job is None:
+        raise HTTPException(status_code=404, detail="Job not found")
+
+    if not (user.id in [job.customer_id]):
+        raise HTTPException(status_code=403, detail="Not allowed")
+
+    return job.events
