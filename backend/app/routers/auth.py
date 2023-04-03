@@ -1,21 +1,16 @@
-from app.dependencies import get_db, get_current_user_from_token
-from sqlalchemy.orm import Session
-from fastapi import APIRouter, Depends
-from app import schemas, services
-from fastapi.security import OAuth2PasswordRequestForm
+from fastapi import APIRouter
 from fastapi import Depends
-from datetime import timedelta
-from ..internal.security import create_access_token
-from fastapi import Response
-from fastapi import Request
-from app.schemas.tokens import Token
-from app.services.users import get_user_by_email, authenticate_user
 from fastapi import HTTPException
+from fastapi import Response
 from fastapi import status
-from jose import jwt
-from config import settings
-from jose import JWTError
-from fastapi.responses import JSONResponse
+from fastapi.security import OAuth2PasswordRequestForm
+from sqlalchemy.orm import Session
+
+from app.dependencies import get_db, get_current_user_from_token
+from app.schemas.tokens import Token
+from app.services.users import authenticate_user
+from config import config
+from ..internal.security import create_access_token
 
 router = APIRouter()
 router.tags = ["auth"]
@@ -40,9 +35,9 @@ def login(
 
         access_token = create_access_token(
             data={"sub": user.email},
-            expires_minutes=settings.access_token_expire_minutes,
-            secret=settings.secret_key,
-            algorithm=settings.algorithm,
+            expires_minutes=config.settings.access_token_expire_minutes,
+            secret=config.settings.secret_key,
+            algorithm=config.settings.algorithm,
         )
 
         response.set_cookie(

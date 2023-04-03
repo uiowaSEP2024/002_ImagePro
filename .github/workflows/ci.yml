@@ -8,6 +8,10 @@ jobs:
     name: Backend CI
     uses: ./.github/workflows/backend-ci.yml
 
+  trackerapi_ci:
+    name: TrackerAPI CI
+    uses: ./.github/workflows/trackerapi-ci.yml
+
   frontend_lint:
     name: Frontend CI
     uses: ./.github/workflows/frontend-ci.yml
