@@ -33,6 +33,17 @@ class TrackerAPI:
             requests.patch(url, json=data, headers=self.__get_headers())
         )
 
+    def create_job(self, id=None, customer_id=None, job_name=None):
+        response = self.__post_request(
+            "http://localhost:8000/jobs",
+            {
+                "provider_job_id": id,
+                "customer_id": customer_id,
+                "provider_job_name": job_name,
+            },
+        )
+        return Job(provider_job_id=id, api=self)
+
 
 class Job:
     def __init__(self, api: TrackerAPI, provider_job_id=None):
