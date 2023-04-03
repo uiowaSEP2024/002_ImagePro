@@ -1,3 +1,5 @@
+from config import config
+
 # Cache for Created Entities
 users = {}
 jobs = {}
@@ -166,9 +168,7 @@ def seed_events(db):
 
 
 def seed_db():
-    from config.database import SessionLocal
-
-    db = SessionLocal()
+    db = config.db.SessionLocal()
     seed_users(db)
     seed_api_keys(db)
     seed_jobs(db)
