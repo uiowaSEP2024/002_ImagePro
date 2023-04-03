@@ -1,10 +1,10 @@
 from app import models
 from app.internal import get_password_hash
-from config.database import SessionLocal
+from config import config
 
 
 def test_login(app_client):
-    db = SessionLocal()
+    db = config.db.SessionLocal()
     test_user = models.User(
         email="test123@example.com",
         hashed_password=get_password_hash("abc"),
