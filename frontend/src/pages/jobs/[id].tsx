@@ -42,56 +42,6 @@ export default function JobPage() {
     }
   }, [jobId]);
 
-  useEffect(() => {
-    const loadJobEvents = async () => {
-      try {
-        const data = await fetchEvents(jobId as unknown as number);
-        if (!data) {
-          return true;
-        }
-
-        setEvents(
-          data.map((event, index) => ({ ...event, event_number: index + 1 }))
-        );
-      } catch (e) {
-        console.log(e);
-      }
-
-      setIsPageLoading(false);
-    };
-
-    const interval = setInterval(async () => {
-      loadJobEvents();
-      if (jobStatus === "pending") {
-        clearInterval(interval);
-      }
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [job]);
-
-  const renderCell = (event: JobEventWithNumber, column: ColumnName) => {
-    switch (column) {
-    case "name":
-      return <Text>{event.name}</Text>;
-    case "kind":
-      return <Text>{event.kind}</Text>;
-    case "date":
-      return event.created_at ? (
-        <Text>{new Date(event.created_at).toISOString().split("T")[0]}</Text>
-      ) : null;
-    case "time":
-      return event.created_at ? (
-        <Text>{new Date(event.created_at).toLocaleTimeString()}</Text>
-      ) : null;
-
-    case "event_number":
-      return <Text>{event.event_number}</Text>;
-    default:
-      return null;
-    }
-  };
-
   // Derive the jobStatus based on the last event
   // If the last event is an error, the job is in an error state
   // If the job has num_steps, check if the number of step events matches the number of steps
@@ -112,13 +62,64 @@ export default function JobPage() {
 
     const hasCompleteEvent = events.some((event) => event.kind === "complete");
     return hasCompleteEvent ? "success" : "pending";
-  }, [events]);
+  }, [events, job]);
+
+  useEffect(() => {
+    const loadJobEvents = async () => {
+      try {
+        const data = await fetchEvents(jobId as unknown as number);
+        if (!data) {
+          return true;
+        }
+
+        setEvents(
+          data.map((event, index) => ({ ...event, event_number: index + 1 }))
+        );
+      } catch (e) {
+        console.log(e);
+      }
+
+      setIsPageLoading(false);
+    };
+
+    const interval = setInterval(async () => {
+      await loadJobEvents();
+      if (jobStatus === "success") {
+        clearInterval(interval);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [job, jobId, jobStatus]);
+
+  const renderCell = (event: JobEventWithNumber, column: ColumnName) => {
+    switch (column) {
+      case "name":
+        return <Text>{event.name}</Text>;
+      case "kind":
+        return <Text>{event.kind}</Text>;
+      case "date":
+        return event.created_at ? (
+          <Text>{new Date(event.created_at).toISOString().split("T")[0]}</Text>
+        ) : null;
+      case "time":
+        return event.created_at ? (
+          <Text>{new Date(event.created_at).toLocaleTimeString()}</Text>
+        ) : null;
+
+      case "event_number":
+        return <Text>{event.event_number}</Text>;
+      default:
+        return null;
+    }
+  };
 
   // Derive the progress percentage based on either job.num_steps
   // if it is available, or do 0 -> 1 -> 50 -> 100 based on the presence of any events
   const progressAmount = useMemo(() => {
     if (job?.num_steps) {
-      return ((events.length / job?.num_steps) * 100).toFixed(0);
+      const stepEvents = events.filter((event) => event.kind === "step");
+      return ((stepEvents.length / job?.num_steps) * 100).toFixed(0);
     }
 
     if (jobStatus === "success") {
