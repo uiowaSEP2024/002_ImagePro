@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import {
   Card,
@@ -11,13 +11,30 @@ import {
   Link,
   Container,
 } from "@nextui-org/react";
+import { checkUserLoggedIn } from "@/utils/auth";
 
 export default function Login() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [data, setData] = useState(null);
 
   const [notificationMessage, setNotificationMessage] = useState("");
+
+  useEffect(() => {
+    checkUserLoggedIn()
+      .then((data) => {
+        setData(data.message);
+        console.log(data.message);
+        if (data == "already logged in!") {
+          router.push("/");
+        }
+      })
+      .catch((error) => {
+        router.push("/");
+        console.log(error);
+      });
+  }, [router]);
 
   const sendLoginReq = () => {
     fetch("http://localhost:8000/login", {
@@ -55,6 +72,8 @@ export default function Login() {
           <Text
             size={24}
             weight="bold"
+            h1
+            align-items="center"
             css={{
               as: "center",
               mb: "20px",
@@ -82,6 +101,7 @@ export default function Login() {
             size="lg"
             placeholder="Password"
             aria-label="Password"
+            type={"password"}
             css={{ mb: "6px" }}
             value={password}
             onChange={(e) => setPassword(e.target.value)}

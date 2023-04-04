@@ -1,13 +1,52 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, RenderResult, waitFor } from "@testing-library/react";
 import Login from "@/pages/login";
 import "@testing-library/jest-dom";
+import { useRouter } from "next/router";
 
-jest.mock("next/router", () => require("next-router-mock"));
 
-// TODO: explore fixing snapshot testing with https://github.com/mui/material-ui/issues/21293#issuecomment-654921524
+jest.mock('next/router', () => ({
+  useRouter() {
+    return ({
+      route: '/',
+      pathname: '',
+      query: '',
+      asPath: '',
+      push: jest.fn(),
+      events: {
+        on: jest.fn(),
+        off: jest.fn()
+      },  beforePopState: jest.fn(() => null),
+      prefetch: jest.fn(() => null)
+    });
+  },
+}));
+
+const router = useRouter()
+
+jest.mock('@/utils/auth', () => ({
+  checkUserLoggedIn() {
+    return new Promise((resolve) => {
+      resolve( {detail : "Not authenticated"} )
+    });
+  },
+}));
+
 describe("Login", () => {
-  xit("renders Login unchanged", () => {
-    const { container } = render(<Login />);
-    expect(container).toMatchSnapshot();
+
+  it("renders text", async () => {
+  
+    render(<Login />);
+
+    expect(router.push).not.toBeCalledWith('/');
+
+    const text = await waitFor(() =>
+    screen.getByRole("heading", {
+      name: /Login/i,
+    }));
+
+    expect(text).toBeInTheDocument();
+  
   });
-});
+
+  });
+

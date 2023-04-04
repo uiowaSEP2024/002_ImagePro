@@ -1,31 +1,26 @@
-from fastapi.security import OAuth2
-from fastapi.openapi.models import OAuthFlows as OAuthFlowsModel
-from fastapi import Request, Depends
-from fastapi.security.utils import get_authorization_scheme_param
-from fastapi import HTTPException
-from fastapi import status
-from typing import Optional
 from typing import Dict
-
+from typing import Optional
+from fastapi import Request
+from fastapi import Security, Depends, HTTPException
+from fastapi import status
+from fastapi.openapi.models import OAuthFlows as OAuthFlowsModel
+from fastapi.security import OAuth2
+from fastapi.security.api_key import APIKeyHeader
+from fastapi.security.utils import get_authorization_scheme_param
 from jose import JWTError, jwt
 from sqlalchemy.orm import Session
 from starlette.status import HTTP_401_UNAUTHORIZED
-
-from app.services.users import get_user_by_email
-from config import settings
-from config.database import SessionLocal
-from fastapi import Security, Depends, HTTPException
-from sqlalchemy.orm import Session
 from starlette.status import HTTP_403_FORBIDDEN
 
 from app import services
-from fastapi.security.api_key import APIKeyHeader
+from app.services.users import get_user_by_email
+from config import config
 
 API_KEY_HEADER_NAME = "x-api_key"
 
 
 def get_db():
-    db = SessionLocal()
+    db = config.db.SessionLocal()
     try:
         yield db
     finally:
@@ -86,7 +81,7 @@ def get_current_user_from_token(
 
     try:
         payload = jwt.decode(
-            token, settings.secret_key, algorithms=[settings.algorithm]
+            token, config.settings.secret_key, algorithms=[config.settings.algorithm]
         )
         email: str = payload.get("sub")
 
