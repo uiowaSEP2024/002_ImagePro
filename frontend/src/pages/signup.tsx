@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import {
   Card,
   Spacer,
@@ -9,13 +10,34 @@ import {
   Link,
   Container,
 } from "@nextui-org/react";
+import { checkUserLoggedIn } from "@/utils/auth";
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
+  const [first_name, setFirstName] = useState("");
+  const [last_name, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [notificationMessage, setNotificationMessage] = useState("");
+
+  const router = useRouter();
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    checkUserLoggedIn()
+      .then((data) => {
+        setData(data.message);
+        console.log(data.message);
+        if (data == "already logged in!") {
+          router.push("/");
+        }
+      })
+      .catch((error) => {
+        router.push("/");
+        console.log(error);
+      });
+  }, [router]);
 
   const sendSignUpReq = () => {
     if (confirmPassword !== password) {
@@ -31,6 +53,8 @@ export default function SignUp() {
       body: JSON.stringify({
         email: email,
         password: password,
+        first_name: first_name,
+        last_name: last_name,
       }),
     })
       .then((response) => response.json())
@@ -57,6 +81,8 @@ export default function SignUp() {
           <Text
             size={24}
             weight="bold"
+            h1
+            align-items="center"
             css={{
               as: "center",
               mb: "20px",
@@ -72,6 +98,8 @@ export default function SignUp() {
             size="lg"
             placeholder="First Name"
             aria-label="First Name"
+            value={first_name}
+            onChange={(e) => setFirstName(e.target.value)}
           />
           <Spacer y={1} />
           <Input
@@ -82,6 +110,8 @@ export default function SignUp() {
             size="lg"
             placeholder="Last Name"
             aria-label="Last Name"
+            value={last_name}
+            onChange={(e) => setLastName(e.target.value)}
           />
           <Spacer y={1} />
           <Input
