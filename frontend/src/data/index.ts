@@ -18,6 +18,13 @@ export type Job = {
   created_at?: string;
 };
 
+export type Key = {
+  id: number;
+  user_id: number,
+  key: string,
+  created_at?: string
+};
+
 export const jobs: Record<string, Job> = {
   "1": {
     id: 1,
@@ -109,6 +116,21 @@ export const fetchJobById = async (id: number): Promise<Job | void> => {
       console.log(e);
     });
 };
+
+export const fetchAPIkeys = async (): Promise<Key[] |void> => {
+  return await fetch('http://localhost:8000/api-keys', {
+    credentials: "include",
+    method: "GET"
+  }).
+  then(async (response) => {
+    if (response.status == 200) {
+      return(await response.json()) as Key[];
+    }
+  })
+  .catch((e) => {
+    console.log(e)
+  });
+}
 
 export const fetchEvents = async (jobId: number): Promise<JobEvent[]> => {
   return events.map((event) => ({ ...event, job_id: jobId }));
