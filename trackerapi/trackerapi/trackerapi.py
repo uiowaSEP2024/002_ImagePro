@@ -33,45 +33,47 @@ class TrackerAPI:
             requests.patch(url, json=data, headers=self.__get_headers())
         )
 
-    def create_job(self, id=None, customer_id=None, job_name=None):
+    def create_job(self, provider_job_id, customer_id, job_name):
         response = self.__post_request(
-            "http://localhost:8000/jobs",
+            f"{self.base_url}/jobs",
             {
-                "provider_job_id": id,
+                "provider_job_id": provider_job_id,
                 "customer_id": customer_id,
                 "provider_job_name": job_name,
             },
         )
-        return Job(provider_job_id=id, api=self)
 
-    def send_event(self, id=None, kind=None, name=None, provider_job_id=None):
+        return Job(provider_job_id=response["provider_job_id"], api=self)
+
+    def send_event(self, kind, name, provider_job_id):
         response = self.__post_request(
-            "http://localhost:8000/events",
+            f"{self.base_url}/events",
             {"kind": kind, "name": name, "provider_job_id": provider_job_id},
         )
+
         return Event(event_id=response["id"], api=self)
 
     def send_event_metadata(self, event_id, metadata):
         response = self.__patch_request(
-            "http://localhost:8000/events", {"id": event_id, "metadata": metadata}
+            f"{self.base_url}/events", {"id": event_id, "metadata": metadata}
         )
 
 
 class Job:
-    def __init__(self, api: TrackerAPI, provider_job_id=None):
+    def __init__(self, api: TrackerAPI, provider_job_id):
         self.provider_job_id = provider_job_id
         self.api = api
 
-    def send_event(self, kind=None, name=None):
+    def send_event(self, kind, name):
         return self.api.send_event(
             kind=kind, name=name, provider_job_id=self.provider_job_id
         )
 
 
 class Event:
-    def __init__(self, api: TrackerAPI, event_id=None):
+    def __init__(self, api: TrackerAPI, event_id):
         self.event_id = event_id
         self.api = api
 
-    def send_metadata(self, data=None):
+    def send_metadata(self, data):
         self.api.send_event_metadata(event_id=self.event_id, metadata={})
