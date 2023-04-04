@@ -1,16 +1,28 @@
+import { fetchAPIkeys, Key } from "@/data";
 import React from "react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { checkUserLoggedIn } from "@/utils/auth";
 import { Text } from "@nextui-org/react";
-import { Container, Row, Col, Spacer, Input, Grid, Button } from "@nextui-org/react";
+import { Container, Row, Col, Spacer, Input, Grid, Button, Card } from "@nextui-org/react";
+import { render } from "@testing-library/react";
+import { createReadStream } from "fs";
 
 export default function ApiKeys() {
     const router = useRouter();
     const [note, setNote] = useState("");
     const [notificationMessage, setNotificationMessage] = useState("");
+    const [keys, setKeys] = useState<Key[]>([]);
 
     useEffect(() => {
+
+        async function loadKeys() {
+            const data = await fetchAPIkeys();
+            if (data) setKeys(data);
+            console.log(data)
+        }
+
+        loadKeys();
         checkUserLoggedIn()
             .then((data) => {
                 console.log(data)
@@ -20,6 +32,8 @@ export default function ApiKeys() {
                 console.log(error);
             });
     }, [router]);
+
+
 
     const generateAPIKey = () => {
         fetch("http://localhost:8000/api-keys", {
@@ -50,6 +64,17 @@ export default function ApiKeys() {
                         Manage on your API keys on this page
                     </Text>
                 </Row>
+                <Spacer y={1} />
+                {keys.map((card) => (
+                    <Grid>
+                        <Card key={card.id}>
+                            <Card.Body>
+                                <Text>{card.key}</Text>
+                            </Card.Body>
+                        </Card>
+                        <Spacer y={1} />
+                    </Grid>
+                ))}
                 <Spacer y={2} />
                 <Row>
                     <Text align-items="center">
