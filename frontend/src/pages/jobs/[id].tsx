@@ -24,12 +24,12 @@ type ColumnName = typeof columns[number]["uid"];
 
 type JobEventWithNumber = JobEvent & { event_number: number };
 
-export default function JobPage() {
+export default function JobPage({ initialIsPageLoading = true }) {
   const router = useRouter();
   const { id: jobId } = router.query;
   const [events, setEvents] = useState<JobEventWithNumber[]>([]);
   const [job, setJob] = useState<Job | null>(null);
-  const [isPageLoading, setIsPageLoading] = useState(true);
+  const [isPageLoading, setIsPageLoading] = useState(initialIsPageLoading);
 
   useEffect(() => {
     async function loadJob() {
@@ -94,23 +94,23 @@ export default function JobPage() {
 
   const renderCell = (event: JobEventWithNumber, column: ColumnName) => {
     switch (column) {
-      case "name":
-        return <Text>{event.name}</Text>;
-      case "kind":
-        return <Text>{event.kind}</Text>;
-      case "date":
-        return event.created_at ? (
-          <Text>{new Date(event.created_at).toISOString().split("T")[0]}</Text>
-        ) : null;
-      case "time":
-        return event.created_at ? (
-          <Text>{new Date(event.created_at).toLocaleTimeString()}</Text>
-        ) : null;
+    case "name":
+      return <Text>{event.name}</Text>;
+    case "kind":
+      return <Text>{event.kind}</Text>;
+    case "date":
+      return event.created_at ? (
+        <Text>{new Date(event.created_at).toISOString().split("T")[0]}</Text>
+      ) : null;
+    case "time":
+      return event.created_at ? (
+        <Text>{new Date(event.created_at).toLocaleTimeString()}</Text>
+      ) : null;
 
-      case "event_number":
-        return <Text>{event.event_number}</Text>;
-      default:
-        return null;
+    case "event_number":
+      return <Text>{event.event_number}</Text>;
+    default:
+      return null;
     }
   };
 
