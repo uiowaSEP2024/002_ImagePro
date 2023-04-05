@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 const columns = [
   { name: "Event No.", uid: "event_number" },
   { name: "Name", uid: "name" },
+  { name: "Kind", uid: "kind" },
   { name: "Date", uid: "date" },
   { name: "Time", uid: "time" },
 ];
@@ -32,9 +33,11 @@ export default function JobPage() {
   useEffect(() => {
     async function loadJobEvents() {
       const data = await fetchEvents(jobId as unknown as number);
-      setEvents(
-        data.map((event, index) => ({ ...event, event_number: index + 1 }))
-      );
+      if (data) {
+        setEvents(
+          data.map((event, index) => ({ ...event, event_number: index + 1 }))
+        );
+      }
     }
 
     async function loadJob() {
@@ -48,19 +51,23 @@ export default function JobPage() {
 
   const renderCell = (event: JobEventWithNumber, column: ColumnName) => {
     switch (column) {
-    case "name":
-      return <Text>{event.name}</Text>;
-    case "date":
-      return (
-        event.created_at? <Text>{new Date(event.created_at).toISOString().split("T")[0]}</Text> : null
-      );
-    case "time":
-      return ( event.created_at? <Text>{new Date(event.created_at).toLocaleTimeString()}</Text> : null );
+      case "name":
+        return <Text>{event.name}</Text>;
+      case "kind":
+        return <Text>{event.kind}</Text>;
+      case "date":
+        return event.created_at ? (
+          <Text>{new Date(event.created_at).toISOString().split("T")[0]}</Text>
+        ) : null;
+      case "time":
+        return event.created_at ? (
+          <Text>{new Date(event.created_at).toLocaleTimeString()}</Text>
+        ) : null;
 
-    case "event_number":
-      return <Text>{event.event_number}</Text>;
-    default:
-      return null;
+      case "event_number":
+        return <Text>{event.event_number}</Text>;
+      default:
+        return null;
     }
   };
 
