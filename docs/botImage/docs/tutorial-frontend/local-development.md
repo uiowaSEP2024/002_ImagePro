@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# Create a Document
+# Running the Frontend Locally
 
 Documents are **groups of pages** connected through:
 
