@@ -110,6 +110,19 @@ export const fetchJobById = async (id: number): Promise<Job | void> => {
     });
 };
 
-export const fetchEvents = async (jobId: number): Promise<JobEvent[]> => {
-  return events.map((event) => ({ ...event, job_id: jobId }));
+export const fetchEvents = async (
+  jobId: number
+): Promise<JobEvent[] | void> => {
+  return await fetch(`http://localhost:8000/jobs/${jobId}/events`, {
+    credentials: "include",
+    method: "GET",
+  })
+    .then(async (response) => {
+      if (response.status == 200) {
+        return (await response.json()) as JobEvent[];
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+    });
 };

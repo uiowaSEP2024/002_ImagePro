@@ -1,3 +1,5 @@
+from config import config
+
 # Cache for Created Entities
 users = {}
 jobs = {}
@@ -7,11 +9,16 @@ api_keys = {}
 # Data to be seeded for each entity
 USERS_DATA = [
     # Customers
-    dict(email="johndoe@gmail.com", password="abc"),
-    dict(email="janeblack@gmail.com", password="abc"),
+    dict(email="johndoe@gmail.com", password="abc", first_name="John", last_name="Doe"),
+    dict(
+        email="janeblack@gmail.com",
+        password="abc",
+        first_name="Jane",
+        last_name="Black",
+    ),
     # Providers
-    dict(email="noodlesco@gmail.com", password="abc"),
-    dict(email="botimage@gmail.com", password="abc"),
+    dict(email="noodlesco@gmail.com", password="abc", first_name="BotImage"),
+    dict(email="botimage@gmail.com", password="abc", last_name="NoodlesCo"),
 ]
 
 API_KEYS_DATA = [
@@ -86,6 +93,8 @@ def seed_users(db):
         print(f"  Seeding user: {str(user_data)}")
         user = models.User(
             email=user_data["email"],
+            first_name=user_data.get("first_name", ""),
+            last_name=user_data.get("last_name", ""),
             hashed_password=get_password_hash(user_data["password"]),
         )
         db.add(user)
@@ -159,9 +168,7 @@ def seed_events(db):
 
 
 def seed_db():
-    from config.database import SessionLocal
-
-    db = SessionLocal()
+    db = config.db.SessionLocal()
     seed_users(db)
     seed_api_keys(db)
     seed_jobs(db)
