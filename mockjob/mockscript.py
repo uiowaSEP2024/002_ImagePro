@@ -1,8 +1,22 @@
-import uuid
 import json
-import time
-from datetime import datetime
+import os
 import random
+import sys
+import time
+import uuid
+from datetime import datetime
+from pathlib import Path
+
+from dotenv import load_dotenv
+
+path_root = Path(__file__).parents[1]
+sys.path.append(f"{path_root}/trackerapi")
+
+from trackerapi.trackerapi import TrackerAPI
+
+load_dotenv()
+
+TEAM3_API_KEY = os.environ.get("TEAM3_API_KEY")
 
 LOG_FILE_PATH = "logs.txt"
 
@@ -17,9 +31,21 @@ def printf(file, data):
     file.write(data)
 
 
+# Send request to create the JOB
+# Replace with send_event(....)
+
+
 def run_mock_job(customer_id=None):
-    steps = 20
+    steps = 10
     job_id = generate_uuid()
+
+    # Create TrackerAPI object
+
+    tracker = TrackerAPI("q-jAqPWCRGr2u6SeK6r6U0LBfJA")
+
+    # Create a Job Object
+
+    job_tracker = tracker.create_job(job_id, customer_id, "MockscriptJob")
 
     with open(LOG_FILE_PATH, "a+") as outfile:
         # Do a dummy job for N steps
@@ -31,25 +57,32 @@ def run_mock_job(customer_id=None):
             json_data = {
                 "job_id": job_id,
                 "customer_id": customer_id,
-                "step": str(i + 1),
+                "step": "step {}".format(i),
                 "time": str(datetime.now()),
             }
 
             json_str = json.dumps(json_data)
 
             # Print json to file
-            printf(outfile, json_str + "\n")
+            # printf(outfile, json_str + "\n")
 
             # Convenience print to console for live log
             # just so we don't have to sit and wait for file to be logged to
             print(json_str)
 
+            is_last_step = i == steps - 1
+            if is_last_step:
+                kind = "complete"
+            else:
+                kind = "step"
+
+            job_tracker.send_event(kind, "step {}".format(i))
+
 
 if __name__ == "__main__":
     sample_customer_ids = [
-        "7896378e-7f3e-4d59-8ff9-82cd3058ab61",
-        "56b5794e-a0f9-49be-877b-c5728d3ae388",
-        "a74d4f87-762a-48b0-9a41-ee57640cc790",
+        1,  # johndoe@gmail.com see backend/seed.py
+        2,  # janeblack@gmail.com see backend/seed.py
     ]
 
     # Select a random customer
@@ -58,4 +91,4 @@ if __name__ == "__main__":
     ]
 
     # Run job for the chosen customer
-    run_mock_job(customer_id=random_customer_id)
+    run_mock_job(customer_id=1)
