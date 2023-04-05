@@ -2,9 +2,9 @@
 sidebar_position: 2
 ---
 
-# Translate your site
+# Managing Environment Variables
 
-Let's translate `docs/intro.md` to French.
+Let's learn required environment variables for the application.
 
 ## Configure i18n
 
