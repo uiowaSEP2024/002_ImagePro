@@ -17,8 +17,8 @@ USERS_DATA = [
         last_name="Black",
     ),
     # Providers
-    dict(email="noodlesco@gmail.com", password="abc", first_name="BotImage"),
-    dict(email="botimage@gmail.com", password="abc", last_name="NoodlesCo"),
+    dict(email="noodlesco@gmail.com", password="abc", first_name="NoodlesCo"),
+    dict(email="botimage@gmail.com", password="abc", first_name="BotImage"),
 ]
 
 API_KEYS_DATA = [
@@ -60,7 +60,7 @@ EVENTS_DATA = [
     #  Job 1, Event 3
     dict(
         provider_job_id="botimage-123",
-        kind="step",
+        kind="complete",
         name="Analyze Kidney Results",
     ),
     #  Job 2, Event 1
@@ -78,7 +78,7 @@ EVENTS_DATA = [
     #  Job 2, Event 3
     dict(
         provider_job_id="noodlesco-123",
-        kind="step",
+        kind="complete",
         name="Analyze Lung Results",
     ),
 ]
