@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import JobPage from "@/pages/jobs/[id]";
 
 import "@testing-library/jest-dom";
@@ -15,39 +15,31 @@ jest.mock("next/router", () => ({
 }));
 
 jest.mock("@/data", () => ({
-
   fetchJobById() {
-  
     return new Promise((resolve) => {
-  
-      resolve( {
+      resolve({
         id: 1,
         provider_job_name: "Kidney Cancer Detection",
         customer_id: 1,
         provider_job_id: "236",
         provider_id: 2,
         created_at: "2021-03-01T00:00:00.000Z",
-      } )
-  
+      });
     });
-  
   },
 
   fetchEvents() {
-  
     return new Promise((resolve) => {
-  
-      resolve([])
-  
+      resolve([]);
     });
-  
   },
-  
 }));
 
 describe("Job Page", () => {
   it("renders a heading", async () => {
-    render(<JobPage />);
+    await act(async () => {
+      render(<JobPage initialIsPageLoading={false} />);
+    });
 
     const heading = await waitFor(() =>
       screen.getByRole("heading", {
@@ -59,8 +51,9 @@ describe("Job Page", () => {
   });
 
   it("renders a list of job events", async () => {
-    render(<JobPage />);
-
+    await act(async () => {
+      render(<JobPage initialIsPageLoading={false} />);
+    });
     const table = await waitFor(() =>
       screen.getByRole("grid", {
         name: /Events/i,
@@ -71,8 +64,9 @@ describe("Job Page", () => {
   });
 
   it("renders a progress bar", async () => {
-    render(<JobPage />);
-
+    await act(async () => {
+      render(<JobPage initialIsPageLoading={false} />);
+    });
     const progressBar = await waitFor(() =>
       screen.getByRole("progressbar", {
         name: /Progress/i,
