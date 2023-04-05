@@ -1,4 +1,4 @@
-import { Grid, Container, Text } from "@nextui-org/react";
+import { Grid, Container, Text, Spacer } from "@nextui-org/react";
 // import { Cookies } from 'react-cookie';
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -15,16 +15,9 @@ export default function Profile() {
   useEffect(() => {
     checkUserLoggedIn()
       .then((data) => {
-        if ("detail" in data) {
-          setMsg(data.detail);
-        } else {
-          setFirst_Name(data.user.first_name);
-          setLast_Name(data.user.last_name);
-          setEmail(data.user.email);
-        }
-        if (msg == "Not authenticated") {
-          router.push("/login");
-        }
+        setFirst_Name(data.user.first_name);
+        setLast_Name(data.user.last_name);
+        setEmail(data.user.email)
       })
       .catch((error) => {
         router.push("/login");
@@ -37,14 +30,17 @@ export default function Profile() {
       <Grid.Container gap={2} justify="center">
         <Grid xs={12} md={6}>
           <Text h4>First Name</Text>
+          <Spacer x={1} />
           <Text>{first_name}</Text>
         </Grid>
         <Grid xs={12} md={6}>
           <Text h4>Last Name</Text>
+          <Spacer x={1} />
           <Text>{last_name}</Text>
         </Grid>
         <Grid xs={12}>
           <Text h4>Email</Text>
+          <Spacer x={1} />
           <Text>{email}</Text>
         </Grid>
       </Grid.Container>
