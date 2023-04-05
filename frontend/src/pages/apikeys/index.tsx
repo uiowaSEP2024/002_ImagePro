@@ -59,7 +59,7 @@ export default function ApiKeys() {
                 </Row>
                 <Row>
                     <Text align-items="center">
-                        Manage on your API keys on this page
+                        Manage your API keys on this page
                     </Text>
                 </Row>
                 <Spacer y={1} />
