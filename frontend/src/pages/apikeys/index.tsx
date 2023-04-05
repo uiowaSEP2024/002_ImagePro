@@ -5,8 +5,6 @@ import { useRouter } from "next/router";
 import { checkUserLoggedIn } from "@/utils/auth";
 import { Text } from "@nextui-org/react";
 import { Container, Row, Col, Spacer, Input, Grid, Button, Card } from "@nextui-org/react";
-import { render } from "@testing-library/react";
-import { createReadStream } from "fs";
 
 export default function ApiKeys() {
     const router = useRouter();
@@ -19,17 +17,17 @@ export default function ApiKeys() {
         async function loadKeys() {
             const data = await fetchAPIkeys();
             if (data) setKeys(data);
-            console.log(data)
+            // console.log(data)
         }
 
         loadKeys();
         checkUserLoggedIn()
             .then((data) => {
-                console.log(data)
+                // console.log(data)
             })
             .catch((error) => {
                 router.push("/login");
-                console.log(error);
+                // console.log(error);
             });
     }, [router]);
 
@@ -42,7 +40,7 @@ export default function ApiKeys() {
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log(data)
+                // console.log(data)
                 setNotificationMessage("API Keys Generated Successfully")
             })
             .catch((e) => {
@@ -65,16 +63,18 @@ export default function ApiKeys() {
                     </Text>
                 </Row>
                 <Spacer y={1} />
+                <Grid aria-label="Keys">
                 {keys.map((card) => (
-                    <Grid>
-                        <Card key={card.id}>
-                            <Card.Body>
+                    <Grid key={card.id} data-testid="testkeys">
+                        <Card>
+                            <Card.Body aria-label="key">
                                 <Text>{card.key}</Text>
                             </Card.Body>
                         </Card>
                         <Spacer y={1} />
                     </Grid>
                 ))}
+                </Grid>
                 <Spacer y={2} />
                 <Row>
                     <Text align-items="center">
