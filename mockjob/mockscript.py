@@ -7,7 +7,6 @@ import uuid
 from datetime import datetime
 from pathlib import Path
 
-import requests
 from dotenv import load_dotenv
 
 path_root = Path(__file__).parents[1]
@@ -37,7 +36,7 @@ def printf(file, data):
 
 
 def run_mock_job(customer_id=None):
-    steps = 20
+    steps = 10
     job_id = generate_uuid()
 
     # Create TrackerAPI object
