@@ -1,16 +1,22 @@
-import os
-import uuid
 import json
-import time
-from datetime import datetime
+import os
 import random
+import sys
+import time
+import uuid
+from datetime import datetime
+from pathlib import Path
 
 from dotenv import load_dotenv
-import requests
+
+path_root = Path(__file__).parents[1]
+sys.path.append(f"{path_root}/trackerapi")
+
+from trackerapi.trackerapi import TrackerAPI
 
 load_dotenv()
 
-TEAM3_API_KEY = os.environ.get('TEAM3_API_KEY')
+TEAM3_API_KEY = os.environ.get("TEAM3_API_KEY")
 
 LOG_FILE_PATH = "logs.txt"
 
@@ -28,22 +34,18 @@ def printf(file, data):
 # Send request to create the JOB
 # Replace with send_event(....)
 
+
 def run_mock_job(customer_id=None):
-    steps = 20
+    steps = 10
     job_id = generate_uuid()
 
-    # Send request to create job
-    create_job_response = requests.post('http://localhost:8000/jobs',
-                                        json={
-                                            "provider_job_id": job_id,
-                                            "customer_id": customer_id,
-                                            "provider_job_name": "MockscriptJob"
-                                        },
-                                        headers={"x-api_key": TEAM3_API_KEY}
-                                        )
+    # Create TrackerAPI object
 
-    if create_job_response.status_code != 200:
-        raise Exception("Failed to initialize job with service!")
+    tracker = TrackerAPI("q-jAqPWCRGr2u6SeK6r6U0LBfJA")
+
+    # Create a Job Object
+
+    job_tracker = tracker.create_job(job_id, customer_id, "MockscriptJob")
 
     with open(LOG_FILE_PATH, "a+") as outfile:
         # Do a dummy job for N steps
@@ -70,18 +72,11 @@ def run_mock_job(customer_id=None):
 
             is_last_step = i == steps - 1
             if is_last_step:
-                kind = 'complete'
+                kind = "complete"
             else:
-                kind = 'step'
+                kind = "step"
 
-            requests.post('http://localhost:8000/events',
-                          json={
-                              "kind": kind,
-                              "name": "step {}".format(i),
-                              "provider_job_id": job_id
-                          },
-                          headers={"x-api_key": TEAM3_API_KEY}
-                          )
+            job_tracker.send_event(kind, "step {}".format(i))
 
 
 if __name__ == "__main__":
@@ -96,4 +91,4 @@ if __name__ == "__main__":
     ]
 
     # Run job for the chosen customer
-    run_mock_job(customer_id=random_customer_id)
+    run_mock_job(customer_id=1)
