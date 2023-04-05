@@ -40,3 +40,6 @@ def downgrade() -> None:
     op.drop_index(op.f("ix_events_job_id"), table_name="events")
     op.drop_index(op.f("ix_events_id"), table_name="events")
     op.drop_table("events")
+    sa.Enum("step", "error", "info", "complete", name="event_kind").drop(
+        op.get_bind(), checkfirst=False
+    )
