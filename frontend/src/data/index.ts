@@ -16,6 +16,7 @@ export type Job = {
   provider_job_id: string;
   provider_id: number;
   created_at?: string;
+  num_steps?: number;
 };
 
 export const jobs: Record<string, Job> = {
