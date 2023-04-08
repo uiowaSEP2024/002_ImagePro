@@ -19,10 +19,15 @@ export default function ApiKeys() {
             if (data) setKeys(data);
             // console.log(data)
         }
-
-        loadKeys();
         checkUserLoggedIn()
             .then((data) => {
+                if (data.detail == "Not authenticated") {
+                    router.push("/login");
+                }
+                else {
+                    loadKeys();
+                }
+                
                 // console.log(data)
             })
             .catch((error) => {
@@ -64,16 +69,16 @@ export default function ApiKeys() {
                 </Row>
                 <Spacer y={1} />
                 <Grid aria-label="Keys">
-                {keys.map((card) => (
-                    <Grid key={card.id} data-testid="testkeys">
-                        <Card>
-                            <Card.Body aria-label="key">
-                                <Text>{card.key}</Text>
-                            </Card.Body>
-                        </Card>
-                        <Spacer y={1} />
-                    </Grid>
-                ))}
+                    {keys.map((card) => (
+                        <Grid key={card.id} data-testid="testkeys">
+                            <Card>
+                                <Card.Body aria-label="key">
+                                    <Text>{card.key}</Text>
+                                </Card.Body>
+                            </Card>
+                            <Spacer y={1} />
+                        </Grid>
+                    ))}
                 </Grid>
                 <Spacer y={2} />
                 <Row>
