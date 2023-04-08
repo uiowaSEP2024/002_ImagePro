@@ -118,21 +118,32 @@ export const fetchJobById = async (id: number): Promise<Job | void> => {
     });
 };
 
+export const generateAPIKeys = async () => {
+  await fetch("http://localhost:8000/api-keys", {
+    credentials: "include",
+    method: "POST"
+  }).then((response) => response.json())
+    .then((data) => {
+      console.log(data)
+      return data
+    }).catch((e) => {
+      console.log(e)
+    })
+}
 
-
-export const fetchAPIkeys = async (): Promise<Key[] |void> => {
+export const fetchAPIkeys = async (): Promise<Key[] | void> => {
   return await fetch('http://localhost:8000/api-keys', {
     credentials: "include",
     method: "GET"
   }).
-  then(async (response) => {
-    if (response.status == 200) {
-      return(await response.json()) as Key[];
-    }
-  })
-  .catch((e) => {
-    console.log(e)
-  });
+    then(async (response) => {
+      if (response.status == 200) {
+        return (await response.json()) as Key[];
+      }
+    })
+    .catch((e) => {
+      console.log(e)
+    });
 }
 
 

@@ -1,4 +1,4 @@
-import { fetchAPIkeys, Key } from "@/data";
+import { generateAPIKeys, fetchAPIkeys, Key } from "@/data";
 import React from "react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -27,7 +27,7 @@ export default function ApiKeys() {
                 else {
                     loadKeys();
                 }
-                
+
                 // console.log(data)
             })
             .catch((error) => {
