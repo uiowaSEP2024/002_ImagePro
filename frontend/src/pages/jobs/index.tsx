@@ -29,9 +29,6 @@ export default function Jobs() {
         setJobs(data);
       }
     }
-    jobs.filter((item) =>
-        item.provider_job_name.includes(search))
-    console.log(jobs)
     loadJobs();
   }, []);
 
@@ -61,11 +58,10 @@ export default function Jobs() {
 
       <Text h1>Jobs</Text>
 
-        <label htmlFor="search" style={{display: "block", padding: "10px", float: right}} >  
+        <label htmlFor="search" style={{display: "block", padding: "10px"}} >  
           <input id="search" type="text" placeholder="Search jobs..." onChange={handleSearch} />
           <br/>
         </label>
-      
 
       <Table
         lined
@@ -92,7 +88,7 @@ export default function Jobs() {
           )}
         </Table.Header>
 
-        <Table.Body items={jobs}>
+        <Table.Body items={jobs.filter((item) => item.provider_job_name.includes(search))}>
           {(item) => (
             <Table.Row key={item.id}>
               {(column) => (
