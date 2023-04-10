@@ -1,6 +1,7 @@
 import { fetchJobs, Job } from "@/data";
-import { Container, Table, Text } from "@nextui-org/react";
+import { Container, Grid, Table, Text } from "@nextui-org/react";
 import NextLink from "next/link";
+import React from "react";
 import { useState, useEffect } from "react";
 
 const columns = [
@@ -15,10 +16,20 @@ type ColumnName = typeof columns[number]["name"];
 export default function Jobs() {
   const [jobs, setJobs] = useState<Job[]>([]);
 
+  const [search, setSearch] = React.useState('');
+
+  const handleSearch = (event: { target: { value: React.SetStateAction<string>; }; }) => {
+    setSearch(event.target.value);
+  };
+
   useEffect(() => {
     async function loadJobs() {
       const data = await fetchJobs();
-      if (data) setJobs(data);
+      if (data) {
+        setJobs(data);
+        data.filter((item) =>
+        item.provider_job_name.includes(search))
+      }
     }
 
     loadJobs();
@@ -43,8 +54,16 @@ export default function Jobs() {
     }
   };
 
+
   return (
+
     <Container>
+
+      <label htmlFor="search">
+        Search by Task:
+        <input id="search" type="text" onChange={handleSearch} />
+      </label>
+
       <Text h1>Jobs</Text>
       <Table
         lined
@@ -57,6 +76,7 @@ export default function Jobs() {
           minWidth: "100%",
         }}
         selectionMode="none"
+        id="myTable"
       >
         <Table.Header columns={columns}>
           {(column) => (
