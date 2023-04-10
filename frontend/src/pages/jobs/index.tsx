@@ -51,6 +51,10 @@ export default function Jobs() {
     }
   };
 
+  function filterJobs(jobs: Job[]) {
+    return jobs.filter((item) => 
+      (item.provider_job_name.toLowerCase().includes(search.toLowerCase()) || String(item.id).includes(search)))
+  }
 
   return (
 
@@ -88,7 +92,7 @@ export default function Jobs() {
           )}
         </Table.Header>
 
-        <Table.Body items={jobs.filter((item) => item.provider_job_name.includes(search))}>
+        <Table.Body items={filterJobs(jobs)}>
           {(item) => (
             <Table.Row key={item.id}>
               {(column) => (
