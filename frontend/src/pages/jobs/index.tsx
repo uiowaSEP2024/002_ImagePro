@@ -1,5 +1,5 @@
 import { fetchJobs, Job } from "@/data";
-import { Container, Grid, Table, Text } from "@nextui-org/react";
+import { Button, Container, Grid, PressEvent, Table, Text } from "@nextui-org/react";
 import NextLink from "next/link";
 import React from "react";
 import { useState, useEffect } from "react";
@@ -27,11 +27,11 @@ export default function Jobs() {
       const data = await fetchJobs();
       if (data) {
         setJobs(data);
-        data.filter((item) =>
-        item.provider_job_name.includes(search))
       }
     }
-
+    jobs.filter((item) =>
+        item.provider_job_name.includes(search))
+    console.log(jobs)
     loadJobs();
   }, []);
 
@@ -59,12 +59,14 @@ export default function Jobs() {
 
     <Container>
 
-      <label htmlFor="search">
-        Search by Task:
-        <input id="search" type="text" onChange={handleSearch} />
-      </label>
-
       <Text h1>Jobs</Text>
+
+        <label htmlFor="search" style={{display: "block", padding: "10px", float: right}} >  
+          <input id="search" type="text" placeholder="Search jobs..." onChange={handleSearch} />
+          <br/>
+        </label>
+      
+
       <Table
         lined
         bordered
