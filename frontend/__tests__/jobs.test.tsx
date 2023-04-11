@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import Jobs from "@/pages/jobs";
 
 import "@testing-library/jest-dom";
@@ -68,4 +68,28 @@ describe("Jobs List Page", () => {
 
     expect(table).toBeInTheDocument();
   });
+
+  it("renders a search bar", async () => {
+    render(<Jobs />);
+
+    const bar = await waitFor(() =>
+      screen.getByRole("input")
+    );
+
+    expect(bar).toBeInTheDocument();
+  });
+
+  it('search on change', () => {
+    const handleSearch = jest.fn((value) => {})
+    
+    const { queryByPlaceholderText } = render(<input id="search" type="text" placeholder="Search jobs..." onChange={handleSearch} />)
+
+    const searchInput = queryByPlaceholderText('Search jobs...') as HTMLInputElement
+
+    fireEvent.input(searchInput, { target: { value: 'test' } })
+
+    expect(searchInput.value).toBe('test')
+    expect(handleSearch).toHaveBeenCalledWith('test')
+  })
+
 });
