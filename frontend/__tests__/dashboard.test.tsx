@@ -47,4 +47,25 @@ describe("Dashboard", () => {
 
   });
 
+  it("renders Jobs card", async () => {
+    render(<Dashboard />);
+
+    expect(router.push).not.toBeCalledWith('/login');
+
+    const table = await waitFor(() =>
+    screen.getByRole("Text", {
+      name: /Jobs/i,
+    }));
+
+    expect(table).toBeInTheDocument();
+
+    const input = await waitFor(() =>
+    screen.getByRole("Text", {
+      name: /View past and currently active jobs/i,
+    }));
+
+    expect(input).toBeInTheDocument();
+
+  });
+
 });

@@ -80,16 +80,16 @@ describe("Jobs List Page", () => {
   });
 
   it('search on change', () => {
-    const handleSearch = jest.fn((value) => {})
+    const handleSearch = jest.fn((value) => {});
     
-    const { queryByPlaceholderText } = render(<input id="search" type="text" placeholder="Search jobs..." onChange={handleSearch} />)
+    const { queryByPlaceholderText } = render(<input id="search" type="text" placeholder="Search jobs..." onChange={handleSearch} />);
 
-    const searchInput = queryByPlaceholderText('Search jobs...') as HTMLInputElement
+    const searchInput = queryByPlaceholderText('Search jobs...') as HTMLInputElement;
 
-    fireEvent.input(searchInput, { target: { value: 'test' } })
+    fireEvent.input(searchInput, { target: { value: 'test' } });
 
-    expect(searchInput.value).toBe('test')
-    expect(handleSearch).toHaveBeenCalledWith('test')
-  })
+    expect(searchInput.value).toBe('test');
+    expect(handleSearch).toHaveBeenCalledWith('test');
+  });
 
 });

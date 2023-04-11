@@ -1,4 +1,4 @@
-import { render, screen, RenderResult, waitFor } from "@testing-library/react";
+import { render, screen, RenderResult, waitFor, fireEvent } from "@testing-library/react";
 import Login from "@/pages/login";
 import "@testing-library/jest-dom";
 import { useRouter } from "next/router";
@@ -46,6 +46,25 @@ describe("Login", () => {
 
     expect(text).toBeInTheDocument();
   
+  });
+
+  it('login on change', () => {
+    const sendLoginReq = jest.fn((value) => {});
+    
+    const { queryByPlaceholderText } = render(<Login />);
+
+    const emailInput = queryByPlaceholderText('Email') as HTMLInputElement;
+    fireEvent.input(emailInput, { target: { value: 'johndoe@gmail.com' } });
+    const passInput = queryByPlaceholderText('Password')  as HTMLInputElement;
+    fireEvent.input(passInput, { target: { value: 'abc' } });
+
+    expect(emailInput.value).toBe('johndoe@gmail.com');
+    expect(passInput.value).toBe('abc');
+
+    const button =  screen.getByRole("button");
+    fireEvent.click(button);
+    
+    expect(sendLoginReq).toHaveBeenCalled();
   });
 
   });
