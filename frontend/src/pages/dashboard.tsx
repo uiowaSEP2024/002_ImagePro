@@ -44,7 +44,7 @@ export default function Dashboard() {
             </Link>
           </Card.Header>
           <Card.Body>
-            <Text>View past and currently active jobs</Text>
+            <Text role="text">View past and currently active jobs</Text>
           </Card.Body>
         </Card>
       </Container>

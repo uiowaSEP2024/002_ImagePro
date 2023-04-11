@@ -48,7 +48,7 @@ describe("Login", () => {
   
   });
 
-  it('login on change', () => {
+  it('login on change', async () => {
     const sendLoginReq = jest.fn((value) => {});
     
     const { queryByPlaceholderText } = render(<Login />);
@@ -61,7 +61,10 @@ describe("Login", () => {
     expect(emailInput.value).toBe('johndoe@gmail.com');
     expect(passInput.value).toBe('abc');
 
-    const button =  screen.getByRole("button");
+    const button = await waitFor(() =>
+    screen.getByRole("button", {
+      name: "login",
+    }));
     fireEvent.click(button);
     
     expect(sendLoginReq).toHaveBeenCalled();
