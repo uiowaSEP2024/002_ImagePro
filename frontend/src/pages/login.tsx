@@ -112,7 +112,7 @@ export default function Login() {
             </Link>
           </Row>
           <Spacer y={1} />
-          <Button name="login" role="button" onPress={sendLoginReq}>Log in</Button>
+          <Button data-testid="login" name="login" role="button" onPress={sendLoginReq}>Log in</Button>
         </Card>
       </Container>
     </div>
