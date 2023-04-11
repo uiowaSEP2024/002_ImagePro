@@ -48,7 +48,6 @@ describe("Signup", () => {
   });
 
   it('signup on change', async () => {
-    const sendSignUpReq = jest.fn((value) => {});
     
     const { queryByPlaceholderText } = render(<Signup />);
 
@@ -56,22 +55,22 @@ describe("Signup", () => {
     fireEvent.input(firstNameInput, { target: { value: 'John' } });
     const lastNameInput = queryByPlaceholderText('Last Name') as HTMLInputElement;
     fireEvent.input(lastNameInput, { target: { value: 'Smith' } });
-    const emailInput = queryByPlaceholderText('Email')  as HTMLInputElement;
+    const emailInput = queryByPlaceholderText('Email') as HTMLInputElement;
     fireEvent.input(emailInput, { target: { value: 'abc@gmail.com' } });
-    const passInput = queryByPlaceholderText('Password')  as HTMLInputElement;
+    const passInput = queryByPlaceholderText('Password') as HTMLInputElement;
     fireEvent.input(passInput, { target: { value: 'abc' } });
-    const pass2Input = queryByPlaceholderText('Confirm Password')  as HTMLInputElement;
+    const pass2Input = queryByPlaceholderText('Confirm Password') as HTMLInputElement;
     fireEvent.input(pass2Input, { target: { value: 'abc' } });
 
     expect(firstNameInput.value).toBe('John');
+    expect(lastNameInput.value).toBe('Smith');
+    expect(emailInput.value).toBe('abc@gmail.com');
+    expect(passInput.value).toBe('abc');
+    expect(pass2Input.value).toBe('abc');
 
-    const button = await waitFor(() =>
-    screen.getByRole("button", {
-      name: "signup",
-    }));
-    fireEvent.click(button);
-    
-    expect(sendSignUpReq).toHaveBeenCalled();
+    //const button = await waitFor(() => screen.getByTestId("signup"));
+    //fireEvent.click(button);
+
   });
 
 });

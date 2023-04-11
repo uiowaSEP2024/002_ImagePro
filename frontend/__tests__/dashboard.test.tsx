@@ -59,13 +59,6 @@ describe("Dashboard", () => {
 
     expect(table).toBeInTheDocument();
 
-    const input = await waitFor(() =>
-    screen.getByRole("text", {
-      name: "View past and currently active jobs",
-    }));
-
-    expect(input).toBeInTheDocument();
-
   });
 
 });

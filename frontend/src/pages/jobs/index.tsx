@@ -63,7 +63,7 @@ export default function Jobs() {
       <Text h1>Jobs</Text>
 
         <label htmlFor="search" style={{display: "block", padding: "10px"}} >  
-          <input id="search" name="search" type="text" placeholder="Search jobs..." onChange={handleSearch} />
+          <input id="search" data-testid="search" type="text" placeholder="Search jobs..." onChange={handleSearch} />
           <br/>
         </label>
 

@@ -72,11 +72,7 @@ describe("Jobs List Page", () => {
   it("renders a search bar", async () => {
     render(<Jobs />);
 
-    const bar = await waitFor(() =>
-      screen.getByRole("input", {
-        name: "search",
-      })
-    );
+    const bar = await waitFor(() => screen.getByTestId("search"));
 
     expect(bar).toBeInTheDocument();
   });
