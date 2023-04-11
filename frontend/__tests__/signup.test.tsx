@@ -47,7 +47,7 @@ describe("Signup", () => {
   
   });
 
-  it('signup on change', () => {
+  it('signup on change', async () => {
     const sendSignUpReq = jest.fn((value) => {});
     
     const { queryByPlaceholderText } = render(<Signup />);
@@ -65,7 +65,10 @@ describe("Signup", () => {
 
     expect(firstNameInput.value).toBe('John');
 
-    const button =  screen.getByRole("button");
+    const button = await waitFor(() =>
+    screen.getByRole("button", {
+      name: "signup",
+    }));
     fireEvent.click(button);
     
     expect(sendSignUpReq).toHaveBeenCalled();

@@ -53,15 +53,15 @@ describe("Dashboard", () => {
     expect(router.push).not.toBeCalledWith('/login');
 
     const table = await waitFor(() =>
-    screen.getByRole("Text", {
+    screen.getByRole("heading", {
       name: /Jobs/i,
     }));
 
     expect(table).toBeInTheDocument();
 
     const input = await waitFor(() =>
-    screen.getByRole("Text", {
-      name: /View past and currently active jobs/i,
+    screen.getByRole("text", {
+      name: "View past and currently active jobs",
     }));
 
     expect(input).toBeInTheDocument();

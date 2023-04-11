@@ -160,7 +160,7 @@ export default function SignUp() {
             </Link>
           </Row>
           <Spacer y={1} />
-          <Button id="signup" onPress={sendSignUpReq}>Create Account</Button>
+          <Button name="signup" role="button" id="signup" onPress={sendSignUpReq}>Create Account</Button>
         </Card>
       </Container>
     </div>
