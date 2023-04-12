@@ -13,22 +13,14 @@ export default function Dashboard() {
 
   useEffect(() => {
     checkUserLoggedIn()
-      .then((data) => {
-        if ("detail" in data) {
-          setMsg(data.detail);
-          console.log(data.detail);
-        } else {
-          setData(data.user.first_name);
-        }
-        if (msg == "Not authenticated") {
-          router.push("/login");
-        }
-      })
-      .catch((error) => {
-        router.push("/login");
-        console.log(error);
-      });
-  }, [router]);
+        .then((data) => {
+            setData(data.user.first_name);
+        })
+        .catch((error) => {
+            router.push("/login");
+            console.log(error);
+        });
+}, [router]);
 
   return (
     <>
