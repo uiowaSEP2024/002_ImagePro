@@ -10,7 +10,7 @@ import {
   Link,
   Container,
 } from "@nextui-org/react";
-import { checkUserLoggedIn } from "@/utils/auth";
+import { checkUserLoggedIn, fetchSignUp } from "@/utils/auth";
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
@@ -45,22 +45,11 @@ export default function SignUp() {
       return;
     }
 
-    fetch("http://localhost:8000/users", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-        first_name: first_name,
-        last_name: last_name,
-      }),
-    })
-      .then((response) => response.json())
+    fetchSignUp(email, password, first_name, last_name)
       .then((data) => {
         setNotificationMessage("Sign up successful!");
-        console.log(data);
+        router.push("/dashboard")
+        console.log("hiiii", data);
       })
       .catch((e) => {
         console.log(e);
@@ -70,7 +59,7 @@ export default function SignUp() {
 
   return (
     <div>
-      {!!notificationMessage && <Text>{notificationMessage}</Text>}
+      {!!notificationMessage && <Text data-test-id='notification-message'>{notificationMessage}</Text>}
       <Container
         display="flex"
         alignItems="center"
