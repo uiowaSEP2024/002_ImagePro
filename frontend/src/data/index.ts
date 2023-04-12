@@ -132,7 +132,7 @@ export const generateAPIKeys = async () => {
 }
 
 export const fetchAPIkeys = async (): Promise<Key[] | void> => {
-  return await fetch('http://localhost:8000/api-keys', {
+  return await fetch("http://localhost:8000/api-keys", {
     credentials: "include",
     method: "GET"
   }).
@@ -163,3 +163,5 @@ export const fetchEvents = async (
       console.log(e);
     });
 };
+
+
