@@ -7,10 +7,12 @@ import {
   Button,
   Text,
   Input,
-  Row,
+  Grid, 
+  GridItem,
   Link,
   Container,
-} from "@nextui-org/react";
+} from "@chakra-ui/react";
+
 import { checkUserLoggedIn } from "@/utils/auth";
 
 export default function Login() {
@@ -65,14 +67,13 @@ export default function Login() {
       <Container
         display="flex"
         alignItems="center"
-        justify="center"
+        // justify="center"
         css={{ minHeight: "100vh" }}
       >
         <Card css={{ mw: "420px", p: "20px" }} variant="bordered">
           <Text
-            size={24}
-            weight="bold"
-            h1
+            fontSize='4xl'
+            as={'b'}
             align-items="center"
             css={{
               as: "center",
@@ -82,9 +83,6 @@ export default function Login() {
             Login
           </Text>
           <Input
-            clearable
-            underlined
-            fullWidth
             color="primary"
             size="lg"
             placeholder="Email"
@@ -92,11 +90,8 @@ export default function Login() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          <Spacer y={1} />
+          <Spacer />
           <Input
-            clearable
-            underlined
-            fullWidth
             color="primary"
             size="lg"
             placeholder="Password"
@@ -106,13 +101,18 @@ export default function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <Row justify="space-between">
-            <Link block color="secondary" href="/signup">
+          <Grid>
+            <Link color="secondary" href="/signup">
+              New user? Create Account.{" "}
+            </Link>
+          </Grid>
+          {/* <Row justify="space-between">
+            <Link color="secondary" href="/signup">
               New user? Create Account.{" "}
             </Link>
           </Row>
-          <Spacer y={1} />
-          <Button onPress={sendLoginReq}>Log in</Button>
+          <Spacer /> */}
+          <Button onClick={sendLoginReq}>Log in</Button>
         </Card>
       </Container>
     </div>

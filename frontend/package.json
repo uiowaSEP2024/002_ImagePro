@@ -15,6 +15,7 @@
     "snapshot:update": "jest --updateSnapshot"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.5.5",
     "@next/font": "13.1.6",
     "@nextui-org/react": "^1.0.0-beta.12",
     "@types/node": "18.14.0",
