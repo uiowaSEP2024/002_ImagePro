@@ -6,7 +6,7 @@ import "@testing-library/jest-dom";
 
 jest.mock("next/router", () => ({
   useRouter() {
-    return ({
+    return {
       route: "/",
       pathname: "",
       query: "",
@@ -15,23 +15,14 @@ jest.mock("next/router", () => ({
       events: {
         on: jest.fn(),
         off: jest.fn()
-      },  beforePopState: jest.fn(() => null),
+      },
+      beforePopState: jest.fn(() => null),
       prefetch: jest.fn(() => null)
-    });
-  },
-}));
-
-
-jest.mock("@/data", () => ({
-  fetchCheckUserLoggedIn() {
-    return new Promise((resolve) => {
-      resolve( {detail : "already logged in!", user: {}} )
-    });
-  },
+    };
+  }
 }));
 
 describe("NavBar", () => {
-
   it("renders navbar unchanged", () => {
     render(<Navbar />);
   });
