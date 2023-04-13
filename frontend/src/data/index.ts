@@ -1,7 +1,6 @@
-export type Provider = {
-  id: number;
-  name: string;
-};
+import { Job, JobEvent, Key, Provider, User, UserCreate } from "./types";
+
+
 export const providers: Record<string, Provider> = {
   "2": {
     id: 2,
@@ -9,22 +8,6 @@ export const providers: Record<string, Provider> = {
   },
 };
 
-export type Job = {
-  id: number;
-  provider_job_name: string;
-  customer_id: number;
-  provider_job_id: string;
-  provider_id: number;
-  created_at?: string;
-  num_steps?: number;
-};
-
-export type Key = {
-  id: number;
-  user_id: number,
-  key: string,
-  created_at?: string
-};
 
 export const jobs: Record<string, Job> = {
   "1": {
@@ -79,13 +62,6 @@ export const events: JobEvent[] = [
   },
 ];
 
-export type JobEvent = {
-  kind: string;
-  name: string;
-  job_id: number;
-  id: number;
-  created_at?: string;
-};
 
 export const fetchJobs = async (): Promise<Job[] | void> => {
   return fetch("http://localhost:8000/jobs", {
@@ -165,11 +141,7 @@ export const fetchEvents = async (
 };
 
 
-export type User = {
-  first_name: string
-  last_name: string
-  email: string
-}
+
 
 export async function fetchCheckUserLoggedIn() {
   try {
@@ -215,12 +187,7 @@ export const fetchLogin = async (email: string, password: string) => {
 
 
 
-type UserCreate = {
-  email: string
-  password: string
-  first_name: string
-  last_name: string
-}
+
 export const fetchSignUp = async (data: UserCreate) => {
   const response = await fetch("http://localhost:8000/users", {
     method: "POST",
