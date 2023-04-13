@@ -1,4 +1,4 @@
-name: CDK Infra Tests
+name: CDK Infra CI
 on:
   workflow_call:
 jobs:
@@ -30,8 +30,7 @@ jobs:
 
       - name: Run tests with Coverage
         run: |
-          pytest --cov-report "xml:coverage.xml" --cov
-          pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov | tee pytest-coverage.txt
+          pytest --cov-report "xml:coverage.xml" --cov --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov | tee pytest-coverage.txt
 
       - name: Pytest Coverage comment
         uses: MishaKav/pytest-coverage-comment@main
@@ -46,4 +45,44 @@ jobs:
           report-only-changed-files: false
           remove-link-from-badge: false
           junitxml-path: cdk-infra/pytest.xml
-          junitxml-title: Test Summary
+          junitxml-title: CDK Infra Test Summary
+          unique-id-for-comment: "cdk-infra-unit-tests"
+
+  black:
+    name: Black Lint
+    strategy:
+      matrix:
+        os: ["ubuntu-latest"]
+        version: ["3.10"]
+    runs-on: ${{matrix.os}}
+    defaults:
+      run:
+        working-directory: cdk-infra
+        shell: bash
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install python dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+
+      - name: Execute black
+        run: black --check .
+
+  shellcheck:
+    name: Shellcheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
