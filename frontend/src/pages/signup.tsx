@@ -9,13 +9,11 @@ import {
   Link,
   Container,
 } from "@nextui-org/react";
-import { useAuthContext, useEnsureUnauthenticated } from "@/hooks/useAuthContext";
+import { useAuthContext } from "@/hooks/useAuthContext";
 import { fetchSignUp } from "@/data";
+import { withUnauthenticated } from "@/components/withAuthenticated";
 
-export default function SignUp() {
-  // Only logged out users can access this page
-  useEnsureUnauthenticated()
-
+function SignUp() {
   const [email, setEmail] = useState("");
   const [first_name, setFirstName] = useState("");
   const [last_name, setLastName] = useState("");
@@ -147,3 +145,6 @@ export default function SignUp() {
     </div>
   );
 }
+
+
+export default withUnauthenticated(SignUp)

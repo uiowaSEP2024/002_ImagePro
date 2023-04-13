@@ -1,3 +1,4 @@
+import { withAuthenticated } from "@/components/withAuthenticated";
 import { fetchEvents, fetchJobById } from "@/data";
 import { Job, JobEvent } from "@/data/types";
 import { useEnsureAuthenticated } from "@/hooks/useAuthContext";
@@ -26,7 +27,7 @@ type ColumnName = typeof columns[number]["uid"];
 
 type JobEventWithNumber = JobEvent & { event_number: number };
 
-export default function JobPage({ initialIsPageLoading = true }) {
+function JobPage({ initialIsPageLoading = true }) {
   useEnsureAuthenticated()
   const router = useRouter();
   const { id: jobId } = router.query;
@@ -219,3 +220,5 @@ export default function JobPage({ initialIsPageLoading = true }) {
     </>
   );
 }
+
+export default withAuthenticated(JobPage);
