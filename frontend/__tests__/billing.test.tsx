@@ -1,19 +1,49 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import Billing from "@/pages/billing";
 import "@testing-library/jest-dom";
-
-// TODO: explore fixing snapshot testing with https://github.com/mui/material-ui/issues/21293#issuecomment-654921524
-describe("Billing", () => {
-  it("renders a heading", () => {
-    render(<Billing />);
-    const heading = screen.getByRole("heading", {
-      name: /Billing page/i,
+import { useRouter } from "next/router";
+ 
+jest.mock("next/router", () => ({
+  useRouter() {
+    return ({
+      route: "/",
+      pathname: "",
+      query: "",
+      asPath: "",
+      push: jest.fn(),
+      events: {
+        on: jest.fn(),
+        off: jest.fn()
+      },  beforePopState: jest.fn(() => null),
+      prefetch: jest.fn(() => null)
     });
-    expect(heading).toBeInTheDocument();
-  });
+  },
+}));
 
-  xit("renders Billing unchanged", () => {
-    const { container } = render(<Billing />);
-    // expect(container).toMatchSnapshot();
+const router = useRouter()
+
+jest.mock("@/utils/auth", () => ({
+  fetchCheckUserLoggedIn() {
+    return new Promise((resolve) => {
+      resolve( { user: {}} )
+    });
+  },
+}));
+
+describe("Billing", () => {
+  
+  it("renders a heading", async () => {
+  
+    render(<Billing />);
+
+    expect(router.push).not.toBeCalledWith("/login");
+
+    const heading = await waitFor(() =>
+      screen.getByRole("heading", {
+        name: /Billing page/i,
+      }));
+
+    expect(heading).toBeInTheDocument();
+  
   });
 });

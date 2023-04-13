@@ -11,35 +11,36 @@ import {
   Link,
   Container,
 } from "@nextui-org/react";
+import { useAuthContext, useEnsureUnauthenticated } from "@/hooks/useAuthContext";
+
+
+
 
 export default function Login() {
+  useEnsureUnauthenticated()
+
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [notificationMessage, setNotificationMessage] = useState("");
 
-  const sendLoginReq = () => {
-    fetch("http://localhost:8000/login", {
-      credentials: "include",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-      },
-      body: new URLSearchParams({
-        username: email,
-        password: password,
-      }),
-    })
-      .then((response) => {
-        if (response.status == 200) {
-          setNotificationMessage("Login successful. Redirecting...");
-          router.push("/dashboard");
-        }
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+  const { logIn} = useAuthContext()
+
+
+
+  const handleLogin = async () => {
+    try{
+      const result = await logIn(email, password)
+      if (result && result.user) {
+        setNotificationMessage("Login successful. Redirecting...");
+        router.push("/dashboard");
+      }
+      
+    }catch(e){
+      console.log(e)
+      setNotificationMessage("Login failed. Please try again.");
+    }
   };
 
   return (
@@ -55,6 +56,8 @@ export default function Login() {
           <Text
             size={24}
             weight="bold"
+            h1
+            align-items="center"
             css={{
               as: "center",
               mb: "20px",
@@ -82,6 +85,7 @@ export default function Login() {
             size="lg"
             placeholder="Password"
             aria-label="Password"
+            type={"password"}
             css={{ mb: "6px" }}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -92,7 +96,7 @@ export default function Login() {
             </Link>
           </Row>
           <Spacer y={1} />
-          <Button onPress={sendLoginReq}>Log in</Button>
+          <Button onPress={handleLogin}>Log in</Button>
         </Card>
       </Container>
     </div>
