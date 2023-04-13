@@ -3,13 +3,13 @@ import Billing from "@/pages/billing";
 import "@testing-library/jest-dom";
 import { useRouter } from "next/router";
  
-jest.mock('next/router', () => ({
+jest.mock("next/router", () => ({
   useRouter() {
     return ({
-      route: '/',
-      pathname: '',
-      query: '',
-      asPath: '',
+      route: "/",
+      pathname: "",
+      query: "",
+      asPath: "",
       push: jest.fn(),
       events: {
         on: jest.fn(),
@@ -22,10 +22,10 @@ jest.mock('next/router', () => ({
 
 const router = useRouter()
 
-jest.mock('@/utils/auth', () => ({
-  checkUserLoggedIn() {
+jest.mock("@/data", () => ({
+  fetchCheckUserLoggedIn() {
     return new Promise((resolve) => {
-      resolve( {detail : "already logged in!"} )
+      resolve( { user: {}} )
     });
   },
 }));
@@ -36,12 +36,12 @@ describe("Billing", () => {
   
     render(<Billing />);
 
-    expect(router.push).not.toBeCalledWith('/login');
+    expect(router.push).not.toBeCalledWith("/login");
 
     const heading = await waitFor(() =>
-    screen.getByRole("heading", {
-      name: /Billing page/i,
-    }));
+      screen.getByRole("heading", {
+        name: /Billing page/i,
+      }));
 
     expect(heading).toBeInTheDocument();
   
