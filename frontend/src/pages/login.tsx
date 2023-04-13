@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import {
   Card,
@@ -11,36 +11,52 @@ import {
   Link,
   Container,
 } from "@nextui-org/react";
-import { useAuthContext, useEnsureUnauthenticated } from "@/hooks/useAuthContext";
-
-
-
+import { checkUserLoggedIn } from "@/utils/auth";
 
 export default function Login() {
-  useEnsureUnauthenticated()
-
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [data, setData] = useState(null);
 
   const [notificationMessage, setNotificationMessage] = useState("");
 
-  const { logIn} = useAuthContext()
+  useEffect(() => {
+    checkUserLoggedIn()
+      .then((data) => {
+        setData(data.message);
+        console.log(data.message);
+        if (data == "already logged in!") {
+          router.push("/");
+        }
+      })
+      .catch((error) => {
+        router.push("/");
+        console.log(error);
+      });
+  }, [router]);
 
-
-
-  const handleLogin = async () => {
-    try{
-      const result = await logIn(email, password)
-      if (result && result.user) {
-        setNotificationMessage("Login successful. Redirecting...");
-        router.push("/dashboard");
-      }
-      
-    }catch(e){
-      console.log(e)
-      setNotificationMessage("Login failed. Please try again.");
-    }
+  const sendLoginReq = () => {
+    fetch("http://localhost:8000/login", {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+      },
+      body: new URLSearchParams({
+        username: email,
+        password: password,
+      }),
+    })
+      .then((response) => {
+        if (response.status == 200) {
+          setNotificationMessage("Login successful. Redirecting...");
+          router.push("/dashboard");
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   return (
@@ -96,7 +112,7 @@ export default function Login() {
             </Link>
           </Row>
           <Spacer y={1} />
-          <Button onPress={handleLogin}>Log in</Button>
+          <Button onPress={sendLoginReq}>Log in</Button>
         </Card>
       </Container>
     </div>
