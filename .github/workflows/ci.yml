@@ -12,14 +12,9 @@ jobs:
     name: TrackerAPI CI
     uses: ./.github/workflows/trackerapi-ci.yml
 
-  cdk-infra_lint:
-    name: CDK Infra Lints
-    uses: ./.github/workflows/cdk-infra-lints.yml
-
-  cdk-infra_test:
-    name: CDK Infra Tests
-    needs: cdk-infra_lint
-    uses: ./.github/workflows/cdk-infra-tests.yml
+  cdk-infra_ci:
+    name: CDK Infra CI
+    uses: ./.github/workflows/cdk-infra-ci.yml
 
   frontend_lint:
     name: Frontend CI
