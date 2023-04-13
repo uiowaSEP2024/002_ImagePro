@@ -1,15 +1,15 @@
-import { render, screen, RenderResult, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import Dashboard from "@/pages/dashboard";
 import "@testing-library/jest-dom";
 import { useRouter } from "next/router";
 
-jest.mock('next/router', () => ({
+jest.mock("next/router", () => ({
   useRouter() {
     return ({
-      route: '/',
-      pathname: '',
-      query: '',
-      asPath: '',
+      route: "/",
+      pathname: "",
+      query: "",
+      asPath: "",
       push: jest.fn(),
       events: {
         on: jest.fn(),
@@ -22,7 +22,7 @@ jest.mock('next/router', () => ({
 
 const router = useRouter()
 
-jest.mock('@/utils/auth', () => ({
+jest.mock("@/utils/auth", () => ({
   checkUserLoggedIn() {
     return new Promise((resolve) => {
       resolve( {detail : "already logged in!"} )
@@ -36,12 +36,12 @@ describe("Dashboard", () => {
   it("renders a heading", async () => {
     render(<Dashboard />);
 
-    expect(router.push).not.toBeCalledWith('/login');
+    expect(router.push).not.toBeCalledWith("/login");
 
     const heading = await waitFor(() =>
-    screen.getByRole("heading", {
-      name: /Welcome/i,
-    }));
+      screen.getByRole("heading", {
+        name: /Welcome/i,
+      }));
 
     expect(heading).toBeInTheDocument();
 
