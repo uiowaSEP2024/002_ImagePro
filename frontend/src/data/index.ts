@@ -151,7 +151,7 @@ export async function fetchCheckUserLoggedIn() {
       method: "GET",
     }) 
       
-    return result.json() as unknown as {user: User, message: string} 
+    return result.json() as unknown as {user?: User, message: string} 
   } catch (error) {
     console.log(error)
     throw error
