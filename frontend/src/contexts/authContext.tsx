@@ -59,15 +59,10 @@ export const AuthContextProvider = (props: React.PropsWithChildren) => {
   const refreshAuth = async () =>{
     try{
       const data = await fetchCheckUserLoggedIn()
-      if (data.user){
-        setCurrentUser(data.user)
-      }else{
-        setCurrentUser(undefined)
-      }
+      setCurrentUser(data.user)
     }catch(e){
       setCurrentUser(undefined)
     }
-
     setIsAuthenticating(false)
   }
 

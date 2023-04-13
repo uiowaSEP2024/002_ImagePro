@@ -2,15 +2,14 @@ import { Text } from "@nextui-org/react";
 // import { Cookies } from 'react-cookie';
 
 import { Card, Container, Link } from "@nextui-org/react";
-import { useAuthContext, useEnsureAuthenticated } from "@/hooks/useAuthContext";
+import { useAuthContext } from "@/hooks/useAuthContext";
+import { withAuthenticated } from "@/components/withAuthenticated";
 
 
 
-export default function Dashboard() {
-
+function Dashboard() {
   const {currentUser} = useAuthContext()
 
-  useEnsureAuthenticated()
 
   return (
     <>
@@ -33,3 +32,5 @@ export default function Dashboard() {
     </>
   );
 }
+
+export default withAuthenticated(Dashboard)

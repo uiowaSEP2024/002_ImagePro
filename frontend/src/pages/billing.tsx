@@ -1,8 +1,7 @@
 import { Text, Grid } from "@nextui-org/react";
-import { useEnsureAuthenticated } from "@/hooks/useAuthContext";
+import { withAuthenticated } from "@/components/withAuthenticated";
 
-export default function Billing() {
-  useEnsureAuthenticated()
+function Billing() {
 
   return (
     <>
@@ -14,3 +13,5 @@ export default function Billing() {
     </>
   );
 }
+
+export default withAuthenticated(Billing)

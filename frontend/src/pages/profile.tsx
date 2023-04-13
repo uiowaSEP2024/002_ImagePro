@@ -1,13 +1,10 @@
 import { Grid, Container, Text, Spacer } from "@nextui-org/react";
-// import { Cookies } from 'react-cookie';
-import { useAuthContext, useEnsureAuthenticated } from "@/hooks/useAuthContext";
+import { useAuthContext } from "@/hooks/useAuthContext";
+import { withAuthenticated } from "@/components/withAuthenticated";
 
 
-
-export default function Profile() {
+function Profile() {
   const {currentUser} = useAuthContext()
-
-  useEnsureAuthenticated()
  
   return (
     <Container>
@@ -31,3 +28,6 @@ export default function Profile() {
     </Container>
   );
 }
+
+
+export default withAuthenticated(Profile)

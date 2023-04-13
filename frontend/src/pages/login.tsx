@@ -11,13 +11,13 @@ import {
   Link,
   Container,
 } from "@nextui-org/react";
-import { useAuthContext, useEnsureUnauthenticated } from "@/hooks/useAuthContext";
+import { useAuthContext } from "@/hooks/useAuthContext";
+import { withUnauthenticated } from "@/components/withAuthenticated";
 
 
 
 
-export default function Login() {
-  useEnsureUnauthenticated()
+function Login() {
 
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -102,3 +102,5 @@ export default function Login() {
     </div>
   );
 }
+
+export default withUnauthenticated(Login);
