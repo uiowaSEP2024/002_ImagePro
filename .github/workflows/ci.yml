@@ -3,16 +3,14 @@ on:
   pull_request:
     branches:
       - "main"
-      - "*" # TODO: Remove
 jobs:
-  backend_lint:
-    name: Backend lints
-    uses: ./.github/workflows/backend-lints.yml
+  backend_ci:
+    name: Backend CI
+    uses: ./.github/workflows/backend-ci.yml
 
-  backend_test:
-    name: Backend tests
-    needs: backend_lint
-    uses: ./.github/workflows/backend-tests.yml
+  trackerapi_ci:
+    name: TrackerAPI CI
+    uses: ./.github/workflows/trackerapi-ci.yml
 
   cdk-infra_lint:
     name: CDK Infra Lints
@@ -24,10 +22,5 @@ jobs:
     uses: ./.github/workflows/cdk-infra-tests.yml
 
   frontend_lint:
-    name: Frontend lints
-    uses: ./.github/workflows/frontend-lints.yml
-
-  frontend_test:
-    name: Frontend tests
-    needs: frontend_lint
-    uses: ./.github/workflows/frontend-tests.yml
+    name: Frontend CI
+    uses: ./.github/workflows/frontend-ci.yml

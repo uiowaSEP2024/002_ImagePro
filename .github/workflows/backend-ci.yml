@@ -1,4 +1,4 @@
-name: backend test workflow
+name: Backend CI Workflow
 on:
   workflow_call:
 env:
@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         os: ["ubuntu-latest"]
-        version: ["3.9", "3.10"]
+        version: ["3.10"]
     runs-on: ${{matrix.os}}
     defaults:
       run:
@@ -46,10 +46,11 @@ jobs:
         uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.version }}
+          cache: pip
 
       - name: Install python dependencies
         run: |
-          pip install -r requirements.txt
+          pip install -q -r requirements.txt
 
       - name: Database setup and build coverage file
         run: |
@@ -63,8 +64,7 @@ jobs:
           python tasks.py db:test:reset
           python tasks.py db:test:upgrade
           alembic upgrade head
-          pytest --cov-report "xml:coverage.xml" --cov
-          pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov | tee pytest-coverage.txt
+          pytest --cov-report "xml:coverage.xml" --cov --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov | tee pytest-coverage.txt
 
       - name: Pytest Coverage Comment
         uses: MishaKav/pytest-coverage-comment@main
@@ -79,4 +79,15 @@ jobs:
           report-only-changed-files: false
           remove-link-from-badge: false
           junitxml-path: backend/pytest.xml
-          junitxml-title: Test Summary
+          junitxml-title: Backend Test Summary
+          unique-id-for-comment: "backend-unit-tests"
+
+  shellcheck:
+    name: Shellcheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master

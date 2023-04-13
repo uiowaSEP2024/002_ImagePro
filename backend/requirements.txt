@@ -8,6 +8,7 @@ attrs==22.2.0
 bcrypt==4.0.1
 black==23.1.0
 certifi==2022.12.7
+cfgv==3.3.1
 charset-normalizer==3.0.1
 click==8.1.3
 colorama==0.4.6
@@ -26,6 +27,7 @@ h11==0.14.0
 httpcore==0.16.3
 httptools==0.5.0
 httpx==0.23.3
+identify==2.5.22
 idna==3.4
 iniconfig==2.0.0
 isort==5.12.0
@@ -38,13 +40,16 @@ mccabe==0.7.0
 multidict==6.0.4
 mypy==1.0.1
 mypy-extensions==1.0.0
+nodeenv==1.7.0
 packaging==23.0
 passlib==1.7.4
 pathspec==0.11.0
 pipdeptree==2.5.0
 platformdirs==3.0.0
 pluggy==1.0.0
-psycopg2~=2.9.5
+pre-commit==3.2.1
+psycopg2==2.9.5
+psycopg2-binary==2.9.5
 pyasn1==0.4.8
 pycodestyle==2.10.0
 pydantic==1.10.5
@@ -59,8 +64,10 @@ python-jose==3.3.0
 python-multipart==0.0.6
 PyYAML==6.0
 radon==5.1.0
+requests==2.28.2
 rfc3986==1.5.0
 rsa==4.9
+shellcheck-py==0.9.0.2
 six==1.16.0
 sniffio==1.3.0
 snowballstemmer==2.2.0
@@ -70,6 +77,7 @@ toml==0.10.2
 tomli==2.0.1
 tomlkit==0.11.6
 typing_extensions==4.5.0
+urllib3==1.26.15
 uvicorn==0.20.0
 virtualenv==20.19.0
 vulture==2.7

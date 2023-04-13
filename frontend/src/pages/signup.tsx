@@ -9,39 +9,44 @@ import {
   Link,
   Container,
 } from "@nextui-org/react";
+import { useAuthContext, useEnsureUnauthenticated } from "@/hooks/useAuthContext";
+import { fetchSignUp } from "@/utils/auth";
 
 export default function SignUp() {
+  // Only logged out users can access this page
+  useEnsureUnauthenticated()
+
   const [email, setEmail] = useState("");
+  const [first_name, setFirstName] = useState("");
+  const [last_name, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [notificationMessage, setNotificationMessage] = useState("");
 
-  const sendSignUpReq = () => {
+  const { logIn } = useAuthContext()
+
+
+  const sendSignUpReq = async () => {
     if (confirmPassword !== password) {
       console.log("Passwords Do Not Match");
       return;
     }
 
-    fetch("http://localhost:8000/users", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setNotificationMessage("Sign up successful!");
-        console.log(data);
+    try{
+      const data = await fetchSignUp({
+        email,
+        first_name,
+        last_name,
+        password
       })
-      .catch((e) => {
-        console.log(e);
-        setNotificationMessage("Sign up failed!");
-      });
+      console.log(data)
+      setNotificationMessage("Sign up successful! Logging you in...");
+      await logIn(email, password)
+    }catch(e){
+      console.log(e);
+      setNotificationMessage("Sign up failed!");
+    }
   };
 
   return (
@@ -57,6 +62,8 @@ export default function SignUp() {
           <Text
             size={24}
             weight="bold"
+            h1
+            align-items="center"
             css={{
               as: "center",
               mb: "20px",
@@ -72,6 +79,8 @@ export default function SignUp() {
             size="lg"
             placeholder="First Name"
             aria-label="First Name"
+            value={first_name}
+            onChange={(e) => setFirstName(e.target.value)}
           />
           <Spacer y={1} />
           <Input
@@ -82,6 +91,8 @@ export default function SignUp() {
             size="lg"
             placeholder="Last Name"
             aria-label="Last Name"
+            value={last_name}
+            onChange={(e) => setLastName(e.target.value)}
           />
           <Spacer y={1} />
           <Input
