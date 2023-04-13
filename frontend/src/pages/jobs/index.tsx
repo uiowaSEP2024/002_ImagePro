@@ -1,4 +1,5 @@
 import { fetchJobs, Job } from "@/data";
+import { useEnsureAuthenticated } from "@/hooks/useAuthContext";
 import { Container, Table, Text } from "@nextui-org/react";
 import NextLink from "next/link";
 import { useState, useEffect } from "react";
@@ -13,6 +14,7 @@ const columns = [
 
 type ColumnName = typeof columns[number]["name"];
 export default function Jobs() {
+  useEnsureAuthenticated()
   const [jobs, setJobs] = useState<Job[]>([]);
 
   useEffect(() => {
