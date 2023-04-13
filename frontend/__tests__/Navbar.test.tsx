@@ -1,17 +1,16 @@
 // __tests__/navbar.test.jsx
 
-import { render, screen, RenderResult } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import Navbar from "../src/components/Navbar";
 import "@testing-library/jest-dom";
-import { useRouter } from "next/router";
 
-jest.mock('next/router', () => ({
+jest.mock("next/router", () => ({
   useRouter() {
     return ({
-      route: '/',
-      pathname: '',
-      query: '',
-      asPath: '',
+      route: "/",
+      pathname: "",
+      query: "",
+      asPath: "",
       push: jest.fn(),
       events: {
         on: jest.fn(),
@@ -22,12 +21,11 @@ jest.mock('next/router', () => ({
   },
 }));
 
-const router = useRouter()
 
-jest.mock('@/utils/auth', () => ({
-  checkUserLoggedIn() {
+jest.mock("@/data", () => ({
+  fetchCheckUserLoggedIn() {
     return new Promise((resolve) => {
-      resolve( {detail : "already logged in!"} )
+      resolve( {detail : "already logged in!", user: {}} )
     });
   },
 }));

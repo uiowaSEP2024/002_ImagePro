@@ -1,17 +1,16 @@
-import { render, RenderResult, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import Profile from "@/pages/profile";
 import "@testing-library/jest-dom";
 import { useRouter } from "next/router";
 
-let documentBody: RenderResult;
  
-jest.mock('next/router', () => ({
+jest.mock("next/router", () => ({
   useRouter() {
     return ({
-      route: '/',
-      pathname: '',
-      query: '',
-      asPath: '',
+      route: "/",
+      pathname: "",
+      query: "",
+      asPath: "",
       push: jest.fn(),
       events: {
         on: jest.fn(),
@@ -22,28 +21,26 @@ jest.mock('next/router', () => ({
   },
 }));
 
-const router = useRouter()
 
-jest.mock('@/utils/auth', () => ({
-  checkUserLoggedIn() {
+jest.mock("@/data", () => ({
+  fetchCheckUserLoggedIn() {
     return new Promise((resolve) => {
-      resolve( {detail : "already logged in!"} )
+      resolve( {detail : "already logged in!", user: {}} )
     });
   },
 }));
 
 describe("Profile", () => {
 
-    it('shows initial messages', async () => {
-        expect(router.push).not.toBeCalledWith('/login');
-        render(<Profile />);
-        let documentBody: RenderResult;
+  it("shows initial messages", async () => {
+    expect(useRouter().push).not.toBeCalledWith("/login");
+    render(<Profile />);
 
-        const heading = await waitFor(() =>
-        screen.getByRole("heading", {
-          name: /First Name/i,
-        }));
+    const heading = await waitFor(() =>
+      screen.getByRole("heading", {
+        name: /First Name/i,
+      }));
     
-        expect(heading).toBeInTheDocument();
-      });
+    expect(heading).toBeInTheDocument();
+  });
 });
