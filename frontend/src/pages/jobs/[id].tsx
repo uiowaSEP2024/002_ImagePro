@@ -1,4 +1,5 @@
 import { fetchEvents, fetchJobById, Job, JobEvent } from "@/data";
+import { useEnsureAuthenticated } from "@/hooks/useAuthContext";
 import {
   Container,
   Loading,
@@ -25,6 +26,7 @@ type ColumnName = typeof columns[number]["uid"];
 type JobEventWithNumber = JobEvent & { event_number: number };
 
 export default function JobPage({ initialIsPageLoading = true }) {
+  useEnsureAuthenticated()
   const router = useRouter();
   const { id: jobId } = router.query;
   const [events, setEvents] = useState<JobEventWithNumber[]>([]);
