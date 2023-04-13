@@ -38,8 +38,7 @@ export default function ApiKeys() {
       method: "POST"
     })
       .then((response) => response.json())
-      .then((data) => {
-        // console.log(data)
+      .then(() => {
         setNotificationMessage("API Keys Generated Successfully")
       })
       .catch((e) => {
