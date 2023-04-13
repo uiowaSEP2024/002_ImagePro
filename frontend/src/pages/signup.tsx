@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import React, { useState } from "react";
 import {
   Card,
   Spacer,
@@ -10,9 +9,13 @@ import {
   Link,
   Container,
 } from "@nextui-org/react";
-import { checkUserLoggedIn } from "@/utils/auth";
+import { useAuthContext, useEnsureUnauthenticated } from "@/hooks/useAuthContext";
+import { fetchSignUp } from "@/data";
 
 export default function SignUp() {
+  // Only logged out users can access this page
+  useEnsureUnauthenticated()
+
   const [email, setEmail] = useState("");
   const [first_name, setFirstName] = useState("");
   const [last_name, setLastName] = useState("");
@@ -21,51 +24,29 @@ export default function SignUp() {
 
   const [notificationMessage, setNotificationMessage] = useState("");
 
-  const router = useRouter();
-  const [data, setData] = useState(null);
+  const { logIn } = useAuthContext()
 
-  useEffect(() => {
-    checkUserLoggedIn()
-      .then((data) => {
-        setData(data.message);
-        console.log(data.message);
-        if (data == "already logged in!") {
-          router.push("/");
-        }
-      })
-      .catch((error) => {
-        router.push("/");
-        console.log(error);
-      });
-  }, [router]);
 
-  const sendSignUpReq = () => {
+  const sendSignUpReq = async () => {
     if (confirmPassword !== password) {
       console.log("Passwords Do Not Match");
       return;
     }
 
-    fetch("http://localhost:8000/users", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-        first_name: first_name,
-        last_name: last_name,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setNotificationMessage("Sign up successful!");
-        console.log(data);
+    try{
+      const data = await fetchSignUp({
+        email,
+        first_name,
+        last_name,
+        password
       })
-      .catch((e) => {
-        console.log(e);
-        setNotificationMessage("Sign up failed!");
-      });
+      console.log(data)
+      setNotificationMessage("Sign up successful! Logging you in...");
+      await logIn(email, password)
+    }catch(e){
+      console.log(e);
+      setNotificationMessage("Sign up failed!");
+    }
   };
 
   return (
