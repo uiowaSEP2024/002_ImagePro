@@ -1,1 +1,1 @@
-from .trackerapi import TrackerAPI
+from .trackerapi import TrackerApi
