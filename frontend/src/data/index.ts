@@ -182,6 +182,11 @@ export const fetchLogin = async (email: string, password: string) => {
     }),
   })
 
+  // TODO: check for wider range of error codes
+  if (response.status !== 200){
+    throw new Error(await response.text())
+  }
+
   return await response.json() as {user: User}
 }
 
