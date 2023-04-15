@@ -15,6 +15,8 @@ class ApiUrls:
     def jobs_url(self):
         return self.url('/jobs')
 
+    def jobs_config_url(self):
+        return self.url('/jobs_configuration')
 
 
 
@@ -76,6 +78,11 @@ class TrackerApi:
         response = self.__patch(
             self.urls.events_url(), {"id": event_id, "metadata": metadata}
         )
+
+    def register_job_config(self):
+        self.__post(self.urls.jobs_config_url(), {
+
+        })
 
 
 class JobApi:
