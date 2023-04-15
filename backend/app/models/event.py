@@ -1,5 +1,6 @@
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy.sql.sqltypes import String, Integer, Enum
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship
 
 from .base import Base
@@ -24,4 +25,5 @@ class Event(Base):
         nullable=False,
     )
 
-    # TODO: metadata column for events
+    # The event metadata
+    event_metadata = Column(JSONB, nullable=True)
