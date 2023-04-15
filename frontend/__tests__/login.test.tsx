@@ -40,7 +40,7 @@ describe("Login", () => {
     expect(router.push).not.toBeCalledWith('/');
 
     const text = await waitFor(() =>
-    screen.getByRole("heading", {
+    screen.getByRole("chakra-heading", {
       name: /Login/i,
     }));
 

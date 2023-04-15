@@ -11,6 +11,7 @@ import {
   GridItem,
   Link,
   Container,
+  Heading
 } from "@chakra-ui/react";
 
 import { checkUserLoggedIn } from "@/utils/auth";
@@ -71,7 +72,7 @@ export default function Login() {
         css={{ minHeight: "100vh" }}
       >
         <Card css={{ mw: "420px", p: "20px" }} variant="bordered">
-          <Text
+          <Heading
             fontSize='4xl'
             as={'b'}
             align-items="center"
@@ -81,7 +82,7 @@ export default function Login() {
             }}
           >
             Login
-          </Text>
+          </Heading>
           <Input
             color="primary"
             size="lg"
