@@ -96,7 +96,7 @@ export default function Jobs() {
           {(item) => (
             <Table.Row key={item.id}>
               {(column) => (
-                <Table.Cell key={column}>
+                <Table.Cell data-testid="job1" key={column}>
                   {renderCell(item, column as ColumnName)}
                 </Table.Cell>
               )}

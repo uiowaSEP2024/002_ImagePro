@@ -69,6 +69,14 @@ describe("Jobs List Page", () => {
     expect(table).toBeInTheDocument();
   });
 
+  it("renders jobs in list", async () => {
+    render(<Jobs />);
+
+    const job = await waitFor(() => screen.getByTestId("job1"));
+
+    expect(job).toBeInTheDocument();
+  });
+
   it("renders a search bar", async () => {
     render(<Jobs />);
 
