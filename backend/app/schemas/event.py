@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Json
+from typing import Any
 from enum import Enum
 
 
@@ -17,7 +18,6 @@ class EventBase(BaseModel):
 class EventCreate(EventBase):
     kind: EventKindEnum
     name: str
-    metadata: Json
 
 
 
@@ -32,3 +32,4 @@ class Event(EventCreate):
 
 class EventCreatePublic(EventCreate):
     provider_job_id: str
+    metadata: Json[Any]

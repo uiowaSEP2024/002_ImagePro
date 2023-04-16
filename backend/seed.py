@@ -50,6 +50,9 @@ EVENTS_DATA = [
         provider_job_id="botimage-123",
         kind="step",
         name="Scanning Left Kidney",
+        event_metadata={
+            "official": "Yes"
+        }
     ),
     #  Job 1, Event 2
     dict(
@@ -158,6 +161,7 @@ def seed_events(db):
             job_id=job.id,
             kind=event_data["kind"],
             name=event_data["name"],
+            event_metadata=event_data.get("event_metadata", None)
         )
 
         db.add(event)
