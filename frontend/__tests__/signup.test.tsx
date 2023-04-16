@@ -2,6 +2,9 @@ import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import Signup from "@/pages/signup";
 import "@testing-library/jest-dom";
 import Billing from "@/pages/billing";
+import Profile from "@/pages/profile";
+import Dashboard from "@/pages/dashboard";
+import APIKeys from "@/pages/apikeys";
 import { useRouter } from "next/router";
 
 
@@ -105,6 +108,15 @@ describe("SignUp", () => {
 
   it('other pages are not rendered', async () => {
     render(<Billing />);
+    expect(router.push).toBeCalledWith("/");
+
+    render(<Dashboard />);
+    expect(router.push).toBeCalledWith("/");
+
+    render(<APIKeys />);
+    expect(router.push).toBeCalledWith("/");
+
+    render(<Profile />);
     expect(router.push).toBeCalledWith("/");
 
   });
