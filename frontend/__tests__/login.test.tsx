@@ -26,9 +26,18 @@ const router = useRouter()
 jest.mock('@/utils/auth', () => ({
   checkUserLoggedIn() {
     return new Promise((resolve) => {
-      resolve( {detail : "already logged in!"} )
+      resolve( {detail : "Not authenticated"} )
     });
   },
+  fetchLogin(){
+    console.log("Heyyy there")
+    return new Promise((resolve) => {
+      const data = new URLSearchParams({
+        email: "user@example.com",
+        password: "abc"
+      });
+      resolve( data)
+    })}
 }));
 
 describe("Login", () => {
@@ -53,16 +62,17 @@ describe("Login", () => {
     const { queryByPlaceholderText } = render(<Login />);
 
     const emailInput = queryByPlaceholderText('Email') as HTMLInputElement;
-    fireEvent.input(emailInput, { target: { value: 'johndoe@gmail.com' } });
+    fireEvent.input(emailInput, { target: { value: 'user@example.com' } });
     const passInput = queryByPlaceholderText('Password')  as HTMLInputElement;
     fireEvent.input(passInput, { target: { value: 'abc' } });
 
-    expect(emailInput.value).toBe('johndoe@gmail.com');
+    expect(emailInput.value).toBe('user@example.com');
     expect(passInput.value).toBe('abc');
 
-    //const button = await waitFor(() => screen.getByTestId("login"));
-    //fireEvent.click(button);
+    const button = await waitFor(() => screen.getByTestId("login"));
+    fireEvent.click(button);
 
+    expect(router.push).toBeCalledWith("/dashboard");
   });
 
   });

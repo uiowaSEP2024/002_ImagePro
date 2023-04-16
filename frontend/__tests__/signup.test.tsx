@@ -1,6 +1,7 @@
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import Signup from "@/pages/signup";
 import "@testing-library/jest-dom";
+import Billing from "@/pages/billing";
 import { useRouter } from "next/router";
 
 
@@ -66,7 +67,7 @@ describe("SignUp", () => {
       expect(text).toBeInTheDocument();
     })
   });
-
+ 
   it("signup on change", async () => {
     
     const { queryByPlaceholderText } = render(<Signup />);
@@ -99,11 +100,13 @@ describe("SignUp", () => {
     await waitFor(()=>{
       expect(notificationMessage).toBeInTheDocument();
     })
+  });
 
 
-    // await waitFor(()=>{
-    //   expect(router.push).toBeCalledWith("/dashboard");
-    // })
+  it('other pages are not rendered', async () => {
+    render(<Billing />);
+    expect(router.push).toBeCalledWith("/");
+
   });
 
 });

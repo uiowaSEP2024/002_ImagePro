@@ -11,7 +11,7 @@ import {
   Link,
   Container,
 } from "@nextui-org/react";
-import { checkUserLoggedIn } from "@/utils/auth";
+import { checkUserLoggedIn, fetchLogin } from "@/utils/auth";
 
 export default function Login() {
   const router = useRouter();
@@ -37,26 +37,16 @@ export default function Login() {
   }, [router]);
 
   const sendLoginReq = () => {
-    fetch("http://localhost:8000/login", {
-      credentials: "include",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-      },
-      body: new URLSearchParams({
-        username: email,
-        password: password,
-      }),
+    fetchLogin(email, password)
+    .then((response) => {
+      if (response.status == 200) {
+        setNotificationMessage("Login successful. Redirecting...");
+        router.push("/dashboard");
+      }
     })
-      .then((response) => {
-        if (response.status == 200) {
-          setNotificationMessage("Login successful. Redirecting...");
-          router.push("/dashboard");
-        }
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    .catch((e) => {
+      console.log(e);
+    });
   };
 
   return (
