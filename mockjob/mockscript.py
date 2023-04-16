@@ -73,7 +73,7 @@ def run_mock_job(customer_id=None):
 
             # Convenience print to console for live log
             # just so we don't have to sit and wait for file to be logged to
-            print(json_str)
+            # print(json_str)
 
             is_last_step = i == steps - 1
             if is_last_step:
@@ -81,8 +81,10 @@ def run_mock_job(customer_id=None):
             else:
                 kind = "step"
 
-            job_tracker.send_event(kind, "step {}".format(i))
-            job_tracker.send_metadata(metadata)
+            event_metadata = job_tracker.send_event(kind, "step {}".format(i))
+            print(event_metadata.event_id)
+            tracker.send_event_metadata(event_id=event_metadata.event_id, metadata=metadata)
+            
 
 
 if __name__ == "__main__":
