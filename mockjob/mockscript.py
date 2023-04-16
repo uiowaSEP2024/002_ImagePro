@@ -61,6 +61,11 @@ def run_mock_job(customer_id=None):
                 "time": str(datetime.now()),
             }
 
+            #sample metadata
+            metadata = {
+                "official": "Yes"
+            }
+
             json_str = json.dumps(json_data)
 
             # Print json to file
@@ -77,6 +82,7 @@ def run_mock_job(customer_id=None):
                 kind = "step"
 
             job_tracker.send_event(kind, "step {}".format(i))
+            job_tracker.send_metadata(metadata)
 
 
 if __name__ == "__main__":
