@@ -2,7 +2,6 @@ from app import models, schemas
 from sqlalchemy.orm import Session
 from sqlalchemy import cast
 from .jobs import get_job_by_provider_job_id
-from sqlalchemy.dialects.postgresql import JSONB
 
 
 
