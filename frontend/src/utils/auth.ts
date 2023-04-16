@@ -40,4 +40,21 @@ export const fetchSignUp = async (email: string, password: string, firstName: st
   return await response.json();
 }
 
+export const fetchLogin = async (email: string, password: string) => {
+  const response = await fetch("http://localhost:8000/login", {
+    credentials: "include",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+    },
+    body: new URLSearchParams({
+      username: email,
+      password: password,
+    }),
+  });
+  
+  return await response.json();
+}
+
+
 

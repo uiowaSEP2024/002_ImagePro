@@ -54,14 +54,14 @@ function TopNavbar() {
           hideIn="xs"
           variant="underline"
         >
-          <Navbar.Link href="/">Home</Navbar.Link>
+          <Navbar.Link role="link" href="/">Home</Navbar.Link>
           <Navbar.Link href="/dashboard">Dashboard</Navbar.Link>
           <Navbar.Link href="/billing">Billing</Navbar.Link>
           <Navbar.Link href="/apikeys">Generate API Keys</Navbar.Link>
         </Navbar.Content>
         <Navbar.Content enableCursorHighlight hideIn="xs">
           <Navbar.Link href="/profile">My Profile</Navbar.Link>
-          <Button flat light color="default" onPress={sendLogOutReq}>
+          <Button flat light color="default" data-testid="logoutButton" name="logoutButton" onPress={sendLogOutReq}>
             Log Out
           </Button>
         </Navbar.Content>
