@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Json
 from enum import Enum
 
 
@@ -13,9 +13,12 @@ class EventBase(BaseModel):
     pass
 
 
+
 class EventCreate(EventBase):
     kind: EventKindEnum
     name: str
+    event_metadata: Json[any]
+
 
 
 class Event(EventCreate):
