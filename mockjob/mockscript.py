@@ -14,6 +14,8 @@ sys.path.append(f"{path_root}/trackerapi")
 
 from trackerapi.trackerapi import TrackerAPI
 
+from . import job_configuration
+
 load_dotenv()
 
 TEAM3_API_KEY = os.environ.get("TEAM3_API_KEY")
@@ -45,7 +47,9 @@ def run_mock_job(customer_id=None):
 
     # Create a Job Object
 
-    job_tracker = tracker.create_job(job_id, customer_id, "MockscriptJob")
+    job_tracker = tracker.register_and_create_job(
+        job_id, customer_id, job_configuration.prostate_v1_config
+    )
 
     with open(LOG_FILE_PATH, "a+") as outfile:
         # Do a dummy job for N steps
