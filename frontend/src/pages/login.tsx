@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import {
   Card,
@@ -7,59 +7,33 @@ import {
   Button,
   Text,
   Input,
-  Grid, 
-  GridItem,
+  Row,
   Link,
-  Container,
-  Heading
-} from "@chakra-ui/react";
+  Container
+} from "@nextui-org/react";
+import { useAuthContext } from "@/hooks/useAuthContext";
+import { withUnauthenticated } from "@/components/withAuthenticated";
 
-import { checkUserLoggedIn } from "@/utils/auth";
-
-export default function Login() {
+function Login() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [data, setData] = useState(null);
 
   const [notificationMessage, setNotificationMessage] = useState("");
 
-  useEffect(() => {
-    checkUserLoggedIn()
-      .then((data) => {
-        setData(data.message);
-        console.log(data.message);
-        if (data == "already logged in!") {
-          router.push("/");
-        }
-      })
-      .catch((error) => {
-        router.push("/");
-        console.log(error);
-      });
-  }, [router]);
+  const { logIn } = useAuthContext();
 
-  const sendLoginReq = () => {
-    fetch("http://localhost:8000/login", {
-      credentials: "include",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-      },
-      body: new URLSearchParams({
-        username: email,
-        password: password,
-      }),
-    })
-      .then((response) => {
-        if (response.status == 200) {
-          setNotificationMessage("Login successful. Redirecting...");
-          router.push("/dashboard");
-        }
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+  const handleLogin = async () => {
+    try {
+      const result = await logIn(email, password);
+      if (result && result.user) {
+        setNotificationMessage("Login successful. Redirecting...");
+        router.push("/dashboard");
+      }
+    } catch (e) {
+      console.log(e);
+      setNotificationMessage("Login failed. Please try again.");
+    }
   };
 
   return (
@@ -68,21 +42,22 @@ export default function Login() {
       <Container
         display="flex"
         alignItems="center"
-        // justify="center"
+        justify="center"
         css={{ minHeight: "100vh" }}
       >
         <Card css={{ mw: "420px", p: "20px" }} variant="bordered">
-          <Heading
-            fontSize='4xl'
-            as={'b'}
+          <Text
+            size={24}
+            weight="bold"
+            h1
             align-items="center"
             css={{
               as: "center",
-              mb: "20px",
+              mb: "20px"
             }}
           >
             Login
-          </Heading>
+          </Text>
           <Input
             color="primary"
             size="lg"
@@ -91,7 +66,7 @@ export default function Login() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          <Spacer />
+          <Spacer y={1} />
           <Input
             color="primary"
             size="lg"
@@ -102,20 +77,17 @@ export default function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <Grid>
-            <Link color="secondary" href="/signup">
-              New user? Create Account.{" "}
-            </Link>
-          </Grid>
-          {/* <Row justify="space-between">
-            <Link color="secondary" href="/signup">
+          <Row justify="space-between">
+            <Link block color="secondary" href="/signup">
               New user? Create Account.{" "}
             </Link>
           </Row>
-          <Spacer /> */}
-          <Button onClick={sendLoginReq}>Log in</Button>
+          <Spacer y={1} />
+          <Button onPress={handleLogin}>Log in</Button>
         </Card>
       </Container>
     </div>
   );
 }
+
+export default withUnauthenticated(Login);
