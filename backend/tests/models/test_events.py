@@ -19,7 +19,7 @@ def test_create_event(db, random_test_user, random_provider_user):
 
     # Create events for the job
 
-    event = models.Event(job_id=job.id, name="Scanning Kidney", kind="step")
+    event = models.Event(job_id=job.id, name="Scanning Kidney", kind="step", event_metadata={"unofficial": "Yes"})
 
     db.add(event)
     db.commit()
@@ -29,6 +29,9 @@ def test_create_event(db, random_test_user, random_provider_user):
     assert event.job_id == job.id
     assert event.kind == "step"
     assert event.name == "Scanning Kidney"
+    assert event.event_metadata == {
+        "unofficial": "Yes"
+    }
 
     assert len(job.events) == 1
     assert event.job.id == job.id
