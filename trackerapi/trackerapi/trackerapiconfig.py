@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from pydantic import BaseModel, StrictStr, StrictInt
+from pydantic import BaseModel, StrictInt, StrictStr
 
 
 class StepConfig(BaseModel):
@@ -21,10 +21,3 @@ class JobConfig(BaseModel):
 
     def __init__(self, name: str, tag: str, steps: List[StepConfig], **kwargs):
         super().__init__(name=name, tag=tag, steps=steps, **kwargs)
-
-
-class ConfigMap(ABC):
-    @classmethod
-    @abstractmethod
-    def items(cls) -> list[StepConfig]:
-        raise NotImplementedError('No items for config')
