@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import {
   Card,
@@ -11,42 +11,35 @@ import {
   Link,
   Container,
 } from "@nextui-org/react";
-import { checkUserLoggedIn, fetchLogin } from "@/utils/auth";
+import { useAuthContext } from "@/hooks/useAuthContext";
+import { withUnauthenticated } from "@/components/withAuthenticated";
 
-export default function Login() {
+
+
+
+function Login() {
+
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [data, setData] = useState(null);
 
   const [notificationMessage, setNotificationMessage] = useState("");
 
-  useEffect(() => {
-    checkUserLoggedIn()
-      .then((data) => {
-        setData(data.message);
-        console.log(data.message);
-        if (data == "already logged in!") {
-          router.push("/");
-        }
-      })
-      .catch((error) => {
-        router.push("/");
-        console.log(error);
-      });
-  }, [router]);
+  const { logIn} = useAuthContext()
 
-  const sendLoginReq = () => {
-    fetchLogin(email, password)
-    .then((response) => {
-      if (response.status == 200) {
+
+  const handleLogin = async () => {
+    try{
+      const result = await logIn(email, password)
+      if (result && result.user) {
         setNotificationMessage("Login successful. Redirecting...");
         router.push("/dashboard");
       }
-    })
-    .catch((e) => {
-      console.log(e);
-    });
+      
+    }catch(e){
+      console.log(e)
+      setNotificationMessage("Login failed. Please try again.");
+    }
   };
 
   return (
@@ -102,9 +95,11 @@ export default function Login() {
             </Link>
           </Row>
           <Spacer y={1} />
-          <Button data-testid="login" name="login" role="button" onPress={sendLoginReq}>Log in</Button>
+          <Button data-testid="login" name="login" onPress={handleLogin}>Log in</Button>
         </Card>
       </Container>
     </div>
   );
 }
+
+export default withUnauthenticated(Login);

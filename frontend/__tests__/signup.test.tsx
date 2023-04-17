@@ -1,4 +1,5 @@
-import { render, screen, waitFor, fireEvent } from "@testing-library/react";
+
+import { act, render, screen, waitFor, fireEvent } from "@testing-library/react";
 import Signup from "@/pages/signup";
 import "@testing-library/jest-dom";
 import Billing from "@/pages/billing";
@@ -6,13 +7,11 @@ import Profile from "@/pages/profile";
 import Dashboard from "@/pages/dashboard";
 import APIKeys from "@/pages/apikeys";
 import { useRouter } from "next/router";
-
-
-// TODO: mock the return value of (checkUserLoggedIn) this to simulate the already signed in case
+import { AuthContextProvider } from "@/contexts/authContext";
 
 jest.mock("next/router", () => ({
   useRouter() {
-    return ({
+    return {
       route: "/",
       pathname: "",
       query: "",
@@ -21,17 +20,17 @@ jest.mock("next/router", () => ({
       events: {
         on: jest.fn(),
         off: jest.fn()
-      },  beforePopState: jest.fn(() => null),
+      },
+      beforePopState: jest.fn(() => null),
       prefetch: jest.fn(() => null)
-    });
-  },
+    };
+  }
 }));
 
-
-jest.mock("@/utils/auth", () => ({
-  checkUserLoggedIn() {
+jest.mock("@/data", () => ({
+  fetchCheckUserLoggedIn() {
     return new Promise((resolve) => {
-      resolve( {detail : "Not authenticated"} )
+      resolve({ detail: "Not authenticated" });
     });
   },
 
@@ -52,23 +51,19 @@ jest.mock("@/utils/auth", () => ({
 
 const router = useRouter()
 
-
 // TODO: explore fixing snapshot testing with https://github.com/mui/material-ui/issues/21293#issuecomment-654921524
 describe("SignUp", () => {
   it("renders text", async () => {
-  
-    render(<Signup />);
-
-    expect(router.push).not.toBeCalledWith("/");
+    await act(async () => render(<Signup />, { wrapper: AuthContextProvider }));
+    expect(useRouter().push).not.toBeCalledWith("/");
 
     const text = await waitFor(() =>
       screen.getByRole("heading", {
-        name: /Sign Up/i,
-      }));
+        name: /Sign Up/i
+      })
+    );
 
-    await waitFor(()=>{
-      expect(text).toBeInTheDocument();
-    })
+    expect(text).toBeInTheDocument();
   });
  
   it("signup on change", async () => {

@@ -1,32 +1,32 @@
-import { render, screen, RenderResult, waitFor, fireEvent } from "@testing-library/react";
+
+import { act, render, screen, RenderResult, waitFor, fireEvent } from "@testing-library/react";
 import Login from "@/pages/login";
 import "@testing-library/jest-dom";
 import { useRouter } from "next/router";
+import { AuthContextProvider } from "@/contexts/authContext";
 
-
-jest.mock('next/router', () => ({
+jest.mock("next/router", () => ({
   useRouter() {
-    return ({
-      route: '/',
-      pathname: '',
-      query: '',
-      asPath: '',
+    return {
+      route: "/",
+      pathname: "",
+      query: "",
+      asPath: "",
       push: jest.fn(),
       events: {
         on: jest.fn(),
         off: jest.fn()
-      },  beforePopState: jest.fn(() => null),
+      },
+      beforePopState: jest.fn(() => null),
       prefetch: jest.fn(() => null)
-    });
-  },
+    };
+  }
 }));
 
-const router = useRouter()
-
-jest.mock('@/utils/auth', () => ({
-  checkUserLoggedIn() {
+jest.mock("@/data", () => ({
+  fetchCheckUserLoggedIn() {
     return new Promise((resolve) => {
-      resolve( {detail : "Not authenticated"} )
+      resolve({ detail: "Not authenticated" });
     });
   },
   fetchLogin(){
@@ -41,20 +41,18 @@ jest.mock('@/utils/auth', () => ({
 }));
 
 describe("Login", () => {
-
   it("renders text", async () => {
-  
-    render(<Login />);
+    await act(async () => render(<Login />, { wrapper: AuthContextProvider }));
 
-    expect(router.push).not.toBeCalledWith('/');
+    expect(useRouter().push).not.toBeCalledWith("/");
 
     const text = await waitFor(() =>
-    screen.getByRole("heading", {
-      name: /Login/i,
-    }));
+      screen.getByRole("heading", {
+        name: /Login/i
+      })
+    );
 
     expect(text).toBeInTheDocument();
-  
   });
 
   it('login on change', async () => {
@@ -72,8 +70,7 @@ describe("Login", () => {
     const button = await waitFor(() => screen.getByTestId("login"));
     fireEvent.click(button);
 
-    expect(router.push).toBeCalledWith("/dashboard");
+    expect(useRouter().push).toBeCalledWith("/dashboard");
   });
 
   });
-
