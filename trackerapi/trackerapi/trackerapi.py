@@ -1,8 +1,9 @@
 import requests
 
+from .trackerapiconfig import JobConfig
+
 
 class ApiUrls:
-
     def __init__(self, base_url):
         self.base_url = base_url
 
@@ -10,14 +11,13 @@ class ApiUrls:
         return f"{self.base_url}{path}"
 
     def events_url(self):
-        return self.url('/events')
+        return self.url("/events")
 
     def jobs_url(self):
-        return self.url('/jobs')
+        return self.url("/jobs")
 
     def jobs_config_url(self):
-        return self.url('/jobs_configuration')
-
+        return self.url("/jobs_configuration")
 
 
 class TrackerApi:
@@ -54,13 +54,21 @@ class TrackerApi:
             requests.patch(url, json=data, headers=self.__get_headers())
         )
 
-    def create_job(self, provider_job_id, customer_id, job_name):
+    def register_job(self, job_config: JobConfig):
+        response = self.__post()
+        return
+
+    def register_and_create_job(
+        self, provider_job_id, customer_id, job_config: JobConfig
+    ):
+        self.register_job(job_config)
+
         response = self.__post(
             self.urls.jobs_url(),
             {
                 "provider_job_id": provider_job_id,
                 "customer_id": customer_id,
-                "provider_job_name": job_name,
+                "provider_job_name": job_config.tag,
             },
         )
 
@@ -80,9 +88,7 @@ class TrackerApi:
         )
 
     def register_job_config(self):
-        self.__post(self.urls.jobs_config_url(), {
-
-        })
+        self.__post(self.urls.jobs_config_url(), {})
 
 
 class JobApi:
