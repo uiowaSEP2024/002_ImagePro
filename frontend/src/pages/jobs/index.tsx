@@ -1,5 +1,8 @@
-import { fetchJobs, Job } from "@/data";
-import { Button, Container, Grid, PressEvent, Table, Text } from "@nextui-org/react";
+
+import { withAuthenticated } from "@/components/withAuthenticated";
+import { fetchJobs } from "@/data";
+import { Job } from "@/data/types";
+import { Container, Table, Text } from "@nextui-org/react";
 import NextLink from "next/link";
 import React from "react";
 import { useState, useEffect } from "react";
@@ -13,7 +16,7 @@ const columns = [
 ];
 
 type ColumnName = typeof columns[number]["name"];
-export default function Jobs() {
+function Jobs() {
   const [jobs, setJobs] = useState<Job[]>([]);
 
   const [search, setSearch] = React.useState('');
@@ -107,3 +110,6 @@ export default function Jobs() {
     </Container>
   );
 }
+
+
+export default withAuthenticated(Jobs);

@@ -3,15 +3,14 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import Home from "@/pages/index";
 import "@testing-library/jest-dom";
-import { useRouter } from "next/router";
 
-jest.mock('next/router', () => ({
+jest.mock("next/router", () => ({
   useRouter() {
     return ({
-      route: '/',
-      pathname: '',
-      query: '',
-      asPath: '',
+      route: "/",
+      pathname: "",
+      query: "",
+      asPath: "",
       push: jest.fn(),
       events: {
         on: jest.fn(),
@@ -22,12 +21,11 @@ jest.mock('next/router', () => ({
   },
 }));
 
-const router = useRouter()
 
-jest.mock('@/utils/auth', () => ({
-  checkUserLoggedIn() {
+jest.mock("@/data", () => ({
+  fetchCheckUserLoggedIn() {
     return new Promise((resolve) => {
-      resolve( {detail : "already logged in!"} )
+      resolve( { user: {}} )
     });
   },
 }));
@@ -39,9 +37,9 @@ describe("Home", () => {
     render(<Home />);
 
     const heading = await waitFor(() =>
-    screen.getByRole("heading", {
-      name: /welcome to the tracking site/i,
-    }));
+      screen.getByRole("heading", {
+        name: /welcome to the tracking site/i,
+      }));
 
     expect(heading).toBeInTheDocument();
   });

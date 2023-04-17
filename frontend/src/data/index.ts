@@ -1,7 +1,6 @@
-export type Provider = {
-  id: number;
-  name: string;
-};
+import { Job, JobEvent, Key, Provider, User, UserCreate } from "./types";
+
+
 export const providers: Record<string, Provider> = {
   "2": {
     id: 2,
@@ -9,22 +8,6 @@ export const providers: Record<string, Provider> = {
   },
 };
 
-export type Job = {
-  id: number;
-  provider_job_name: string;
-  customer_id: number;
-  provider_job_id: string;
-  provider_id: number;
-  created_at?: string;
-  num_steps?: number;
-};
-
-export type Key = {
-  id: number;
-  user_id: number,
-  key: string,
-  created_at?: string
-};
 
 export const jobs: Record<string, Job> = {
   "1": {
@@ -79,13 +62,6 @@ export const events: JobEvent[] = [
   },
 ];
 
-export type JobEvent = {
-  kind: string;
-  name: string;
-  job_id: number;
-  id: number;
-  created_at?: string;
-};
 
 export const fetchJobs = async (): Promise<Job[] | void> => {
   return fetch("http://localhost:8000/jobs", {
@@ -164,4 +140,69 @@ export const fetchEvents = async (
     });
 };
 
+export async function fetchCheckUserLoggedIn() {
+  try {
+    const result = await 
+    fetch("http://localhost:8000/login", {
+      credentials: "include",
+      method: "GET",
+    }) 
+      
+    return result.json() as unknown as {user?: User, message: string} 
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
 
+
+export const fetchLogout = async () => {
+  const response = await fetch("http://localhost:8000/logout", {
+    method: "POST",
+    credentials: "include",
+  })
+
+  return response.json()
+};
+
+
+export const fetchLogin = async (email: string, password: string) => {
+  const response = await fetch("http://localhost:8000/login", {
+    credentials: "include",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+    },
+    body: new URLSearchParams({
+      username: email,
+      password: password,
+    }),
+  })
+
+  // TODO: check for wider range of error codes
+  if (response.status !== 200){
+    throw new Error(await response.text())
+  }
+
+  return await response.json() as {user: User}
+}
+
+
+
+
+export const fetchSignUp = async (data: UserCreate) => {
+  const response = await fetch("http://localhost:8000/users", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email: data.email,
+      password: data.password,
+      first_name: data.first_name,
+      last_name: data.last_name,
+    }),
+  })
+
+  return await response.json()
+}
