@@ -9,6 +9,9 @@ def test_create_event(app_client, job_for_random_user_with_api_key, db):
         "kind": "step",
         "name": job.provider_job_name,
         "provider_job_id": job.provider_job_id,
+        # "event_metadata": {
+        #     "unofficial": "Yes"
+        # }
     }
     response = app_client.post(
         "/events",
@@ -21,6 +24,9 @@ def test_create_event(app_client, job_for_random_user_with_api_key, db):
     )
     assert response.status_code == 200
     assert response.json()["kind"] == "step"
+    # assert response.json()["event_metadata"] == {
+    #     "unofficial": "Yes"
+    # }
     assert response.json()["name"] == "Scanning"
     db.refresh(job)
     assert response.json()["id"] == job.events[0].id
