@@ -23,6 +23,14 @@ Learn how to deploy the frontend to **AWS**.
 
 ### Build Settings
 
+- Choose an application name for the deployed application. This will be visible on your Amplify console.
+- Amplify will then generate a `.yml` file that contains the deployment settings. Ensure that appRoot points to frontend.
+- The app requires an IAM service role that Amplify assumes when calling other services on your behalf.
+- There are two options: using an exising IAM role or creating a new one.
+  - If creating a new role, choose **Create and use a new service role**
+  - If using a previously defined role, choose **Use an existing service role** and then select the role from the list.
+- The next step would be to review the deployment details and if everything is in order, then select **Save and Deploy**.
+
 ### Learn More
 
 - [AWS Documentation](https://docs.aws.amazon.com/amplify/latest/userguide/deploy-nextjs-app.html) - Read on using AWS Amplify for deploynment.
