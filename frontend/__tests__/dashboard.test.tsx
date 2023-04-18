@@ -59,7 +59,7 @@ describe("Dashboard", () => {
   });
 
   it("renders Jobs card", async () => {
-    render(<Dashboard />);
+    await act(async () => render(<Dashboard />, { wrapper: AuthContextProvider }));
 
     expect(useRouter().push).not.toBeCalledWith('/login');
 

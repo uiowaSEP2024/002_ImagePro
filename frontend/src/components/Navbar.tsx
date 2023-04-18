@@ -18,7 +18,7 @@ const TopNavbar = () => {
           <Navbar.Link href="/">Home</Navbar.Link>
         </Navbar.Content>
         <Navbar.Content enableCursorHighlight hideIn="xs">
-          <Navbar.Link href="/login">Login</Navbar.Link>
+          <Navbar.Link data-testid="loginButton" href="/login">Login</Navbar.Link>
           <Navbar.Link href="/signup">Sign up</Navbar.Link>
         </Navbar.Content>
       </Navbar>

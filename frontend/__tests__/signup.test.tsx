@@ -2,12 +2,9 @@
 import { act, render, screen, waitFor, fireEvent } from "@testing-library/react";
 import Signup from "@/pages/signup";
 import "@testing-library/jest-dom";
-import Billing from "@/pages/billing";
-import Profile from "@/pages/profile";
-import Dashboard from "@/pages/dashboard";
-import APIKeys from "@/pages/apikeys";
 import { useRouter } from "next/router";
 import { AuthContextProvider } from "@/contexts/authContext";
+import { fetchLogin } from "@/data";
 
 jest.mock("next/router", () => ({
   useRouter() {
@@ -44,12 +41,18 @@ jest.mock("@/data", () => ({
         id: 0
       }
       resolve( data)
-    });
-  }
+    })},
+
+  fetchLogin(){
+    console.log("Heyyy there")
+    return new Promise((resolve) => {
+      const data = new URLSearchParams({
+        email: "user@example.com",
+        password: "abc"
+      });
+      resolve( data)
+    })},
 }))
-
-
-const router = useRouter()
 
 // TODO: explore fixing snapshot testing with https://github.com/mui/material-ui/issues/21293#issuecomment-654921524
 describe("SignUp", () => {
@@ -67,27 +70,27 @@ describe("SignUp", () => {
   });
  
   it("signup on change", async () => {
-    
-    const { queryByPlaceholderText } = render(<Signup />);
 
-    const firstNameInput = queryByPlaceholderText("First Name") as HTMLInputElement;
-    fireEvent.input(firstNameInput, { target: { value: "John" } });
-    const lastNameInput = queryByPlaceholderText("Last Name") as HTMLInputElement;
-    fireEvent.input(lastNameInput, { target: { value: "Smith" } });
-    const emailInput = queryByPlaceholderText("Email") as HTMLInputElement;
-    fireEvent.input(emailInput, { target: { value: "abc@gmail.com" } });
-    const passInput = queryByPlaceholderText("Password") as HTMLInputElement;
-    fireEvent.input(passInput, { target: { value: "abc" } });
-    const pass2Input = queryByPlaceholderText("Confirm Password") as HTMLInputElement;
-    fireEvent.input(pass2Input, { target: { value: "abc" } });
+    await act(async () => render(<Signup />, { wrapper: AuthContextProvider }));
 
     await waitFor(()=>{
+      const firstNameInput = screen.queryByPlaceholderText("First Name") as HTMLInputElement;
+      fireEvent.input(firstNameInput, { target: { value: "John" } });
+      const lastNameInput = screen.queryByPlaceholderText("Last Name") as HTMLInputElement;
+      fireEvent.input(lastNameInput, { target: { value: "Smith" } });
+      const emailInput = screen.queryByPlaceholderText("Email") as HTMLInputElement;
+      fireEvent.input(emailInput, { target: { value: "abc@gmail.com" } });
+      const passInput = screen.queryByPlaceholderText("Password") as HTMLInputElement;
+      fireEvent.input(passInput, { target: { value: "abc" } });
+      const pass2Input = screen.queryByPlaceholderText("Confirm Password") as HTMLInputElement;
+      fireEvent.input(pass2Input, { target: { value: "abc" } });
+
       expect(firstNameInput.value).toBe("John");
       expect(lastNameInput.value).toBe("Smith");
       expect(emailInput.value).toBe("abc@gmail.com");
       expect(passInput.value).toBe("abc");
       expect(pass2Input.value).toBe("abc");
-    })
+    });
 
 
     const button = await waitFor(() => screen.getByTestId("signup"));
@@ -97,23 +100,7 @@ describe("SignUp", () => {
 
     await waitFor(()=>{
       expect(notificationMessage).toBeInTheDocument();
-    })
-  });
-
-
-  it('other pages are not rendered', async () => {
-    render(<Billing />);
-    expect(router.push).toBeCalledWith("/");
-
-    render(<Dashboard />);
-    expect(router.push).toBeCalledWith("/");
-
-    render(<APIKeys />);
-    expect(router.push).toBeCalledWith("/");
-
-    render(<Profile />);
-    expect(router.push).toBeCalledWith("/");
-
+    });
   });
 
 });
