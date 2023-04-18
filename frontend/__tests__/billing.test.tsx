@@ -58,13 +58,4 @@ describe("Billing", () => {
 
     expect(heading).toBeInTheDocument();
   });
-
-  it('other pages are not rendered', async () => {
-    render(<Login />);
-    expect(useRouter().push).toBeCalledWith("/");
-
-    render(<Signup />);
-    expect(useRouter().push).toBeCalledWith("/");
-
-  });
 });

@@ -40,7 +40,15 @@ jest.spyOn(data, "fetchCheckUserLoggedIn").mockImplementation(() =>
     message: ""
   })
 );
-jest.spyOn(data, "fetchJobs").mockImplementation(() => Promise.resolve([]));
+jest.spyOn(data, "fetchJobs").mockImplementation(() => Promise.resolve(
+  [{
+    id: 1,
+    provider_job_name: "Kidney Cancer Detection",
+    customer_id: 1,
+    provider_job_id: "236",
+    provider_id: 2,
+    created_at: "2021-03-01T00:00:00.000Z"
+  }]));
 jest.spyOn(data, "fetchEvents").mockImplementation(() => Promise.resolve([]));
 jest.spyOn(data, "fetchJobById").mockImplementation(() =>
   Promise.resolve({
@@ -78,15 +86,15 @@ describe("Jobs List Page", () => {
   });
 
   it("renders jobs in list", async () => {
-    render(<Jobs />);
+    await act(async () => render(<Jobs />, { wrapper: AuthContextProvider }));
 
-    const job = await waitFor(() => screen.getByTestId("job1"));
+    const job = await waitFor(() => screen.getByText("Kidney Cancer Detection"));
 
     expect(job).toBeInTheDocument();
   });
 
   it("renders a search bar", async () => {
-    render(<Jobs />);
+    await act(async () => render(<Jobs />, { wrapper: AuthContextProvider }));
 
     const bar = await waitFor(() => screen.getByTestId("search"));
 
