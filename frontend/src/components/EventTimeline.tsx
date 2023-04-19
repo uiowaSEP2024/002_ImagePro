@@ -70,7 +70,7 @@ export const EventTimeline: React.FC<EventTimelineProps> = ({
     <Flex alignItems={"baseline"} flex={1} gap={4}>
       <Flex gap={2} alignItems={"center"} direction={"column"}>
         <Center width={circleSize}>
-          <Circle color={"white"} size={circleSize} bg={circleBg}>
+          <Circle color={"white.500"} size={circleSize} bg={circleBg}>
             {<IconComponent />}
           </Circle>
         </Center>
@@ -79,7 +79,7 @@ export const EventTimeline: React.FC<EventTimelineProps> = ({
           orientation="vertical"
           borderColor={"gray.500"}
         />
-        {isStart && <Circle bg={"gray"} size={MINI_CIRCLE_SIZE} />}
+        {isStart && <Circle bgColor={"gray.500"} size={MINI_CIRCLE_SIZE} />}
       </Flex>
 
       <Flex direction={"column"}>
