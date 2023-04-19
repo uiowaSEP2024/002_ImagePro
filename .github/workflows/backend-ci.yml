@@ -66,9 +66,10 @@ jobs:
           alembic upgrade head
           pytest --cov-report "xml:coverage.xml" --cov --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov | tee pytest-coverage.txt
 
-      - name: Pytest coverage comment
+      - name: Pytest Coverage Comment
         uses: MishaKav/pytest-coverage-comment@main
         with:
+          title: Backend Coverage Report
           pytest-coverage-path: backend/pytest-coverage.txt
           pytest-xml-coverage-path: backend/coverage.xml
           hide-badge: false
