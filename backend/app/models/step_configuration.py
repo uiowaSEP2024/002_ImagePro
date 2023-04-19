@@ -30,10 +30,10 @@ class StepConfiguration(Base):
         foreign_keys=[provider_job_configuration_id],
     )
 
-    # provider_metadata_configurations = relationship(
-    #     "MetadataConfiguration",
-    #     back_populates="provider_step_configuration",
-    # )
+    provider_metadata_configurations = relationship(
+        "MetadataConfiguration",
+        back_populates="provider_step_configuration",
+    )
 
     # TODO: This should be linked to billing configuration in the future
     points = Column(Integer, index=True, nullable=False)
