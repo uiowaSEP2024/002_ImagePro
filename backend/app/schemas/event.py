@@ -18,8 +18,7 @@ class EventBase(BaseModel):
 class EventCreate(EventBase):
     kind: EventKindEnum
     name: str
-    metadata: Json[Any]
-
+    event_metadata: Json[Any]
 
 
 
@@ -33,4 +32,4 @@ class Event(EventCreate):
 
 class EventCreatePublic(EventCreate):
     provider_job_id: str
-    metadata: Json[Any]
+
