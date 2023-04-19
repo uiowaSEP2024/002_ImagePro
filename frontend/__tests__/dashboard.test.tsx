@@ -57,4 +57,19 @@ describe("Dashboard", () => {
 
     expect(heading).toBeInTheDocument();
   });
+
+  it("renders Jobs card", async () => {
+    await act(async () => render(<Dashboard />, { wrapper: AuthContextProvider }));
+
+    expect(useRouter().push).not.toBeCalledWith('/login');
+
+    const table = await waitFor(() =>
+    screen.getByRole("heading", {
+      name: /Jobs/i,
+    }));
+
+    expect(table).toBeInTheDocument();
+
+  });
+
 });
