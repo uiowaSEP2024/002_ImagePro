@@ -66,9 +66,6 @@ def run_mock_job(customer_id=None):
                 "official": "Yes"
             }
 
-            metadata_str=str(json.dumps(metadata))
-            print(metadata_str)
-
             json_str = json.dumps(json_data)
 
             # Print json to file
@@ -84,7 +81,7 @@ def run_mock_job(customer_id=None):
             else:
                 kind = "step"
 
-            job_tracker.send_event(kind, "step {}".format(i), metadata_str)
+            job_tracker.send_event(kind, "step {}".format(i), metadata)
             
 
 
