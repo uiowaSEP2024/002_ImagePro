@@ -25,6 +25,7 @@
     "core-js": "^3.29.1",
     "eslint-config-next": "13.1.6",
     "eslint-plugin-unused-imports": "^2.0.0",
+    "igniteui-angular": "^15.1.1",
     "isomorphic-fetch": "^3.0.0",
     "jest-junit": "^15.0.0",
     "next": "13.1.6",

@@ -83,7 +83,7 @@ function Login() {
             </Link>
           </Row>
           <Spacer y={1} />
-          <Button onPress={handleLogin}>Log in</Button>
+          <Button data-testid="login" name="login" onPress={handleLogin}>Log in</Button>
         </Card>
       </Container>
     </div>
