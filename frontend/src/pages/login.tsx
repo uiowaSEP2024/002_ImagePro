@@ -7,38 +7,31 @@ import {
   Button,
   Text,
   Input,
-  Row,
   Link,
   Container,
+  Row
 } from "@nextui-org/react";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { withUnauthenticated } from "@/components/withAuthenticated";
 
-
-
-
 function Login() {
-
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [notificationMessage, setNotificationMessage] = useState("");
 
-  const { logIn} = useAuthContext()
-
-
+  const { logIn } = useAuthContext();
 
   const handleLogin = async () => {
-    try{
-      const result = await logIn(email, password)
+    try {
+      const result = await logIn(email, password);
       if (result && result.user) {
         setNotificationMessage("Login successful. Redirecting...");
         router.push("/dashboard");
       }
-      
-    }catch(e){
-      console.log(e)
+    } catch (e) {
+      console.log(e);
       setNotificationMessage("Login failed. Please try again.");
     }
   };
@@ -60,15 +53,12 @@ function Login() {
             align-items="center"
             css={{
               as: "center",
-              mb: "20px",
+              mb: "20px"
             }}
           >
             Login
           </Text>
           <Input
-            clearable
-            underlined
-            fullWidth
             color="primary"
             size="lg"
             placeholder="Email"
@@ -78,9 +68,6 @@ function Login() {
           />
           <Spacer y={1} />
           <Input
-            clearable
-            underlined
-            fullWidth
             color="primary"
             size="lg"
             placeholder="Password"
@@ -96,7 +83,7 @@ function Login() {
             </Link>
           </Row>
           <Spacer y={1} />
-          <Button onPress={handleLogin}>Log in</Button>
+          <Button data-testid="login" name="login" onPress={handleLogin}>Log in</Button>
         </Card>
       </Container>
     </div>

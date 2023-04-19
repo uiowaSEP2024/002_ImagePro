@@ -1,5 +1,7 @@
 import { act, render, screen, waitFor } from "@testing-library/react";
 import Billing from "@/pages/billing";
+import Login from "@/pages/login";
+import Signup from "@/pages/signup";
 import "@testing-library/jest-dom";
 import { useRouter } from "next/router";
 import * as data from "@/data";

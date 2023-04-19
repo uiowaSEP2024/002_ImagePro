@@ -1,9 +1,12 @@
+
 import { withAuthenticated } from "@/components/withAuthenticated";
 import { fetchJobs } from "@/data";
 import { Job } from "@/data/types";
 import { Container, Table, Text } from "@nextui-org/react";
 import NextLink from "next/link";
+import React from "react";
 import { useState, useEffect } from "react";
+import {useMemo} from "react"
 
 const columns = [
   { name: "Job No.", uid: "reference_number" },
@@ -17,12 +20,19 @@ type ColumnName = typeof columns[number]["name"];
 function Jobs() {
   const [jobs, setJobs] = useState<Job[]>([]);
 
+  const [search, setSearch] = React.useState('');
+
+  const handleSearch = (event: { target: { value: React.SetStateAction<string>; }; }) => {
+    setSearch(event.target.value);
+  };
+
   useEffect(() => {
     async function loadJobs() {
       const data = await fetchJobs();
-      if (data) setJobs(data);
+      if (data) {
+        setJobs(data);
+      }
     }
-
     loadJobs();
   }, []);
 
@@ -45,9 +55,22 @@ function Jobs() {
     }
   };
 
+  function filterJobs(jobs: Job[]) {
+    return jobs.filter((item) => 
+      (item.provider_job_name.toLowerCase().includes(search.toLowerCase()) || String(item.id).includes(search)))
+  }
+
   return (
+
     <Container>
+
       <Text h1>Jobs</Text>
+
+        <label htmlFor="search" style={{display: "block", padding: "10px"}} >  
+          <input id="search" data-testid="search" type="text" placeholder="Search jobs..." onChange={handleSearch} />
+          <br/>
+        </label>
+
       <Table
         lined
         bordered
@@ -59,6 +82,7 @@ function Jobs() {
           minWidth: "100%",
         }}
         selectionMode="none"
+        id="myTable"
       >
         <Table.Header columns={columns}>
           {(column) => (
@@ -72,11 +96,11 @@ function Jobs() {
           )}
         </Table.Header>
 
-        <Table.Body items={jobs}>
+        <Table.Body items={useMemo(()=> filterJobs(jobs), [jobs])}>
           {(item) => (
             <Table.Row key={item.id}>
               {(column) => (
-                <Table.Cell key={column}>
+                <Table.Cell data-testid="job1" key={column}>
                   {renderCell(item, column as ColumnName)}
                 </Table.Cell>
               )}
