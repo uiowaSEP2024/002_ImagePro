@@ -4,11 +4,11 @@ import Navbar from "src/components/Navbar";
 import { AuthContextProvider } from "@/contexts/authContext";
 import { ChakraProvider } from "@chakra-ui/react";
 import { NextUIProvider } from "@nextui-org/react";
-import { appFont, theme } from "@/theme/theme";
+import { fontPrimary, theme } from "@/theme/theme";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <div className={appFont.className}>
+    <div className={fontPrimary.className}>
       <ChakraProvider theme={theme}>
         <NextUIProvider>
           <AuthContextProvider>
