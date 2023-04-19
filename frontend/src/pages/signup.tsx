@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import {
   Card,
   Spacer,
-  Button,
   Text,
   Input,
   Row,
   Link,
   Container,
 } from "@nextui-org/react";
+import { Button } from "@chakra-ui/react";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { fetchSignUp } from "@/data";
 import { withUnauthenticated } from "@/components/withAuthenticated";
