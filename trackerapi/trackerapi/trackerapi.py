@@ -55,7 +55,12 @@ class TrackerApi:
         )
 
     def register_job(self, job_config: JobConfig):
-        response = self.__post()
+        response = self.__post(
+            self.urls.jobs_url(),
+            {
+                "job_config": job_config,
+            },
+        )
         return
 
     def register_and_create_job(
