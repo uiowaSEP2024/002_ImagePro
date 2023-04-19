@@ -50,42 +50,78 @@ EVENTS_DATA = [
         provider_job_id="botimage-123",
         kind="step",
         name="Scanning Left Kidney",
-        event_metadata={"official": "Yes"},
+        event_metadata={
+            "Date": "6:00pm(April 7, 2023)",
+            "Protein Density": "50mg",
+            "Opacity": "0.9ml",
+            "Report": "https://www.google.com",
+            "Kidney Color": "Lime Pink",
+        },
     ),
     #  Job 1, Event 2
     dict(
         provider_job_id="botimage-123",
         kind="step",
         name="Scanning Right Kidney",
-        event_metadata={"official": "Yes"},
+        event_metadata={
+            "Date": "6:00pm(April 7, 2023)",
+            "Protein Density": "50mg",
+            "Opacity": "0.9ml",
+            "Report": "https://www.google.com",
+            "Kidney Color": "Lime Pink",
+        },
     ),
     #  Job 1, Event 3
     dict(
         provider_job_id="botimage-123",
         kind="complete",
         name="Analyze Kidney Results",
-        event_metadata={"official": "Yes"},
+        event_metadata={
+            "Date": "6:00pm(April 7, 2023)",
+            "Protein Density": "50mg",
+            "Opacity": "0.9ml",
+            "Report": "https://www.google.com",
+            "Kidney Color": "Lime Pink",
+        },
     ),
     #  Job 2, Event 1
     dict(
         provider_job_id="noodlesco-123",
         kind="step",
         name="Scanning Left Lung",
-        event_metadata={"official": "Yes"},
+        event_metadata={
+            "Date": "6:00pm(April 7, 2023)",
+            "Protein Density": "50mg",
+            "Opacity": "0.9ml",
+            "Report": "https://www.google.com",
+            "Lung Color": "Lime Pink",
+        },
     ),
     #  Job 2, Event 2
     dict(
         provider_job_id="noodlesco-123",
         kind="step",
         name="Scanning Right Lung",
-        event_metadata={"official": "Yes"},
+        event_metadata={
+            "Date": "6:00pm(April 7, 2023)",
+            "Protein Density": "50mg",
+            "Opacity": "0.9ml",
+            "Report": "https://www.google.com",
+            "Lung Color": "Lime Pink",
+        },
     ),
     #  Job 2, Event 3
     dict(
         provider_job_id="noodlesco-123",
         kind="complete",
         name="Analyze Lung Results",
-        event_metadata={"official": "Yes"},
+        event_metadata={
+            "Date": "6:00pm(April 7, 2023)",
+            "Protein Density": "50mg",
+            "Opacity": "0.9ml",
+            "Report": "https://www.google.com",
+            "Lung Color": "Lime Pink",
+        },
     ),
 ]
 
