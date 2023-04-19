@@ -6,11 +6,7 @@ export const themeConfig: ThemeConfig = {
 };
 
 const themeOverride: ThemeOverride = {
-  config: themeConfig
-};
-
-export const theme = extendTheme({
-  themeOverride,
+  config: themeConfig,
   components: {
     Button: {
       baseStyle: {
@@ -21,24 +17,26 @@ export const theme = extendTheme({
         xl: {
           h: "56px",
           fontSize: "lg",
-          px: "32px",
-        },
+          px: "32px"
+        }
       },
       variants: {
         "with-shadow": {
           bg: "#2600BF",
-          boxShadow: "0 0 2px 2px #efdfde",
+          boxShadow: "0 0 2px 2px #efdfde"
         },
         sm: {
           bg: "#2600BF",
-          fontSize: "md",
-        },
+          fontSize: "md"
+        }
       },
       defaultProps: {
-        size: "lg", 
-        variant: "sm", 
-        colorScheme: "#2600BF", 
-      },
-    },
-  },
-});
+        size: "lg",
+        variant: "sm",
+        colorScheme: "#2600BF"
+      }
+    }
+  }
+};
+
+export const theme = extendTheme(themeOverride);
