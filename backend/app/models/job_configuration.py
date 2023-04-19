@@ -24,7 +24,7 @@ class JobConfiguration(Base):
         "User", back_populates="provider_job_configurations", foreign_keys=[provider_id]
     )
 
-    # provider_step_configurations = relationship(
-    #     "StepConfiguration",
-    #     back_populates="provider_job_configuration",
-    # )
+    provider_step_configurations = relationship(
+        "StepConfiguration",
+        back_populates="provider_job_configuration",
+    )
