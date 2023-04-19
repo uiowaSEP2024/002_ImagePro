@@ -28,7 +28,6 @@ function Login() {
   const { logIn} = useAuthContext()
 
 
-
   const handleLogin = async () => {
     try{
       const result = await logIn(email, password)
@@ -96,7 +95,7 @@ function Login() {
             </Link>
           </Row>
           <Spacer y={1} />
-          <Button onPress={handleLogin}>Log in</Button>
+          <Button data-testid="login" name="login" onPress={handleLogin}>Log in</Button>
         </Card>
       </Container>
     </div>
