@@ -140,9 +140,6 @@ export const fetchEvents = async (
     });
 };
 
-
-
-
 export async function fetchCheckUserLoggedIn() {
   try {
     const result = await 
