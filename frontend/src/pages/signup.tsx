@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import {
   Card,
   Spacer,
-  Button,
   Text,
   Input,
   Row,
   Link,
   Container,
+  Button
 } from "@nextui-org/react";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { fetchSignUp } from "@/data";
@@ -49,7 +49,7 @@ function SignUp() {
 
   return (
     <div>
-      {!!notificationMessage && <Text>{notificationMessage}</Text>}
+      {!!notificationMessage && <Text data-test-id='notification-message'>{notificationMessage}</Text>}
       <Container
         display="flex"
         alignItems="center"
@@ -139,7 +139,7 @@ function SignUp() {
             </Link>
           </Row>
           <Spacer y={1} />
-          <Button onPress={sendSignUpReq}>Create Account</Button>
+          <Button name="signup" role="button" data-testid="signup" onPress={sendSignUpReq}>Create Account</Button>
         </Card>
       </Container>
     </div>
