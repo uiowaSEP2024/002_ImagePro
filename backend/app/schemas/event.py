@@ -18,6 +18,7 @@ class EventBase(BaseModel):
 class EventCreate(EventBase):
     kind: EventKindEnum
     name: str
+    metadata: Json[Any]
 
 
 
