@@ -12,3 +12,9 @@ cdk.out
 
 # Ignore .idea files
 .idea
+
+# Testing Artifacts
+coverage.xml
+pytest-coverage.txt
+pytest.xml
+.coverage
