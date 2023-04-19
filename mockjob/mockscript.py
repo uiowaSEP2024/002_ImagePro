@@ -73,7 +73,7 @@ def run_mock_job(customer_id=None):
 
             # Convenience print to console for live log
             # just so we don't have to sit and wait for file to be logged to
-            # print(json_str)
+            print(json_str)
 
             is_last_step = i == steps - 1
             if is_last_step:
