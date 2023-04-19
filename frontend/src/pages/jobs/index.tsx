@@ -6,6 +6,7 @@ import { Container, Table, Text } from "@nextui-org/react";
 import NextLink from "next/link";
 import React from "react";
 import { useState, useEffect } from "react";
+import {useMemo} from "react"
 
 const columns = [
   { name: "Job No.", uid: "reference_number" },
@@ -95,7 +96,7 @@ function Jobs() {
           )}
         </Table.Header>
 
-        <Table.Body items={filterJobs(jobs)}>
+        <Table.Body items={useMemo(()=> filterJobs(jobs), [jobs])}>
           {(item) => (
             <Table.Row key={item.id}>
               {(column) => (
