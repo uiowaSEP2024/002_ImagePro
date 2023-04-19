@@ -177,7 +177,7 @@ function JobPage({ initialIsPageLoading = true }) {
         </Box>
         <Divider />
 
-        <Center flexDirection="column" gap={2}>
+        <Center data-testid={"events-timeline"} flexDirection="column" gap={2}>
           {reversedEvents.map((event, idx) => {
             return (
               <EventTimeline
