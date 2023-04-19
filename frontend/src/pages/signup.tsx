@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import {
   Card,
   Spacer,
-  Button,
   Text,
   Input,
   Row,
   Link,
   Container,
+  Button
 } from "@nextui-org/react";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { fetchSignUp } from "@/data";
