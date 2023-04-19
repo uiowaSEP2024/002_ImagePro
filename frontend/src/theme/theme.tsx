@@ -14,7 +14,7 @@ const breakpoints = {
   "2xl": "96em"
 };
 
-export const appFont = DM_Sans({
+export const fontPrimary = DM_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "700"]
 });
@@ -22,8 +22,8 @@ export const appFont = DM_Sans({
 const themeOverride: ThemeOverride = {
   config: themeConfig,
   fonts: {
-    body: appFont.style.fontFamily,
-    heading: appFont.style.fontFamily
+    body: fontPrimary.style.fontFamily,
+    heading: fontPrimary.style.fontFamily
   },
   breakpoints,
   components: {
