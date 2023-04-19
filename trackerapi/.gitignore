@@ -4,4 +4,4 @@ __pycache__/
 *$py.class
 
 #Ignore Venv
-.venv
+venv
