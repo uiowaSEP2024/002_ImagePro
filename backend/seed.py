@@ -50,54 +50,42 @@ EVENTS_DATA = [
         provider_job_id="botimage-123",
         kind="step",
         name="Scanning Left Kidney",
-        event_metadata={
-            "official": "Yes"
-        }
+        event_metadata={"official": "Yes"},
     ),
     #  Job 1, Event 2
     dict(
         provider_job_id="botimage-123",
         kind="step",
         name="Scanning Right Kidney",
-        event_metadata={
-            "official": "Yes"
-        }
+        event_metadata={"official": "Yes"},
     ),
     #  Job 1, Event 3
     dict(
         provider_job_id="botimage-123",
         kind="complete",
         name="Analyze Kidney Results",
-        event_metadata={
-            "official": "Yes"
-        }
+        event_metadata={"official": "Yes"},
     ),
     #  Job 2, Event 1
     dict(
         provider_job_id="noodlesco-123",
         kind="step",
         name="Scanning Left Lung",
-        event_metadata={
-            "official": "Yes"
-        }
+        event_metadata={"official": "Yes"},
     ),
     #  Job 2, Event 2
     dict(
         provider_job_id="noodlesco-123",
         kind="step",
         name="Scanning Right Lung",
-        event_metadata={
-            "official": "Yes"
-        }
+        event_metadata={"official": "Yes"},
     ),
     #  Job 2, Event 3
     dict(
         provider_job_id="noodlesco-123",
         kind="complete",
         name="Analyze Lung Results",
-        event_metadata={
-            "official": "Yes"
-        }
+        event_metadata={"official": "Yes"},
     ),
 ]
 
@@ -176,7 +164,7 @@ def seed_events(db):
             job_id=job.id,
             kind=event_data["kind"],
             name=event_data["name"],
-            event_metadata=event_data.get("event_metadata", None)
+            event_metadata=event_data.get("event_metadata", None),
         )
 
         db.add(event)

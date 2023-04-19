@@ -48,9 +48,8 @@ class TrackerAPI:
     def send_event(self, kind, name, provider_job_id, metadata):
         response = self.__post_request(
             f"{self.base_url}/events",
-            {"kind": kind, "name": name, "provider_job_id": provider_job_id, "metadata": metadata},
+            {"kind": kind, "name": name, "provider_job_id": provider_job_id, "event_metadata": metadata},
         )
-
         return Event(event_id=response["id"], api=self)
 
 
