@@ -1,19 +1,14 @@
 import React, { useState } from "react";
-import {
-  Card,
-  Spacer,
-  Text,
-  Input,
-  Row,
-  Link,
-  Container,
-  Button
-} from "@nextui-org/react";
+
+
+import { Flex, Text, Box, Input, InputGroup, Button, InputRightElement, Link } from "@chakra-ui/react";
+import { ExternalLinkIcon } from "@chakra-ui/icons"
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { fetchSignUp } from "@/data";
 import { withUnauthenticated } from "@/components/withAuthenticated";
 
 function SignUp() {
+  const [showPassword, setShowPassword] = useState(false)
   const [email, setEmail] = useState("");
   const [first_name, setFirstName] = useState("");
   const [last_name, setLastName] = useState("");
@@ -48,101 +43,43 @@ function SignUp() {
   };
 
   return (
-    <div>
+    <Flex color='black' direction='column' padding='30px'>
       {!!notificationMessage && <Text data-test-id='notification-message'>{notificationMessage}</Text>}
-      <Container
-        display="flex"
-        alignItems="center"
-        justify="center"
-        css={{ minHeight: "100vh" }}
-      >
-        <Card css={{ mw: "420px", p: "20px" }} variant="bordered">
-          <Text
-            size={24}
-            weight="bold"
-            h1
-            align-items="center"
-            css={{
-              as: "center",
-              mb: "20px",
-            }}
-          >
-            Sign Up
-          </Text>
-          <Input
-            clearable
-            underlined
-            fullWidth
-            color="primary"
-            size="lg"
-            placeholder="First Name"
-            aria-label="First Name"
-            value={first_name}
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-          <Spacer y={1} />
-          <Input
-            clearable
-            underlined
-            fullWidth
-            color="primary"
-            size="lg"
-            placeholder="Last Name"
-            aria-label="Last Name"
-            value={last_name}
-            onChange={(e) => setLastName(e.target.value)}
-          />
-          <Spacer y={1} />
-          <Input
-            clearable
-            underlined
-            fullWidth
-            color="primary"
-            size="lg"
-            placeholder="Email"
-            aria-label="Email"
-            css={{ mb: "6px" }}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <Spacer y={1} />
-          <Input
-            clearable
-            underlined
-            fullWidth
-            color="primary"
-            size="lg"
-            placeholder="Password"
-            aria-label="Password"
-            type="password"
-            css={{ mb: "6px" }}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Spacer y={1} />
-          <Input
-            clearable
-            underlined
-            fullWidth
-            color="primary"
-            size="lg"
-            placeholder="Confirm Password"
-            aria-label="Confirm Password"
-            type="password"
-            css={{ mb: "6px" }}
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-          <Row justify="space-between">
-            <Link block color="secondary" href="/login">
-              Existing user? Log in.{" "}
-            </Link>
-          </Row>
-          <Spacer y={1} />
-          <Button name="signup" role="button" data-testid="signup" onPress={sendSignUpReq}>Create Account</Button>
-        </Card>
-      </Container>
-    </div>
+      <Text fontSize='36px' as='b' marginBottom='10px'>Sign up</Text>
+      <Box flex='1' w='200px' bg='white' marginBlock='5px'>
+        <Text fontFamily='20px' fontWeight='500'>First Name</Text>
+        <Input variant='filled' size='sm' placeholder="First Name" value={first_name} onChange={(e) => setFirstName(e.target.value)}/>
+      </Box>
+      <Box flex='1' w='200px' bg='white' marginBlock='5px'>
+        <Text fontFamily='20px' fontWeight='500'>Last Name</Text>
+        <Input variant='filled' size='sm' placeholder="Last Name" value={last_name} onChange={(e) => setLastName(e.target.value)}/>
+      </Box>
+      <Box flex='1' w='200px' bg='white' marginBlock='5px'>
+        <Text fontFamily='20px' fontWeight='500'>Email</Text>
+        <Input variant='filled' size='sm' placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+      </Box>
+      <Box flex='1' w='200px' bg='white' marginBlock='5px'>
+        <Text fontFamily='20px' fontWeight='500'>Password</Text>
+        <InputGroup>
+          <Input variant='filled' size='sm' placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} type={showPassword ? "text" : "password"}/>
+          <InputRightElement width='4.0rem' height='2.0rem'>
+            <Button h='1.5rem' size='xs' onClick={() => setShowPassword(!showPassword)}>
+              {showPassword ? "Hide" : "Show"}
+            </Button>
+          </InputRightElement>
+        </InputGroup>
+      </Box>
+      <Box flex='1' w='200px' bg='white' marginBlock='5px'>
+        <Text fontFamily='20px' fontWeight='500'>Confirm Password</Text>
+        <Input variant='filled' size='sm' type="password" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}/>
+      </Box>
+      <Box flex='1' w='100px' marginBlock='10px'>
+        <Button size='sm' name="signup" role="button" data-testid="signup" onClick={sendSignUpReq}>Create Account</Button>
+      </Box>
+      <Link href="/login">
+        Already have an account? Log in. <ExternalLinkIcon mx='2px' mb='2px' />
+      </Link>
+    </Flex>
   );
 }
 
