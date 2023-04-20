@@ -23,8 +23,8 @@ USERS_DATA = [
 
 API_KEYS_DATA = [
     # Providers
-    dict(email="noodlesco@gmail.com", key="VCm4-RBXxgtg__yqxf0SYGLHGn8"),
-    dict(email="botimage@gmail.com", key="q-jAqPWCRGr2u6SeK6r6U0LBfJA"),
+    dict(email="noodlesco@gmail.com", key="VCm4-RBXxgtg__yqxf0SYGLHGn8", note="Noodles & Co Key"),
+    dict(email="botimage@gmail.com", key="q-jAqPWCRGr2u6SeK6r6U0LBfJA", note="Bot Image Key"),
 ]
 
 JOBS_DATA = [
@@ -194,6 +194,7 @@ def seed_api_keys(db):
         api_key = models.Apikey(
             user_id=user.id,
             key=api_key_data["key"],
+            note=api_key_data["note"]
         )
         db.add(api_key)
         db.commit()
