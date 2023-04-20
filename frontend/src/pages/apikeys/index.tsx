@@ -78,7 +78,7 @@ export default function ApiKeys() {
             </GridItem>
             <Spacer height="30px" />
             <GridItem>
-                <Button colorScheme='telegram'>Create Key</Button>
+                <Button colorScheme='telegram' onClick={generateAPIKey}>Create Key</Button>
             </GridItem>
         </Grid>
     );
