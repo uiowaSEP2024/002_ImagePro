@@ -1,7 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { Container, Text, Box, Input, Button, InputGroup, InputRightElement, Link, Center, VStack } from "@chakra-ui/react";
+import {AiFillEye, AiFillEyeInvisible} from "react-icons/ai";
+import { Container, Icon, IconButton, Text, Box, Input, Button, InputGroup, InputRightElement, Link, Center, VStack } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons"
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { withUnauthenticated } from "@/components/withAuthenticated";
@@ -40,21 +41,20 @@ function Login() {
             <Text role="heading" fontSize='36px' as='b' marginBottom='10px'>Login</Text>
             <Box w={"100%"} flex={1} bg='white' marginBlock='5px'>
               <Text fontFamily='20px' fontWeight='500'>Email</Text>
-              <Input variant='filled' placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+              <Input variant='outline' placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
             </Box>
             <Box flex={1}  w={"100%"}  bg='white' marginBlock='5px'>
               <Text fontFamily='20px' fontWeight='500'>Password</Text>
               <InputGroup>
-                <Input variant='filled' placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} type={showPassword ? "text" : "password"}/>
+                <Input variant='outline' placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} type={showPassword ? "text" : "password"}/>
                 <InputRightElement w={"max-content"} height='100%'>
-                  <Button h='100%' px={1} size='xs' onClick={() => setShowPassword(!showPassword)}>
-                    {showPassword ? "Hide" : "Show"}
-                  </Button>
+                  {showPassword ? <IconButton variant={"ghost"} onClick={() => setShowPassword(!showPassword)} aria-label="Hidden-Password" icon={<Icon as={AiFillEye}/>}/> : 
+                    <IconButton variant={"ghost"} onClick={() => setShowPassword(!showPassword)} aria-label="Hidden-Password" icon={<Icon as={AiFillEyeInvisible}/>}/>}
                 </InputRightElement>
               </InputGroup>
             </Box>
         
-            <Button type="submit" alignSelf={"flex-start"} size='sm' name="login" role="button" data-testid="login" >Login</Button>
+            <Button type="submit" alignSelf={"flex-start"} name="login" role="button" data-testid="login" >Login</Button>
         
             <Link w='fit-content' href="/signup">
         New user? Create an account. <ExternalLinkIcon mx='2px' mb='2px' />
