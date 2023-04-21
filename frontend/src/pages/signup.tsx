@@ -45,7 +45,7 @@ function SignUp() {
   return (
     <Flex color='black' direction='column' padding='30px'>
       {!!notificationMessage && <Text data-test-id='notification-message'>{notificationMessage}</Text>}
-      <Text fontSize='36px' as='b' marginBottom='10px'>Sign up</Text>
+      <Text role="heading" fontSize='36px' as='b' marginBottom='10px'>Sign up</Text>
       <Box flex='1' w='200px' bg='white' marginBlock='5px'>
         <Text fontFamily='20px' fontWeight='500'>First Name</Text>
         <Input variant='filled' size='sm' placeholder="First Name" value={first_name} onChange={(e) => setFirstName(e.target.value)}/>
