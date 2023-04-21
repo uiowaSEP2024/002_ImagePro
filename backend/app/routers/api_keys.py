@@ -25,7 +25,7 @@ def generate_api_key(key: schemas.ApikeyCreate,
 # TODO: add current_user/authenticated_user dependency to ensure only
 #   accessible by logged in user
 # get all API keys for current user
-@router.get("/api-keys", response_model=list[schemas.Apikey])
+@router.get("/api-keys", response_model=list[schemas.ApikeyList])
 def read_apikeys(
     user=Depends(get_current_user_from_token), db: Session = Depends(get_db)
 ):

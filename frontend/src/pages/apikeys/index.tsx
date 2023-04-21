@@ -40,6 +40,7 @@ export default function ApiKeys() {
       const data = await fetchAPIkeys();
       console.log(data)
       if (data) setKeys(data);
+      console.log(data)
     }
 
     console.log({ currentUser })
