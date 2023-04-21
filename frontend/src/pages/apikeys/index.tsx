@@ -74,6 +74,11 @@ export default function ApiKeys() {
             })
     }
 
+    const closeAlert = () => {
+        setIsOpen(false);
+        window.location.reload();
+    }
+
 
     return (
         <Container maxW="container.lg" py={"6"}>
@@ -114,9 +119,7 @@ export default function ApiKeys() {
             <AlertDialog
                 isOpen={isOpen}
                 leastDestructiveRef={cancelRef}
-                onClose={() => {
-                    setIsOpen(false);
-                }}
+                onClose={ closeAlert }
                 isCentered
                 motionPreset="slideInBottom"
             >
@@ -137,9 +140,7 @@ export default function ApiKeys() {
                             </AlertDialogBody>
                         </Grid>
                         <AlertDialogFooter>
-                            <Button ref={cancelRef} onClick={() => {
-                                setIsOpen(false);
-                            }}>
+                            <Button ref={cancelRef} onClick={closeAlert}>
                                 Ok
                             </Button>
                         </AlertDialogFooter>
