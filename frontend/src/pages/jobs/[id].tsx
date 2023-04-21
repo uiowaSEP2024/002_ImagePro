@@ -177,7 +177,12 @@ function JobPage({ initialIsPageLoading = true }) {
         </Box>
         <Divider />
 
-        <Center data-testid={"events-timeline"} flexDirection="column" gap={2}>
+        <Center
+          alignSelf={"center"}
+          data-testid={"events-timeline"}
+          flexDirection="column"
+          gap={2}
+        >
           {reversedEvents.map((event, idx) => {
             return (
               <EventTimeline
@@ -185,7 +190,7 @@ function JobPage({ initialIsPageLoading = true }) {
                 key={event.id}
                 title={event.name}
                 kind={event.kind as any}
-                metadata={{ Date: new Date().toLocaleString() }} // TODO: add actual metadata from event backend
+                metadata={event.event_metadata}
               />
             );
           })}
