@@ -117,6 +117,8 @@ export default function ApiKeys() {
                 onClose={() => {
                     setIsOpen(false);
                 }}
+                isCentered
+                motionPreset="slideInBottom"
             >
                 <AlertDialogOverlay>
                     <AlertDialogContent>
