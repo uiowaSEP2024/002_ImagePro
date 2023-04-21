@@ -1,7 +1,6 @@
 import os
 import random
 
-
 import pytest
 from app import schemas, services
 from app.models.base import truncate_all_tables
@@ -14,6 +13,14 @@ from app.main import app
 # NB: this should happen before any app imports to ensure the environment is set
 
 config.setup("test")
+
+user_counter = 0
+
+
+def get_next_user_count():
+    global user_counter
+    user_counter = user_counter + 1
+    return user_counter
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -34,7 +41,7 @@ def db():
 
 @pytest.fixture
 def random_test_user(db):
-    random_tag = random.randint(0, 1000000)
+    random_tag = get_next_user_count()
     test_user = services.create_user(
         db,
         schemas.UserCreate(
@@ -71,7 +78,7 @@ def job_for_random_user_with_api_key(db, random_provider_user_with_api_key):
 @pytest.fixture
 def random_provider_user(db):
     # TODO: update to actually create a 'provider' user
-    random_tag = random.randint(0, 10000)
+    random_tag = get_next_user_count()
     test_provider_user = services.create_user(
         db,
         schemas.UserCreate(
@@ -91,7 +98,7 @@ def random_test_user_factory(db):
     class ThingFactory(object):
         @staticmethod
         def get():
-            random_tag = random.randint(0, 1000000)
+            random_tag = get_next_user_count()
             test_user = services.create_user(
                 db,
                 schemas.UserCreate(
