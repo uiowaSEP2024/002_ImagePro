@@ -32,6 +32,7 @@ export type Key = {
   id: number;
   user_id: number,
   key: string,
+  note: string,
   created_at?: string
 };
 
