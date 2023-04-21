@@ -1,39 +1,40 @@
+import { Metadata } from "@/components/Metadata";
+import { EventTimeline } from "@/components/EventTimeline";
 import { withAuthenticated } from "@/components/withAuthenticated";
 import { fetchEvents, fetchJobById } from "@/data";
 import { Job, JobEvent } from "@/data/types";
 import { useEnsureAuthenticated } from "@/hooks/useAuthContext";
+import { ArrowBackIcon } from "@chakra-ui/icons";
 import {
+  Button,
   Container,
-  Loading,
+  VStack,
+  Heading,
   Progress,
-  Spacer,
-  Table,
-  Text,
   Tooltip,
-} from "@nextui-org/react";
+  Divider,
+  Box,
+  Spinner,
+  Center,
+  ThemingProps
+} from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 
-const columns = [
-  { name: "Event No.", uid: "event_number" },
-  { name: "Name", uid: "name" },
-  { name: "Kind", uid: "kind" },
-  { name: "Date", uid: "date" },
-  { name: "Time", uid: "time" },
-];
-
-type ColumnName = typeof columns[number]["uid"];
-
 type JobEventWithNumber = JobEvent & { event_number: number };
 
 function JobPage({ initialIsPageLoading = true }) {
-  useEnsureAuthenticated()
+  useEnsureAuthenticated();
   const router = useRouter();
   const { id: jobId } = router.query;
   const [events, setEvents] = useState<JobEventWithNumber[]>([]);
   const [job, setJob] = useState<Job | null>(null);
   const [isPageLoading, setIsPageLoading] = useState(initialIsPageLoading);
+
+  const reversedEvents = useMemo(() => {
+    return events.slice().reverse();
+  }, [events]);
 
   useEffect(() => {
     async function loadJob() {
@@ -96,28 +97,6 @@ function JobPage({ initialIsPageLoading = true }) {
     return () => clearInterval(interval);
   }, [job, jobId, jobStatus]);
 
-  const renderCell = (event: JobEventWithNumber, column: ColumnName) => {
-    switch (column) {
-    case "name":
-      return <Text>{event.name}</Text>;
-    case "kind":
-      return <Text>{event.kind}</Text>;
-    case "date":
-      return event.created_at ? (
-        <Text>{new Date(event.created_at).toISOString().split("T")[0]}</Text>
-      ) : null;
-    case "time":
-      return event.created_at ? (
-        <Text>{new Date(event.created_at).toLocaleTimeString()}</Text>
-      ) : null;
-
-    case "event_number":
-      return <Text>{event.event_number}</Text>;
-    default:
-      return null;
-    }
-  };
-
   // Derive the progress percentage based on either job.num_steps
   // if it is available, or do 0 -> 1 -> 50 -> 100 based on the presence of any events
   const progressAmount = useMemo(() => {
@@ -138,86 +117,86 @@ function JobPage({ initialIsPageLoading = true }) {
   }, [job, jobStatus, events]);
 
   // Derive the color of the progress bar based on computed job status
-  const progressColor = useMemo(() => {
+  const progressColorScheme = useMemo((): ThemingProps["colorScheme"] => {
     if (jobStatus === "error") {
-      return "error";
+      return "red";
     }
-    return "success";
+
+    return "whatsapp";
   }, [jobStatus]);
 
   // Don't show page until we have attempted to load some events
   if (isPageLoading) {
     return (
-      <Container
-        css={{ height: "100%", width: "100%" }}
-        alignItems="center"
-        justify="center"
-      >
-        <Loading />
+      <Container alignItems={"center"} maxW="container.lg" py={"6"}>
+        <Center>
+          <Spinner />
+        </Center>
       </Container>
     );
   }
 
+  const jobDetails = {
+    "Job Name": job?.provider_job_name,
+    "Requested At": new Date().toLocaleTimeString(),
+    "Customer ID": job?.customer_id,
+    Provider: "-"
+  };
+
   return (
-    <>
-      <Container gap={2} justify="center" css={{ paddingTop: "$4" }}>
-        <Link href={"/jobs"}>&lt; Jobs</Link>
-        <Text h1 align-items="center">
-          Job #{jobId} - {job?.provider_job_name}
-        </Text>
-        <Text h4>Progress</Text>
-        <Tooltip
-          style={{ width: "100%" }}
-          content={`${progressAmount}% complete`}
-        >
+    <Container maxW="container.lg" py={"6"}>
+      <VStack gap={"4"} w={"full"} align="left">
+        <Link href={"/jobs"} passHref>
+          <Button
+            size={"md"}
+            fontWeight={"semibold"}
+            variant={"link"}
+            _hover={{}}
+            leftIcon={<ArrowBackIcon />}
+          >
+            Back to Jobs
+          </Button>
+        </Link>
+
+        <Tooltip label={`${progressAmount}% complete`}>
           <Progress
-            color={progressColor}
-            striped
+            borderRadius={"xl"}
+            isAnimated={Number(progressAmount) < 100}
+            size="md"
+            hasStripe={Number(progressAmount) < 100}
+            colorScheme={progressColorScheme}
             value={Number(progressAmount)}
           />
         </Tooltip>
 
-        <Spacer />
-        <Text h4>Events</Text>
-        <Table
-          lined
-          bordered
-          shadow={false}
-          color="primary"
-          aria-label="Events"
-          css={{
-            height: "auto",
-            minWidth: "100%",
-            zIndex: 1,
-          }}
-          selectionMode="none"
-        >
-          <Table.Header columns={columns}>
-            {(column) => (
-              <Table.Column
-                key={column.uid}
-                hideHeader={column.uid === "actions"}
-                align={column.uid === "actions" ? "center" : "start"}
-              >
-                {column.name}
-              </Table.Column>
-            )}
-          </Table.Header>
+        <Box>
+          <Heading fontWeight={"semibold"} size={"lg"} alignItems="center">
+            Job #{jobId}
+          </Heading>
+          <Metadata metadata={jobDetails} />
+        </Box>
+        <Divider />
 
-          <Table.Body items={events}>
-            {(item) => (
-              <Table.Row key={item.id}>
-                {(column) => (
-                  <Table.Cell key={column}>
-                    {renderCell(item, column as ColumnName)}
-                  </Table.Cell>
-                )}
-              </Table.Row>
-            )}
-          </Table.Body>
-        </Table>
-      </Container>
-    </>
+        <Center
+          alignSelf={"center"}
+          data-testid={"events-timeline"}
+          flexDirection="column"
+          gap={2}
+        >
+          {reversedEvents.map((event, idx) => {
+            return (
+              <EventTimeline
+                isStart={idx === events.length - 1}
+                key={event.id}
+                title={event.name}
+                kind={event.kind as any}
+                metadata={event.event_metadata}
+              />
+            );
+          })}
+        </Center>
+      </VStack>
+    </Container>
   );
 }
 

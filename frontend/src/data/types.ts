@@ -1,22 +1,20 @@
 export type User = {
-  first_name: string
-  last_name: string
-  email: string
-}
+  first_name: string;
+  last_name: string;
+  email: string;
+};
 
 export type UserCreate = {
-  email: string
-  password: string
-  first_name: string
-  last_name: string
-}
-
+  email: string;
+  password: string;
+  first_name: string;
+  last_name: string;
+};
 
 export type Provider = {
   id: number;
   name: string;
 };
-
 
 export type Job = {
   id: number;
@@ -30,11 +28,10 @@ export type Job = {
 
 export type Key = {
   id: number;
-  user_id: number,
-  key: string,
-  created_at?: string
+  user_id: number;
+  key: string;
+  created_at?: string;
 };
-
 
 export type JobEvent = {
   kind: string;
@@ -42,5 +39,5 @@ export type JobEvent = {
   job_id: number;
   id: number;
   created_at?: string;
+  event_metadata?: Record<string, any>;
 };
-
