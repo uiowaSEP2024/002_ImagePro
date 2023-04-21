@@ -32,10 +32,10 @@ function Login() {
   return (
     <Flex direction='column' padding='30px'>
       {!!notificationMessage && <Text>{notificationMessage}</Text>}
-      <Text fontSize='36px' as='b' marginBottom='10px'>Login</Text>
+      <Text role="heading" fontSize='36px' as='b' marginBottom='10px'>Login</Text>
       <Box flex='1' w='200px' bg='white' marginBlock='5px'>
         <Text fontFamily='20px' fontWeight='500'>Email</Text>
-        <Input variant='filled' size='sm' placeholder="First Name" value={email} onChange={(e) => setEmail(e.target.value)}/>
+        <Input variant='filled' size='sm' placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
       </Box>
       <Box flex='1' w='200px' bg='white' marginBlock='5px'>
         <Text fontFamily='20px' fontWeight='500'>Password</Text>
@@ -49,7 +49,7 @@ function Login() {
         </InputGroup>
       </Box>
       <Box flex='1' w='100px' marginBlock='10px'>
-        <Button size='sm' name="signup" role="button" data-testid="signup" onClick={handleLogin}>Login</Button>
+        <Button size='sm' name="login" role="button" data-testid="login" onClick={handleLogin}>Login</Button>
       </Box>
       <Link w='fit-content' href="/signup">
         New user? Create an account. <ExternalLinkIcon mx='2px' mb='2px' />
