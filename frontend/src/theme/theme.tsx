@@ -25,15 +25,14 @@ const themeOverride: ThemeOverride = {
           bg: "#2600BF",
           boxShadow: "0 0 2px 2px #efdfde"
         },
-        sm: {
+        regular: {
           bg: "#2600BF",
           fontSize: "md"
         }
       },
       defaultProps: {
         size: "lg",
-        variant: "sm",
-        colorScheme: "#2600BF"
+        variant: "regular",
       }
     }
   }
