@@ -76,7 +76,7 @@ function SignUp() {
       <Box flex='1' w='100px' marginBlock='10px'>
         <Button size='sm' name="signup" role="button" data-testid="signup" onClick={sendSignUpReq}>Create Account</Button>
       </Box>
-      <Link href="/login">
+      <Link w='fit-content' href="/login">
         Already have an account? Log in. <ExternalLinkIcon mx='2px' mb='2px' />
       </Link>
     </Flex>
