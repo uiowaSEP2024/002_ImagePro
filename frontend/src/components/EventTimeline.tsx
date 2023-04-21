@@ -37,7 +37,7 @@ const IconComponents: Record<Kind, React.FC> = {
 type EventTimelineProps = {
   kind: Kind;
   title: string;
-  metadata: Record<string, any>;
+  metadata?: Record<string, any>;
   isStart?: boolean;
 };
 
@@ -67,7 +67,7 @@ export const EventTimeline: React.FC<EventTimelineProps> = ({
   }, [metadata]);
 
   return (
-    <Flex alignItems={"baseline"} flex={1} gap={4}>
+    <Flex width={"100%"} alignItems={"baseline"} flex={1} gap={4}>
       <Flex gap={2} alignItems={"center"} direction={"column"}>
         <Center width={circleSize}>
           <Circle color={"white"} size={circleSize} bg={circleBg}>
@@ -86,7 +86,9 @@ export const EventTimeline: React.FC<EventTimelineProps> = ({
         <Heading m={0} size={"sm"} fontWeight={"medium"}>
           {title}
         </Heading>
-        <Metadata fontSize={"sm"} ref={metadataRef} metadata={metadata} />
+        {!!metadata && (
+          <Metadata fontSize={"sm"} ref={metadataRef} metadata={metadata} />
+        )}
       </Flex>
     </Flex>
   );
