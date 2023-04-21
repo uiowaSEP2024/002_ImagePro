@@ -102,7 +102,7 @@ export default function ApiKeys() {
                                 <CardBody aria-label="key">
                                     <Grid templateColumns='repeat(3, 1fr)' gap={4}>
                                         <GridItem colSpan={2} h='10'>{card.note}{card.key}</GridItem>
-                                        <GridItem colStart={4} colEnd={3}><Button size='md' height='10' width='150px' border='2px' borderColor='red.200' colorScheme='red'>Remove</Button></GridItem>
+                                        <GridItem colStart={4} colEnd={3}><Button size='md' height='10' width='150px' border='2px' variant="delete" >Remove</Button></GridItem>
                                     </Grid>
                                 </CardBody>
                             </Card>
