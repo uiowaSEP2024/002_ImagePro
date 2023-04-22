@@ -9,17 +9,28 @@ from app.dependencies import (
 def test_create_api_key(app_client, random_test_user):
     data = {"username": random_test_user.email, "password": "abc"}
     app_client.post("/login", data=data)
+    json = {
+        "note": "key-note"
+    }
 
-    response = app_client.post("/api-keys/")
+    response = app_client.post("/api-keys/", json=json, headers={
+        "Content-Type": "application/json",
+    })
     assert response.status_code == 200
     assert response.json()["user_id"] == random_test_user.id
+    assert response.json()["note"] == "key-note"
 
 
 def test_get_api_keys(app_client, random_test_user):
     data = {"username": random_test_user.email, "password": "abc"}
     app_client.post("/login", data=data)
+    json = {
+        "note": "key-note"
+    }
 
-    app_client.post("/api-keys/", json=data)
+    response = app_client.post("/api-keys/", json=json, headers={
+        "Content-Type": "application/json",
+    })
 
     response = app_client.get("/api-keys/", params=data)
     assert response.status_code == 200
@@ -29,6 +40,7 @@ def test_get_api_keys(app_client, random_test_user):
     assert len(result) == 1
     assert result[0]["user_id"] == random_test_user.id
     assert result[0]["key"] is not None
+    assert result[0]["note"] == "key-note"
 
 
 def test_api_key_protected_route(app_client, db, random_test_user):
