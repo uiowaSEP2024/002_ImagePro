@@ -1,4 +1,4 @@
-"""Create step configurations table
+"""Create metadata configurations table
 
 Revision ID: b9d97bd3255a
 Revises: c800c9557828
