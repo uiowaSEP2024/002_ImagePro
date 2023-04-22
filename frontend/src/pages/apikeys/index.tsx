@@ -130,7 +130,7 @@ export default function ApiKeys() {
                 <AlertDialogOverlay>
                     <AlertDialogContent>
                         <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                            Successfully created "{firstnote}"
+                            Successfully created &quot;{firstnote}&quot;
                         </AlertDialogHeader>
                         <Grid>
 
