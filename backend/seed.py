@@ -28,14 +28,28 @@ API_KEYS_DATA = [
 ]
 
 JOBS_DATA = [
-    # Job 1
+    # Job 1 John
     dict(
         customer_email="johndoe@gmail.com",
         provider_email="botimage@gmail.com",
         provider_job_id="botimage-123",
         provider_job_name="KidneyV1",
     ),
-    # Job 2
+    # Job 2 John
+     dict(
+        customer_email="johndoe@gmail.com",
+        provider_email="botimage@gmail.com",
+        provider_job_id="botimage-456",
+        provider_job_name="HeartV2",
+    ),
+    # Job 3 John
+     dict(
+        customer_email="johndoe@gmail.com",
+        provider_email="botimage@gmail.com",
+        provider_job_id="botimage-789",
+        provider_job_name="PancreasV1",
+    ),
+    # Job 1 Jane
     dict(
         customer_email="janeblack@gmail.com",
         provider_email="botimage@gmail.com",
@@ -45,41 +59,107 @@ JOBS_DATA = [
 ]
 
 EVENTS_DATA = [
-    #  Job 1, Event 1
+    #  Job 1 John, Event 1
     dict(
         provider_job_id="botimage-123",
         kind="step",
         name="Scanning Left Kidney",
+        event_metadata={
+            "Date": "6:00pm(April 7, 2023)",
+            "Protein Density": "50mg",
+            "Opacity": "0.9ml",
+            "Report": "https://www.google.com",
+            "Kidney Color": "Lime Pink",
+        },
     ),
-    #  Job 1, Event 2
+    #  Job 1 John, Event 2
     dict(
         provider_job_id="botimage-123",
         kind="step",
         name="Scanning Right Kidney",
+        event_metadata={
+            "Date": "6:00pm(April 7, 2023)",
+            "Protein Density": "50mg",
+            "Opacity": "0.9ml",
+            "Report": "https://www.google.com",
+            "Kidney Color": "Lime Pink",
+        },
     ),
-    #  Job 1, Event 3
+    #  Job 1 John, Event 3
     dict(
         provider_job_id="botimage-123",
         kind="complete",
         name="Analyze Kidney Results",
+        event_metadata={
+            "Date": "6:00pm(April 7, 2023)",
+            "Protein Density": "50mg",
+            "Opacity": "0.9ml",
+            "Report": "https://www.google.com",
+            "Kidney Color": "Lime Pink",
+        },
     ),
-    #  Job 2, Event 1
+    #  Job 2 John, Event 1
+    dict(
+        provider_job_id="botimage-456",
+        kind="step",
+        name="Scanning Left Ventricle",
+    ),
+    #  Job 2 John, Event 2
+    dict(
+        provider_job_id="botimage-456",
+        kind="step",
+        name="Scanning Right Ventricle",
+    ),
+    #  Job 2 John, Event 3
+    dict(
+        provider_job_id="botimage-456",
+        kind="complete",
+        name="Analyze Heart Results",
+    ),
+    #  Job 3 John, Event 1
+    dict(
+        provider_job_id="botimage-789",
+        kind="complete",
+        name="Analyze Pancreas Results",
+    ),
+    #  Job 1 Jane, Event 1
     dict(
         provider_job_id="noodlesco-123",
         kind="step",
         name="Scanning Left Lung",
+        event_metadata={
+            "Date": "6:00pm(April 7, 2023)",
+            "Protein Density": "50mg",
+            "Opacity": "0.9ml",
+            "Report": "https://www.google.com",
+            "Lung Color": "Lime Pink",
+        },
     ),
-    #  Job 2, Event 2
+    #  Job 1 Jane, Event 2
     dict(
         provider_job_id="noodlesco-123",
         kind="step",
         name="Scanning Right Lung",
+        event_metadata={
+            "Date": "6:00pm(April 7, 2023)",
+            "Protein Density": "50mg",
+            "Opacity": "0.9ml",
+            "Report": "https://www.google.com",
+            "Lung Color": "Lime Pink",
+        },
     ),
-    #  Job 2, Event 3
+    #  Job 1 Jane, Event 3
     dict(
         provider_job_id="noodlesco-123",
         kind="complete",
         name="Analyze Lung Results",
+        event_metadata={
+            "Date": "6:00pm(April 7, 2023)",
+            "Protein Density": "50mg",
+            "Opacity": "0.9ml",
+            "Report": "https://www.google.com",
+            "Lung Color": "Lime Pink",
+        },
     ),
 ]
 
@@ -158,6 +238,7 @@ def seed_events(db):
             job_id=job.id,
             kind=event_data["kind"],
             name=event_data["name"],
+            event_metadata=event_data.get("event_metadata", None),
         )
 
         db.add(event)
