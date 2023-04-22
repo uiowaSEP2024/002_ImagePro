@@ -18,7 +18,6 @@ export const fontPrimary = DM_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "700"]
 });
-
 const themeOverride: ThemeOverride = {
   config: themeConfig,
   fonts: {
