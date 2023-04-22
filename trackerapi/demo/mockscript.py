@@ -9,9 +9,6 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-path_root = Path(__file__).parents[1]
-sys.path.append(f"{path_root}/trackerapi")
-
 from trackerapi.trackerapi import TrackerAPI
 
 from . import job_configuration
@@ -21,6 +18,8 @@ load_dotenv()
 TEAM3_API_KEY = os.environ.get("TEAM3_API_KEY")
 
 LOG_FILE_PATH = "logs.txt"
+
+SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
 def generate_uuid():
@@ -51,7 +50,7 @@ def run_mock_job(customer_id=None):
         job_id, customer_id, job_configuration.prostate_v1_config
     )
 
-    with open(LOG_FILE_PATH, "a+") as outfile:
+    with open(f"{SCRIPT_DIR}/{LOG_FILE_PATH}", "a+") as outfile:
         # Do a dummy job for N steps
         for i in range(steps):
             # Do some work lasting anywhere between 1-2 seconds
@@ -65,10 +64,15 @@ def run_mock_job(customer_id=None):
                 "time": str(datetime.now()),
             }
 
+            # sample metadata
+            metadata = {
+                "official": "Yes"
+            }
+
             json_str = json.dumps(json_data)
 
             # Print json to file
-            # printf(outfile, json_str + "\n")
+            printf(outfile, json_str + "\n")
 
             # Convenience print to console for live log
             # just so we don't have to sit and wait for file to be logged to
@@ -80,7 +84,7 @@ def run_mock_job(customer_id=None):
             else:
                 kind = "step"
 
-            job_tracker.send_event(kind, "step {}".format(i))
+            job_tracker.send_event(kind, "step {}".format(i), metadata)
 
 
 if __name__ == "__main__":

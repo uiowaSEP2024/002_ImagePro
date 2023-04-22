@@ -15,6 +15,8 @@
     "snapshot:update": "jest --updateSnapshot"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.0.18",
+    "@chakra-ui/react": "^2.5.5",
     "@next/font": "13.1.6",
     "@nextui-org/react": "^1.0.0-beta.12",
     "@types/node": "18.14.0",
@@ -24,13 +26,15 @@
     "core-js": "^3.29.1",
     "eslint-config-next": "13.1.6",
     "eslint-plugin-unused-imports": "^2.0.0",
+    "igniteui-angular": "^15.1.1",
     "isomorphic-fetch": "^3.0.0",
     "jest-junit": "^15.0.0",
     "next": "13.1.6",
     "node-fetch": "^3.3.1",
     "react": "18.2.0",
     "react-cookie": "^4.1.1",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-icons": "^4.8.0"
   },
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.21.2",

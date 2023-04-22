@@ -83,9 +83,14 @@ class TrackerApi:
         response = self.__post(
             self.urls.events_url(),
             {"kind": kind, "name": name, "provider_job_id": provider_job_id},
+    def send_event(self, kind, name, provider_job_id, metadata):
+        response = self.__post_request(
+            f"{self.base_url}/events",
+            {"kind": kind, "name": name, "provider_job_id": provider_job_id, "event_metadata": metadata},
         )
 
         return EventApi(event_id=response["id"], api=self)
+        return Event(event_id=response["id"], api=self)
 
     def send_event_metadata(self, event_id, metadata):
         response = self.__patch(
@@ -101,9 +106,9 @@ class JobApi:
         self.provider_job_id = provider_job_id
         self.api = api
 
-    def send_event(self, kind, name):
+    def send_event(self, kind, name, metadata):
         return self.api.send_event(
-            kind=kind, name=name, provider_job_id=self.provider_job_id
+            kind=kind, name=name, provider_job_id=self.provider_job_id, metadata=metadata
         )
 
 

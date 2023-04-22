@@ -1,3 +1,6 @@
 # Ignore mocksript live logs for clean commits
 logs.txt
 .env
+
+# Ignore Virtual environment
+venv
