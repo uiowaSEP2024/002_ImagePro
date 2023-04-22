@@ -9,9 +9,6 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-path_root = Path(__file__).parents[1]
-sys.path.append(f"{path_root}/trackerapi")
-
 from trackerapi.trackerapi import TrackerAPI
 
 load_dotenv()
@@ -61,7 +58,7 @@ def run_mock_job(customer_id=None):
                 "time": str(datetime.now()),
             }
 
-            #sample metadata
+            # sample metadata
             metadata = {
                 "official": "Yes"
             }
@@ -82,7 +79,6 @@ def run_mock_job(customer_id=None):
                 kind = "step"
 
             job_tracker.send_event(kind, "step {}".format(i), metadata)
-            
 
 
 if __name__ == "__main__":
