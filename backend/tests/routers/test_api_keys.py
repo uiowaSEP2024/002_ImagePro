@@ -9,13 +9,15 @@ from app.dependencies import (
 def test_create_api_key(app_client, random_test_user):
     data = {"username": random_test_user.email, "password": "abc"}
     app_client.post("/login", data=data)
-    json = {
-        "note": "key-note"
-    }
+    json = {"note": "key-note"}
 
-    response = app_client.post("/api-keys/", json=json, headers={
-        "Content-Type": "application/json",
-    })
+    response = app_client.post(
+        "/api-keys/",
+        json=json,
+        headers={
+            "Content-Type": "application/json",
+        },
+    )
     assert response.status_code == 200
     assert response.json()["user_id"] == random_test_user.id
     assert response.json()["note"] == "key-note"
@@ -24,13 +26,15 @@ def test_create_api_key(app_client, random_test_user):
 def test_get_api_keys(app_client, random_test_user):
     data = {"username": random_test_user.email, "password": "abc"}
     app_client.post("/login", data=data)
-    json = {
-        "note": "key-note"
-    }
+    json = {"note": "key-note"}
 
-    response = app_client.post("/api-keys/", json=json, headers={
-        "Content-Type": "application/json",
-    })
+    response = app_client.post(
+        "/api-keys/",
+        json=json,
+        headers={
+            "Content-Type": "application/json",
+        },
+    )
 
     response = app_client.get("/api-keys/", params=data)
     assert response.status_code == 200
@@ -44,7 +48,9 @@ def test_get_api_keys(app_client, random_test_user):
 
 
 def test_api_key_protected_route(app_client, db, random_test_user):
-    api_key = services.create_apikey_for_user(db, random_test_user.id, key=schemas.ApikeyCreate(note="key"))
+    api_key = services.create_apikey_for_user(
+        db, random_test_user.id, key=schemas.ApikeyCreate(note="key")
+    )
 
     response = app_client.get(
         "/api-keys/protected", headers={API_KEY_HEADER_NAME: api_key.key}
@@ -56,7 +62,9 @@ def test_api_key_protected_route(app_client, db, random_test_user):
 
 
 def test_missing_api_key_on_protected_route(app_client, db, random_test_user):
-    api_key = services.create_apikey_for_user(db, random_test_user.id, key=schemas.ApikeyCreate(note="key"))
+    api_key = services.create_apikey_for_user(
+        db, random_test_user.id, key=schemas.ApikeyCreate(note="key")
+    )
 
     response = app_client.get(
         "/api-keys/protected", headers={"bad-api-key-header": api_key.key}

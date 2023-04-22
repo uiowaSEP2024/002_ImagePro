@@ -16,8 +16,10 @@ router.tags = ["api-keys"]
 #   accessible by logged in user
 # create API Key
 @router.post("/api-keys", response_model=schemas.Apikey)
-def generate_api_key(key: schemas.ApikeyCreate, 
-    user=Depends(get_current_user_from_token), db: Session = Depends(get_db)
+def generate_api_key(
+    key: schemas.ApikeyCreate,
+    user=Depends(get_current_user_from_token),
+    db: Session = Depends(get_db),
 ):
     return services.create_apikey_for_user(db, user.id, key=key)
 
