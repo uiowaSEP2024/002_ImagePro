@@ -10,6 +10,6 @@ class Apikey(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
     key = Column(String, unique=True)
-    note=Column(String)
+    note = Column(String)
 
     user = relationship("User", back_populates="api_keys")

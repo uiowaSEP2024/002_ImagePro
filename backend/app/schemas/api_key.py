@@ -8,12 +8,14 @@ class ApiKeyCreateRequest(BaseModel):
 class ApikeyBase(BaseModel):
     key: str
 
+
 class ApikeyReturn(BaseModel):
     key: SecretStr
 
 
 class ApikeyCreate(BaseModel):
     note: str
+
 
 class Apikey(ApikeyBase):
     id: int
@@ -31,4 +33,3 @@ class ApikeyList(ApikeyReturn):
 
     class Config:
         orm_mode = True
-
