@@ -23,14 +23,17 @@ class MetadataConfiguration(Base):
     # type of the field specified by the provider
     provider_field_type = Column(String, index=True, nullable=False)
 
+    # value of the field specified by the provider
+    provider_field_value = Column(String, index=True, nullable=False)
+
     # units of the field specified by the provider
     provider_field_units = Column(String, index=True, nullable=False)
 
-    provider_step_configuration_id = Column(
+    step_configuration_id = Column(
         Integer, ForeignKey("step_configurations.id"), index=True, nullable=False
     )
     provider_step_configuration = relationship(
         "StepConfiguration",
         back_populates="provider_metadata_configurations",
-        foreign_keys=[provider_step_configuration_id],
+        foreign_keys=[step_configuration_id],
     )
