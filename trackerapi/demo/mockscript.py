@@ -9,9 +9,9 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-from trackerapi.trackerapi import TrackerAPI
+from trackerapi.trackerapi import TrackerApi
 
-from . import job_configuration
+from demo import job_configuration
 
 load_dotenv()
 
@@ -42,7 +42,7 @@ def run_mock_job(customer_id=None):
 
     # Create TrackerAPI object
 
-    tracker = TrackerAPI("q-jAqPWCRGr2u6SeK6r6U0LBfJA")
+    tracker = TrackerApi("q-jAqPWCRGr2u6SeK6r6U0LBfJA")
 
     # Create a Job Object
 

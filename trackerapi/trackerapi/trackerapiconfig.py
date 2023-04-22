@@ -6,7 +6,6 @@ from pydantic import BaseModel, StrictInt, StrictStr
 
 class StepConfig(BaseModel):
     tag: StrictStr
-    kind: StrictStr
     points: StrictInt
     name: StrictStr
 
