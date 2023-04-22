@@ -55,12 +55,12 @@ class TrackerApi:
         )
 
     def register_job(self, job_config: JobConfig):
-        response = self.__post(
-            self.urls.jobs_url(),
-            {
-                "job_config": job_config,
-            },
-        )
+        # response = self.__post(
+        #     self.urls.jobs_url(),
+        #     {
+        #         "job_config": job_config,
+        #     },
+        # )
         return
 
     def register_and_create_job(
@@ -73,24 +73,19 @@ class TrackerApi:
             {
                 "provider_job_id": provider_job_id,
                 "customer_id": customer_id,
-                "provider_job_name": job_config.tag,
+                "provider_job_name": job_config.name,
             },
         )
 
         return JobApi(provider_job_id=response["provider_job_id"], api=self)
 
-    def send_event(self, kind, name, provider_job_id):
+    def send_event(self, kind, name, provider_job_id, metadata):
         response = self.__post(
             self.urls.events_url(),
-            {"kind": kind, "name": name, "provider_job_id": provider_job_id},
-    def send_event(self, kind, name, provider_job_id, metadata):
-        response = self.__post_request(
-            f"{self.base_url}/events",
             {"kind": kind, "name": name, "provider_job_id": provider_job_id, "event_metadata": metadata},
         )
 
         return EventApi(event_id=response["id"], api=self)
-        return Event(event_id=response["id"], api=self)
 
     def send_event_metadata(self, event_id, metadata):
         response = self.__patch(
