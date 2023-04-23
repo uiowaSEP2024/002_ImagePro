@@ -9,10 +9,6 @@ class ApikeyBase(BaseModel):
     key: str
 
 
-class ApikeyReturn(BaseModel):
-    key: SecretStr
-
-
 class ApikeyCreate(BaseModel):
     note: str
 
@@ -26,10 +22,5 @@ class Apikey(ApikeyBase):
         orm_mode = True
 
 
-class ApikeyList(ApikeyReturn):
-    id: int
-    user_id: int
-    note: str
-
-    class Config:
-        orm_mode = True
+class ApikeyPublic(Apikey):
+    key: SecretStr
