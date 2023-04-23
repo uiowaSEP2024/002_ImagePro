@@ -40,11 +40,11 @@ function Login() {
           <VStack spacing={4}>
             <Text role="heading" fontSize='36px' as='b' marginBottom='10px'>Login</Text>
             <Box w={"100%"} flex={1} bg='white' marginBlock='5px'>
-              <Text fontFamily='20px' fontWeight='500'>Email</Text>
+              <Text fontSize='lg' fontWeight='500'>Email</Text>
               <Input variant='outline' placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
             </Box>
             <Box flex={1}  w={"100%"}  bg='white' marginBlock='5px'>
-              <Text fontFamily='20px' fontWeight='500'>Password</Text>
+              <Text fontSize='lg' fontWeight='500'>Password</Text>
               <InputGroup>
                 <Input variant='outline' placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} type={showPassword ? "text" : "password"}/>
                 <InputRightElement w={"max-content"} height='100%'>
