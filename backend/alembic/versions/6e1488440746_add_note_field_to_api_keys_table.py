@@ -9,7 +9,6 @@ from alembic import op
 import sqlalchemy as sa
 
 
-
 revision = "6e1488440746"
 down_revision = "97c85d02b221"
 branch_labels = None
@@ -18,7 +17,6 @@ depends_on = None
 
 def upgrade() -> None:
     op.add_column("api_keys", sa.Column("note", sa.String(), nullable=True))
-
 
 
 def downgrade() -> None:
