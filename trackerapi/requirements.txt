@@ -12,3 +12,4 @@ idna~=3.4
 urllib3~=1.26.15
 packaging~=23.0
 python-dotenv~=1.0.0
+responses~=0.23.1
