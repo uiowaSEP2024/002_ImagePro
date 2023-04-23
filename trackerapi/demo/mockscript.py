@@ -4,6 +4,7 @@ import random
 import time
 import uuid
 from datetime import datetime
+from pathlib import Path
 
 from dotenv import load_dotenv
 
@@ -35,7 +36,8 @@ def run_mock_job(customer_id=None):
     job_id = generate_uuid()
 
     # Get job config
-    job_config_manager = JobConfigManager(bulk_config_filepath=f"{SCRIPT_DIR}/job_configurations.json")
+    job_configurations_file = Path(SCRIPT_DIR, "./job-configurations.json")
+    job_config_manager = JobConfigManager(configurations_file=job_configurations_file)
     job_config = job_config_manager.get_job_config('mockscript_job')
 
     # Create TrackerAPI object and job session
