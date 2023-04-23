@@ -1,16 +1,14 @@
 import json
+from pathlib import Path
 from typing import Type
-
 from pydantic import BaseModel
-
-from trackerapi.schemas import JobConfig, JobConfigs
-import sys
-
+from trackerapi.schemas import JobConfigs
 import argparse
 
 
 def generate_model_json_schema(model: Type[BaseModel], filename: str, location: str = "."):
     json_schema = json.loads(model.schema_json())
+    Path(location).mkdir(parents=True, exist_ok=True)
     with open(f"{location}/{filename}.generated.json", "w") as f:
         json.dump(json_schema, f, indent=2)
 
