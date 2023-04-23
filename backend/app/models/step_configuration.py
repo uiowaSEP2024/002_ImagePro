@@ -7,7 +7,7 @@ from .base import Base
 
 class StepConfiguration(Base):
     __tablename__ = "step_configurations"
-    __table_args__ = (UniqueConstraint("tag"),)
+    __table_args__ = (UniqueConstraint("job_configuration_id", "tag"),)
 
     # Auto-generated internal job configuration id
     id = Column(Integer, primary_key=True, index=True)
@@ -16,7 +16,7 @@ class StepConfiguration(Base):
     job_tag = Column(String, index=True, nullable=False)
     # internal tag used to link a step configuration
     tag = Column(String, index=True, nullable=False)
-    #
+
     # The step configuration name as specified by the provider
     provider_step_configuration_name = Column(String, index=True, nullable=False)
 
