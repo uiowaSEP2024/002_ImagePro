@@ -45,7 +45,7 @@ def run_mock_job(customer_id=None):
     tracker.register_job_config(job_config)
 
     # Signal the start of a new job TODO: change to use 'tag' instead of name
-    job_tracker = tracker.create_job(job_id, customer_id, job_config.name)
+    tracker_job = tracker.create_job(job_id, customer_id, job_config.name)
 
     with open(f"{SCRIPT_DIR}/{LOG_FILE_PATH}", "a+") as outfile:
         # Do a dummy job for N steps
@@ -78,7 +78,7 @@ def run_mock_job(customer_id=None):
             is_last_step = idx == steps - 1
             kind = "complete" if is_last_step else "step"
 
-            job_tracker.send_event(kind, step.name, metadata)
+            tracker_job.send_event(kind, step.name, metadata)
 
 
 if __name__ == "__main__":
