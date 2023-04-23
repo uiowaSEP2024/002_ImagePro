@@ -3,7 +3,7 @@ from typing import Type
 
 from pydantic import BaseModel
 
-from trackerapi.schemas import JobConfig, BulkJobConfig
+from trackerapi.schemas import JobConfig, JobConfigs
 import sys
 
 import argparse
@@ -16,7 +16,7 @@ def generate_model_json_schema(model: Type[BaseModel], filename: str, location: 
 
 
 def generate_job_configs_json_schema(location: str = "./", filename: str = "job-configurations-schema", ):
-    generate_model_json_schema(BulkJobConfig, filename, location)
+    generate_model_json_schema(JobConfigs, filename, location)
 
 
 def main():
