@@ -7,7 +7,7 @@ from .base import Base
 
 class MetadataConfiguration(Base):
     __tablename__ = "metadata_configurations"
-
+    __table_args__ = (UniqueConstraint("step_configuration_id"),)
     # Auto-generated internal metadata configuration id
     id = Column(Integer, primary_key=True, index=True)
 
