@@ -1,24 +1,18 @@
 import json
 import os
 import random
-import sys
 import time
 import uuid
 from datetime import datetime
-from pathlib import Path
 
 from dotenv import load_dotenv
 
-from trackerapi.trackerapi import TrackerApi
-
-from demo import job_configuration
+from trackerapi import TrackerApi, JobConfigManager
 
 load_dotenv()
 
-TEAM3_API_KEY = os.environ.get("TEAM3_API_KEY")
-
+TRACKER_API_KEY = os.environ.get("TRACKER_API_KEY")
 LOG_FILE_PATH = "logs.txt"
-
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
@@ -40,36 +34,37 @@ def run_mock_job(customer_id=None):
     steps = 10
     job_id = generate_uuid()
 
-    # Create TrackerAPI object
+    # Get job config
+    job_config_manager = JobConfigManager(bulk_config_filepath=f"{SCRIPT_DIR}/job_configurations.json")
+    job_config = job_config_manager.get_job_config('mockscript_job')
 
-    tracker = TrackerApi("q-jAqPWCRGr2u6SeK6r6U0LBfJA")
+    # Create TrackerAPI object and job session
+    tracker = TrackerApi(TRACKER_API_KEY)
+    tracker.register_job_config(job_config)
 
-    # Create a Job Object
-
-    job_tracker = tracker.register_and_create_job(
-        job_id, customer_id, job_configuration.prostate_v1_config
-    )
+    # Signal the start of a new job TODO: change to use 'tag' instead of name
+    job_tracker = tracker.create_job(job_id, customer_id, job_config.name)
 
     with open(f"{SCRIPT_DIR}/{LOG_FILE_PATH}", "a+") as outfile:
         # Do a dummy job for N steps
-        for i in range(steps):
+        for idx, step in enumerate(job_config.steps):
             # Do some work lasting anywhere between 1-2 seconds
-            time.sleep(random.randint(1, 2))
+            time.sleep(step.points / 10)
 
             # Prepare log data
-            json_data = {
+            log_data = {
                 "job_id": job_id,
                 "customer_id": customer_id,
-                "step": "step {}".format(i),
+                "step": step.name,
                 "time": str(datetime.now()),
             }
 
             # sample metadata
             metadata = {
-                "official": "Yes"
+                "Official": "Yes"
             }
 
-            json_str = json.dumps(json_data)
+            json_str = json.dumps(log_data)
 
             # Print json to file
             printf(outfile, json_str + "\n")
@@ -78,13 +73,10 @@ def run_mock_job(customer_id=None):
             # just so we don't have to sit and wait for file to be logged to
             print(json_str)
 
-            is_last_step = i == steps - 1
-            if is_last_step:
-                kind = "complete"
-            else:
-                kind = "step"
+            is_last_step = idx == steps - 1
+            kind = "complete" if is_last_step else "step"
 
-            job_tracker.send_event(kind, "step {}".format(i), metadata)
+            job_tracker.send_event(kind, step.name, metadata)
 
 
 if __name__ == "__main__":
