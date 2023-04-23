@@ -10,6 +10,7 @@ def test_create_job_configurtaion(db, random_provider_user):
         tag="prostate_v1_job",
         provider_job_configuration_name="Prostate Job",
         provider_id=random_provider_user.id,
+        version="1.1",
     )
 
     db.add(job_configuration)
@@ -30,11 +31,12 @@ def test_create_job_configurtaion(db, random_provider_user):
     )
 
 
-def test_duplicate_job_configuration_tags(db, random_provider_user):
+def test_duplicate_job_configuration_tag_and_version(db, random_provider_user):
     job_configuration1 = models.JobConfiguration(
         tag="prostate_v1_job",
         provider_job_configuration_name="Prostate Job",
         provider_id=random_provider_user.id,
+        version="1.2.8",
     )
     db.add(job_configuration1)
     db.commit()
@@ -43,6 +45,7 @@ def test_duplicate_job_configuration_tags(db, random_provider_user):
         tag="prostate_v1_job",
         provider_job_configuration_name="Prostate Job",
         provider_id=random_provider_user.id,
+        version="1.2.8",
     )
     db.add(job_configuration1)
 
@@ -50,8 +53,9 @@ def test_duplicate_job_configuration_tags(db, random_provider_user):
         db.commit()
 
     assert isinstance(exc.value.orig, psycopg2.errors.UniqueViolation)
-    assert 'violates unique constraint "job_configurations_provider_id_tag_key"' in str(
-        exc.value.orig
+    assert (
+        'violates unique constraint "job_configurations_provider_id_tag_version_key"'
+        in str(exc.value.orig)
     )
 
 
@@ -59,6 +63,7 @@ def test_missing_tag(db, random_provider_user):
     job_configuration = models.JobConfiguration(
         provider_job_configuration_name="Prostate Job",
         provider_id=random_provider_user.id,
+        version="1.2.1",
     )
     db.add(job_configuration)
 
@@ -71,8 +76,7 @@ def test_missing_tag(db, random_provider_user):
 
 def test_create_job_missing_provider_job_configuration_name(db, random_provider_user):
     job_configuration1 = models.JobConfiguration(
-        tag="prostate_v1_job",
-        provider_id=random_provider_user.id,
+        tag="prostate_v1_job", provider_id=random_provider_user.id, version="1.2.1"
     )
     db.add(job_configuration1)
     with pytest.raises(sqlalchemy.exc.IntegrityError) as exc:
@@ -87,6 +91,7 @@ def test_create_job_missing_provider_id(db):
     job_configuration1 = models.JobConfiguration(
         tag="prostate_v1_job",
         provider_job_configuration_name="Prostate Job",
+        version="1.2.1",
     )
     db.add(job_configuration1)
 
@@ -96,3 +101,18 @@ def test_create_job_missing_provider_id(db):
         # Check for null violation and that column is part of the error message in the error
     assert isinstance(exc.value.orig, psycopg2.errors.NotNullViolation)
     assert "provider_id" in str(exc.value.orig)
+
+
+def test_create_job_missing_version(db, random_provider_user):
+    job_configuration = models.JobConfiguration(
+        tag="prostate_v1_job",
+        provider_job_configuration_name="Prostate Job",
+        provider_id=random_provider_user.id,
+    )
+    db.add(job_configuration)
+
+    with pytest.raises(sqlalchemy.exc.IntegrityError) as exc:
+        db.commit()
+
+    assert isinstance(exc.value.orig, psycopg2.errors.NotNullViolation)
+    assert "version" in str(exc.value.orig)

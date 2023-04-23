@@ -10,6 +10,7 @@ def test_create_step_configuration(db, random_provider_user):
         tag="prostate_v1_job",
         provider_job_configuration_name="Prostate Job",
         provider_id=random_provider_user.id,
+        version="1.2.1",
     )
 
     db.add(job_configuration)
@@ -60,6 +61,7 @@ def test_create_step_configuration_missing_points(db, random_provider_user):
         tag="prostate_v1_job",
         provider_job_configuration_name="Prostate Job",
         provider_id=random_provider_user.id,
+        version="1.2.1",
     )
 
     db.add(job_configuration)
@@ -89,6 +91,7 @@ def test_create_step_configuration_with_wrong_job_configuration_id(
         tag="prostate_v1_job",
         provider_job_configuration_name="Prostate Job",
         provider_id=random_provider_user.id,
+        version="1.2.1",
     )
 
     db.add(job_configuration)
