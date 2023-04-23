@@ -41,18 +41,8 @@ class TrackerApi:
     def __headers(self):
         return {TrackerApi.HTTP_API_KEY_HEADER_KEY: self.api_key}
 
-    def __get(self, url):
-        response = requests.get(url, headers=self.__headers)
-        response.raise_for_status()
-        return response.json()
-
     def __post(self, url, data):
         response = requests.post(url, json=data, headers=self.__headers)
-        response.raise_for_status()
-        return response.json()
-
-    def __patch(self, url, data):
-        response = requests.patch(url, json=data, headers=self.__headers)
         response.raise_for_status()
         return response.json()
 
@@ -83,7 +73,8 @@ class TrackerJobApi:
         self.provider_job_id = provider_job_id
         self.api = api
 
-    def send_event(self, kind, name, metadata):
+    def send_event(self, kind, name, metadata=None):
+        metadata = metadata if metadata else {}
         return self.api.send_event(
             kind=kind, name=name, provider_job_id=self.provider_job_id, metadata=metadata
         )

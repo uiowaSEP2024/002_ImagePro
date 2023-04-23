@@ -17,6 +17,14 @@ def load_job_configuration_from_json(filepath: str):
         return JobConfig(**data)
 
 
+class DuplicateJobConfigException(Exception):
+    pass
+
+
+class MissingJobConfigException(Exception):
+    pass
+
+
 class JobConfigManager:
     """
     Helper class for managing job configurations.
@@ -35,7 +43,7 @@ class JobConfigManager:
         """
         has_existing = self.config_dict.get(config.tag, None)
         if has_existing and not allow_override:
-            raise Exception(f'Attempting to add config with already existing tag: {config.tag}')
+            raise DuplicateJobConfigException(f'Attempting to add config with already existing tag: {config.tag}')
         self.config_dict[config.tag] = config
 
     def init_from_bulk_job_config_json(self, filepath: Path | str):
@@ -71,5 +79,5 @@ class JobConfigManager:
         if result:
             return result
 
-        raise Exception(f"No config with tag: '{tag}'. "
-                        f"Available job configs are: {', '.join(self.tags)}")
+        raise MissingJobConfigException(f"No config with tag: '{tag}'. "
+                                        f"Available job configs are: {', '.join(self.tags)}")

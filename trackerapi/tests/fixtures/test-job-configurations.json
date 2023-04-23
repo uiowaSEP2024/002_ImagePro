@@ -1,0 +1,32 @@
+{
+  "$schema": "test-job-configurations-schema.generated.json",
+  "job_configs": [
+    {
+      "name": "Test Schema Job",
+      "tag": "test_schema_job",
+      "steps": [
+        {
+          "name": "Step 1",
+          "tag": "step_1",
+          "points": 10
+        }
+      ]
+    },
+    {
+      "name": "Test Schema Job B",
+      "tag": "test_schema_job_b",
+      "steps": [
+        {
+          "name": "Step 1",
+          "tag": "step_1",
+          "points": 10
+        },
+        {
+          "name": "Step 2",
+          "tag": "step_2",
+          "points": 10
+        }
+      ]
+    }
+  ]
+}
