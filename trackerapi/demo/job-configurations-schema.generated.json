@@ -4,6 +4,7 @@
   "properties": {
     "job_configs": {
       "title": "Job Configs",
+      "uniqueItems": true,
       "type": "array",
       "items": {
         "$ref": "#/definitions/JobConfig"
@@ -51,6 +52,7 @@
         },
         "steps": {
           "title": "Steps",
+          "uniqueItems": true,
           "type": "array",
           "items": {
             "$ref": "#/definitions/StepConfig"
