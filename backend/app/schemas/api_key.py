@@ -21,6 +21,10 @@ class Apikey(ApikeyBase):
     class Config:
         orm_mode = True
 
+        json_encoders = {
+            SecretStr: lambda v: v.get_secret_value()[0:3] + str(v)[3:] if v else None,
+        }
+
 
 class ApikeyPublic(Apikey):
     key: SecretStr

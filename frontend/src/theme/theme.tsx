@@ -43,9 +43,10 @@ const themeOverride: ThemeOverride = {
           bg: "#2600BF",
           boxShadow: "0 0 2px 2px #efdfde"
         },
-        "delete": {
+        delete: {
           fontWeight: "normal",
-          color: "red"
+          color: "white",
+          backgroundColor: "red.500"
         },
         sm: {
           bg: "#2600BF",
