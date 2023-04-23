@@ -22,5 +22,5 @@ class JobConfig(BaseModel):
         super().__init__(name=name, tag=tag, steps=steps, **kwargs)
 
 
-class JobConfigBulk(BaseModel):
-    configs: List[JobConfig]
+class BulkJobConfig(BaseModel):
+    job_configs: List[JobConfig]
