@@ -1,5 +1,5 @@
 {
-  "title": "BulkJobConfig",
+  "title": "JobConfigs",
   "type": "object",
   "properties": {
     "job_configs": {
