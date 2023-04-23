@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import List, Dict
 
 from trackerapi.schemas import JobConfigs, JobConfig
@@ -21,10 +22,10 @@ class JobConfigManager:
     Helper class for managing job configurations.
     """
 
-    def __init__(self, configs: List[JobConfig] = None, bulk_config_filepath=None):
+    def __init__(self, configs: List[JobConfig] = None, configurations_file: Path | str = None):
         self.config_dict: Dict[str, JobConfig] = {}
         self.init_from_job_configs(configs) if configs else None
-        self.init_from_bulk_job_config_json(bulk_config_filepath) if bulk_config_filepath else None
+        self.init_from_bulk_job_config_json(configurations_file) if configurations_file else None
 
     def add_job_config(self, config: JobConfig, allow_override=False):
         """
@@ -37,7 +38,7 @@ class JobConfigManager:
             raise Exception(f'Attempting to add config with already existing tag: {config.tag}')
         self.config_dict[config.tag] = config
 
-    def init_from_bulk_job_config_json(self, filepath: str):
+    def init_from_bulk_job_config_json(self, filepath: Path | str):
         """
         Initializes the job config dictionary from the filepath to a json configuration
         :param filepath:
@@ -72,5 +73,3 @@ class JobConfigManager:
 
         raise Exception(f"No config with tag: '{tag}'. "
                         f"Available job configs are: {', '.join(self.tags)}")
-
-
