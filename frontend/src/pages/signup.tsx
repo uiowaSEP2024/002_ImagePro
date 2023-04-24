@@ -23,6 +23,7 @@ function SignUp() {
     e.preventDefault()
     if (confirmPassword !== password) {
       console.log("Passwords Do Not Match");
+      setNotificationMessage("Passwords Do Not Match")
       return;
     }
 
