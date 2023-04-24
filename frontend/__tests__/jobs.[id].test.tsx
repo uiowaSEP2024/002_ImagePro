@@ -70,11 +70,7 @@ describe("Job Page", () => {
       });
     });
 
-    const table = await waitFor(() =>
-      screen.getByRole("grid", {
-        name: /Events/i
-      })
-    );
+    const table = await waitFor(() => screen.getByTestId("events-timeline"));
 
     expect(table).toBeInTheDocument();
   });
@@ -86,11 +82,7 @@ describe("Job Page", () => {
       });
     });
 
-    const progressBar = await waitFor(() =>
-      screen.getByRole("progressbar", {
-        name: /Progress/i
-      })
-    );
+    const progressBar = await waitFor(() => screen.getByRole("progressbar"));
 
     expect(progressBar).toBeInTheDocument();
   });
