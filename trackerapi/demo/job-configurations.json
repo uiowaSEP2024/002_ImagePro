@@ -1,0 +1,61 @@
+{
+  "$schema": "job-configurations-schema.generated.json",
+  "job_configs": [
+    {
+      "name": "Mockscript Job",
+      "tag": "mockscript_job",
+      "steps": [
+        {
+          "name": "Step 1",
+          "tag": "step_1",
+          "points": 10
+        },
+        {
+          "name": "Step 2",
+          "tag": "step_2",
+          "points": 15
+        },
+        {
+          "name": "Step 3",
+          "tag": "step_3",
+          "points": 20
+        },
+        {
+          "name": "Step 4",
+          "tag": "step_4",
+          "points": 10
+        },
+        {
+          "name": "Step 5",
+          "tag": "step_5",
+          "points": 15
+        },
+        {
+          "name": "Step 6",
+          "tag": "step_6",
+          "points": 20
+        },
+        {
+          "name": "Step 7",
+          "tag": "step_7",
+          "points": 5
+        },
+        {
+          "name": "Step 8",
+          "tag": "step_8",
+          "points": 15
+        },
+        {
+          "name": "Step 9",
+          "tag": "step_9",
+          "points": 25
+        },
+        {
+          "name": "Step 10",
+          "tag": "step_10",
+          "points": 20
+        }
+      ]
+    }
+  ]
+}

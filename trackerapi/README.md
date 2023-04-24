@@ -12,3 +12,33 @@ To run this example, from the `trackerapi` directory, run the following command 
 ```bash
 python -m demo.mockscript
 ```
+
+# Usage
+
+## Scripts
+
+### `trackerapi.generate_json_schemas`
+The `trackerapi` has a script for generating the JSON schema for job configurations.
+
+```bash
+python -m trackerapi.generate_json_schemas <destination-directory>
+```
+**Result**
+```text
+Generated JSON Schema for JobConfigs at <destination-directory>
+```
+
+For the script's manual, run:
+```bash
+python -m trackerapi.generate_json_schemas -h
+```
+**Output**
+```txt
+usage: generate_json_schemas.py [-h] [-l LOCATION] [-n NAME]
+
+options:
+  -h, --help            show this help message and exit
+  -l LOCATION, --location LOCATION
+                        Location of generated schemas
+  -n NAME, --name NAME  Name to use for the generated <name>.generated.json schema file
+```
