@@ -1,4 +1,4 @@
-from app import models
+from app import models, schemas
 from app.internal import generate_apikey
 from passlib.context import CryptContext
 from pydantic import validate_arguments
@@ -21,8 +21,8 @@ def get_user_from_api_key(db: Session, api_key: str):
         return api_key.one().user
 
 
-def create_apikey_for_user(db: Session, user_id: int):
-    db_apikey = models.Apikey(key=generate_apikey(), user_id=user_id)
+def create_apikey_for_user(db: Session, user_id: int, key: schemas.ApikeyCreate):
+    db_apikey = models.Apikey(key=generate_apikey(), user_id=user_id, note=key.note)
 
     db.add(db_apikey)
     db.commit()

@@ -17,15 +17,17 @@ router.tags = ["api-keys"]
 # create API Key
 @router.post("/api-keys", response_model=schemas.Apikey)
 def generate_api_key(
-    user=Depends(get_current_user_from_token), db: Session = Depends(get_db)
+    key: schemas.ApikeyCreate,
+    user=Depends(get_current_user_from_token),
+    db: Session = Depends(get_db),
 ):
-    return services.create_apikey_for_user(db, user.id)
+    return services.create_apikey_for_user(db, user.id, key=key)
 
 
 # TODO: add current_user/authenticated_user dependency to ensure only
 #   accessible by logged in user
 # get all API keys for current user
-@router.get("/api-keys", response_model=list[schemas.Apikey])
+@router.get("/api-keys", response_model=list[schemas.ApikeyPublic])
 def read_apikeys(
     user=Depends(get_current_user_from_token), db: Session = Depends(get_db)
 ):

@@ -1,4 +1,4 @@
-import { extendTheme, ThemeConfig, ThemeOverride } from "@chakra-ui/react";
+import { background, color, extendTheme, ThemeConfig, ThemeOverride } from "@chakra-ui/react";
 import { DM_Sans } from "@next/font/google";
 
 export const themeConfig: ThemeConfig = {
@@ -12,13 +12,13 @@ const breakpoints = {
   lg: "62em",
   xl: "80em",
   "2xl": "96em"
+
 };
 
 export const fontPrimary = DM_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "700"]
 });
-
 const themeOverride: ThemeOverride = {
   config: themeConfig,
   fonts: {
@@ -44,6 +44,11 @@ const themeOverride: ThemeOverride = {
           bg: "#2600BF",
           boxShadow: "0 0 2px 2px #efdfde"
         },
+        delete: {
+          fontWeight: "normal",
+          color: "white",
+          backgroundColor: "red.500"
+        },
         regular: {
           bg: "#2600BF",
           fontSize: "md"
@@ -52,6 +57,7 @@ const themeOverride: ThemeOverride = {
       defaultProps: {
         size: "lg",
         variant: "regular",
+        colorScheme: "#2600BF"
       }
     }
   }

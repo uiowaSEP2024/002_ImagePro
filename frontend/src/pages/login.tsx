@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FormEvent } from "react";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import {AiFillEye, AiFillEyeInvisible} from "react-icons/ai";
@@ -17,7 +17,7 @@ function Login() {
 
   const { logIn } = useAuthContext();
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e: FormEvent) => {
     e.preventDefault()
     console.log("Submit")
     try {
