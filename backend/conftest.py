@@ -56,7 +56,9 @@ def random_test_user(db):
 
 @pytest.fixture
 def random_provider_user_with_api_key(db, random_provider_user):
-    services.create_apikey_for_user(db, random_provider_user.id)
+    services.create_apikey_for_user(
+        db, random_provider_user.id, key=schemas.ApikeyCreate(note="key")
+    )
     db.refresh(random_provider_user)
     return random_provider_user
 
