@@ -12,6 +12,7 @@ const breakpoints = {
   lg: "62em",
   xl: "80em",
   "2xl": "96em"
+  
 };
 
 export const fontPrimary = DM_Sans({
@@ -43,10 +44,9 @@ const themeOverride: ThemeOverride = {
           bg: "#2600BF",
           boxShadow: "0 0 2px 2px #efdfde"
         },
-        delete: {
+        "delete": {
           fontWeight: "normal",
-          color: "white",
-          backgroundColor: "red.500"
+          color: "red"
         },
         sm: {
           bg: "#2600BF",
