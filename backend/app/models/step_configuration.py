@@ -12,26 +12,25 @@ class StepConfiguration(Base):
     # Auto-generated internal job configuration id
     id = Column(Integer, primary_key=True, index=True)
 
-    # internal tag used to link a job configuration
-    job_tag = Column(String, index=True, nullable=False)
     # internal tag used to link a step configuration
     tag = Column(String, index=True, nullable=False)
 
     # The step configuration name as specified by the provider
-    provider_step_configuration_name = Column(String, index=True, nullable=False)
+    step_configuration_name = Column(String, index=True, nullable=False)
 
     job_configuration_id = Column(
         Integer, ForeignKey("job_configurations.id"), index=True, nullable=False
     )
-    provider_job_configuration = relationship(
+
+    job_configuration = relationship(
         "JobConfiguration",
-        back_populates="provider_step_configurations",
+        back_populates="step_configurations",
         foreign_keys=[job_configuration_id],
     )
 
-    provider_metadata_configurations = relationship(
+    metadata_configurations = relationship(
         "MetadataConfiguration",
-        back_populates="provider_step_configuration",
+        back_populates="step_configuration",
     )
 
     # TODO: This should be linked to billing configuration in the future
