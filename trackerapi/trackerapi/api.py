@@ -4,7 +4,10 @@ from trackerapi.schemas import JobConfig
 
 
 class ApiUrls:
-    def __init__(self, base_url):
+    def __init__(self, base_url=''):
+        self.base_url = base_url
+
+    def set_base_url(self, base_url=""):
         self.base_url = base_url
 
     def url(self, path):
@@ -36,11 +39,13 @@ class TrackerApi:
     DEFAULT_BASE_URL = "http://localhost:8000"
     HTTP_API_KEY_HEADER_KEY = "x-api_key"
 
-    def __init__(self, api_key, base_url=None):
+    def __init__(self, api_key, base_url=None, skip_verify=True):
         self.api_key = api_key
         self.base_url = base_url if base_url else TrackerApi.DEFAULT_BASE_URL
         self.urls = ApiUrls(self.base_url)
-        self.verify_api_key()
+
+        if not skip_verify:
+            self.verify_api_key()
 
     @property
     def __headers(self):
