@@ -30,10 +30,14 @@ class JobConfigManager:
     Helper class for managing job configurations.
     """
 
-    def __init__(self, configs: List[JobConfig] = None, configurations_file: Path | str = None):
+    def __init__(
+        self, configs: List[JobConfig] = None, configurations_file: Path | str = None
+    ):
         self.config_dict: Dict[str, JobConfig] = {}
         self.init_from_job_configs(configs) if configs else None
-        self.init_from_bulk_job_config_json(configurations_file) if configurations_file else None
+        self.init_from_bulk_job_config_json(
+            configurations_file
+        ) if configurations_file else None
 
     def add_job_config(self, config: JobConfig, allow_override=False):
         """
@@ -43,7 +47,9 @@ class JobConfigManager:
         """
         has_existing = self.config_dict.get(config.tag, None)
         if has_existing and not allow_override:
-            raise DuplicateJobConfigException(f'Attempting to add config with already existing tag: {config.tag}')
+            raise DuplicateJobConfigException(
+                f"Attempting to add config with already existing tag: {config.tag}"
+            )
         self.config_dict[config.tag] = config
 
     def init_from_bulk_job_config_json(self, filepath: Path | str):
@@ -79,5 +85,7 @@ class JobConfigManager:
         if result:
             return result
 
-        raise MissingJobConfigException(f"No config with tag: '{tag}'. "
-                                        f"Available job configs are: {', '.join(self.tags)}")
+        raise MissingJobConfigException(
+            f"No config with tag: '{tag}'. "
+            f"Available job configs are: {', '.join(self.tags)}"
+        )
