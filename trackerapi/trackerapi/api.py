@@ -39,7 +39,7 @@ class TrackerApi:
     DEFAULT_BASE_URL = "http://localhost:8000"
     HTTP_API_KEY_HEADER_KEY = "x-api_key"
 
-    def __init__(self, api_key, base_url=None, skip_verify=True):
+    def __init__(self, api_key, base_url=None, skip_verify=False):
         self.api_key = api_key
         self.base_url = base_url if base_url else TrackerApi.DEFAULT_BASE_URL
         self.urls = ApiUrls(self.base_url)

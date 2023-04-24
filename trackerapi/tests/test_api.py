@@ -6,7 +6,7 @@ import requests_mock
 
 
 def test_init():
-    tracker = TrackerApi(api_key="abc123")
+    tracker = TrackerApi(api_key="abc123", skip_verify=True)
     assert tracker.api_key == "abc123"
     assert tracker.base_url == tracker.DEFAULT_BASE_URL
 
@@ -18,7 +18,7 @@ def test_init_without_api_key():
 
 def test_requests_made_with_api_key():
     with requests_mock.Mocker() as m:
-        tracker = TrackerApi(api_key="abc123")
+        tracker = TrackerApi(api_key="abc123", skip_verify=True)
 
         m.post(
             tracker.urls.jobs_url,
@@ -39,7 +39,7 @@ def test_requests_made_with_api_key():
 
 @responses.activate
 def test_job():
-    tracker = TrackerApi(api_key="abc123", base_url=TrackerApi.DEFAULT_BASE_URL)
+    tracker = TrackerApi(api_key="abc123", base_url=TrackerApi.DEFAULT_BASE_URL, skip_verify=True)
 
     responses.add(url=tracker.urls.jobs_config_url, method=responses.POST, json={})
     tracker.register_job_config(JobConfig(name="Test Job", tag="test_job", steps=[]))
