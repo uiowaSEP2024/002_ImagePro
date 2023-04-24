@@ -11,29 +11,24 @@ class MetadataConfiguration(Base):
     # Auto-generated internal metadata configuration id
     id = Column(Integer, primary_key=True, index=True)
 
-    # internal tag used to link a job
-    job_tag = Column(String, index=True, nullable=False)
-
-    # internal tag used to link an step
-    step_tag = Column(String, index=True, nullable=False)
-
     # name of the field specified by the provider
-    provider_field_name = Column(String, index=True, nullable=False)
+    field_name = Column(String, index=True, nullable=False)
 
     # type of the field specified by the provider
-    provider_field_type = Column(String, index=True, nullable=False)
+    field_type = Column(String, index=True, nullable=False)
 
     # value of the field specified by the provider
-    provider_field_value = Column(String, index=True, nullable=False)
+    field_value = Column(String, index=True, nullable=False)
 
     # units of the field specified by the provider
-    provider_field_units = Column(String, index=True, nullable=False)
+    field_units = Column(String, index=True, nullable=False)
 
     step_configuration_id = Column(
         Integer, ForeignKey("step_configurations.id"), index=True, nullable=False
     )
-    provider_step_configuration = relationship(
+
+    step_configuration = relationship(
         "StepConfiguration",
-        back_populates="provider_metadata_configurations",
+        back_populates="metadata_configurations",
         foreign_keys=[step_configuration_id],
     )

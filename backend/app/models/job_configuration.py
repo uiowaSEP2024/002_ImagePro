@@ -16,7 +16,7 @@ class JobConfiguration(Base):
     tag = Column(String, index=True, nullable=False)
 
     # The job configuration name as specified by the provider
-    provider_job_configuration_name = Column(String, index=True, nullable=False)
+    name = Column(String, index=True, nullable=False)
 
     # The provider creating the configuration
     provider_id = Column(Integer, ForeignKey("users.id"), index=True, nullable=False)
@@ -28,7 +28,9 @@ class JobConfiguration(Base):
         "User", back_populates="provider_job_configurations", foreign_keys=[provider_id]
     )
 
-    provider_step_configurations = relationship(
+    step_configurations = relationship(
         "StepConfiguration",
-        back_populates="provider_job_configuration",
+        back_populates="job_configuration",
     )
+
+    jobs = relationship("Jobs", back_populates="job_configuration")
