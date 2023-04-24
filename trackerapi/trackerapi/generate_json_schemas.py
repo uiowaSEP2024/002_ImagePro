@@ -16,7 +16,8 @@ def generate_model_json_schema(model: Type[BaseModel], filename: str, location: 
         print(f"Generated JSON Schema for {model.__name__} at {filepath.absolute()}")
 
 
-def generate_job_configs_json_schema(location: Path | str = "./", filename: str = None):
+def generate_job_configs_json_schema(location: Path | str = None, filename: str = None):
+    location = location if location else "./"
     filename = filename if filename else "job-configurations-schema"
     generate_model_json_schema(JobConfigs, filename, location)
 

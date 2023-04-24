@@ -34,12 +34,11 @@ python -m trackerapi.generate_json_schemas -h
 ```
 **Output**
 ```txt
-usage: generate_json_schemas.py [-h] [-n NAME] location
-
-positional arguments:
-  location              Location of generated schemas
+usage: generate_json_schemas.py [-h] [-l LOCATION] [-n NAME]
 
 options:
   -h, --help            show this help message and exit
+  -l LOCATION, --location LOCATION
+                        Location of generated schemas
   -n NAME, --name NAME  Name to use for the generated <name>.generated.json schema file
 ```
