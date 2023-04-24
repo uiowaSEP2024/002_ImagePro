@@ -1,0 +1,69 @@
+{
+  "title": "JobConfigs",
+  "type": "object",
+  "properties": {
+    "job_configs": {
+      "title": "Job Configs",
+      "uniqueItems": true,
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/JobConfig"
+      }
+    }
+  },
+  "required": [
+    "job_configs"
+  ],
+  "definitions": {
+    "StepConfig": {
+      "title": "StepConfig",
+      "type": "object",
+      "properties": {
+        "tag": {
+          "title": "Tag",
+          "type": "string"
+        },
+        "points": {
+          "title": "Points",
+          "type": "integer"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "tag",
+        "points",
+        "name"
+      ]
+    },
+    "JobConfig": {
+      "title": "JobConfig",
+      "type": "object",
+      "properties": {
+        "tag": {
+          "title": "Tag",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "steps": {
+          "title": "Steps",
+          "uniqueItems": true,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StepConfig"
+          }
+        }
+      },
+      "required": [
+        "tag",
+        "name",
+        "steps"
+      ]
+    }
+  }
+}
