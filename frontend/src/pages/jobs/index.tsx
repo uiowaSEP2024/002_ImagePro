@@ -20,7 +20,7 @@ type ColumnName = typeof columns[number]["name"];
 function Jobs() {
   const [jobs, setJobs] = useState<Job[]>([]);
 
-  const [search, setSearch] = React.useState('');
+  const [search, setSearch] = React.useState("");
 
   const handleSearch = (event: { target: { value: React.SetStateAction<string>; }; }) => {
     setSearch(event.target.value);
@@ -66,10 +66,10 @@ function Jobs() {
 
       <Text h1>Jobs</Text>
 
-        <label htmlFor="search" style={{display: "block", padding: "10px"}} >  
-          <input id="search" data-testid="search" type="text" placeholder="Search jobs..." onChange={handleSearch} />
-          <br/>
-        </label>
+      <label htmlFor="search" style={{display: "block", padding: "10px"}} >  
+        <input id="search" data-testid="search" type="text" placeholder="Search jobs..." onChange={handleSearch} />
+        <br/>
+      </label>
 
       <Table
         lined
