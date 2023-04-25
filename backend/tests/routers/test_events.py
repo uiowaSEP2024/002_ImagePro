@@ -31,3 +31,4 @@ def test_create_event(app_client, job_for_random_user_with_api_key, db):
             db=db, provider_job_id=job.provider_job_id, provider_id=job.provider_id
         ).id
     )
+    assert response.json()["created_at"] is not None
