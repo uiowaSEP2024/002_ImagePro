@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pydantic import BaseModel, SecretStr
 
 
@@ -17,6 +19,8 @@ class Apikey(ApikeyBase):
     id: int
     user_id: int
     note: str
+    created_at: datetime
+    updated_at: datetime = None
 
     class Config:
         orm_mode = True
