@@ -15,7 +15,7 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
-    created_at: datetime
+    created_at: datetime = None
     updated_at: datetime = None
 
     class Config:

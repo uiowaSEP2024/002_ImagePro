@@ -25,7 +25,7 @@ class EventCreate(EventBase):
 class Event(EventCreate):
     id: int
     job_id: int
-    created_at: datetime
+    created_at: datetime = None
     updated_at: datetime = None
 
     class Config:
