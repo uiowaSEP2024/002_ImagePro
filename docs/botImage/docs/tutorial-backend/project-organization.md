@@ -67,7 +67,7 @@ RUN PYTHON=python2 amazon-linux-extras enable postgresql14
 ```
 The rest of the Dockerfile installs remaining dependencies as needed and copies over application code to the image.
 
-The `CMD` instructions is set as follows, which calls the corresponding lambda handler in the aplication:
+The `CMD` instructions is set as follows, which calls the corresponding lambda handler in the application:
 ```Dockerfile
 # ...
 
@@ -287,7 +287,7 @@ Important fixtures include:
 
 ## `tasks.py`
 This file contains helper scripts for managing the database. These scripts are wrappers around the `alembic` CLI and `psycopg2` library to handle common operations such as:
-* Reseting (Dropping + Creating) a database
+* Resetting (Dropping + Creating) a database
 * Running migrations (Upgrading and Downgrading) a database
 * Seeding a database with fake data, etc.
 
