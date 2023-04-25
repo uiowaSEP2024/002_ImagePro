@@ -1,4 +1,4 @@
-import { fetchAPIkeys } from "@/data";
+import { backendUrl, fetchAPIkeys } from "@/data";
 import { Key } from "@/data/types";
 import React, { useCallback, useMemo } from "react";
 import { useState, useEffect } from "react";
@@ -46,7 +46,7 @@ function ApiKeys() {
   }, [currentUser, loadKeys]);
 
   const generateAPIKey = () => {
-    fetch("http://localhost:8000/api-keys", {
+    fetch(`${backendUrl}/api-keys`, {
       credentials: "include",
       method: "POST",
       headers: {
