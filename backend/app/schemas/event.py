@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pydantic import BaseModel, Json
 from typing import Union, Dict, Optional
 from enum import Enum
@@ -23,6 +25,8 @@ class EventCreate(EventBase):
 class Event(EventCreate):
     id: int
     job_id: int
+    created_at: datetime
+    updated_at: datetime = None
 
     class Config:
         orm_mode = True

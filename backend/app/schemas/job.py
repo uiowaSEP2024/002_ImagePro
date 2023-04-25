@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pydantic import BaseModel
 
 
@@ -13,6 +15,8 @@ class JobCreate(JobBase):
 class Job(JobCreate):
     id: int
     provider_id: int
+    created_at: datetime
+    updated_at: datetime = None
 
     class Config:
         orm_mode = True
