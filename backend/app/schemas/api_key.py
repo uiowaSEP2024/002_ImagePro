@@ -19,7 +19,7 @@ class Apikey(ApikeyBase):
     id: int
     user_id: int
     note: str
-    created_at: datetime
+    created_at: datetime = None
     updated_at: datetime = None
 
     class Config:
