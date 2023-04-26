@@ -21,6 +21,7 @@ def test_create_job(app_client, random_provider_user_with_api_key):
     assert response.json()["provider_job_name"] == "trauma"
     assert response.json()["provider_job_id"] == "2432424"
     assert response.json()["customer_id"] == random_provider_user_with_api_key.id
+    assert response.json()["created_at"] is not None
 
 
 def test_get_job_as_customer(
@@ -55,6 +56,7 @@ def test_get_job_as_customer(
     assert response.json()["customer_id"] == job.customer_id
     assert response.json()["provider_id"] == job.provider_id
     assert response.json()["provider_job_name"] == job.provider_job_name
+    assert response.json()["created_at"] is not None
 
 
 def test_get_jobs_as_customer(
@@ -102,11 +104,13 @@ def test_get_jobs_as_customer(
     assert response.json()[0]["customer_id"] == job1.customer_id
     assert response.json()[0]["provider_id"] == job1.provider_id
     assert response.json()[0]["provider_job_name"] == job1.provider_job_name
+    assert response.json()[0]["created_at"] is not None
 
     assert response.json()[1]["id"] == job2.id
     assert response.json()[1]["customer_id"] == job2.customer_id
     assert response.json()[1]["provider_id"] == job2.provider_id
     assert response.json()[1]["provider_job_name"] == job2.provider_job_name
+    assert response.json()[1]["created_at"] is not None
 
 
 def test_get_job_as_different_customer(

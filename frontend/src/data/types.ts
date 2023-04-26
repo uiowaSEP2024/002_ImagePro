@@ -28,9 +28,10 @@ export type Job = {
 
 export type Key = {
   id: number;
-  user_id: number;
-  key: string;
-  created_at?: string;
+  user_id: number,
+  key: string,
+  note: string,
+  created_at?: string
 };
 
 export type JobEvent = {
