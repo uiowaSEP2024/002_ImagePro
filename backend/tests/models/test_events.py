@@ -35,6 +35,7 @@ def test_create_event(db, random_test_user, random_provider_user):
     assert event.kind == "step"
     assert event.name == "Scanning Kidney"
     assert event.event_metadata == {"unofficial": "Yes"}
+    assert event.created_at is not None
 
     assert len(job.events) == 1
     assert event.job.id == job.id
