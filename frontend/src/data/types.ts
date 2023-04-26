@@ -11,6 +11,18 @@ export type UserCreate = {
   last_name: string;
 };
 
+export type JobConfiguration = {
+  job_configs: Array<{
+    name: string;
+    tag: string;
+    steps: Array<{
+      name: string;
+      tag: string;
+      points: number;
+    }>;
+  }>;
+};
+
 export type Provider = {
   id: number;
   name: string;

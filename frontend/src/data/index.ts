@@ -1,4 +1,4 @@
-import { Job, JobEvent, Key, Provider, User, UserCreate } from "./types";
+import { Job, JobEvent, Key, Provider, User, UserCreate, JobConfiguration } from "./types";
 
 export const backendUrl = process.env.BACKEND_URL || "http://localhost:8000";
 
@@ -8,6 +8,70 @@ export const providers: Record<string, Provider> = {
     name: "BotImage"
   }
 };
+
+const jobConfig: JobConfiguration = {
+  job_configs: [
+    {
+      name: "Sample Job 1",
+      tag: "my_job1",
+      steps: [
+        {
+          name: "Say Hello",
+          tag: "say_hello",
+          points: 10,
+        },
+        {
+          name: "Generate Random Number",
+          tag: "random_number",
+          points: 15,
+        },
+        {
+          name: "Say Bye",
+          tag: "say_bye",
+          points: 10,
+        },
+      ],
+    },
+    {
+      name: "Sample Job 2",
+      tag: "my_job2",
+      steps: [
+        {
+          name: "Say Hello",
+          tag: "say_hello",
+          points: 10,
+        },
+        {
+          name: "Generate Random Number",
+          tag: "random_number",
+          points: 15,
+        },
+      ],
+    },
+    {
+      name: "Sample Job 3",
+      tag: "my_job3",
+      steps: [
+        {
+          name: "Say Hello",
+          tag: "say_hello",
+          points: 10,
+        },
+        {
+          name: "Generate Random Number",
+          tag: "random_number",
+          points: 15,
+        },
+        {
+          name: "Say Bye",
+          tag: "say_bye",
+          points: 10,
+        },
+      ],
+    },
+  ],
+};
+
 
 export const jobs: Record<string, Job> = {
   "1": {
