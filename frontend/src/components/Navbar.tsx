@@ -11,28 +11,25 @@ import {
 } from '@chakra-ui/react';
 import React from "react";
 
-const NavLink = ({ children, link }: { children: ReactNode, link: string }) => (
-  <Link
-    px={2}
-    py={1}
-    rounded={'md'}
-    _hover={{
-      textDecoration: 'none',
-      bg: useColorModeValue('gray.200', 'gray.700'),
-    }}
-    href={link}>
-    {children}
-  </Link>
-)
 
 const TopNavbar = () => {
   const { currentUser, logOut} = useAuthContext()
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const NavLink = ({ children, link }: { children: ReactNode, link: string }) => (
+    <Link
+      px={2}
+      py={1}
+      rounded={'md'}
+      _hover={{
+        textDecoration: 'none',
+        bg: useColorModeValue('gray.200', 'gray.700'),
+      }}
+      href={link}>
+      {children}
+    </Link>
+  )
 
-  const Names1 = ['Home', 'Dashboard', 'Billing', 'Generate API Keys'];
-  const Names2 = ['Login', 'Sign Up'];
-  const Links1 = ['/', '/dashboard', '/billing', '/apikeys'];
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   if (!currentUser) {
     return (
