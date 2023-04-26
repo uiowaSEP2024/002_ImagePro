@@ -11,13 +11,13 @@ def test_no_duplicate_steps():
             tag="test_job",
             steps=[
                 StepConfig(tag="step_1", name="Step 1", points=1),
-                StepConfig(tag="step_1", name="Step 2", points=1)
-            ]
+                StepConfig(tag="step_1", name="Step 2", points=1),
+            ],
         )
     exception: ValidationError = exc._excinfo[1]
     assert len(exception.errors()) == 1
-    assert "steps" in exception.errors()[0]['loc']
-    assert "value_error.list.unique_items" == exception.errors()[0]['type']
+    assert "steps" in exception.errors()[0]["loc"]
+    assert "value_error.list.unique_items" == exception.errors()[0]["type"]
 
 
 def test_no_duplicate_jobs():
@@ -25,11 +25,11 @@ def test_no_duplicate_jobs():
         JobConfigs(
             job_configs=[
                 JobConfig(name="Test Job", tag="test_job", steps=[]),
-                JobConfig(name="Test Job", tag="test_job", steps=[])
+                JobConfig(name="Test Job", tag="test_job", steps=[]),
             ]
         )
 
     exception: ValidationError = exc._excinfo[1]
     assert len(exception.errors()) == 1
-    assert "job_configs" in exception.errors()[0]['loc']
-    assert "value_error.list.unique_items" == exception.errors()[0]['type']
+    assert "job_configs" in exception.errors()[0]["loc"]
+    assert "value_error.list.unique_items" == exception.errors()[0]["type"]
