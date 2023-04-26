@@ -2,6 +2,13 @@ from datetime import datetime
 
 from pydantic import BaseModel
 
+from enum import Enum
+
+
+class UserRoleEnum(str, Enum):
+    customer = "customer"
+    provider = "provider"
+
 
 class UserBase(BaseModel):
     email: str
@@ -11,6 +18,7 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     password: str
+    role: UserRoleEnum = UserRoleEnum.customer
 
 
 class User(UserBase):
