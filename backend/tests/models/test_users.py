@@ -24,6 +24,7 @@ def test_users():
     assert db_user.hashed_password is not None
     assert db_user.first_name == "Jim"
     assert db_user.last_name == "Brown"
+    assert db_user.created_at is not None
 
 
 def test_unique_user_email():

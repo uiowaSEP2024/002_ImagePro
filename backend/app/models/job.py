@@ -2,10 +2,10 @@ from sqlalchemy import Column, ForeignKey, UniqueConstraint
 from sqlalchemy.sql.sqltypes import String, Integer
 from sqlalchemy.orm import relationship
 
-from .base import Base
+from .base import Base, DateMixin
 
 
-class Job(Base):
+class Job(Base, DateMixin):
     __tablename__ = "jobs"
     __table_args__ = (UniqueConstraint("provider_id", "provider_job_id"),)
 

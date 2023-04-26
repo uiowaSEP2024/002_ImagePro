@@ -53,7 +53,7 @@ class Config:
         return self._settings
 
     @property
-    def db(self):
+    def db(self) -> Database:
         if not self._db:
             raise Exception(
                 "config - Database not set up. Call config.setup() to set up db"

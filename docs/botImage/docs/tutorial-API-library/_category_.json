@@ -1,8 +1,7 @@
 {
-    "label": "Tutorial - API Library",
-    "position": 4,
-    "link": {
-      "type": "generated-index"
-    }
+  "label": "TrackerAPI",
+  "position": 4,
+  "link": {
+    "type": "generated-index"
   }
-  
+}

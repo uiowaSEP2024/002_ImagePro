@@ -1,99 +1,185 @@
-import { fetchAPIkeys } from "@/data";
+import { backendUrl, fetchAPIkeys } from "@/data";
 import { Key } from "@/data/types";
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import { useState, useEffect } from "react";
-import { Text } from "@nextui-org/react";
-import { Container, Row, Spacer, Input, Grid, Button, Card } from "@nextui-org/react";
-import { useAuthContext, useEnsureAuthenticated } from "@/hooks/useAuthContext";
+import {
+  Heading,
+  Text,
+  Grid,
+  GridItem,
+  Card,
+  CardBody,
+  Input,
+  Button,
+  Container,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  useDisclosure,
+  Stack
+} from "@chakra-ui/react";
+import { useAuthContext } from "@/hooks/useAuthContext";
+import { withAuthenticated } from "@/components/withAuthenticated";
 
-export default function ApiKeys() {
-  const {currentUser} = useAuthContext()
+function ApiKeys() {
+  const { currentUser } = useAuthContext();
   const [note, setNote] = useState("");
-  const [notificationMessage, setNotificationMessage] = useState("");
   const [keys, setKeys] = useState<Key[]>([]);
+  const [key, setKey] = useState("");
+  const [firstNote, setFirstNote] = useState("");
+  const cancelRef = React.useRef(null);
 
-  useEnsureAuthenticated()
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const reversedKeys = useMemo(() => keys.slice().reverse(), [keys]);
+
+  const loadKeys = useCallback(async () => {
+    const data = await fetchAPIkeys();
+    if (data) setKeys(data);
+  }, []);
 
   useEffect(() => {
-
-    async function loadKeys() {
-      const data = await fetchAPIkeys();
-      if (data) setKeys(data);
-    }
-
-    console.log({currentUser})
-
-    // if (currentUser){
-    loadKeys() // TODO: wrap this back in check for currentUser
-    // }
-
-  }, [currentUser]);
-
-
+    loadKeys();
+  }, [currentUser, loadKeys]);
 
   const generateAPIKey = () => {
-    fetch("http://localhost:8000/api-keys", {
+    fetch(`${backendUrl}/api-keys`, {
       credentials: "include",
-      method: "POST"
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        note: note
+      })
     })
       .then((response) => response.json())
-      .then(() => {
-        setNotificationMessage("API Keys Generated Successfully")
+      .then((data) => {
+        setFirstNote(data.note);
+        setKey(data.key);
+        onOpen();
       })
       .catch((e) => {
-        console.log(e)
-        setNotificationMessage("Try again later!");
-      })
-  }
+        console.log(e);
+      });
+  };
+
+  const closeAlert = useCallback(() => {
+    onClose();
+    loadKeys();
+  }, [loadKeys, onClose]);
+
   return (
-    <>
-      {!!notificationMessage && <Text>{notificationMessage}</Text>}
-      <Container gap={2} justify="center">
-        <Row>
-          <Text h1 align-items="center">
-                        API Keys
-          </Text>
-        </Row>
-        <Row>
-          <Text align-items="center">
-                        Manage your API keys on this page
-          </Text>
-        </Row>
-        <Spacer y={1} />
-        <Grid aria-label="Keys">
-          {keys.map((card) => (
+    <Container maxW="container.lg" py={"6"}>
+      <Grid>
+        <GridItem>
+          <Heading>API Keys</Heading>
+        </GridItem>
+        <GridItem>
+          <Text>Manage API Keys for your provider account</Text>
+        </GridItem>
+
+        <Heading pt={8} size={"lg"}>
+          Create API Key
+        </Heading>
+
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            generateAPIKey();
+            setNote("");
+          }}
+        >
+          <Stack maxWidth={"sm"} gap={2} direction={"column"}>
+            <Input
+              placeholder="Note"
+              size="lg"
+              value={note}
+              required
+              onChange={(e) => setNote(e.target.value)}
+            />
+
+            <Button width={"fit-content"} type="submit" colorScheme="telegram">
+              Create Key
+            </Button>
+          </Stack>
+        </form>
+
+        <Heading pt={8} size={"lg"}>
+          Existing Keys ({keys.length})
+        </Heading>
+
+        <GridItem>
+          {reversedKeys.map((card) => (
             <Grid key={card.id} data-testid="testkeys">
-              <Card>
-                <Card.Body aria-label="key">
-                  <Text>{card.key}</Text>
-                </Card.Body>
+              <Card
+                borderRadius={"none"}
+                borderColor={"gray.300"}
+                borderBottomWidth={1}
+                boxShadow={"none"}
+              >
+                <CardBody aria-label="key">
+                  <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+                    <GridItem
+                      display={"flex"}
+                      flexDirection={"row"}
+                      alignItems={"center"}
+                      gap={2}
+                    >
+                      <Text mr={2} fontSize={"lg"}>
+                        {card.note}
+                      </Text>
+                      <Text color={"gray.500"}>{card.key}</Text>
+                    </GridItem>
+                    {/* TODO: add support for removing api keys */}
+                    {/* <GridItem colStart={3}>
+                      <Button size="sm" variant="delete">
+                        Remove
+                      </Button>
+                    </GridItem> */}
+                  </Grid>
+                </CardBody>
               </Card>
-              <Spacer y={1} />
             </Grid>
           ))}
-        </Grid>
-        <Spacer y={2} />
-        <Row>
-          <Text align-items="center">
-                        What is this token for?
-          </Text>
-        </Row>
-        <Spacer y={1} />
-        <Grid>
-          <Input
-            bordered
-            size="lg"
-            color="primary"
-            labelPlaceholder="Note"
-            value={note}
-            onChange={(e) => setNote(e.target.value)}
-            css={{ mb: "6px" }}
-          />
-        </Grid>
-        <Spacer y={1} />
-        <Button onPress={generateAPIKey}>Generate</Button>
-      </Container>
-    </>
+        </GridItem>
+      </Grid>
+      <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={closeAlert}
+        isCentered
+        motionPreset="slideInBottom"
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Successfully created &quot;{firstNote}&quot;
+            </AlertDialogHeader>
+            <Grid>
+              <AlertDialogBody>
+                <GridItem>
+                  Please copy this key for later. This is the only time you will
+                  see it.
+                </GridItem>
+                <GridItem>
+                  <Text as="b">{key}</Text>
+                </GridItem>
+              </AlertDialogBody>
+            </Grid>
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={closeAlert}>
+                OK
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+    </Container>
   );
 }
+
+export default withAuthenticated(ApiKeys);
