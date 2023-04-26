@@ -38,7 +38,7 @@ def run_mock_job(customer_id=None):
     # Get job config
     job_configurations_file = Path(SCRIPT_DIR, "./job-configurations.json")
     job_config_manager = JobConfigManager(configurations_file=job_configurations_file)
-    job_config = job_config_manager.get_job_config('mockscript_job')
+    job_config = job_config_manager.get_job_config("mockscript_job")
 
     # Create TrackerAPI object and job session
     tracker = TrackerApi(TRACKER_API_KEY)
@@ -62,9 +62,7 @@ def run_mock_job(customer_id=None):
             }
 
             # sample metadata
-            metadata = {
-                "Official": "Yes"
-            }
+            metadata = {"Official": "Yes"}
 
             json_str = json.dumps(log_data)
 
