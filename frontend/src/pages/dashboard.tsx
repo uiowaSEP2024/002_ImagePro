@@ -28,6 +28,9 @@ function Dashboard() {
             <Text role="text">View past and currently active jobs</Text>
           </Card.Body>
         </Card>
+        <Text h1 align-items="center">
+          Statistics
+        </Text>
       </Container>
     </>
   );
