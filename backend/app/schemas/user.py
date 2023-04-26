@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pydantic import BaseModel
 
 
@@ -13,6 +15,8 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
+    created_at: datetime = None
+    updated_at: datetime = None
 
     class Config:
         orm_mode = True
