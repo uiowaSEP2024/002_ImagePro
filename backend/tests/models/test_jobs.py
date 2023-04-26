@@ -22,6 +22,7 @@ def test_create_job(db, random_test_user, random_provider_user):
     assert job.customer_id == random_test_user.id
     assert job.provider_job_id == "abc123"
     assert job.provider_job_name == "kidneyV1"
+    assert job.created_at is not None
 
     db.refresh(random_test_user)
     # Check that the customer user now has the correct jobs associated with them

@@ -1,10 +1,10 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 
-from .base import Base
+from .base import Base, DateMixin
 
 
-class User(Base):
+class User(Base, DateMixin):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
