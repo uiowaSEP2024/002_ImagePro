@@ -22,6 +22,7 @@ def test_create_api_key(db, random_test_user):
     assert isinstance(api_key, models.Apikey)
     assert len(api_key.key) >= API_KEY_LENGTH
     assert api_key.user_id == random_test_user.id
+    assert api_key.created_at is not None
 
     api_keys_for_user = services.get_api_keys_for_user(db, random_test_user.id)
     assert len(api_keys_for_user) > 0
