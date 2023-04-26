@@ -3,10 +3,10 @@ from sqlalchemy.sql.sqltypes import String, Integer, Enum, JSON
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship
 
-from .base import Base
+from .base import DateMixin, Base
 
 
-class Event(Base):
+class Event(Base, DateMixin):
     __tablename__ = "events"
 
     # Auto-generated internal event id

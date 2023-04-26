@@ -1,8 +1,15 @@
-from sqlalchemy import text
+from sqlalchemy import text, Column, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from config import config
 
+from sqlalchemy.sql import func
+
 Base = declarative_base()
+
+
+class DateMixin(object):
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
 
 def truncate_all_tables():
