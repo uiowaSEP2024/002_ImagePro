@@ -6,6 +6,7 @@ from app import schemas, services
 from app.models.base import truncate_all_tables
 from fastapi.testclient import TestClient
 
+from app.schemas.user import UserRoleEnum
 from config import config
 
 from app.main import app
@@ -88,6 +89,7 @@ def random_provider_user(db):
             password="abc",
             first_name="first",
             last_name="last",
+            role=UserRoleEnum.provider,
         ),
     )
     return test_provider_user
