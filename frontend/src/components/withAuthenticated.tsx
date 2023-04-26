@@ -16,7 +16,6 @@ export const withAuthenticated = <P extends object>(
 ) => {
   const ComponentWithAuth = (props: P) => {
     useEnsureAuthenticated(roles);
-    console.log(roles);
     const { isAuthenticating } = useAuthContext();
     if (isAuthenticating) return null;
     return <WrappedComponent {...props} />;
