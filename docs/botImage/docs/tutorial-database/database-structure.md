@@ -8,13 +8,12 @@ This is how are database is currently structured.
 
 ## Entities
 
-There are currently five entities in our database that support the application. All these entities have certain common fields such as `id`, `created_at` and `updated_at` which keep track of changes using timestamps.
+There are currently four entities in our database that support the application. All these entities have certain common fields such as `id`, `created_at` and `updated_at` which keep track of changes using timestamps.
 
 1. `Users`
 2. `Events`
 3. `Jobs`
-4. `Tokens`
-5. `API-Keys`
+4. `API-Keys`
 
 ## Users
 
