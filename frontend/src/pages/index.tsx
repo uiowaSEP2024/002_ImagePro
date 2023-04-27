@@ -9,9 +9,8 @@ import {
   Text,
   Button,
   Image,
-  Img
+  useBreakpointValue,
 } from '@chakra-ui/react';
-import { Varela } from '@next/font/google';
 import { useRouter } from 'next/router';
 
 export default function Home() {
@@ -40,17 +39,7 @@ export default function Home() {
             <Text
               as={'span'}
               position={'relative'}
-              data-testid="header"
-              _after={{
-                content: "''",
-                width: 'full',
-                height: '30%',
-                position: 'absolute',
-                bottom: 1,
-                left: 0,
-                bg: 'red.400',
-                zIndex: -1,
-              }}>
+              data-testid="header">
               Leave tracking
             </Text>
             <br />

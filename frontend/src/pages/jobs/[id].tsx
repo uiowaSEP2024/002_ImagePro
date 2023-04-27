@@ -13,12 +13,14 @@ import {
   Progress,
   Tooltip,
   Divider,
+  Link,
   Box,
+  Text,
   Spinner,
   Center,
   ThemingProps
 } from "@chakra-ui/react";
-import Link from "next/link";
+//import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 
@@ -144,9 +146,10 @@ function JobPage({ initialIsPageLoading = true }) {
   };
 
   return (
+    <>
     <Container maxW="container.lg" py={"6"}>
       <VStack gap={"4"} w={"full"} align="left">
-        <Link href={"/jobs"} passHref>
+        <Link href={"/jobs"}>
           <Button
             size={"md"}
             fontWeight={"semibold"}
@@ -196,7 +199,16 @@ function JobPage({ initialIsPageLoading = true }) {
           })}
         </Center>
       </VStack>
+
     </Container>
+
+    <Box align-self={'center'} m={10} >
+      <Text align={'center'} >
+        Issue with this job? Contact system administrator at <Link href={"https://www.gmail.com"} color={'#0072f5'}>admin@botimage.com</Link>
+      </Text>
+    </Box>
+  </>
+
   );
 }
 
