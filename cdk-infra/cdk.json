@@ -52,7 +52,9 @@
       "PostgresDbName": "postgres",
       "JwtAlgorithm": "HS256",
       "RepositoryName": "team_03",
-      "RepositoryOwner": "sep-23"
+      "RepositoryOwner": "sep-23",
+      "AmplifyMonoRepoAppRoot": "frontend",
+      "GitHubAccessTokenSecretName": "TEAM3_GITHUB_TOKEN_KEY"
     },
     "development": {
       "AppEnv": "development",

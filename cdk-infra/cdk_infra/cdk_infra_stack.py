@@ -38,7 +38,7 @@ class CdkInfraStack(cdk.Stack):
                 "POSTGRES_USER": build_config.PostgresUser,
                 "POSTGRES_PORT": str(build_config.PostgresPort),
                 "ALGORITHM": build_config.JwtAlgorithm,
-                "ALLOW_ORIGINS": ""
+                "ALLOW_ORIGINS": "",
             },
         )
 
@@ -69,12 +69,14 @@ class CdkInfraStack(cdk.Stack):
             app_name=amplify_app_name,
             source_code_provider=aws_amplify.GitHubSourceCodeProvider(
                 owner=build_config.RepositoryOwner,
-                oauth_token=cdk.SecretValue.secrets_manager("TEAM3_GITHUB_TOKEN_KEY"),
+                oauth_token=cdk.SecretValue.secrets_manager(
+                    build_config.GitHubAccessTokenSecretName
+                ),
                 repository=build_config.RepositoryName,
             ),
             environment_variables=dict(
                 BACKEND_URL=team3_rest_api.url,
-                AMPLIFY_MONOREPO_APP_ROOT="frontend",
+                AMPLIFY_MONOREPO_APP_ROOT=build_config.AmplifyMonoRepoAppRoot,
                 AMPLIFY_DIFF_DEPLOY="false",
             ),
             build_spec=aws_codebuild.BuildSpec.from_object_to_yaml(
@@ -95,7 +97,7 @@ class CdkInfraStack(cdk.Stack):
                                 },
                                 "cache": {"paths": ["node_modules/**/*"]},
                             },
-                            "appRoot": "frontend",
+                            "appRoot": build_config.AmplifyMonoRepoAppRoot,
                         }
                     ],
                 }
@@ -136,4 +138,8 @@ class CdkInfraStack(cdk.Stack):
             ),
         )
         cdk.CfnOutput(self, amplify_app_name + "AppId", value=team3_amplify_app.app_id)
-        cdk.CfnOutput(self, amplify_app_name + "DefaultDomain", value=team3_amplify_app.default_domain)
+        cdk.CfnOutput(
+            self,
+            amplify_app_name + "DefaultDomain",
+            value=team3_amplify_app.default_domain,
+        )
