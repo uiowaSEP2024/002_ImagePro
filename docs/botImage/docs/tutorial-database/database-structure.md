@@ -28,3 +28,16 @@ The Columns associated with the entity:
 5. `last_name` : The last name of the user.
 
 ## Events
+
+The columns associated with the entity:
+
+1. `kind` : It is an enum that dictates the type of the event among **step**, **error**, **info**, **complete**.
+2. `provider_job_id` : This is the provider that is associated to the event.
+
+## API-Keys
+
+The columns associated with the entity:
+
+1. `user_id` : The user that is associated to the API Key.
+2. `key` : The random secret string that represents the API Key.
+3. `note` : The description of the API Key.
