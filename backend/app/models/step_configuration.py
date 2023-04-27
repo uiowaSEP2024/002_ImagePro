@@ -2,10 +2,10 @@ from sqlalchemy import Column, ForeignKey, UniqueConstraint
 from sqlalchemy.sql.sqltypes import String, Integer
 from sqlalchemy.orm import relationship
 
-from .base import Base
+from .base import Base, DateMixin
 
 
-class StepConfiguration(Base):
+class StepConfiguration(Base, DateMixin):
     __tablename__ = "step_configurations"
     __table_args__ = (UniqueConstraint("job_configuration_id", "tag"),)
 
@@ -16,7 +16,7 @@ class StepConfiguration(Base):
     tag = Column(String, index=True, nullable=False)
 
     # The step configuration name as specified by the provider
-    step_configuration_name = Column(String, index=True, nullable=False)
+    name = Column(String, index=True, nullable=False)
 
     job_configuration_id = Column(
         Integer, ForeignKey("job_configurations.id"), index=True, nullable=False

@@ -2,10 +2,10 @@ from sqlalchemy import Column, ForeignKey, UniqueConstraint
 from sqlalchemy.sql.sqltypes import String, Integer
 from sqlalchemy.orm import relationship
 
-from .base import Base
+from .base import Base, DateMixin
 
 
-class JobConfiguration(Base):
+class JobConfiguration(Base, DateMixin):
     __tablename__ = "job_configurations"
     __table_args__ = (UniqueConstraint("provider_id", "tag", "version"),)
 
@@ -33,4 +33,4 @@ class JobConfiguration(Base):
         back_populates="job_configuration",
     )
 
-    jobs = relationship("Jobs", back_populates="job_configuration")
+    jobs = relationship("Job", back_populates="job_configuration")
