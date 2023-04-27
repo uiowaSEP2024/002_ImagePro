@@ -40,6 +40,7 @@ export default function Home() {
             <Text
               as={'span'}
               position={'relative'}
+              data-testid="header"
               _after={{
                 content: "''",
                 width: 'full',
