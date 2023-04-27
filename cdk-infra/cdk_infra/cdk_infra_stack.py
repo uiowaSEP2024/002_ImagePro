@@ -38,6 +38,7 @@ class CdkInfraStack(cdk.Stack):
                 "POSTGRES_USER": build_config.PostgresUser,
                 "POSTGRES_PORT": str(build_config.PostgresPort),
                 "ALGORITHM": build_config.JwtAlgorithm,
+                "ALLOW_ORIGINS": ""
             },
         )
 
