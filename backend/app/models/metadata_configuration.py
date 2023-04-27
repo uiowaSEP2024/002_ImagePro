@@ -2,10 +2,10 @@ from sqlalchemy import Column, ForeignKey, UniqueConstraint
 from sqlalchemy.sql.sqltypes import String, Integer
 from sqlalchemy.orm import relationship
 
-from .base import Base
+from .base import Base, DateMixin
 
 
-class MetadataConfiguration(Base):
+class MetadataConfiguration(Base, DateMixin):
     __tablename__ = "metadata_configurations"
     __table_args__ = (UniqueConstraint("step_configuration_id"),)
     # Auto-generated internal metadata configuration id
