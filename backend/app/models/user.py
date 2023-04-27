@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Enum
 from sqlalchemy.orm import relationship
 
 from .base import Base, DateMixin
@@ -12,6 +12,12 @@ class User(Base, DateMixin):
     hashed_password = Column(String)
     first_name = Column(String, nullable=True)
     last_name = Column(String, nullable=True)
+
+    role = Column(
+        Enum("provider", "customer", name="user_role"),
+        nullable=True,
+        default="customer",
+    )
 
     api_keys = relationship(
         "Apikey", back_populates="user", cascade="all, delete-orphan"

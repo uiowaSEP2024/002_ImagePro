@@ -1,16 +1,21 @@
-import { useAuthContext, useEnsureAuthenticated, useEnsureUnauthenticated } from "@/hooks/useAuthContext";
+import { User } from "@/data/types";
+import {
+  useAuthContext,
+  useEnsureAuthenticated,
+  useEnsureUnauthenticated
+} from "@/hooks/useAuthContext";
 
 /**
  * A HOC that ensures the user is authenticated before rendering the wrapped component
- * @param WrappedComponent 
- * @returns 
+ * @param WrappedComponent
+ * @returns
  */
 export const withAuthenticated = <P extends object>(
-  WrappedComponent: React.ComponentType<P>
+  WrappedComponent: React.ComponentType<P>,
+  roles: User["role"][] = []
 ) => {
-
   const ComponentWithAuth = (props: P) => {
-    useEnsureAuthenticated()
+    useEnsureAuthenticated(roles);
     const { isAuthenticating } = useAuthContext();
     if (isAuthenticating) return null;
     return <WrappedComponent {...props} />;
@@ -19,18 +24,16 @@ export const withAuthenticated = <P extends object>(
   return ComponentWithAuth;
 };
 
-
 /**
  * A HOC that ensures the user is un-authenticated before rendering the wrapped component
- * @param WrappedComponent 
- * @returns 
+ * @param WrappedComponent
+ * @returns
  */
 export const withUnauthenticated = <P extends object>(
   WrappedComponent: React.ComponentType<P>
 ) => {
-
   const ComponentWithAuth = (props: P) => {
-    useEnsureUnauthenticated()
+    useEnsureUnauthenticated();
     const { isAuthenticating } = useAuthContext();
     if (isAuthenticating) return null;
     return <WrappedComponent {...props} />;
