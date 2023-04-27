@@ -1,6 +1,6 @@
 // __tests__/index.test.jsx
 
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import Home from "@/pages/index";
 import "@testing-library/jest-dom";
 
@@ -37,10 +37,24 @@ describe("Home", () => {
     render(<Home />);
 
     const heading = await waitFor(() =>
-      screen.getByRole("heading", {
-        name: /welcome to the tracking site/i,
-      }));
+      screen.getByTestId("header"));
 
     expect(heading).toBeInTheDocument();
+  });
+
+  it("renders a button to jobs", async () => {
+    render(<Home />);
+
+    const button = await waitFor(() => screen.getByText("Learn More About Jobs"));
+
+    expect(button).toBeInTheDocument();
+  });
+
+  it("renders a button to analytics", async () => {
+    render(<Home />);
+
+    const button = await waitFor(() => screen.getByText("Get Started With Analytics"));
+
+    expect(button).toBeInTheDocument();
   });
 });
