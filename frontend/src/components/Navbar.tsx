@@ -29,8 +29,6 @@ const TopNavbar = () => {
     </Link>
   )
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
   if (!currentUser) {
     return (
       <>
