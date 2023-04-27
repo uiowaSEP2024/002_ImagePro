@@ -2,11 +2,14 @@
 import { withAuthenticated } from "@/components/withAuthenticated";
 import { fetchJobs } from "@/data";
 import { Job } from "@/data/types";
-import { Container, Table, Text } from "@nextui-org/react";
+import { Table, Text, Container } from "@nextui-org/react";
+import { Input } from "@chakra-ui/react";
 import NextLink from "next/link";
 import React from "react";
 import { useState, useEffect } from "react";
 import {useMemo} from "react"
+import { FiRefreshCcw } from "react-icons/fi";
+import { REACT_LOADABLE_MANIFEST } from "next/dist/shared/lib/constants";
 
 const columns = [
   { name: "Job No.", uid: "reference_number" },
@@ -66,10 +69,13 @@ function Jobs() {
 
       <Text h1>Jobs</Text>
 
-      <label htmlFor="search" style={{display: "block", padding: "10px"}} >  
-        <input id="search" data-testid="search" type="text" placeholder="Search jobs..." onChange={handleSearch} />
-        <br/>
-      </label>
+      <Input 
+        data-testid="search"  
+        placeholder="Search jobs..." 
+        htmlSize={25} 
+        width='auto' 
+        onChange={handleSearch} />
+      <br/>
 
       <Table
         lined
@@ -96,7 +102,7 @@ function Jobs() {
           )}
         </Table.Header>
 
-        <Table.Body items={useMemo(()=> filterJobs(jobs), [jobs])}>
+        <Table.Body items={useMemo(()=> filterJobs(jobs), [search])}>
           {(item) => (
             <Table.Row key={item.id}>
               {(column) => (
