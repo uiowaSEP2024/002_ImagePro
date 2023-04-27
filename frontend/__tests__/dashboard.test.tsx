@@ -50,10 +50,7 @@ describe("Dashboard", () => {
     expect(useRouter().push).not.toBeCalledWith("/login");
 
     const heading = await waitFor(() =>
-      screen.getByRole("heading", {
-        name: /Welcome/i
-      })
-    );
+      screen.getByText("Explore our tools"));
 
     expect(heading).toBeInTheDocument();
   });
@@ -64,9 +61,7 @@ describe("Dashboard", () => {
     expect(useRouter().push).not.toBeCalledWith('/login');
 
     const table = await waitFor(() =>
-    screen.getByRole("heading", {
-      name: /Jobs/i,
-    }));
+    screen.getByText("Jobs"));
 
     expect(table).toBeInTheDocument();
 
