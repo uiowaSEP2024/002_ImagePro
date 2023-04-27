@@ -8,8 +8,6 @@ import NextLink from "next/link";
 import React from "react";
 import { useState, useEffect } from "react";
 import {useMemo} from "react"
-import { FiRefreshCcw } from "react-icons/fi";
-import { REACT_LOADABLE_MANIFEST } from "next/dist/shared/lib/constants";
 
 const columns = [
   { name: "Job No.", uid: "reference_number" },
@@ -102,7 +100,7 @@ function Jobs() {
           )}
         </Table.Header>
 
-        <Table.Body items={useMemo(()=> filterJobs(jobs), [search])}>
+        <Table.Body items={filterJobs(jobs)} >
           {(item) => (
             <Table.Row key={item.id}>
               {(column) => (
