@@ -47,12 +47,16 @@ There are some prerequisites required for using CDK scripts. These include:
 2. Created Access Tokens either for the Root or IAM User
 3. Downloaded the AWS CLI, and configured an AWS profile with access tokens
 
-> NB: If you use a non-root IAM User, you will need to assign specific/granular policies such as the following:
-> 
-> "AdministratorAccess-Amplify", "AmazonAPIGatewayAdministrator", "AmazonEC2ContainerRegistryFullAccess", "AmazonS3FullAccess", "AmazonSSMFullAccess", "AWSCloudFormationFullAccess", "AWSLambda_FullAccess", "IAMFullAccess"
-> 
-> You may narrow down some of these permissions for more security, but this combination of permissions have been tested and work for the purposes of deploying this CDK.
+   > NB: If you use a non-root IAM User, you will need to assign specific/granular policies such as the following:
+   > 
+   > "AdministratorAccess-Amplify", "AmazonAPIGatewayAdministrator", "AmazonEC2ContainerRegistryFullAccess", "AmazonS3FullAccess", "AmazonSSMFullAccess", "AWSCloudFormationFullAccess", "AWSLambda_FullAccess", "IAMFullAccess"
+   > 
+   > You may narrow down some of these permissions for more security, but this combination of permissions have been tested and work for the purposes of deploying this CDK.
 
+4. GitHub Access Token stored in AWS Secrets Manager
+   > NB: The Next.js Amplify App deployed by this project requires a GitHub access token.
+   > This token must be set inside of AWS SSM with a name corresponding to `GitHubAccessTokenSecretName` in `cdk.json`
+   > See [this article](https://aws.amazon.com/blogs/mobile/deploy-a-nextjs-13-application-to-amplify-with-the-aws-cdk/) for detailed steps on the permissions required for the token
 
 ## Instructions
 The first step of the process is to "synthesize" the CloudFormation (CFN) template for this app. This template specifies the resources to be created by AWS CloudFormation based on the different stacks defined in the CDK application code.
