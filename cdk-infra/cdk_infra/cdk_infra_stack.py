@@ -34,11 +34,23 @@ class CdkInfraStack(cdk.Stack):
             timeout=cdk.Duration.seconds(15),
             environment={
                 "APP_ENV": build_config.AppEnv,
-                "POSTGRES_DB": build_config.PostgresDbName,
-                "POSTGRES_USER": build_config.PostgresUser,
-                "POSTGRES_PORT": str(build_config.PostgresPort),
                 "ALGORITHM": build_config.JwtAlgorithm,
                 "ALLOW_ORIGINS": "",
+                "POSTGRES_DB": cdk.SecretValue.secrets_manager(
+                    build_config.DatabaseAccessSecretName, json_field="dbName"
+                ).unsafe_unwrap(),
+                "POSTGRES_USER": cdk.SecretValue.secrets_manager(
+                    build_config.DatabaseAccessSecretName, json_field="username"
+                ).unsafe_unwrap(),
+                "POSTGRES_PORT": cdk.SecretValue.secrets_manager(
+                    build_config.DatabaseAccessSecretName, json_field="port"
+                ).unsafe_unwrap(),
+                "POSTGRES_HOST": cdk.SecretValue.secrets_manager(
+                    build_config.DatabaseAccessSecretName, json_field="host"
+                ).unsafe_unwrap(),
+                "POSTGRES_PASSWORD": cdk.SecretValue.secrets_manager(
+                    build_config.DatabaseAccessSecretName, json_field="password"
+                ).unsafe_unwrap(),
             },
         )
 

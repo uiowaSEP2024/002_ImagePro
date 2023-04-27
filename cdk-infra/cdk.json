@@ -47,14 +47,12 @@
 
     "default": {
       "AppName": "Team3CdkInfraStack",
-      "PostgresUser": "postgres",
-      "PostgresPort": 5432,
-      "PostgresDbName": "postgres",
       "JwtAlgorithm": "HS256",
       "RepositoryName": "team_03",
       "RepositoryOwner": "sep-23",
       "AmplifyMonoRepoAppRoot": "frontend",
-      "GitHubAccessTokenSecretName": "TEAM3_GITHUB_TOKEN_KEY"
+      "GitHubAccessTokenSecretName": "AMPLIFY_GITHUB_TOKEN_KEY",
+      "DatabaseAccessSecretName": "PGDB_ACCESS"
     },
     "development": {
       "AppEnv": "development",
