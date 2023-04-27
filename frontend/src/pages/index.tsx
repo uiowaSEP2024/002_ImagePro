@@ -1,4 +1,5 @@
 
+import { useAuthContext } from '@/hooks/useAuthContext';
 import {
   Container,
   Stack,
@@ -10,8 +11,19 @@ import {
   Image,
   Img
 } from '@chakra-ui/react';
+import { Varela } from '@next/font/google';
+import { useRouter } from 'next/router';
 
 export default function Home() {
+
+  const router = useRouter();
+  const { currentUser, logOut} = useAuthContext();
+  var jobs = 'jobs';
+  var analytics = "billing";
+  if (!currentUser) {
+    jobs = 'login';
+    analytics = 'login';
+  }
 
   return (
     <Container maxW={'7xl'}>
@@ -38,18 +50,12 @@ export default function Home() {
                 bg: 'red.400',
                 zIndex: -1,
               }}>
-              Check tracking
+              Leave tracking
             </Text>
             <br />
             <Text as={'span'} color={'red.400'}>
-              off your
+              your progress to us
             </Text>
-            <Text as={'span'} color={'#2600BF'}>
-              to-do
-            </Text>
-            <Text as={'span'} color={'red.400'}>
-             list
-             </Text>
           </Heading>
           <Text color={'gray.500'}>
             Snippy is a rich coding snippets app that lets you create your own
@@ -59,7 +65,8 @@ export default function Home() {
           <Stack
             spacing={{ base: 4, sm: 6 }}
             direction={{ base: 'column', sm: 'row' }}>
-            <Button
+            <Button 
+              onClick={() => router.push(jobs)}
               rounded={'full'}
               size={'lg'}
               fontWeight={'normal'}
@@ -67,14 +74,17 @@ export default function Home() {
               colorScheme={'red'}
               bg={'red.400'}
               _hover={{ bg: 'red.500' }}>
-              Get started
+              Learn More About Jobs
             </Button>
             <Button
+               onClick={() => router.push(analytics)}
               rounded={'full'}
               size={'lg'}
               fontWeight={'normal'}
+              bg={"#0072f5"}
+              _hover={{ bg: '#0164d6' }}
               px={6}>
-              How It Works
+              Get Started With Analytics
             </Button>
           </Stack>
         </Stack>
@@ -91,17 +101,6 @@ export default function Home() {
             boxShadow={'2xl'}
             width={'full'}
             overflow={'hidden'}>
-            <Button
-              aria-label={'Play Button'}
-              variant={'ghost'}
-              _hover={{ bg: 'transparent' }}
-              size={'lg'}
-              color={'white'}
-              position={'absolute'}
-              left={'50%'}
-              top={'50%'}
-              transform={'translateX(-50%) translateY(-50%)'}
-            />
             <Image
               alt={'Jobs Progress Page'}
               fit={'cover'}
