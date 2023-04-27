@@ -31,6 +31,9 @@ jobs:
       - name: Run lint tests
         run: npm run lint
 
+      - name: Run build
+        run: npm run build
+
   unit_tests:
     name: Frontend unit tests
     strategy:
