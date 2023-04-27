@@ -2,7 +2,6 @@ import { Text, Grid } from "@nextui-org/react";
 import { withAuthenticated } from "@/components/withAuthenticated";
 
 function Billing() {
-
   return (
     <>
       <Grid.Container gap={2} justify="center">
@@ -14,4 +13,4 @@ function Billing() {
   );
 }
 
-export default withAuthenticated(Billing)
+export default withAuthenticated(Billing, ["provider"]);
