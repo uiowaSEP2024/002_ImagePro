@@ -2,6 +2,8 @@ export type User = {
   first_name: string;
   last_name: string;
   email: string;
+  role: "customer" | "provider";
+  id: number;
 };
 
 export type UserCreate = {
@@ -9,6 +11,7 @@ export type UserCreate = {
   password: string;
   first_name: string;
   last_name: string;
+  role: "customer" | "provider";
 };
 
 export type Provider = {
@@ -28,10 +31,10 @@ export type Job = {
 
 export type Key = {
   id: number;
-  user_id: number,
-  key: string,
-  note: string,
-  created_at?: string
+  user_id: number;
+  key: string;
+  note: string;
+  created_at?: string;
 };
 
 export type JobEvent = {
