@@ -39,6 +39,7 @@ class Job(Base, DateMixin):
     )
 
     job_configuration = relationship(
+        "JobConfiguration",
         back_populates="jobs",
         foreign_keys=[job_configuration_id],
     )
