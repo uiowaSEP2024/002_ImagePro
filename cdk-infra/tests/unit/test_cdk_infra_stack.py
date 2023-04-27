@@ -30,3 +30,8 @@ def test_stack_created():
     template.has_resource("AWS::ApiGateway::RestApi", {})
 
     template.has_resource_properties("AWS::ApiGateway::Stage", {"StageName": "test"})
+
+    template.has_resource_properties(
+        "AWS::Amplify::App", {"Name": "Team3CDKAmplifyApp-test"}
+    )
+    template.has_resource_properties("AWS::Amplify::Branch", {"BranchName": "main"})
