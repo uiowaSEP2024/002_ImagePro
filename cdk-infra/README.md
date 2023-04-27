@@ -9,44 +9,73 @@ This project is set up like a standard Python project.
 
 
 ## Getting Started
-To get started with this project you will create a virtualenv for Python to store the application's dependencies.
+1. To get started with this project you will create a virtualenv for Python to store the application's dependencies.
 
-To manually create a virtualenv on MacOS and Linux:
+    To manually create a virtualenv on MacOS and Linux:
 
-```
-$ python3 -m venv .venv
-```
+    ```shell
+    $ python3 -m venv .venv
+    ```
 
-After the init process completes and the virtualenv is created, you can use the following
+2. After the init process completes and the virtualenv is created, you can use the following
 step to activate your virtualenv.
 
-```
-$ source .venv/bin/activate
-```
+    ```shell
+    $ source .venv/bin/activate
+    ```
 
-If you are a Windows platform, you would activate the virtualenv like this:
+    If you are a Windows platform, you would activate the virtualenv like this:
+    
+    ```shell
+    % .venv\Scripts\activate.bat
+    ```
 
-```
-% .venv\Scripts\activate.bat
-```
-
-Once the virtualenv is activated, you can install the required dependencies.
-
-```
-$ pip install -r requirements.txt
-```
+3. Once the virtualenv is activated, you can install the required dependencies.
+    ```shell
+    $ pip install -r requirements.txt
+    ```
 
 ## Deploying with CDK
 At this point you can now use the CDK to prepare the CDK application for deployment. 
 
-The CDK application has been configured to run in multiple application environments e.g `development`, and `production`. Thus, for each command we will specify the desired environment by adding an `app_env` property to the CDK application's context with `-c app_env=<environment>` command arguments.
+The CDK application has been configured to run in multiple application environments 
+e.g `development`, and `production`. Thus, for each command we will specify the desired environment by adding an `app_env` property to the CDK application's context with `-c app_env=<environment>` command arguments.
 
+## Prerequisites
+There are some prerequisites required for using CDK scripts. These include:
+1. Created an AWS account
+2. Created Access Tokens either for the Root or IAM User
+3. Downloaded the AWS CLI, and configured an AWS profile with access tokens
+
+> NB: If you use a non-root IAM User, you will need to assign specific/granular policies such as the following:
+> 
+> "AdministratorAccess-Amplify", "AmazonAPIGatewayAdministrator", "AmazonEC2ContainerRegistryFullAccess", "AmazonS3FullAccess", "AmazonSSMFullAccess", "AWSCloudFormationFullAccess", "AWSLambda_FullAccess", "IAMFullAccess"
+> 
+> You may narrow down some of these permissions for more security, but this combination of permissions have been tested and work for the purposes of deploying this CDK.
+
+
+## Instructions
 The first step of the process is to "synthesize" the CloudFormation (CFN) template for this app. This template specifies the resources to be created by AWS CloudFormation based on the different stacks defined in the CDK application code.
 
 To synthesize the CFN template for this code, run
-```
+```shell
 $ cdk synth -c app_env=<environment>
 ```
+
+Once the application is synthesized, you can view the resulting CloudFormation template inside
+of `cdk.out` folder.
+
+The final step after synthesis is to deploy the stack and create all associated resources (e.g Lambdas, RestAPI Gateway etc.)
+```shell
+$ cdk deploy -c app_env=<environment>
+```
+
+## Deployed Resources
+This CDK project deploys the following resources:
+1. Dockerized `backend` application Image to AWS ECR
+2. AWS Lambda Function that executes Dockerized Image above
+3. AWS (REST) API Gateway that triggers the Lambda Function
+4. AWS Amplify Application that builds and runs the `frontend`
 
 ## Useful CDK deployment commands
 
