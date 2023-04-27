@@ -17,7 +17,7 @@ import { useRouter } from 'next/router';
 export default function Home() {
 
   const router = useRouter();
-  const { currentUser, logOut} = useAuthContext();
+  const { currentUser} = useAuthContext();
   var jobs = 'jobs';
   var analytics = "billing";
   if (!currentUser) {
@@ -58,9 +58,10 @@ export default function Home() {
             </Text>
           </Heading>
           <Text color={'gray.500'}>
-            Snippy is a rich coding snippets app that lets you create your own
-            code snippets, categorize them, and even sync them in the cloud so
-            you can use them anywhere. All that is free!
+            Our solution to your job tracking problems! Our web app provides an interface for you to track the progress, analytics, 
+            and errors for all your jobs and customers, no matter how many steps. Our app provides an easy API to add to your job scripts,
+            which catalogues all your data and steps in a relational database stored securely by our AWS partners. From there, your data
+            becomes easy to query and analyze. Never let a client slip through the cracks again!
           </Text>
           <Stack
             spacing={{ base: 4, sm: 6 }}
