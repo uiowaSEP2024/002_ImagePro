@@ -44,12 +44,15 @@
     "@aws-cdk/aws-ec2:launchTemplateDefaultUserData": true,
     "@aws-cdk/aws-secretsmanager:useAttachedSecretResourcePolicyForSecretTargetAttachments": true,
     "@aws-cdk/aws-redshift:columnId": true,
+
     "default": {
       "AppName": "Team3CdkInfraStack",
       "PostgresUser": "postgres",
       "PostgresPort": 5432,
       "PostgresDbName": "postgres",
-      "JwtAlgorithm": "HS256"
+      "JwtAlgorithm": "HS256",
+      "RepositoryName": "team_03",
+      "RepositoryOwner": "sep-23"
     },
     "development": {
       "AppEnv": "development",

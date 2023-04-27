@@ -9,3 +9,5 @@ class BuildConfig(BaseModel):
     PostgresPort: int
     PostgresDbName: str
     JwtAlgorithm: str
+    RepositoryName: str
+    RepositoryOwner: str
