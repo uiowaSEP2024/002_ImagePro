@@ -1,10 +1,9 @@
+import json
+
 import aws_cdk as core
 import aws_cdk.assertions as assertions
-
-from cdk_infra.cdk_infra_stack import CdkInfraStack
 from app import get_config_for_app_env
-
-import json
+from cdk_infra.cdk_infra_stack import AMPLIFY_BRANCH_NAME, TRACKER_PREFIX, CdkInfraStack
 
 with open("cdk.json") as fp:
     context = json.load(fp)["context"]
@@ -21,7 +20,7 @@ def test_stack_created():
     template.has_resource_properties(
         "AWS::Lambda::Function",
         {
-            "FunctionName": "Team3CDKFunction-test",
+            "FunctionName": TRACKER_PREFIX + "Function-test",
             "PackageType": "Image",
             "Environment": {"Variables": {"APP_ENV": "test"}},
         },
@@ -31,7 +30,7 @@ def test_stack_created():
 
     template.has_resource_properties("AWS::ApiGateway::Stage", {"StageName": "test"})
 
+    template.has_resource("AWS::Amplify::App", {})
     template.has_resource_properties(
-        "AWS::Amplify::App", {"Name": "Team3CDKAmplifyApp-test"}
+        "AWS::Amplify::Branch", {"BranchName": AMPLIFY_BRANCH_NAME}
     )
-    template.has_resource_properties("AWS::Amplify::Branch", {"BranchName": "main"})

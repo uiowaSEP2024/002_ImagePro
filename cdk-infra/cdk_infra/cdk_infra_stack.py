@@ -8,6 +8,9 @@ import aws_cdk.aws_lambda as aws_lambda
 import aws_cdk.custom_resources as aws_custom_resources
 from models import BuildConfig
 
+TRACKER_PREFIX = "TrackerCDK"
+AMPLIFY_BRANCH_NAME = "main"
+
 
 class CdkInfraStack(cdk.Stack):
     def __init__(
@@ -20,10 +23,12 @@ class CdkInfraStack(cdk.Stack):
         super().__init__(scope, construct_id, **kwargs)
 
         # Lambda Function
-        function_name = "TeamCDKFunction" + "-" + build_config.AppEnv
-        cdk_function_name = "TeamCDKFunction" + build_config.AppEnv.capitalize()
+        function_name = TRACKER_PREFIX + "Function" + "-" + build_config.AppEnv
+        cdk_function_name = (
+            TRACKER_PREFIX + "Function" + build_config.AppEnv.capitalize()
+        )
 
-        team3_lambda = aws_lambda.Function(
+        tracker_lambda = aws_lambda.Function(
             self,
             cdk_function_name,
             function_name=function_name,
@@ -59,27 +64,31 @@ class CdkInfraStack(cdk.Stack):
         )
 
         # API Gateway Rest API
-        team3_rest_api_deployment_stage = aws_apigateway.StageOptions(
+        tracker_rest_api_deployment_stage = aws_apigateway.StageOptions(
             stage_name=build_config.ApiGatewayStage
         )
 
-        rest_api_name = "TeamCDKRestApi" + "-" + build_config.AppEnv
-        cdk_rest_api_name = "TeamCDKRestApi" + build_config.AppEnv.capitalize()
+        rest_api_name = TRACKER_PREFIX + "RestApi" + "-" + build_config.AppEnv
+        cdk_rest_api_name = (
+            TRACKER_PREFIX + "RestApi" + build_config.AppEnv.capitalize()
+        )
 
-        team3_rest_api = aws_apigateway.LambdaRestApi(
+        tracker_rest_api = aws_apigateway.LambdaRestApi(
             self,
             cdk_rest_api_name,
             rest_api_name=rest_api_name,
-            handler=team3_lambda,
+            handler=tracker_lambda,
             proxy=True,
-            deploy_options=team3_rest_api_deployment_stage,
+            deploy_options=tracker_rest_api_deployment_stage,
         )
 
         # Amplify App
-        amplify_app_name = "TeamCDKAmplify" + "-" + build_config.AppEnv
-        cdk_amplify_app_id = "TeamCDKAmplify" + build_config.AppEnv.capitalize()
+        amplify_app_name = TRACKER_PREFIX + "Amplify" + "-" + build_config.AppEnv
+        cdk_amplify_app_id = (
+            TRACKER_PREFIX + "Amplify" + build_config.AppEnv.capitalize()
+        )
 
-        team3_amplify_app = aws_amplify.App(
+        tracker_amplify_app = aws_amplify.App(
             self,
             cdk_amplify_app_id,
             app_name=amplify_app_name,
@@ -91,7 +100,7 @@ class CdkInfraStack(cdk.Stack):
                 repository=build_config.RepositoryName,
             ),
             environment_variables=dict(
-                NEXT_PUBLIC_BACKEND_URL=team3_rest_api.url,
+                NEXT_PUBLIC_BACKEND_URL=tracker_rest_api.url,
                 AMPLIFY_MONOREPO_APP_ROOT=build_config.AmplifyMonoRepoAppRoot,
                 AMPLIFY_DIFF_DEPLOY="false",
             ),
@@ -120,26 +129,26 @@ class CdkInfraStack(cdk.Stack):
             ),
         )
 
-        branch_name = "main"
-
-        team3_amplify_app_main_branch = team3_amplify_app.add_branch(
-            amplify_app_name + "-" + branch_name,
-            branch_name=branch_name,
+        tracker_amplify_app_main_branch = tracker_amplify_app.add_branch(
+            amplify_app_name + "-" + AMPLIFY_BRANCH_NAME,
+            branch_name=AMPLIFY_BRANCH_NAME,
             stage="PRODUCTION",
             auto_build=True,
         )
 
-        team3_amplify_app.node.default_child.platform = "WEB_COMPUTE"
+        tracker_amplify_app.node.default_child.platform = "WEB_COMPUTE"
 
         # Amplify App Build Trigger on Create
         build_trigger = aws_custom_resources.AwsCustomResource(
             self,
-            "TeamCDKAmplifyBuildTrigger"
-            + branch_name
+            TRACKER_PREFIX
+            + "AmplifyBuildTrigger"
+            + AMPLIFY_BRANCH_NAME.capitalize()
             + build_config.AppEnv.capitalize(),
-            function_name="TeamCDKAmplifyBuildTrigger"
+            function_name=TRACKER_PREFIX
+            + "AmplifyBuildTrigger"
             + "-"
-            + branch_name
+            + AMPLIFY_BRANCH_NAME
             + "-"
             + build_config.AppEnv,
             policy=aws_custom_resources.AwsCustomResourcePolicy.from_sdk_calls(
@@ -152,8 +161,8 @@ class CdkInfraStack(cdk.Stack):
                     "app-build-trigger"
                 ),
                 parameters={
-                    "appId": team3_amplify_app.app_id,
-                    "branchName": branch_name,
+                    "appId": tracker_amplify_app.app_id,
+                    "branchName": AMPLIFY_BRANCH_NAME,
                     "jobType": "RELEASE",
                     "jobReason": "Auto Start build",
                 },
@@ -163,7 +172,7 @@ class CdkInfraStack(cdk.Stack):
             self,
             amplify_app_name + "Domain",
             value="https://"
-            + team3_amplify_app_main_branch.branch_name
+            + tracker_amplify_app_main_branch.branch_name
             + "."
-            + team3_amplify_app.default_domain,
+            + tracker_amplify_app.default_domain,
         )
