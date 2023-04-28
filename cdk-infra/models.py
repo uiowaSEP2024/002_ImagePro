@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
 
@@ -14,5 +16,6 @@ class BuildConfig(BaseModel):
     GitHubAccessTokenSecretName: str
 
     DatabaseAccessSecretName: str
+    DatabaseName: Optional[str]
 
     SecretKeySecretName: str

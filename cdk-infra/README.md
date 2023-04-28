@@ -53,10 +53,19 @@ There are some prerequisites required for using CDK scripts. These include:
    > 
    > You may narrow down some of these permissions for more security, but this combination of permissions have been tested and work for the purposes of deploying this CDK.
 
-4. GitHub Access Token stored in AWS Secrets Manager
-   > NB: The Next.js Amplify App deployed by this project requires a GitHub access token.
-   > This token must be set inside of AWS SSM with a name corresponding to `GitHubAccessTokenSecretName` in `cdk.json`
-   > See [this article](https://aws.amazon.com/blogs/mobile/deploy-a-nextjs-13-application-to-amplify-with-the-aws-cdk/) for detailed steps on the permissions required for the token
+4. Secrets stored in AWS Secrets Manager
+   1. `AMPLIFY_GITHUB_ACCESS_TOKEN`: The Next.js Amplify App deployed by this project requires a GitHub access token. 
+       This token must be set inside of AWS SSM with a name corresponding to `GitHubAccessTokenSecretName` in `cdk.json`
+       See [this article](https://aws.amazon.com/blogs/mobile/deploy-a-nextjs-13-application-to-amplify-with-the-aws-cdk/) for detailed steps on the permissions required for the token
+   2. `DB_ACCESS_[DEV|PROD|TEST]`: The credentials for accessing the RDS database instance. These correspond with the `DatabaseAccessSecretName` in `cdk.json`. The steps for creating this secret inside of AWS console are 
+        "AWS Secrets Manager" -> "Store new secret" -> "Credentials for Amazon RDS database" -> "Enter user for database (likely `'postgres'`)" -> "Enter password used in creating the database" -> "Select RDS database instance from list" -> Next -> "Enter secret name. One of `'DB_ACCESS_[DEV|PROD|TEST]'`" -> Finish
+   3. `SECRET_KEY_[DEV|PROD|TEST]`: This is the secret that would be used to create JWT access tokens for users once they sign up. Similarly to above,
+         you would create a plain-text secret in AWS Secrets Manager as follows:
+         "AWS Secrets Manager" -> "Store new secret" -> "Other type of secret" -> "Plain Text" -> "Paste a **SECURE** secret token" -> Next -> "Enter a secret name. One of `'SECRET_KEY_[DEV|PROD|TEST]'`" -> Finish
+
+   > NB: These AWS Secret Manager secrets here are ONLY used at the deployment stage. What happens is that their values are copied over from AWS Secretes Manager into the Environment Variables of the AWS Lambda Function. To change the actual runtime values of the environment variables 
+   > you will have to change the Environment Variables from the Lambda Console. See the documentation [from AWS](https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html#configuration-envvars-config) or in `docs` of this repository for images of the process.
+   > The backend application may be improved to dynamically load secrets from AWS Secrets Manager (replicated within the same region as the Lambda for low latency), but this has not been set up at the moment. 
 
 ## Instructions
 The first step of the process is to "synthesize" the CloudFormation (CFN) template for this app. This template specifies the resources to be created by AWS CloudFormation based on the different stacks defined in the CDK application code.
@@ -95,7 +104,7 @@ To perform any of the above actions using a different AWS account/region, simply
 ```bash
 aws configure --profile <my-other-profile>
 ```
-Follow the prompts to setup the new profile.
+Follow the prompts to set up the new profile.
 
 Now, you can run any of the commands above with the `--profile=<my-other-profile>` option to use the credentials and configuration for that AWS profile.
  
