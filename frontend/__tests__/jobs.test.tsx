@@ -29,11 +29,14 @@ jest.spyOn(data, "fetchCheckUserLoggedIn").mockImplementation(() =>
     user: {
       first_name: "John",
       last_name: "Doe",
-      email: "johndoe@gmail.com"
+      email: "johndoe@gmail.com",
+      id: 1,
+      role: "provider"
     },
     message: ""
   })
 );
+
 jest.spyOn(data, "fetchJobs").mockImplementation(() => Promise.resolve(
   [{
     id: 1,

@@ -205,12 +205,7 @@ export const fetchSignUp = async (data: UserCreate) => {
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({
-      email: data.email,
-      password: data.password,
-      first_name: data.first_name,
-      last_name: data.last_name
-    })
+    body: JSON.stringify(data)
   });
 
   return await response.json();

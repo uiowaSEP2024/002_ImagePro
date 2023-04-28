@@ -30,32 +30,32 @@ const TopNavbar = () => {
 
   const links = [
     {
-        to: '/login',
-        name: 'Log in',
-        id: 'loginButton'
+      to: "/login",
+      name: "Log in",
+      id: "loginButton"
     },
     {
-        to: '/signup',
-        name: 'Sign up',
-        id: 'signup'
+      to: "/signup",
+      name: "Sign up",
+      id: "signup"
     }]
 
   const authenticatedLinks = [ 
     {
-      to: '/',
-      name: 'Home'
+      to: "/",
+      name: "Home"
     },
     {
-      to: '/dashboard',
-      name: 'Dashboard'
+      to: "/dashboard",
+      name: "Dashboard"
     },
     {
-      to: '/billing',
-      name: 'Billing'
+      to: "/billing",
+      name: "Billing"
     },
     {
-      to: '/apikeys',
-      name: 'Generate API Keys'
+      to: "/apikeys",
+      name: "Generate API Keys"
     }]
 
   if (!currentUser) {

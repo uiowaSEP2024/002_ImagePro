@@ -30,7 +30,8 @@ jest.spyOn(data, "fetchCheckUserLoggedIn").mockImplementation(() =>
       first_name: "John",
       last_name: "Doe",
       email: "johndoe@gmail.com",
-      id: 1
+      id: 1,
+      role: "provider"
     },
     message: ""
   })

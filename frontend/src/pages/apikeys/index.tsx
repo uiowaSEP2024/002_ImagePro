@@ -1,6 +1,6 @@
-import { backendUrl, fetchAPIkeys, fetchGenAPIKeys } from "@/data";
+import { fetchAPIkeys, fetchGenAPIKeys } from "@/data";
 import { Key } from "@/data/types";
-import React, { FormEvent, useCallback, useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useState, useEffect } from "react";
 import {
   Heading,
@@ -173,4 +173,4 @@ function ApiKeys() {
   );
 }
 
-export default withAuthenticated(ApiKeys);
+export default withAuthenticated(ApiKeys, ["provider"]);

@@ -56,13 +56,14 @@ jest.mock("@/hooks/useAuthContext", () => ({
     })
   );
 
-jest.spyOn(data, "fetchCheckUserLoggedIn").mockImplementation(() =>
+  jest.spyOn(data, "fetchCheckUserLoggedIn").mockImplementation(() =>
   Promise.resolve({
     user: {
       first_name: "John",
       last_name: "Doe",
       email: "johndoe@gmail.com",
-      id: 1
+      id: 1,
+      role: "provider"
     },
     message: ""
   })
