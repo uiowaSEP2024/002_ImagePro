@@ -182,4 +182,4 @@ function ApiKeys() {
   );
 }
 
-export default withAuthenticated(ApiKeys);
+export default withAuthenticated(ApiKeys, ["provider"]);
