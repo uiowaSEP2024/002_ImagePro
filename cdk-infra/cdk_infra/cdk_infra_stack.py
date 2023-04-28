@@ -1,12 +1,11 @@
 import json
 
 import aws_cdk as cdk
-import aws_cdk.aws_lambda as aws_lambda
-import aws_cdk.aws_apigateway as aws_apigateway
 import aws_cdk.aws_amplify_alpha as aws_amplify
+import aws_cdk.aws_apigateway as aws_apigateway
 import aws_cdk.aws_codebuild as aws_codebuild
+import aws_cdk.aws_lambda as aws_lambda
 import aws_cdk.custom_resources as aws_custom_resources
-
 from models import BuildConfig
 
 
@@ -21,8 +20,8 @@ class CdkInfraStack(cdk.Stack):
         super().__init__(scope, construct_id, **kwargs)
 
         # Lambda Function
-        function_name = "Team3CDKFunction" + "-" + build_config.AppEnv
-        cdk_function_name = "Team3CDKFunction" + build_config.AppEnv.capitalize()
+        function_name = "TeamCDKFunction" + "-" + build_config.AppEnv
+        cdk_function_name = "TeamCDKFunction" + build_config.AppEnv.capitalize()
 
         team3_lambda = aws_lambda.Function(
             self,
@@ -64,8 +63,8 @@ class CdkInfraStack(cdk.Stack):
             stage_name=build_config.ApiGatewayStage
         )
 
-        rest_api_name = "Team3CDKRestApi" + "-" + build_config.AppEnv
-        cdk_rest_api_name = "Team3CDKRestApi" + build_config.AppEnv.capitalize()
+        rest_api_name = "TeamCDKRestApi" + "-" + build_config.AppEnv
+        cdk_rest_api_name = "TeamCDKRestApi" + build_config.AppEnv.capitalize()
 
         team3_rest_api = aws_apigateway.LambdaRestApi(
             self,
@@ -77,8 +76,8 @@ class CdkInfraStack(cdk.Stack):
         )
 
         # Amplify App
-        amplify_app_name = "Team3CDKAmplifyApp" + "-" + build_config.AppEnv
-        cdk_amplify_app_id = "Team3CDKAmplifyApp" + build_config.AppEnv.capitalize()
+        amplify_app_name = "TeamCDKAmplify" + "-" + build_config.AppEnv
+        cdk_amplify_app_id = "TeamCDKAmplify" + build_config.AppEnv.capitalize()
 
         team3_amplify_app = aws_amplify.App(
             self,
@@ -92,7 +91,7 @@ class CdkInfraStack(cdk.Stack):
                 repository=build_config.RepositoryName,
             ),
             environment_variables=dict(
-                BACKEND_URL=team3_rest_api.url,
+                NEXT_PUBLIC_BACKEND_URL=team3_rest_api.url,
                 AMPLIFY_MONOREPO_APP_ROOT=build_config.AmplifyMonoRepoAppRoot,
                 AMPLIFY_DIFF_DEPLOY="false",
             ),
@@ -123,7 +122,7 @@ class CdkInfraStack(cdk.Stack):
 
         branch_name = "main"
 
-        team3_amplify_app.add_branch(
+        team3_amplify_app_main_branch = team3_amplify_app.add_branch(
             amplify_app_name + "-" + branch_name,
             branch_name=branch_name,
             stage="PRODUCTION",
@@ -135,8 +134,14 @@ class CdkInfraStack(cdk.Stack):
         # Amplify App Build Trigger on Create
         build_trigger = aws_custom_resources.AwsCustomResource(
             self,
-            "Team3CDKTriggerAmplifyAppBuild" + build_config.AppEnv.capitalize(),
-            function_name="Team3CDKTriggerAmplifyAppBuild" + "-" + build_config.AppEnv,
+            "TeamCDKAmplifyBuildTrigger"
+            + branch_name
+            + build_config.AppEnv.capitalize(),
+            function_name="TeamCDKAmplifyBuildTrigger"
+            + "-"
+            + branch_name
+            + "-"
+            + build_config.AppEnv,
             policy=aws_custom_resources.AwsCustomResourcePolicy.from_sdk_calls(
                 resources=aws_custom_resources.AwsCustomResourcePolicy.ANY_RESOURCE
             ),
@@ -154,9 +159,11 @@ class CdkInfraStack(cdk.Stack):
                 },
             ),
         )
-        cdk.CfnOutput(self, amplify_app_name + "AppId", value=team3_amplify_app.app_id)
         cdk.CfnOutput(
             self,
-            amplify_app_name + "DefaultDomain",
-            value=team3_amplify_app.default_domain,
+            amplify_app_name + "Domain",
+            value="https://"
+            + team3_amplify_app_main_branch.branch_name
+            + "."
+            + team3_amplify_app.default_domain,
         )
