@@ -51,7 +51,8 @@
       "RepositoryName": "team_03",
       "RepositoryOwner": "sep-23",
       "AmplifyMonoRepoAppRoot": "frontend",
-      "GitHubAccessTokenSecretName": "AMPLIFY_GITHUB_TOKEN"
+      "GitHubAccessTokenSecretName": "AMPLIFY_GITHUB_TOKEN",
+      "DatabaseName": "postgres"
     },
     "development": {
       "AppEnv": "development",

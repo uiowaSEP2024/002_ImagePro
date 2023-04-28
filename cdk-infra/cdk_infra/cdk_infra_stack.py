@@ -39,7 +39,9 @@ class CdkInfraStack(cdk.Stack):
                 "SECRET_KEY": cdk.SecretValue.secrets_manager(
                     build_config.SecretKeySecretName,
                 ).unsafe_unwrap(),
-                "POSTGRES_DB": cdk.SecretValue.secrets_manager(
+                "POSTGRES_DB": build_config.DatabaseName
+                if build_config.DatabaseName
+                else cdk.SecretValue.secrets_manager(
                     build_config.DatabaseAccessSecretName, json_field="dbname"
                 ).unsafe_unwrap(),
                 "POSTGRES_USER": cdk.SecretValue.secrets_manager(
