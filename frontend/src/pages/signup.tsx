@@ -165,7 +165,7 @@ function SignUp() {
 
             <RadioGroup
               alignSelf={"flex-start"}
-              onChange={(value) => setRole(value)}
+              onChange={(value) => setRole(value as User["role"])}
               value={role}
             >
               <Stack direction="row" gap={8}>
