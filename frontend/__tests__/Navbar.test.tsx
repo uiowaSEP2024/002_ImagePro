@@ -88,7 +88,7 @@ describe("NavBar", () => {
   it("logs in", async () => {
     await act(async () => render(<Navbar />, { wrapper: AuthContextProvider }));
 
-    const button = await waitFor(() => screen.getByText("Login"));
+    const button = await waitFor(() => screen.getByText("Log in"));
 
     expect(button).toBeInTheDocument();
 

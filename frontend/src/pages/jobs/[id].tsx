@@ -42,6 +42,7 @@ function JobPage({ initialIsPageLoading = true }) {
     async function loadJob() {
       const data = await fetchJobById(jobId as unknown as number);
       if (data) setJob(data);
+      console.log(data)
     }
 
     if (jobId) {
@@ -78,6 +79,8 @@ function JobPage({ initialIsPageLoading = true }) {
         if (!data) {
           return true;
         }
+
+        console.log(data)
 
         setEvents(
           data.map((event, index) => ({ ...event, event_number: index + 1 }))
