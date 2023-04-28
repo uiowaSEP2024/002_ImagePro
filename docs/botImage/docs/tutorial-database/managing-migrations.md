@@ -8,6 +8,14 @@ For all the following scripts, the value of `APP_ENV` is set to one of the avail
 
 ### Starting Database
 
+Ensure that the [Docker](https://docs.docker.com/get-docker/) Desktop Application has been installed and is running. We will use Docker to to start a local Postgres database using the following script:
+
+```bash
+bash run-db.sh
+```
+
+Once started, the database is available for connections on the `URL postgresql://<user>:<password>@localhost/<database-name>`
+
 ### Running Migrations
 
 The following command applies all migrations to the database in the targeted environment:
