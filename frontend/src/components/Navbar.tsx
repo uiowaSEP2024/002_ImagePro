@@ -28,6 +28,36 @@ const TopNavbar = () => {
     </Link>
   )
 
+  const links = [
+    {
+        to: '/login',
+        name: 'Log in',
+        id: 'loginButton'
+    },
+    {
+        to: '/signup',
+        name: 'Sign up',
+        id: 'signup'
+    }]
+
+  const authenticatedLinks = [ 
+    {
+      to: '/',
+      name: 'Home'
+    },
+    {
+      to: '/dashboard',
+      name: 'Dashboard'
+    },
+    {
+      to: '/billing',
+      name: 'Billing'
+    },
+    {
+      to: '/apikeys',
+      name: 'Generate API Keys'
+    }]
+
   if (!currentUser) {
     return (
       <>
@@ -48,6 +78,7 @@ const TopNavbar = () => {
                   as={"nav"}
                   spacing={4}
                   display={{ base: "none", md: "flex" }}>
+                  {links.map(link => (<NavLink data-testid={link.id} link={link.to}> {link.name} </NavLink> ))}
                   <NavLink data-testid="loginButton" link={"/login"}>Login</NavLink>
                   <NavLink link={"/signup"}>Sign up</NavLink>
                 </HStack>
@@ -67,10 +98,7 @@ const TopNavbar = () => {
               as={"nav"}
               spacing={4}
               display={{ base: "none", md: "flex" }}>
-              <NavLink link={"/"}>Home</NavLink>
-              <NavLink link={"/dashboard"}>Dashboard</NavLink>
-              <NavLink link={"/billing"}>Billing</NavLink>
-              <NavLink link={"/apikeys"}>Generate API Keys</NavLink>
+              {authenticatedLinks.map(link => (<NavLink link={link.to}> {link.name} </NavLink> ))}
             </HStack>
           </HStack>
 
