@@ -13,6 +13,8 @@ from starlette.status import HTTP_401_UNAUTHORIZED
 from starlette.status import HTTP_403_FORBIDDEN
 
 from app import services
+from app.models import User
+from app.schemas.user import UserRoleEnum
 from app.services.users import get_user_by_email
 from config import config
 
@@ -73,7 +75,7 @@ oauth2_http_cookie_bearer_scheme = OAuth2HttpCookieBearer(tokenUrl="login")
 def get_current_user_from_token(
     db: Session = Depends(get_db),
     token: str = Depends(oauth2_http_cookie_bearer_scheme),
-):
+) -> User:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -99,6 +101,16 @@ def get_current_user_from_token(
 
 
 get_api_key_from_header = APIKeyHeader(name=API_KEY_HEADER_NAME, auto_error=False)
+
+
+def get_current_provider(user=Depends(get_current_user_from_token)):
+    if user.role == UserRoleEnum.provider:
+        return user
+
+    raise HTTPException(
+        status_code=HTTP_401_UNAUTHORIZED,
+        detail="Not authorized",
+    )
 
 
 INVALID_API_KEY_CREDENTIALS_MISSING = (

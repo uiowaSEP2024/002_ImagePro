@@ -1,3 +1,4 @@
+from app.schemas.user import UserRoleEnum
 from config import config
 
 # Cache for Created Entities
@@ -9,16 +10,33 @@ api_keys = {}
 # Data to be seeded for each entity
 USERS_DATA = [
     # Customers
-    dict(email="johndoe@gmail.com", password="abc", first_name="John", last_name="Doe"),
+    dict(
+        email="johndoe@gmail.com",
+        password="abc",
+        first_name="John",
+        last_name="Doe",
+        role=UserRoleEnum.customer,
+    ),
     dict(
         email="janeblack@gmail.com",
         password="abc",
         first_name="Jane",
         last_name="Black",
+        role=UserRoleEnum.customer,
     ),
     # Providers
-    dict(email="noodlesco@gmail.com", password="abc", first_name="NoodlesCo"),
-    dict(email="botimage@gmail.com", password="abc", first_name="BotImage"),
+    dict(
+        email="noodlesco@gmail.com",
+        password="abc",
+        first_name="NoodlesCo",
+        role=UserRoleEnum.provider,
+    ),
+    dict(
+        email="botimage@gmail.com",
+        password="abc",
+        first_name="BotImage",
+        role=UserRoleEnum.provider,
+    ),
 ]
 
 API_KEYS_DATA = [
@@ -184,6 +202,7 @@ def seed_users(db):
             first_name=user_data.get("first_name", ""),
             last_name=user_data.get("last_name", ""),
             hashed_password=get_password_hash(user_data["password"]),
+            role=user_data["role"],
         )
         db.add(user)
         db.commit()
