@@ -100,14 +100,6 @@ describe("API Keys Page", () => {
   });
 
   describe("when user is provider", () => {
-    beforeEach(() => {
-      jest.spyOn(data, "fetchCheckUserLoggedIn").mockImplementation(() =>
-        Promise.resolve({
-          user: testProvider,
-          message: ""
-        })
-      );
-    });
     it("renders a list of API keys", async () => {
       const { getByTestId } = await act(async () =>
         render(<ApiKeys />, { wrapper: AuthContextProvider })
