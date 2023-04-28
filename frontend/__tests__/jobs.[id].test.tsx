@@ -3,7 +3,7 @@ import JobPage from "@/pages/jobs/[id]";
 import "@testing-library/jest-dom";
 import { AuthContextProvider } from "@/contexts/authContext";
 import { useRouter } from "next/router";
-import * as data from "@/data/index";
+import * as data from "@/data";
 
 const jobId = "1";
 
@@ -30,7 +30,9 @@ jest.spyOn(data, "fetchCheckUserLoggedIn").mockImplementation(() =>
     user: {
       first_name: "John",
       last_name: "Doe",
-      email: "johndoe@gmail.com"
+      email: "johndoe@gmail.com",
+      id: 1,
+      role: "provider"
     },
     message: ""
   })
