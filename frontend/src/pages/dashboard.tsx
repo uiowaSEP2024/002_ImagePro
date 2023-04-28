@@ -12,8 +12,7 @@ import {
   Stack,
   StackDivider,
   Icon,
-  Box,
-  useColorModeValue,
+  Box
 } from "@chakra-ui/react";
 import {
   IoAnalyticsSharp,
@@ -59,7 +58,7 @@ function Dashboard() {
             color={"blue.400"}
             fontWeight={600}
             fontSize={"sm"}
-            bg={useColorModeValue("blue.50", "blue.900")}
+            bg={"blue.50"}
             p={2}
             alignSelf={"flex-start"}
             rounded={"md"}>
@@ -75,7 +74,7 @@ function Dashboard() {
             spacing={4}
             divider={
               <StackDivider
-                borderColor={useColorModeValue("gray.100", "gray.700")}
+                borderColor={"gray.100"}
               />
             }>
             <Card>
@@ -84,7 +83,7 @@ function Dashboard() {
                   icon={
                     <Icon as={IoSearchSharp} color={"purple.500"} w={5} h={5} />
                   }
-                  iconBg={useColorModeValue("purple.100", "purple.900")}
+                  iconBg={"purple.100"}
                   text={"Jobs"} />
               </Box>
               <Card.Header>
@@ -99,7 +98,7 @@ function Dashboard() {
               <Box p={3}>
                 <Feature
                   icon={<Icon as={IoLogoBitcoin} color={"green.500"} w={5} h={5} />}
-                  iconBg={useColorModeValue("green.100", "green.900")}
+                  iconBg={"green.100"}
                   text={"Analytics"} />
               </Box>
               <Card.Header>
@@ -115,7 +114,7 @@ function Dashboard() {
                   icon={
                     <Icon as={IoAnalyticsSharp} color={"yellow.500"} w={5} h={5} />
                   }
-                  iconBg={useColorModeValue("yellow.100", "yellow.900")}
+                  iconBg={"yellow.100"}
                   text={"API Integration"} />
               </Box>
               <Card.Header>
