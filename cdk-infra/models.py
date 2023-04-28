@@ -14,3 +14,5 @@ class BuildConfig(BaseModel):
     GitHubAccessTokenSecretName: str
 
     DatabaseAccessSecretName: str
+
+    SecretKeySecretName: str

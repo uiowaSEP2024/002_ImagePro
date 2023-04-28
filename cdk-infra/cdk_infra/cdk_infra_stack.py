@@ -36,8 +36,11 @@ class CdkInfraStack(cdk.Stack):
                 "APP_ENV": build_config.AppEnv,
                 "ALGORITHM": build_config.JwtAlgorithm,
                 "ALLOW_ORIGINS": "",
+                "SECRET_KEY": cdk.SecretValue.secrets_manager(
+                    build_config.SecretKeySecretName,
+                ).unsafe_unwrap(),
                 "POSTGRES_DB": cdk.SecretValue.secrets_manager(
-                    build_config.DatabaseAccessSecretName, json_field="dbName"
+                    build_config.DatabaseAccessSecretName, json_field="dbname"
                 ).unsafe_unwrap(),
                 "POSTGRES_USER": cdk.SecretValue.secrets_manager(
                     build_config.DatabaseAccessSecretName, json_field="username"
