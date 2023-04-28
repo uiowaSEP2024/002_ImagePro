@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { Text, Container, Center, VStack, Box, Input, Button, InputGroup, InputRightElement, Icon, IconButton, Link } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons"
 import {AiFillEye, AiFillEyeInvisible} from "react-icons/ai";
@@ -19,7 +19,7 @@ function SignUp() {
   const { logIn } = useAuthContext()
 
 
-  const sendSignUpReq = async (e) => {
+  const sendSignUpReq = async (e: FormEvent) => {
     e.preventDefault()
     if (confirmPassword !== password) {
       console.log("Passwords Do Not Match");

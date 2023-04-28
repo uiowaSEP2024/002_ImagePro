@@ -5,20 +5,14 @@ import "@testing-library/jest-dom";
 import { useRouter } from "next/router";
 import { AuthContextProvider } from "@/contexts/authContext";
 
+const mockRouterPush = jest.fn();
 jest.mock("next/router", () => ({
   useRouter() {
     return {
       route: "/",
       pathname: "",
       query: "",
-      asPath: "",
-      push: jest.fn(),
-      events: {
-        on: jest.fn(),
-        off: jest.fn()
-      },
-      beforePopState: jest.fn(() => null),
-      prefetch: jest.fn(() => null)
+      push: mockRouterPush
     };
   }
 }));
@@ -71,6 +65,17 @@ describe("Login", () => {
     fireEvent.click(button);
 
     expect(button).toBeInTheDocument();
+  });
+
+  it('show password button exists', async () => {
+
+    await act(async () => render(<Login />, { wrapper: AuthContextProvider }));
+
+    const button = await waitFor(() => screen.getByTestId("showbutton"));
+
+    fireEvent.click(button);
+    expect(button).toBeInTheDocument();
+
   });
 
   });

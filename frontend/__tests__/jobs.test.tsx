@@ -12,20 +12,14 @@ jest.mock("@/data", () => ({
 import "@testing-library/jest-dom";
 import { AuthContextProvider } from "@/contexts/authContext";
 
+const mockRouterPush = jest.fn();
 jest.mock("next/router", () => ({
   useRouter() {
     return {
       route: "/",
       pathname: "",
       query: "",
-      asPath: "",
-      push: jest.fn(),
-      events: {
-        on: jest.fn(),
-        off: jest.fn()
-      },
-      beforePopState: jest.fn(() => null),
-      prefetch: jest.fn(() => null)
+      push: mockRouterPush
     };
   }
 }));

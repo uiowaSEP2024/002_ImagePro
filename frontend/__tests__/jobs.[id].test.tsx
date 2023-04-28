@@ -86,4 +86,16 @@ describe("Job Page", () => {
 
     expect(progressBar).toBeInTheDocument();
   });
+
+  it("renders an admin link at bottom", async () => {
+    await act(async () => {
+      render(<JobPage initialIsPageLoading={false} />, {
+        wrapper: AuthContextProvider
+      });
+    });
+
+    const adminLink = await waitFor(() => screen.getByText("Issue with this job? Contact system administrator at"));
+
+    expect(adminLink).toBeInTheDocument();
+  });
 });
