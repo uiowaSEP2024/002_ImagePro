@@ -78,7 +78,7 @@ const TopNavbar = () => {
                   as={"nav"}
                   spacing={4}
                   display={{ base: "none", md: "flex" }}>
-                  {links.map(link => (<NavLink data-testid={link.id} link={link.to}> {link.name} </NavLink> ))}
+                  {links.map(link => (<NavLink data-testid={link.id} key={link.name} link={link.to}> {link.name} </NavLink> ))}
                 </HStack>
               </HStack>
             </Flex>
@@ -96,7 +96,7 @@ const TopNavbar = () => {
               as={"nav"}
               spacing={4}
               display={{ base: "none", md: "flex" }}>
-              {authenticatedLinks.map(link => (<NavLink link={link.to}> {link.name} </NavLink> ))}
+              {authenticatedLinks.map(link => (<NavLink key={link.name} link={link.to}> {link.name} </NavLink> ))}
             </HStack>
           </HStack>
 

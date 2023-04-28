@@ -55,12 +55,8 @@ function ApiKeys() {
       const data = await fetchGenAPIKeys({
         note
       })
-      console.log(data)
       setFirstNote(data.note);
-      console.log(data.note)
       setKey(data.key);
-      console.log(data.key)
-      console.log(data)
       onOpen();
     }catch(e){
       console.log(e);
