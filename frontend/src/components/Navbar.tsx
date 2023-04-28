@@ -5,14 +5,12 @@ import {
   Box,
   Flex,
   HStack,
-  Link,
-  useColorModeValue,
+  Link
 } from "@chakra-ui/react";
 import React from "react";
 
 
 const TopNavbar = () => {
-  const { currentUser, logOut} = useAuthContext()
 
   const NavLink = ({ children, link }: { children: ReactNode, link: string }) => (
     <Link
@@ -21,12 +19,14 @@ const TopNavbar = () => {
       rounded={"md"}
       _hover={{
         textDecoration: "none",
-        bg: useColorModeValue("gray.200", "gray.700"),
+        bg: "gray.200",
       }}
       href={link}>
       {children}
     </Link>
   )
+
+  const { currentUser, logOut} = useAuthContext()
 
   const links = [
     {
