@@ -149,12 +149,13 @@ function JobPage({ initialIsPageLoading = true }) {
     <>
       <Container maxW="container.lg" py={"6"}>
         <VStack gap={"4"} w={"full"} align="left">
-          <Link href={"/jobs"}>
+          <Link data-testid='backlink' href={"/jobs"}>
             <Button
               size={"md"}
               fontWeight={"semibold"}
               variant={"link"}
               _hover={{}}
+              data-testid='backarrow'
               leftIcon={<ArrowBackIcon />}
             >
             Back to Jobs
@@ -166,6 +167,7 @@ function JobPage({ initialIsPageLoading = true }) {
               borderRadius={"xl"}
               isAnimated={Number(progressAmount) < 100}
               size="md"
+              data-testid='progressFull'
               hasStripe={Number(progressAmount) < 100}
               colorScheme={progressColorScheme}
               value={Number(progressAmount)}

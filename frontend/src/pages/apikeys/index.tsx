@@ -1,6 +1,6 @@
-import { backendUrl, fetchAPIkeys } from "@/data";
+import { backendUrl, fetchAPIkeys, fetchGenAPIKeys } from "@/data";
 import { Key } from "@/data/types";
-import React, { useCallback, useMemo } from "react";
+import React, { FormEvent, useCallback, useMemo } from "react";
 import { useState, useEffect } from "react";
 import {
   Heading,
@@ -45,32 +45,27 @@ function ApiKeys() {
     loadKeys();
   }, [currentUser, loadKeys]);
 
-  const generateAPIKey = () => {
-    fetch(`${backendUrl}/api-keys`, {
-      credentials: "include",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        note: note
-      })
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setFirstNote(data.note);
-        setKey(data.key);
-        onOpen();
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
-
   const closeAlert = useCallback(() => {
     onClose();
     loadKeys();
   }, [loadKeys, onClose]);
+
+  const sendGenAPIKeyRequest = async () => {
+    try{
+      const data = await fetchGenAPIKeys({
+        note
+      })
+      console.log(data)
+      setFirstNote(data.note);
+      console.log(data.note)
+      setKey(data.key);
+      console.log(data.key)
+      console.log(data)
+      onOpen();
+    }catch(e){
+      console.log(e);
+    }
+  };
 
   return (
     <Container maxW="container.lg" py={"6"}>
@@ -89,7 +84,7 @@ function ApiKeys() {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            generateAPIKey();
+            sendGenAPIKeyRequest();
             setNote("");
           }}
         >
@@ -102,7 +97,7 @@ function ApiKeys() {
               onChange={(e) => setNote(e.target.value)}
             />
 
-            <Button width={"fit-content"} type="submit" colorScheme="telegram">
+            <Button width={"fit-content"} type="submit" data-testid='submit' colorScheme="telegram">
               Create Key
             </Button>
           </Stack>

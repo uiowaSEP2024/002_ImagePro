@@ -1,18 +1,21 @@
-import { act, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import JobPage from "@/pages/jobs/[id]";
-
 import "@testing-library/jest-dom";
 import { AuthContextProvider } from "@/contexts/authContext";
-
+import { useRouter } from "next/router";
 import * as data from "@/data/index";
 
 const jobId = "1";
 
 // Mock the router to return information needed for the page to render
+const mockRouterPush = jest.fn();
 jest.mock("next/router", () => ({
   useRouter() {
     return {
-      query: { id: jobId }
+      route: "/",
+      pathname: "",
+      query: { id: jobId },
+      push: mockRouterPush
     };
   }
 }));
@@ -34,7 +37,15 @@ jest.spyOn(data, "fetchCheckUserLoggedIn").mockImplementation(() =>
 );
 
 jest.spyOn(data, "fetchJobs").mockImplementation(() => Promise.resolve([]));
-jest.spyOn(data, "fetchEvents").mockImplementation(() => Promise.resolve([]));
+jest.spyOn(data, "fetchEvents").mockImplementation(() =>  
+  Promise.resolve([{
+      kind: "step",
+      name: "Scanning Left Kidney",
+      job_id: 1,
+      id: 1,
+      created_at: "2021-03-01T00:00:00.000Z"
+  }]));
+
 jest.spyOn(data, "fetchJobById").mockImplementation(() =>
   Promise.resolve({
     id: 1,
@@ -71,8 +82,11 @@ describe("Job Page", () => {
     });
 
     const table = await waitFor(() => screen.getByTestId("events-timeline"));
+    const event = await waitFor(() => screen.getByText("Scanning Left Kidney"));
 
     expect(table).toBeInTheDocument();
+    expect(event).toBeInTheDocument();
+
   });
 
   it("renders a progress bar", async () => {
@@ -85,6 +99,25 @@ describe("Job Page", () => {
     const progressBar = await waitFor(() => screen.getByRole("progressbar"));
 
     expect(progressBar).toBeInTheDocument();
+    expect(progressBar).toHaveAttribute('aria-valuenow', '1');
+  });
+
+  it("has back button", async () => {
+    await act(async () => {
+      render(<JobPage initialIsPageLoading={false} />, {
+        wrapper: AuthContextProvider
+      });
+    });
+
+    const backarrow = await waitFor(() => screen.getByTestId("backarrow"));
+
+    expect(backarrow).toBeInTheDocument();
+
+    fireEvent.click(backarrow);
+
+    const link = await waitFor(() => screen.getByTestId("backlink"));
+  
+    expect(link).toHaveAttribute('href', '/jobs')
   });
 
   it("renders an admin link at bottom", async () => {

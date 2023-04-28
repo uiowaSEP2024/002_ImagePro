@@ -123,6 +123,22 @@ export const fetchAPIkeys = async (): Promise<Key[] | void> => {
     });
 };
 
+export const fetchGenAPIKeys = async (note: {note: string}) => {
+  const response = await fetch(`${backendUrl}/api-keys`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      note: note,
+      key: "hello"
+    })
+  });
+
+  return await response.json();
+};
+
 export const fetchEvents = async (
   jobId: number
 ): Promise<JobEvent[] | void> => {

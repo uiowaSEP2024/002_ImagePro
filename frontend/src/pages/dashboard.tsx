@@ -119,7 +119,7 @@ function Dashboard() {
                   text={"API Integration"} />
               </Box>
               <Card.Header>
-                <Link css={{ display: "block", width: "100%" }} href="/billing">
+                <Link css={{ display: "block", width: "100%" }} href="/apikeys">
                       Generate API Keys to try out our system
                 </Link>
               </Card.Header>
