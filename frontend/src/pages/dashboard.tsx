@@ -24,7 +24,6 @@ import { ReactElement } from "react";
 
 
 function Dashboard() {
-  const {currentUser} = useAuthContext()
   
   interface FeatureProps {
     text: string;
@@ -48,6 +47,8 @@ function Dashboard() {
       </Stack>
     );
   };
+
+  const {currentUser} = useAuthContext()
   
   return (
     <Container maxW={"5xl"} py={12}>
