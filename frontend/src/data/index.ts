@@ -1,7 +1,8 @@
 import { Job, JobEvent, Key, Provider, User, UserCreate } from "./types";
 
-export const backendUrl =
-  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+export const backendUrl = (
+  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000"
+).replace(/\/$/, "");
 
 export const providers: Record<string, Provider> = {
   "2": {
