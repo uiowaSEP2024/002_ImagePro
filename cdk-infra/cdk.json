@@ -51,20 +51,25 @@
       "RepositoryName": "team_03",
       "RepositoryOwner": "sep-23",
       "AmplifyMonoRepoAppRoot": "frontend",
-      "GitHubAccessTokenSecretName": "AMPLIFY_GITHUB_TOKEN_KEY",
-      "DatabaseAccessSecretName": "PGDB_ACCESS"
+      "GitHubAccessTokenSecretName": "AMPLIFY_GITHUB_TOKEN"
     },
     "development": {
       "AppEnv": "development",
-      "ApiGatewayStage": "dev"
+      "ApiGatewayStage": "dev",
+      "DatabaseAccessSecretName": "DB_ACCESS_DEV",
+      "SecretKeySecretName": "SECRET_KEY_DEV"
     },
     "production": {
       "AppEnv": "production",
-      "ApiGatewayStage": "prod"
+      "ApiGatewayStage": "prod",
+      "DatabaseAccessSecretName": "DB_ACCESS_PROD",
+      "SecretKeySecretName": "SECRET_KEY_PROD"
     },
     "test": {
       "AppEnv": "test",
-      "ApiGatewayStage": "test"
+      "ApiGatewayStage": "test",
+      "DatabaseAccessSecretName": "DB_ACCESS_TEST",
+      "SecretKeySecretName": "SECRET_KEY_TEST"
     }
   }
 }
