@@ -3,14 +3,14 @@ import os
 from app.routers import (
     apikeys_router,
     auth_router,
+    events_router,
     jobs_router,
     users_router,
-    events_router,
 )
+from config import config
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from mangum import Mangum
-from config import config
 
 app = FastAPI()
 
@@ -27,12 +27,13 @@ app.add_middleware(
 
 @app.get("/")
 def read_root():
-    return {"msg": "Hello World"}
+    return {"msg": "Hello World", "origins": allow_origins}
 
 
 @app.on_event("startup")
 async def startup_event():
     config.setup()
+    print(allow_origins)
     print("Running with allowed origins:", allow_origins)
 
 
