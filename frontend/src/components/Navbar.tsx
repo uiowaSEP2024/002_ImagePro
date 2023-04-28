@@ -79,8 +79,6 @@ const TopNavbar = () => {
                   spacing={4}
                   display={{ base: "none", md: "flex" }}>
                   {links.map(link => (<NavLink data-testid={link.id} link={link.to}> {link.name} </NavLink> ))}
-                  <NavLink data-testid="loginButton" link={"/login"}>Login</NavLink>
-                  <NavLink link={"/signup"}>Sign up</NavLink>
                 </HStack>
               </HStack>
             </Flex>
