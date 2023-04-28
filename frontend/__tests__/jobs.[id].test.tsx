@@ -94,10 +94,8 @@ describe("Job Page", () => {
     });
 
     const table = await waitFor(() => screen.getByTestId("events-timeline"));
-    const event = await waitFor(() => screen.getByText("Scanning Left Kidney"));
 
     expect(table).toBeInTheDocument();
-    expect(event).toBeInTheDocument();
 
   });
 

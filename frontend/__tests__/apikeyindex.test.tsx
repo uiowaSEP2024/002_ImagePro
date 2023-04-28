@@ -21,6 +21,11 @@ const testProvider: User = Object.freeze({
   role: "provider"
 });
 
+jest.mock("@/data", () => ({
+  __esModule: true,
+  ...jest.requireActual("@/data")
+}));
+
 const mockRouterPush = jest.fn();
 jest.mock("next/router", () => ({
   useRouter() {
@@ -34,13 +39,7 @@ jest.mock("next/router", () => ({
   }
 }));
 
-jest.mock("@/data", () => ({
-  __esModule: true,
-  ...jest.requireActual("@/data")
-}));
-
-jest.mock("@/data", () => ({
-  fetchAPIkeys() {
+jest.spyOn(data, "fetchAPIkeys").mockImplementation(() =>
     Promise.resolve([{
       id: 1,
       user_id: 2,
@@ -48,19 +47,23 @@ jest.mock("@/data", () => ({
       note: "my key",
       created_at: "2021-03-01T00:00:00.000Z"
     }])
-  },
-  fetchGenAPIKeys() {
-  console.log("Heyyy there")
-  return new Promise((resolve) => {
-    const data = {
+);
+
+jest.spyOn(data, "fetchGenAPIKeys").mockImplementation(() =>
+  Promise.resolve({
       note: "my key",
       key: "q-jAqPWCRGr2u6SeK6r6UASAO0LBfJA",
-    }
-    resolve(data)
-  })},
-}));
+  }));
 
 describe("API Keys Page", () => {
+  beforeEach(() => {
+    jest.spyOn(data, "fetchCheckUserLoggedIn").mockImplementation(() =>
+      Promise.resolve({
+        user: testProvider,
+        message: ""
+      })
+    );
+  });
   it("renders a heading", async () => {
     await act(async () => {
       render(<ApiKeys />, {
@@ -105,7 +108,6 @@ describe("API Keys Page", () => {
         })
       );
     });
-
     it("renders a list of API keys", async () => {
       const { getByTestId } = await act(async () =>
         render(<ApiKeys />, { wrapper: AuthContextProvider })
