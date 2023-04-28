@@ -49,7 +49,7 @@ function Login() {
                 <Input variant='outline' placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} type={showPassword ? "text" : "password"}/>
                 <InputRightElement w={"max-content"} height='100%'>
                   {showPassword ? <IconButton variant={"ghost"} onClick={() => setShowPassword(!showPassword)} aria-label="Hidden-Password" icon={<Icon as={AiFillEye}/>}/> : 
-                    <IconButton variant={"ghost"} onClick={() => setShowPassword(!showPassword)} aria-label="Hidden-Password" icon={<Icon as={AiFillEyeInvisible}/>}/>}
+                    <IconButton data-testid="showbutton" variant={"ghost"} onClick={() => setShowPassword(!showPassword)} aria-label="Hidden-Password" icon={<Icon as={AiFillEyeInvisible}/>}/>}
                 </InputRightElement>
               </InputGroup>
             </Box>

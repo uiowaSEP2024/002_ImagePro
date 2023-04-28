@@ -8,22 +8,16 @@ import { AuthContextProvider } from "@/contexts/authContext";
 import { useAuthContext, useEnsureAuthenticated } from "@/hooks/useAuthContext";
 import { createContext } from "react";
 
+const mockRouterPush = jest.fn();
 jest.mock("next/router", () => ({
   useRouter() {
     return {
       route: "/",
       pathname: "",
       query: "",
-      asPath: "",
-      push: jest.fn(),
-      events: {
-        on: jest.fn(),
-        off: jest.fn()
-      },
-      beforePopState: jest.fn(() => null),
-      prefetch: jest.fn(() => null)
+      push: mockRouterPush
     };
-  },
+  }
 }));
 
 jest.mock("@/data", () => ({

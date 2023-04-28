@@ -1,25 +1,21 @@
 
 import { act, render, screen, waitFor, fireEvent } from "@testing-library/react";
 import Signup from "@/pages/signup";
+import Billing from "@/pages/billing";
+import Dashboard from "@/pages/dashboard";
 import "@testing-library/jest-dom";
 import { useRouter } from "next/router";
 import { AuthContextProvider } from "@/contexts/authContext";
 import { fetchLogin } from "@/data";
 
+const mockRouterPush = jest.fn();
 jest.mock("next/router", () => ({
   useRouter() {
     return {
       route: "/",
       pathname: "",
       query: "",
-      asPath: "",
-      push: jest.fn(),
-      events: {
-        on: jest.fn(),
-        off: jest.fn()
-      },
-      beforePopState: jest.fn(() => null),
-      prefetch: jest.fn(() => null)
+      push: mockRouterPush
     };
   }
 }));
@@ -101,6 +97,20 @@ describe("SignUp", () => {
     await waitFor(()=>{
       expect(notificationMessage).toBeInTheDocument();
     });
+  });
+
+  it("does not render internal pages", async () => {
+    await act(async () =>
+      render(<Billing />, { wrapper: AuthContextProvider })
+    );
+
+    expect(useRouter().push).toBeCalledWith("/login");
+
+    await act(async () =>
+      render(<Dashboard />, { wrapper: AuthContextProvider })
+    );
+
+    expect(useRouter().push).toBeCalledWith("/login");
   });
 
 });

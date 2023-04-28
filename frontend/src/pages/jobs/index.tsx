@@ -7,7 +7,6 @@ import { Input } from "@chakra-ui/react";
 import NextLink from "next/link";
 import React from "react";
 import { useState, useEffect } from "react";
-import {useMemo} from "react"
 
 const columns = [
   { name: "Job No.", uid: "reference_number" },

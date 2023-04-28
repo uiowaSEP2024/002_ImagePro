@@ -3,24 +3,19 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import Home from "@/pages/index";
 import "@testing-library/jest-dom";
+import { useRouter } from "next/router";
 
+const mockRouterPush = jest.fn();
 jest.mock("next/router", () => ({
   useRouter() {
-    return ({
+    return {
       route: "/",
       pathname: "",
       query: "",
-      asPath: "",
-      push: jest.fn(),
-      events: {
-        on: jest.fn(),
-        off: jest.fn()
-      },  beforePopState: jest.fn(() => null),
-      prefetch: jest.fn(() => null)
-    });
-  },
+      push: mockRouterPush
+    };
+  }
 }));
-
 
 jest.mock("@/data", () => ({
   fetchCheckUserLoggedIn() {
@@ -48,6 +43,10 @@ describe("Home", () => {
     const button = await waitFor(() => screen.getByText("Learn More About Jobs"));
 
     expect(button).toBeInTheDocument();
+
+    fireEvent.click(button);
+    expect(useRouter().push).toBeCalled();
+
   });
 
   it("renders a button to analytics", async () => {
@@ -56,5 +55,9 @@ describe("Home", () => {
     const button = await waitFor(() => screen.getByText("Get Started With Analytics"));
 
     expect(button).toBeInTheDocument();
+
+    fireEvent.click(button);
+    expect(useRouter().push).toBeCalled();
+
   });
 });

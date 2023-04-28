@@ -7,20 +7,14 @@ import { useRouter } from "next/router";
 import * as data from "@/data";
 import { AuthContextProvider } from "@/contexts/authContext";
 
+const mockRouterPush = jest.fn();
 jest.mock("next/router", () => ({
   useRouter() {
     return {
       route: "/",
       pathname: "",
       query: "",
-      asPath: "",
-      push: jest.fn(),
-      events: {
-        on: jest.fn(),
-        off: jest.fn()
-      },
-      beforePopState: jest.fn(() => null),
-      prefetch: jest.fn(() => null)
+      push: mockRouterPush
     };
   }
 }));
@@ -57,5 +51,19 @@ describe("Billing", () => {
     );
 
     expect(heading).toBeInTheDocument();
+  });
+
+  it("does not render login or signup", async () => {
+    await act(async () =>
+      render(<Login />, { wrapper: AuthContextProvider })
+    );
+
+    expect(useRouter().push).toBeCalledWith("/dashboard");
+
+    await act(async () =>
+      render(<Signup />, { wrapper: AuthContextProvider })
+    );
+
+    expect(useRouter().push).toBeCalledWith("/dashboard");
   });
 });
