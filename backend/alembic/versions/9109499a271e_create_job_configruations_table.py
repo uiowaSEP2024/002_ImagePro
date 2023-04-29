@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = "9109499a271e"
-down_revision = "b6bcaa15f3ed"
+down_revision = "6e69f4231372"
 branch_labels = None
 depends_on = None
 
@@ -61,7 +61,7 @@ def upgrade() -> None:
         unique=False,
     )
     op.add_column(
-        "jobs", sa.Column("job_configuration_id", sa.Integer(), nullable=False)
+        "jobs", sa.Column("job_configuration_id", sa.Integer(), nullable=True)
     )
     op.create_index(
         op.f("ix_jobs_job_configuration_id"),

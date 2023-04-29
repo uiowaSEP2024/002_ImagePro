@@ -8,7 +8,7 @@ from app import models
 def test_create_step_configuration(db, random_provider_user):
     job_configuration = models.JobConfiguration(
         tag="prostate_v1_job",
-        provider_job_configuration_name="Prostate Job",
+        name="Prostate Job",
         provider_id=random_provider_user.id,
         version="1.2.1",
     )
@@ -18,9 +18,8 @@ def test_create_step_configuration(db, random_provider_user):
     db.refresh(job_configuration)
 
     step_configuration = models.StepConfiguration(
-        job_tag="prostate_v1_job",
         tag="kidney_scan",
-        provider_step_configuration_name="Kidney Scan",
+        name="Kidney Scan",
         points=20,
         job_configuration_id=job_configuration.id,
     )
@@ -32,19 +31,16 @@ def test_create_step_configuration(db, random_provider_user):
 
     assert step_configuration.job_configuration_id == job_configuration.id
     assert step_configuration.points == 20
-    assert step_configuration.job_tag == "prostate_v1_job"
     assert step_configuration.tag == "kidney_scan"
 
-    assert len(job_configuration.provider_step_configurations) == 1
-    assert step_configuration.job_tag == job_configuration.tag
-    assert step_configuration.provider_step_configuration_name == "Kidney Scan"
+    assert len(job_configuration.step_configurations) == 1
+    assert step_configuration.name == "Kidney Scan"
 
 
 def test_create_step_configuration_missing_job_configuration_id(db):
     step_configuration = models.StepConfiguration(
-        job_tag="prostate_v1_job",
         tag="kidney_scan",
-        provider_step_configuration_name="Kidney Scan",
+        name="Kidney Scan",
         points=20,
     )
 
@@ -59,7 +55,7 @@ def test_create_step_configuration_missing_job_configuration_id(db):
 def test_create_step_configuration_missing_points(db, random_provider_user):
     job_configuration = models.JobConfiguration(
         tag="prostate_v1_job",
-        provider_job_configuration_name="Prostate Job",
+        name="Prostate Job",
         provider_id=random_provider_user.id,
         version="1.2.1",
     )
@@ -69,9 +65,8 @@ def test_create_step_configuration_missing_points(db, random_provider_user):
     db.refresh(job_configuration)
 
     step_configuration = models.StepConfiguration(
-        job_tag="prostate_v1_job",
         tag="kidney_scan",
-        provider_step_configuration_name="Kidney Scan",
+        name="Kidney Scan",
         job_configuration_id=job_configuration.id,
     )
 
@@ -89,7 +84,7 @@ def test_create_step_configuration_with_wrong_job_configuration_id(
 ):
     job_configuration = models.JobConfiguration(
         tag="prostate_v1_job",
-        provider_job_configuration_name="Prostate Job",
+        name="Prostate Job",
         provider_id=random_provider_user.id,
         version="1.2.1",
     )
@@ -99,9 +94,8 @@ def test_create_step_configuration_with_wrong_job_configuration_id(
     db.refresh(job_configuration)
 
     step_configuration = models.StepConfiguration(
-        job_tag="prostate_v1_job",
         tag="kidney_scan",
-        provider_step_configuration_name="Kidney Scan",
+        name="Kidney Scan",
         job_configuration_id=69,
         points=5,
     )
