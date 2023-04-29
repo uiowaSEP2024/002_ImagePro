@@ -36,12 +36,14 @@ const Navbar = () => {
     {
       to: "/login",
       name: "Log in",
-      id: "loginButton"
+      id: "loginButton",
+      show: true
     },
     {
       to: "/signup",
       name: "Sign up",
-      id: "signup"
+      id: "signup",
+      show: true
     }
   ];
 
@@ -49,7 +51,8 @@ const Navbar = () => {
     {
       to: "/",
       name: "Home",
-      id: "home"
+      id: "home",
+      show: true
     }
   ];
 
@@ -57,12 +60,14 @@ const Navbar = () => {
     {
       to: "/",
       name: "Home",
-      id: "home"
+      id: "home",
+      show: !!currentUser
     },
     {
       to: "/dashboard",
       name: "Dashboard",
-      id: "dashboard"
+      id: "dashboard",
+      show: !!currentUser
     },
     {
       to: "/billing",
@@ -82,12 +87,14 @@ const Navbar = () => {
     {
       to: "/profile",
       name: "My Profile",
-      id: "profile"
+      id: "profile",
+      show: !!currentUser
     },
     {
       onClick: logOut,
       name: "Logout",
-      id: "logoutButton"
+      id: "logoutButton",
+      show: !!currentUser
     }
   ];
 
