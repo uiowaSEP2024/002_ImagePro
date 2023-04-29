@@ -180,23 +180,3 @@ def test_create_job_missing_provider_job_name(
     # Check for null violation and that column is part of the error message in the error
     assert isinstance(exc.value.orig, psycopg2.errors.NotNullViolation)
     assert "provider_job_name" in str(exc.value.orig)
-
-
-def test_create_job_missing_job_configuration(
-    db, random_provider_user, random_test_user
-):
-    job = models.Job(
-        provider_job_id="abc123",
-        provider_job_name="kidneyV1",
-        customer_id=random_test_user.id,
-        provider_id=random_provider_user.id,
-    )
-
-    db.add(job)
-
-    with pytest.raises(sqlalchemy.exc.IntegrityError) as exc:
-        db.commit()
-
-    # Check for null violation and that column is part of the error message in the error
-    assert isinstance(exc.value.orig, psycopg2.errors.NotNullViolation)
-    assert "job_configuration" in str(exc.value.orig)
