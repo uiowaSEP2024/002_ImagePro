@@ -16,7 +16,7 @@ class JobConfiguration(Base, DateMixin):
     tag = Column(String, index=True, nullable=False)
 
     # The job configuration name as specified by the provider
-    name = Column(String, index=True, nullable=False)
+    name = Column(String, nullable=False)
 
     # The provider creating the configuration
     provider_id = Column(Integer, ForeignKey("users.id"), index=True, nullable=False)
@@ -28,9 +28,15 @@ class JobConfiguration(Base, DateMixin):
         "User", back_populates="provider_job_configurations", foreign_keys=[provider_id]
     )
 
-    step_configurations = relationship(
-        "StepConfiguration",
-        back_populates="job_configuration",
-    )
+    # step_configurations = relationship(
+    #     "StepConfiguration",
+    #     back_populates="job_configuration",
+    #     foreign_keys="StepConfiguration.job_configuration_id",
+    #     cascade="all, delete-orphan",
+    # )
 
-    jobs = relationship("Job", back_populates="job_configuration")
+    jobs = relationship(
+        "Job",
+        back_populates="job_configuration",
+        foreign_keys="StepConfiguration.job_configuration_id",
+    )
