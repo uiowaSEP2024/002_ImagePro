@@ -1,9 +1,7 @@
 {
   "app": "python3 app.py",
   "watch": {
-    "include": [
-      "**"
-    ],
+    "include": ["**"],
     "exclude": [
       "README.md",
       "cdk*.json",
@@ -17,10 +15,7 @@
   "context": {
     "@aws-cdk/aws-lambda:recognizeLayerVersion": true,
     "@aws-cdk/core:checkSecretUsage": true,
-    "@aws-cdk/core:target-partitions": [
-      "aws",
-      "aws-cn"
-    ],
+    "@aws-cdk/core:target-partitions": ["aws", "aws-cn"],
     "@aws-cdk-containers/ecs-service-extensions:enableDefaultLogDriver": true,
     "@aws-cdk/aws-ec2:uniqueImdsv2TemplateName": true,
     "@aws-cdk/aws-ecs:arnFormatIncludesClusterName": true,
@@ -44,24 +39,33 @@
     "@aws-cdk/aws-ec2:launchTemplateDefaultUserData": true,
     "@aws-cdk/aws-secretsmanager:useAttachedSecretResourcePolicyForSecretTargetAttachments": true,
     "@aws-cdk/aws-redshift:columnId": true,
+
     "default": {
-      "AppName": "Team3CdkInfraStack",
-      "PostgresUser": "postgres",
-      "PostgresPort": 5432,
-      "PostgresDbName": "postgres",
-      "JwtAlgorithm": "HS256"
+      "AppName": "TrackerCdkInfraStack",
+      "JwtAlgorithm": "HS256",
+      "RepositoryName": "team_03",
+      "RepositoryOwner": "sep-23",
+      "AmplifyMonoRepoAppRoot": "frontend",
+      "GitHubAccessTokenSecretName": "AMPLIFY_GITHUB_TOKEN",
+      "DatabaseName": "postgres"
     },
     "development": {
       "AppEnv": "development",
-      "ApiGatewayStage": "dev"
+      "ApiGatewayStage": "dev",
+      "DatabaseAccessSecretName": "DB_ACCESS_DEV",
+      "SecretKeySecretName": "SECRET_KEY_DEV"
     },
     "production": {
       "AppEnv": "production",
-      "ApiGatewayStage": "prod"
+      "ApiGatewayStage": "prod",
+      "DatabaseAccessSecretName": "DB_ACCESS_PROD",
+      "SecretKeySecretName": "SECRET_KEY_PROD"
     },
     "test": {
       "AppEnv": "test",
-      "ApiGatewayStage": "test"
+      "ApiGatewayStage": "test",
+      "DatabaseAccessSecretName": "DB_ACCESS_TEST",
+      "SecretKeySecretName": "SECRET_KEY_TEST"
     }
   }
 }
