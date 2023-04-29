@@ -1,5 +1,10 @@
-
-import { act, render, screen, waitFor, fireEvent } from "@testing-library/react";
+import {
+  act,
+  render,
+  screen,
+  waitFor,
+  fireEvent
+} from "@testing-library/react";
 import Jobs from "@/pages/jobs";
 
 import * as data from "@/data/index";
@@ -37,15 +42,18 @@ jest.spyOn(data, "fetchCheckUserLoggedIn").mockImplementation(() =>
   })
 );
 
-jest.spyOn(data, "fetchJobs").mockImplementation(() => Promise.resolve(
-  [{
-    id: 1,
-    provider_job_name: "Kidney Cancer Detection",
-    customer_id: 1,
-    provider_job_id: "236",
-    provider_id: 2,
-    created_at: "2021-03-01T00:00:00.000Z"
-  }]));
+jest.spyOn(data, "fetchJobs").mockImplementation(() =>
+  Promise.resolve([
+    {
+      id: 1,
+      provider_job_name: "Kidney Cancer Detection",
+      customer_id: 1,
+      provider_job_id: "236",
+      provider_id: 2,
+      created_at: "2021-03-01T00:00:00.000Z"
+    }
+  ])
+);
 jest.spyOn(data, "fetchEvents").mockImplementation(() => Promise.resolve([]));
 jest.spyOn(data, "fetchJobById").mockImplementation(() =>
   Promise.resolve({
@@ -85,7 +93,9 @@ describe("Jobs List Page", () => {
   it("renders jobs in list", async () => {
     await act(async () => render(<Jobs />, { wrapper: AuthContextProvider }));
 
-    const job = await waitFor(() => screen.getByText("Kidney Cancer Detection"));
+    const job = await waitFor(() =>
+      screen.getByText("Kidney Cancer Detection")
+    );
 
     expect(job).toBeInTheDocument();
   });
@@ -98,17 +108,25 @@ describe("Jobs List Page", () => {
     expect(bar).toBeInTheDocument();
   });
 
-  it('search on change', () => {
+  it("search on change", () => {
     const handleSearch = jest.fn((value) => {});
-    
-    const { queryByPlaceholderText } = render(<input id="search" type="text" placeholder="Search jobs..." onChange={handleSearch} />);
 
-    const searchInput = queryByPlaceholderText('Search jobs...') as HTMLInputElement;
+    const { queryByPlaceholderText } = render(
+      <input
+        id="search"
+        type="text"
+        placeholder="Search jobs..."
+        onChange={handleSearch}
+      />
+    );
 
-    fireEvent.input(searchInput, { target: { value: 'test' } });
+    const searchInput = queryByPlaceholderText(
+      "Search jobs..."
+    ) as HTMLInputElement;
 
-    expect(searchInput.value).toBe('test');
+    fireEvent.input(searchInput, { target: { value: "test" } });
+
+    expect(searchInput.value).toBe("test");
     expect(handleSearch).toHaveBeenCalled();
   });
-
 });

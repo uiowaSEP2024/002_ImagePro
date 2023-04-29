@@ -1,5 +1,10 @@
-
-import { act, render, screen, RenderResult, waitFor, fireEvent } from "@testing-library/react";
+import {
+  act,
+  render,
+  screen,
+  waitFor,
+  fireEvent
+} from "@testing-library/react";
 import Login from "@/pages/login";
 import "@testing-library/jest-dom";
 import { useRouter } from "next/router";
@@ -23,15 +28,15 @@ jest.mock("@/data", () => ({
       resolve({ detail: "Not authenticated" });
     });
   },
-  fetchLogin(){
-    console.log("Heyyy there")
+  fetchLogin() {
     return new Promise((resolve) => {
       const data = new URLSearchParams({
         email: "user@example.com",
         password: "abc"
       });
-      resolve( data)
-    })}
+      resolve(data);
+    });
+  }
 }));
 
 describe("Login", () => {
@@ -49,17 +54,20 @@ describe("Login", () => {
     expect(text).toBeInTheDocument();
   });
 
-  it('login on change', async () => {
-
+  it("login on change", async () => {
     await act(async () => render(<Login />, { wrapper: AuthContextProvider }));
 
-    const emailInput = screen.queryByPlaceholderText('Email') as HTMLInputElement;
-    fireEvent.input(emailInput, { target: { value: 'user@example.com' } });
-    const passInput = screen.queryByPlaceholderText('Password')  as HTMLInputElement;
-    fireEvent.input(passInput, { target: { value: 'abc' } });
+    const emailInput = screen.queryByPlaceholderText(
+      "Email"
+    ) as HTMLInputElement;
+    fireEvent.input(emailInput, { target: { value: "user@example.com" } });
+    const passInput = screen.queryByPlaceholderText(
+      "Password"
+    ) as HTMLInputElement;
+    fireEvent.input(passInput, { target: { value: "abc" } });
 
-    expect(emailInput.value).toBe('user@example.com');
-    expect(passInput.value).toBe('abc');
+    expect(emailInput.value).toBe("user@example.com");
+    expect(passInput.value).toBe("abc");
 
     const button = await waitFor(() => screen.getByTestId("login"));
     fireEvent.click(button);
@@ -67,15 +75,12 @@ describe("Login", () => {
     expect(button).toBeInTheDocument();
   });
 
-  it('show password button exists', async () => {
-
+  it("show password button exists", async () => {
     await act(async () => render(<Login />, { wrapper: AuthContextProvider }));
 
     const button = await waitFor(() => screen.getByTestId("showbutton"));
 
     fireEvent.click(button);
     expect(button).toBeInTheDocument();
-
   });
-
-  });
+});

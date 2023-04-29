@@ -1,12 +1,16 @@
-
-import { act, render, screen, waitFor, fireEvent } from "@testing-library/react";
+import {
+  act,
+  render,
+  screen,
+  waitFor,
+  fireEvent
+} from "@testing-library/react";
 import Signup from "@/pages/signup";
 import Billing from "@/pages/billing";
 import Dashboard from "@/pages/dashboard";
 import "@testing-library/jest-dom";
 import { useRouter } from "next/router";
 import { AuthContextProvider } from "@/contexts/authContext";
-import { fetchLogin } from "@/data";
 
 const mockRouterPush = jest.fn();
 jest.mock("next/router", () => ({
@@ -27,28 +31,28 @@ jest.mock("@/data", () => ({
     });
   },
 
-  fetchSignUp(){
-    console.log("Heyyy there")
+  fetchSignUp() {
     return new Promise((resolve) => {
       const data = {
         email: "user@example.com",
         first_name: "string",
         last_name: "string",
         id: 0
-      }
-      resolve( data)
-    })},
+      };
+      resolve(data);
+    });
+  },
 
-  fetchLogin(){
-    console.log("Heyyy there")
+  fetchLogin() {
     return new Promise((resolve) => {
       const data = new URLSearchParams({
         email: "user@example.com",
         password: "abc"
       });
-      resolve( data)
-    })},
-}))
+      resolve(data);
+    });
+  }
+}));
 
 // TODO: explore fixing snapshot testing with https://github.com/mui/material-ui/issues/21293#issuecomment-654921524
 describe("SignUp", () => {
@@ -64,21 +68,30 @@ describe("SignUp", () => {
 
     expect(text).toBeInTheDocument();
   });
- 
-  it("signup on change", async () => {
 
+  it("signup on change", async () => {
     await act(async () => render(<Signup />, { wrapper: AuthContextProvider }));
 
-    await waitFor(()=>{
-      const firstNameInput = screen.queryByPlaceholderText("First Name") as HTMLInputElement;
+    await waitFor(() => {
+      const firstNameInput = screen.queryByPlaceholderText(
+        "First Name"
+      ) as HTMLInputElement;
       fireEvent.input(firstNameInput, { target: { value: "John" } });
-      const lastNameInput = screen.queryByPlaceholderText("Last Name") as HTMLInputElement;
+      const lastNameInput = screen.queryByPlaceholderText(
+        "Last Name"
+      ) as HTMLInputElement;
       fireEvent.input(lastNameInput, { target: { value: "Smith" } });
-      const emailInput = screen.queryByPlaceholderText("Email") as HTMLInputElement;
+      const emailInput = screen.queryByPlaceholderText(
+        "Email"
+      ) as HTMLInputElement;
       fireEvent.input(emailInput, { target: { value: "abc@gmail.com" } });
-      const passInput = screen.queryByPlaceholderText("Password") as HTMLInputElement;
+      const passInput = screen.queryByPlaceholderText(
+        "Password"
+      ) as HTMLInputElement;
       fireEvent.input(passInput, { target: { value: "abc" } });
-      const pass2Input = screen.queryByPlaceholderText("Confirm Password") as HTMLInputElement;
+      const pass2Input = screen.queryByPlaceholderText(
+        "Confirm Password"
+      ) as HTMLInputElement;
       fireEvent.input(pass2Input, { target: { value: "abc" } });
 
       expect(firstNameInput.value).toBe("John");
@@ -88,13 +101,14 @@ describe("SignUp", () => {
       expect(pass2Input.value).toBe("abc");
     });
 
-
     const button = await waitFor(() => screen.getByTestId("signup"));
     fireEvent.click(button);
 
-    const notificationMessage = await waitFor(() => screen.getByText(/Sign up successful/i));
+    const notificationMessage = await waitFor(() =>
+      screen.getByText(/Sign up successful/i)
+    );
 
-    await waitFor(()=>{
+    await waitFor(() => {
       expect(notificationMessage).toBeInTheDocument();
     });
   });
@@ -112,5 +126,4 @@ describe("SignUp", () => {
 
     expect(useRouter().push).toBeCalledWith("/login");
   });
-
 });
