@@ -1,6 +1,8 @@
 import { Job, JobEvent, Key, Provider, User, UserCreate } from "./types";
 
-export const backendUrl = process.env.BACKEND_URL || "http://localhost:8000";
+export const backendUrl = (
+  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000"
+).replace(/\/$/, "");
 
 export const providers: Record<string, Provider> = {
   "2": {
@@ -190,12 +192,7 @@ export const fetchSignUp = async (data: UserCreate) => {
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({
-      email: data.email,
-      password: data.password,
-      first_name: data.first_name,
-      last_name: data.last_name
-    })
+    body: JSON.stringify(data)
   });
 
   return await response.json();
