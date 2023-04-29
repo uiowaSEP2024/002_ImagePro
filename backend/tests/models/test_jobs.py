@@ -5,7 +5,9 @@ import sqlalchemy
 from app import models
 
 
-def test_delete_job_configuration_after_creating_job(db, random_provider_user,random_test_user):
+def test_delete_job_configuration_after_creating_job(
+    db, random_provider_user, random_test_user
+):
     job_configuration = models.JobConfiguration(
         tag="prostate_v1_job",
         name="Prostate Job",
@@ -37,6 +39,8 @@ def test_delete_job_configuration_after_creating_job(db, random_provider_user,ra
 
     assert db.query(models.Job).get(job.id) is not None
     assert job.job_configuration_id is None
+
+
 def test_create_job_with_configuration(db, random_test_user, random_provider_user):
     job_configuration = models.JobConfiguration(
         tag="prostate_v1_job",
@@ -183,5 +187,3 @@ def test_create_job_missing_provider_job_id(db, random_test_user, random_provide
     # Check for null violation and that column is part of the error message in the error
     assert isinstance(exc.value.orig, psycopg2.errors.NotNullViolation)
     assert "provider_job_id" in str(exc.value.orig)
-
-

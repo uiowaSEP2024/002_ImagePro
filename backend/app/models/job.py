@@ -34,12 +34,15 @@ class Job(Base, DateMixin):
         cascade="all, delete-orphan",
     )
     job_configuration_id = Column(
-        Integer, ForeignKey("job_configurations.id", ondelete="SET NULL"), index=True, nullable=True
+        Integer,
+        ForeignKey("job_configurations.id", ondelete="SET NULL"),
+        index=True,
+        nullable=True,
     )
 
     job_configuration = relationship(
         "JobConfiguration",
-        back_populates='jobs',
+        back_populates="jobs",
         # backref=backref('jobs', passive_deletes=True),
         foreign_keys=[job_configuration_id],
     )
