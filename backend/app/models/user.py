@@ -43,9 +43,9 @@ class User(Base, DateMixin):
     # Parent class -> Provider
     # Parent-child relationship (has many to one) -> provider_job_configurations
     # Child-parent relationship (one to many) -> provider (see job_configuration.py)
-    provider_job_configurations = relationship(
-        "JobConfiguration",
-        back_populates="provider",
-        foreign_keys="JobConfiguration.provider_id",
-        cascade="all, delete-orphan",
-    )
+    # provider_job_configurations = relationship(
+    #     "JobConfiguration",
+    #     back_populates="provider",
+    #     foreign_keys="JobConfiguration.provider_id",
+    #     cascade="all, delete-orphan",
+    # )
