@@ -41,7 +41,7 @@ const JobTableCell: React.FC<JobTableCellProps> = ({ job, colId }) => {
   if (colId === "reference_number") {
     return (
       <Link as={NextLink} href={`/jobs/${job.id}`} passHref>
-        <Text>{job.id} ↗️</Text>
+        <Text>{job.id} ↗</Text>
       </Link>
     );
   }
