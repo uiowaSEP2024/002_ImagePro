@@ -1,10 +1,13 @@
-import { Container, Heading } from "@chakra-ui/react";
+import { Container, Heading, Text } from "@chakra-ui/react";
 import { withAuthenticated } from "@/components/withAuthenticated";
 
 function Billing() {
   return (
     <Container pt={8} maxW={"container.lg"} justifyContent={"center"}>
-      <Heading textAlign={"center"}>Billing page</Heading>
+      <Heading lineHeight={1.5} textAlign={"center"}>
+        Billing
+      </Heading>
+      <Text textAlign={"center"}>Coming soon...</Text>
     </Container>
   );
 }
