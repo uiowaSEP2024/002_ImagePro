@@ -54,7 +54,7 @@ function Profile() {
             overflow="hidden"
           >
             <VStack alignItems="flex-start" spacing="20px">
-              <Heading fontSize="10xl" fontWeight="700" color="black">
+              <Heading fontSize="6xl" fontWeight="700" color="black">
                 {currentUser?.first_name} {currentUser?.last_name}
               </Heading>
               <Heading fontSize="3xl" fontWeight="700" color="blue.400">
