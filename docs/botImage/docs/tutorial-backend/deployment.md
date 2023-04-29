@@ -9,8 +9,15 @@ These are instructions to deploy the backend. The backend is deployed to AWS Lam
 ## Introduction
 The backend is deployed using the AWS Cloud Development Kit (CDK). The CDK is an open-source software development framework to define cloud infrastructure in code and provision it through AWS CloudFormation.
 
+As in the README.md for `cdk-infra`, the CDK has been setup to deploy the following resources:
+1. Dockerized `backend` application Image to AWS ECR
+2. AWS Lambda Function that executes Dockerized Image above
+3. AWS (REST) API Gateway that exposes the Lambda Function
+4. AWS Amplify Application that builds and hosts the `frontend` web application
 
 ## Prerequisites
+
+Here are some prerequisites for being able to use the CDK to deploy the application:
 
 1. [Create an AWS Account](https://docs.aws.amazon.com/accounts/latest/reference/manage-acct-creating.html)
 2. [Create an AWS IAM User](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html) and [Assign an Access Key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey)
@@ -36,3 +43,22 @@ For this project, all the logic for managing deployment with CDK is in the `cdk-
     ```
 
 
+## Secrets
+The deployment relies on setting up some secrets in AWS Secrets Manager. These secrets are used to set the environment variables for the Lambda Function. These secrets are discussed in detail inside of the `cdk-infra` directory in the `README.md` file.
+
+For a visualization of how to set up the secrets, here are some images you can follow:
+
+**Generating a Secret Token via Terminal**
+![Generating a Secret](./img/generating-secret.png)
+
+**Adding a Plaintext Secret**
+![Adding a Plaintext Secret](./img/adding-plaintext-secret.png)
+
+**Adding RDS Secret**
+![Adding RDS Secret](./img/adding-rds-credentials.png)
+
+**After Setting All Secrets**
+![After Setting All Secrets](./img/after-setting-secrets.png)
+
+**Amplify Dashboard after Deployment**
+![Amplify Dashboard after Deployment](./img/amplify-dashboard.png)
