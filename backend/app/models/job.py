@@ -1,6 +1,6 @@
 from sqlalchemy import Column, ForeignKey, UniqueConstraint
 from sqlalchemy.sql.sqltypes import String, Integer
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 
 from .base import Base, DateMixin
 
@@ -27,19 +27,19 @@ class Job(Base, DateMixin):
     customer_id = Column(Integer, ForeignKey("users.id"), index=True, nullable=False)
     customer = relationship("User", back_populates="jobs", foreign_keys=[customer_id])
 
-    job_configuration_id = Column(
-        Integer, ForeignKey("job_configurations.id"), index=True, nullable=True
-    )
-
     events = relationship(
         "Event",
         back_populates="job",
         foreign_keys="Event.job_id",
         cascade="all, delete-orphan",
     )
+    job_configuration_id = Column(
+        Integer, ForeignKey("job_configurations.id", ondelete="SET NULL"), index=True, nullable=True
+    )
 
     job_configuration = relationship(
         "JobConfiguration",
-        back_populates="jobs",
+        back_populates='jobs',
+        # backref=backref('jobs', passive_deletes=True),
         foreign_keys=[job_configuration_id],
     )

@@ -5,6 +5,8 @@ import sqlalchemy
 from app import models
 
 
+
+
 def test_create_job_configurtaion(db, random_provider_user):
     job_configuration = models.JobConfiguration(
         tag="prostate_v1_job",
@@ -118,3 +120,5 @@ def test_create_job_missing_version(db, random_provider_user):
 
     assert isinstance(exc.value.orig, psycopg2.errors.NotNullViolation)
     assert "version" in str(exc.value.orig)
+
+
