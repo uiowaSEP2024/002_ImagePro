@@ -102,4 +102,5 @@
 /backend/node_modules/react-dom/umd/react-dom.development.js filter=lfs diff=lfs merge=lfs -text
 /backend/node_modules/source-map/dist/source-map.debug.js filter=lfs diff=lfs merge=lfs -text
 /backend/node_modules/source-map/dist/source-map.min.js.map filter=lfs diff=lfs merge=lfs -text
+/frontend/public/assets/jobs.png filter=lfs diff=lfs merge=lfs -text
 /frontend/cucumber-report.html filter=lfs diff=lfs merge=lfs -text
