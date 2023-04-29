@@ -47,7 +47,7 @@ describe("Billing", () => {
 
     const heading = await waitFor(() =>
       screen.getByRole("heading", {
-        name: /Billing page/i
+        name: /Billing/i
       })
     );
 
