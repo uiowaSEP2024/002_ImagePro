@@ -149,16 +149,16 @@ function JobPage({ initialIsPageLoading = true }) {
     <>
       <Container maxW="container.lg" py={"6"}>
         <VStack gap={"4"} w={"full"} align="left">
-          <Link data-testid='backlink' href={"/jobs"}>
+          <Link data-testid="backlink" href={"/jobs"}>
             <Button
               size={"md"}
               fontWeight={"semibold"}
               variant={"link"}
               _hover={{}}
-              data-testid='backarrow'
+              data-testid="backarrow"
               leftIcon={<ArrowBackIcon />}
             >
-            Back to Jobs
+              Back to Jobs
             </Button>
           </Link>
 
@@ -167,7 +167,7 @@ function JobPage({ initialIsPageLoading = true }) {
               borderRadius={"xl"}
               isAnimated={Number(progressAmount) < 100}
               size="md"
-              data-testid='progressFull'
+              data-testid="progressFull"
               hasStripe={Number(progressAmount) < 100}
               colorScheme={progressColorScheme}
               value={Number(progressAmount)}
@@ -176,7 +176,7 @@ function JobPage({ initialIsPageLoading = true }) {
 
           <Box>
             <Heading fontWeight={"semibold"} size={"lg"} alignItems="center">
-            Job #{jobId}
+              Job #{jobId}
             </Heading>
             <Metadata metadata={jobDetails} />
           </Box>
@@ -201,16 +201,20 @@ function JobPage({ initialIsPageLoading = true }) {
             })}
           </Center>
         </VStack>
-
       </Container>
 
-      <Box align-self={"center"} m={10} >
-        <Text align={"center"} >
-        Issue with this job? Contact system administrator at <Link href={"https://www.gmail.com"} color={"#0072f5"}>admin@botimage.com</Link>
+      <Box align-self={"center"} m={10}>
+        <Text align={"center"}>
+          Issue with this job? Contact system administrator at{" "}
+          <Link
+            href={`mailto:admin@botimage.com?subject=Job #${jobId} Report`}
+            color={"#0072f5"}
+          >
+            admin@botimage.com
+          </Link>
         </Text>
       </Box>
     </>
-
   );
 }
 

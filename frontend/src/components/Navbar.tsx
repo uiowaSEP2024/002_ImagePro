@@ -1,34 +1,38 @@
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { ReactNode } from "react";
-import { Button } from "@nextui-org/react";
 import {
-  Box,
+  Button,
+  Center,
+  Container,
   Flex,
   HStack,
   Link
 } from "@chakra-ui/react";
 import React from "react";
 
+import NextLink from "next/link";
 
-const TopNavbar = () => {
+const NavLink = ({ children, link }: { children: ReactNode; link: string }) => (
+  <Link
+    as={NextLink}
+    px={4}
+    py={2}
+    rounded={"md"}
+    _hover={{
+      textDecoration: "none",
+      bg: "gray.100"
+    }}
+    href={link}
+    fontWeight={"bold"}
+  >
+    {children}
+  </Link>
+);
 
-  const NavLink = ({ children, link }: { children: ReactNode, link: string }) => (
-    <Link
-      px={2}
-      py={1}
-      rounded={"md"}
-      _hover={{
-        textDecoration: "none",
-        bg: "gray.200",
-      }}
-      href={link}>
-      {children}
-    </Link>
-  )
+const Navbar = () => {
+  const { currentUser, logOut } = useAuthContext();
 
-  const { currentUser, logOut} = useAuthContext()
-
-  const links = [
+  const linksRightUnauthenticated = [
     {
       to: "/login",
       name: "Log in",
@@ -38,84 +42,105 @@ const TopNavbar = () => {
       to: "/signup",
       name: "Sign up",
       id: "signup"
-    }]
+    }
+  ];
 
-  const authenticatedLinks = [ 
+  const linksLeftUnauthenticated = [
     {
       to: "/",
-      name: "Home"
+      name: "Home",
+      id: "home"
+    }
+  ];
+
+  const linksLeftAuthenticated = [
+    {
+      to: "/",
+      name: "Home",
+      id: "home"
     },
     {
       to: "/dashboard",
-      name: "Dashboard"
+      name: "Dashboard",
+      id: "dashboard"
     },
     {
       to: "/billing",
-      name: "Billing"
+      name: "Billing",
+      id: "billing",
+      show: currentUser?.role === "provider"
     },
     {
       to: "/apikeys",
-      name: "Generate API Keys"
-    }]
+      name: "Generate API Keys",
+      id: "apikeys",
+      show: currentUser?.role === "provider"
+    }
+  ];
 
-  if (!currentUser) {
-    return (
-      <>
-        <Box bg={"gray.100"} px={4}>
-          <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-            <HStack spacing={8} alignItems={"center"}>
-              <HStack
-                as={"nav"}
-                spacing={4}
-                display={{ base: "none", md: "flex" }}>
-                <NavLink link={"/"}>Home</NavLink>
-              </HStack>
-            </HStack>
+  const linksRightAuthenticated = [
+    {
+      to: "/profile",
+      name: "My Profile",
+      id: "profile"
+    },
+    {
+      onClick: logOut,
+      name: "Logout",
+      id: "logoutButton"
+    }
+  ];
 
-            <Flex alignItems={"center"}>
-              <HStack spacing={8} alignItems={"center"}>
-                <HStack
-                  as={"nav"}
-                  spacing={4}
-                  display={{ base: "none", md: "flex" }}>
-                  {links.map(link => (<NavLink data-testid={link.id} key={link.name} link={link.to}> {link.name} </NavLink> ))}
-                </HStack>
-              </HStack>
-            </Flex>
-          </Flex>
-        </Box>
-      </>
-    );
-  }
+  const linksRight = currentUser
+    ? linksRightAuthenticated
+    : linksRightUnauthenticated;
+
+  const linksLeft = currentUser
+    ? linksLeftAuthenticated
+    : linksLeftUnauthenticated;
+
   return (
-    <>
-      <Box bg={"gray.100"} px={4}>
-        <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-          <HStack spacing={8} alignItems={"center"}>
-            <HStack
-              as={"nav"}
-              spacing={4}
-              display={{ base: "none", md: "flex" }}>
-              {authenticatedLinks.map(link => (<NavLink key={link.name} link={link.to}> {link.name} </NavLink> ))}
-            </HStack>
+    <Center boxShadow={"xs"}>
+      <Container py={2} maxW={"container.xl"} px={4}>
+        <Flex alignItems={"center"} justifyContent={"space-between"}>
+          <HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }}>
+            {linksLeft.map((link) => {
+              if ("show" in link && !link.show) {
+                return null;
+              }
+              return (
+                <NavLink data-testid={link.id} key={link.name} link={link.to}>
+                  {link.name}
+                </NavLink>
+              );
+            })}
           </HStack>
 
-          <Flex alignItems={"center"}>
-            <HStack spacing={8} alignItems={"center"}>
-              <HStack
-                as={"nav"}
-                spacing={4}
-                display={{ base: "none", md: "flex" }}>
-                <NavLink link={"/profile"}>My Profile</NavLink>
-                <Button  data-testid="logoutButton" onPress={logOut}>Logout</Button>
-              </HStack>
-            </HStack>
-          </Flex>
-        </Flex>
-      </Box>
-    </>
-  );
-    
-}
+          <HStack as={"nav"} spacing={2} display={{ base: "none", md: "flex" }}>
+            {linksRight.map((link) => {
+              if ("onClick" in link) {
+                return (
+                  <Button
+                    data-testid={link.id}
+                    key={link.name}
+                    onClick={link.onClick}
+                  >
+                    {link.name}
+                  </Button>
+                );
+              }
 
-export default TopNavbar;
+              return (
+                <NavLink data-testid={link.id} key={link.name} link={link.to}>
+                  {link.name}
+                </NavLink>
+              );
+            })}
+          </HStack>
+        </Flex>
+      </Container>
+    </Center>
+  );
+};
+
+export default Navbar;

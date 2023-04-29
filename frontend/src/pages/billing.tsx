@@ -1,15 +1,11 @@
-import { Text, Grid } from "@nextui-org/react";
+import { Container, Heading } from "@chakra-ui/react";
 import { withAuthenticated } from "@/components/withAuthenticated";
 
 function Billing() {
   return (
-    <>
-      <Grid.Container gap={2} justify="center">
-        <Text h1 align-items="center">
-          Billing page
-        </Text>
-      </Grid.Container>
-    </>
+    <Container pt={8} maxW={"container.lg"} justifyContent={"center"}>
+      <Heading textAlign={"center"}>Billing page</Heading>
+    </Container>
   );
 }
 
