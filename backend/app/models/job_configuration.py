@@ -24,9 +24,9 @@ class JobConfiguration(Base, DateMixin):
     # version of the job configuration
     version = Column(String, index=True, nullable=False)
 
-    # provider = relationship(
-    #     "User", back_populates="provider_job_configurations", foreign_keys=[provider_id]
-    # )
+    provider = relationship(
+        "User", back_populates="job_configurations", foreign_keys=[provider_id]
+    )
 
     # step_configurations = relationship(
     #     "StepConfiguration",
