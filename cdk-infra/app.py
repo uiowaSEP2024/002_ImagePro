@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import os
 
 import aws_cdk as cdk
 
@@ -19,9 +18,12 @@ def get_config_for_app_env(cdk_app: cdk.App, app_env=None):
     default_config: dict = cdk_app.node.try_get_context("default")
     app_env_config: dict = cdk_app.node.try_get_context(app_env)
 
-    print(default_config, app_env_config)
+    final_config = dict()
+    final_config.update(default_config)
+    final_config.update(app_env_config)
 
-    return BuildConfig.parse_obj({**default_config, **app_env_config})
+    print(final_config)
+    return BuildConfig(**final_config)
 
 
 def main():
