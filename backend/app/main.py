@@ -27,13 +27,12 @@ app.add_middleware(
 
 @app.get("/")
 def read_root():
-    return {"msg": "Hello World", "origins": allow_origins}
+    return {"msg": "Hello World"}
 
 
 @app.on_event("startup")
 async def startup_event():
     config.setup()
-    print(allow_origins)
     print("Running with allowed origins:", allow_origins)
 
 
