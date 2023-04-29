@@ -29,12 +29,6 @@ const Footer = () => {
       show: !!currentUser
     },
     {
-      to: "/jobs",
-      name: "Jobs",
-      id: "jobs",
-      show: !!currentUser
-    },
-    {
       to: "/profile",
       name: "Profile",
       id: "profile",
