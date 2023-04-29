@@ -44,4 +44,4 @@ app.include_router(jobs_router)
 app.include_router(events_router)
 
 # Create handler for AWS lambda
-handler = Mangum(app, lifespan="off")
+handler = Mangum(app, lifespan="on")
