@@ -1,9 +1,10 @@
 from datetime import datetime
+from typing import List
 
 from pydantic import StrictStr, StrictInt, conlist
 
 from .pydantic_version import PydanticVersion
-from .step_configuration import StepConfigurationCreate
+from .step_configuration import StepConfigurationCreate, StepConfiguration
 from .unique_tag import UniqueTagModel
 
 
@@ -22,6 +23,8 @@ class JobConfiguration(JobConfigurationCreate):
 
     created_at: datetime = None
     updated_at: datetime = None
+
+    step_configurations: List[StepConfiguration]
 
     class Config:
         orm_mode = True
