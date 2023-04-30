@@ -21,6 +21,8 @@ def create_job(
     return services.create_job_configuration(
         db, provider_id=provider.id, job_configuration=job_configuration
     )
+
+
 @router.get(
     "/job_configurations/{job_configuration_id}",
     response_model=schemas.JobConfiguration,
@@ -28,7 +30,7 @@ def create_job(
 def get_job_configuration(
     job_configuration_id: int,
     db: Session = Depends(get_db),
-    user=Depends(get_current_user_from_token),
+    provider=Depends(get_current_user_from_token),
 ):
     job_configuration = services.get_job_configuration_by_id(
         db, job_configuration_id=job_configuration_id
@@ -37,7 +39,7 @@ def get_job_configuration(
     if job_configuration is None:
         raise HTTPException(status_code=404, detail="Job not found")
 
-    if not (user.id in [job_configuration.provider_id]):
+    if not (provider.id in [job_configuration.provider_id]):
         raise HTTPException(status_code=403, detail="Not allowed")
 
     return job_configuration
