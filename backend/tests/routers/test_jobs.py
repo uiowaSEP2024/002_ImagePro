@@ -166,3 +166,25 @@ def test_get_job_as_different_customer(
 
     # Response should be rejected
     assert response.status_code == 403
+
+
+def test_create_job_with_missing_tag(
+    app_client, random_provider_user_with_api_key, random_job_configuration_factory
+):
+    data = {
+        "provider_job_id": "2432424",
+        "customer_id": random_provider_user_with_api_key.id,
+    }
+
+    response = app_client.post(
+        "/jobs",
+        json=data,
+        headers={
+            API_KEY_HEADER_NAME: random_provider_user_with_api_key.api_keys[0].key
+        },
+    )
+
+    assert response.status_code == 422
+
+    assert "tag" in response.json()["detail"][0]["loc"]
+    assert response.json()["detail"][0]["msg"] == "field required"
