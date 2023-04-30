@@ -31,6 +31,12 @@ class StepConfiguration(Base, DateMixin):
         foreign_keys=[job_configuration_id],
     )
 
+    events = relationship(
+        "Event",
+        back_populates="step_configuration",
+        foreign_keys="Event.step_configuration_id",
+    )
+
     # metadata_configurations = relationship(
     #     "MetadataConfiguration",
     #     back_populates="step_configuration",
