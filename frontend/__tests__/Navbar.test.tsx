@@ -8,22 +8,16 @@ import { AuthContextProvider } from "@/contexts/authContext";
 import { useAuthContext, useEnsureAuthenticated } from "@/hooks/useAuthContext";
 import { createContext } from "react";
 
+const mockRouterPush = jest.fn();
 jest.mock("next/router", () => ({
   useRouter() {
     return {
       route: "/",
       pathname: "",
       query: "",
-      asPath: "",
-      push: jest.fn(),
-      events: {
-        on: jest.fn(),
-        off: jest.fn()
-      },
-      beforePopState: jest.fn(() => null),
-      prefetch: jest.fn(() => null)
+      push: mockRouterPush
     };
-  },
+  }
 }));
 
 jest.mock("@/data", () => ({
@@ -62,13 +56,14 @@ jest.mock("@/hooks/useAuthContext", () => ({
     })
   );
 
-jest.spyOn(data, "fetchCheckUserLoggedIn").mockImplementation(() =>
+  jest.spyOn(data, "fetchCheckUserLoggedIn").mockImplementation(() =>
   Promise.resolve({
     user: {
       first_name: "John",
       last_name: "Doe",
       email: "johndoe@gmail.com",
-      id: 1
+      id: 1,
+      role: "provider"
     },
     message: ""
   })
@@ -94,8 +89,7 @@ describe("NavBar", () => {
   it("logs in", async () => {
     await act(async () => render(<Navbar />, { wrapper: AuthContextProvider }));
 
-    const button = await waitFor(() => screen.getByTestId("loginButton"));
-    fireEvent.click(button);
+    const button = await waitFor(() => screen.getByText("Log in"));
 
     expect(button).toBeInTheDocument();
 
