@@ -93,9 +93,9 @@ def get_job_configuration_by_composite_key(
     return (
         db.query(models.JobConfiguration)
         .filter(
-            models.JobConfiguration.tag == tag
-            and models.JobConfiguration.provider_id == provider_id
-            and models.JobConfiguration.version == version
+            models.JobConfiguration.tag == tag,
+            models.JobConfiguration.provider_id == provider_id,
+            models.JobConfiguration.version == str(version),
         )
         .first()
     )
