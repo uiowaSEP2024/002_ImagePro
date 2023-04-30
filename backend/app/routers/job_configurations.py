@@ -1,5 +1,6 @@
 from fastapi import Depends, APIRouter
 from sqlalchemy.orm import Session
+from starlette import status
 
 from app import schemas, services
 from app.dependencies import get_db, get_user_from_api_key
@@ -7,6 +8,7 @@ from app import schemas, services
 from app.dependencies import get_db, get_current_user_from_token
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from typing import Union
 
 router = APIRouter()
 router.tags = ["job_configurations"]
@@ -27,7 +29,7 @@ def create_job(
     "/job_configurations/{job_configuration_id}",
     response_model=schemas.JobConfiguration,
 )
-def get_job_configuration(
+def get_job_configuration_by_id(
     job_configuration_id: int,
     db: Session = Depends(get_db),
     provider=Depends(get_current_user_from_token),
@@ -43,3 +45,17 @@ def get_job_configuration(
         raise HTTPException(status_code=403, detail="Not allowed")
 
     return job_configuration
+
+
+@router.get("/job_configurations/", response_model=schemas.JobConfiguration)
+def get_job_configurations_by_tag_and_version(
+    tag: Union[str, None] = None,
+    version: Union[str, None] = None,
+    db: Session = Depends(get_db),
+    provider=Depends(get_current_user_from_token),
+):
+
+    # case 5: get specific configuration if both tag and version are provided
+    return services.get_job_configuration_by_composite_key(
+        db, provider.id, tag, version
+    )
