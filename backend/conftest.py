@@ -137,18 +137,15 @@ def random_job_configuration_factory(db, random_provider_user):
                 version="0.0." + str(get_next_user_count()),
             )
 
-            if num_steps > 0:
-                [
-                    test_job_configuration.step_configurations.append(
-                        models.StepConfiguration(
-                            name=f"Step {i}",
-                            tag=f"step_{i}",
-                            points=10,
-                            job_configuration=test_job_configuration,
-                        )
+            for i in range(num_steps):
+                test_job_configuration.step_configurations.append(
+                    models.StepConfiguration(
+                        name=f"Step {i}",
+                        tag=f"step_{i}",
+                        points=10,
+                        job_configuration=test_job_configuration,
                     )
-                    for i in range(num_steps)
-                ]
+                )
 
             db.add(test_job_configuration)
             db.commit()
