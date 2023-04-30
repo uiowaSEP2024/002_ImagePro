@@ -25,3 +25,4 @@ class JobConfiguration(JobConfigurationCreate):
 
     class Config:
         orm_mode = True
+        json_encoders = {PydanticVersion: lambda v: str(v)}
