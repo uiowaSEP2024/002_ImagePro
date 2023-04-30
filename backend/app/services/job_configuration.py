@@ -20,28 +20,6 @@ def get_job_configuration_by_tag(db: Session, tag: str):
     )
 
 
-def create_job(db: Session, job: schemas.JobCreate, provider):
-    job_configuration = get_job_configuration_by_tag(db, job.tag)
-
-    if job_configuration is None:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Invalid job configuration tag",
-        )
-
-    db_job = models.Job(
-        provider_id=provider.id,
-        provider_job_id=job.provider_job_id,
-        customer_id=job.customer_id,
-        job_configuration=job_configuration,
-    )
-
-    db.add(db_job)
-    db.commit()
-    db.refresh(db_job)
-    return db_job
-
-
 def create_job_configuration(
     db: Session, provider_id: str, job_configuration: schemas.JobConfigurationCreate
 ):
