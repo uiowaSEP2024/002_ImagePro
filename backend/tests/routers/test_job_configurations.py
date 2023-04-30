@@ -131,3 +131,33 @@ def test_create_job_configuration_with_same_information(
         response.json()["step_configurations"]
         == original_configuration.step_configurations
     )
+def test_get_job_configuration(
+    app_client,
+    db,
+    random_provider_user_with_api_key,
+    random_job_configuration_factory,
+):
+    job_configuration = random_job_configuration_factory.get()
+
+    # Simulate user log in
+    response = app_client.post(
+        "/login",
+        data={"username": random_provider_user_with_api_key.email, "password": "abc"},
+    )
+
+    # Grab access token for user
+    access_token = response.json()["access_token"]
+
+    # Use access token in the request to get a job
+    response = app_client.get(
+        f"/job_configurations/{job_configuration.id}",
+        cookies={"access_token": access_token},
+    )
+
+    assert response.status_code == 200
+    assert response.json()["id"] == job_configuration.id
+    assert response.json()["provider_id"] == job_configuration.provider_id
+    assert response.json()["created_at"] is not None
+    assert response.json()["tag"] == job_configuration.tag
+    assert response.json()["version"] == job_configuration.version
+    assert response.json()["name"] == job_configuration.name
