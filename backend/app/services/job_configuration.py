@@ -107,3 +107,7 @@ def get_job_configuration_by_composite_key(
         )
         .first()
     )
+
+
+def get_job_configuration_by_id(db: Session, job_configuration_id: int):
+    return db.query(models.JobConfiguration).get(job_configuration_id)
