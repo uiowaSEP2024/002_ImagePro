@@ -7,20 +7,14 @@ import { useRouter } from "next/router";
 import * as data from "@/data";
 import { AuthContextProvider } from "@/contexts/authContext";
 
+const mockRouterPush = jest.fn();
 jest.mock("next/router", () => ({
   useRouter() {
     return {
       route: "/",
       pathname: "",
       query: "",
-      asPath: "",
-      push: jest.fn(),
-      events: {
-        on: jest.fn(),
-        off: jest.fn()
-      },
-      beforePopState: jest.fn(() => null),
-      prefetch: jest.fn(() => null)
+      push: mockRouterPush
     };
   }
 }));
@@ -36,7 +30,8 @@ jest.spyOn(data, "fetchCheckUserLoggedIn").mockImplementation(() =>
       first_name: "John",
       last_name: "Doe",
       email: "johndoe@gmail.com",
-      id: 1
+      id: 1,
+      role: "provider"
     },
     message: ""
   })
@@ -52,10 +47,24 @@ describe("Billing", () => {
 
     const heading = await waitFor(() =>
       screen.getByRole("heading", {
-        name: /Billing page/i
+        name: /Billing/i
       })
     );
 
     expect(heading).toBeInTheDocument();
+  });
+
+  it("does not render login or signup", async () => {
+    await act(async () =>
+      render(<Login />, { wrapper: AuthContextProvider })
+    );
+
+    expect(useRouter().push).toBeCalledWith("/dashboard");
+
+    await act(async () =>
+      render(<Signup />, { wrapper: AuthContextProvider })
+    );
+
+    expect(useRouter().push).toBeCalledWith("/dashboard");
   });
 });
