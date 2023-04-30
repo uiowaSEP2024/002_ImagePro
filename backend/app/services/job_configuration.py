@@ -63,11 +63,18 @@ def create_job_configuration(
     )
 
     old_configuration_data = schemas.JobConfigurationCreate.parse_obj(
-        {"step_configurations": [], **old_configuration.__dict__}
+        {
+            **old_configuration.__dict__,
+            "step_configurations": [
+                s.__dict__ for s in old_configuration.step_configurations
+            ],
+        }
     )
 
     differences = DeepDiff(
-        old_configuration_data, configuration_data, ignore_order=True, verbose_level=2
+        old_configuration_data.dict(),
+        configuration_data.dict(),
+        ignore_order=True,
     )
 
     has_differences = len(differences.affected_paths) > 0
