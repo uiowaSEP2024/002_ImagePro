@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, StrictStr
 
 
 class JobBase(BaseModel):
@@ -9,12 +9,14 @@ class JobBase(BaseModel):
 
 
 class JobCreate(JobBase):
-    provider_job_name: str
+    tag: str
 
 
-class Job(JobCreate):
+class Job(JobBase):
     id: int
     provider_id: int
+    job_configuration_id: int
+    
     created_at: datetime = None
     updated_at: datetime = None
 
