@@ -28,12 +28,12 @@ class JobConfiguration(Base, DateMixin):
         "User", back_populates="job_configurations", foreign_keys=[provider_id]
     )
 
-    # step_configurations = relationship(
-    #     "StepConfiguration",
-    #     back_populates="job_configuration",
-    #     foreign_keys="StepConfiguration.job_configuration_id",
-    #     cascade="all, delete-orphan",
-    # )
+    step_configurations = relationship(
+        "StepConfiguration",
+        back_populates="job_configuration",
+        foreign_keys="StepConfiguration.job_configuration_id",
+        cascade="all, delete-orphan",
+    )
 
     jobs = relationship(
         "Job",

@@ -25,5 +25,18 @@ class Event(Base, DateMixin):
         nullable=False,
     )
 
+    step_configuration_id = Column(
+        Integer,
+        ForeignKey("step_configurations.id", ondelete="SET NULL"),
+        index=True,
+        nullable=True,
+    )
+
+    step_configuration = relationship(
+        "StepConfiguration",
+        back_populates="events",
+        foreign_keys=[step_configuration_id],
+    )
+
     # The event metadata
     event_metadata = Column(JSONB)

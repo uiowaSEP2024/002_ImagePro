@@ -12,11 +12,14 @@ class StepConfiguration(Base, DateMixin):
     # Auto-generated internal job configuration id
     id = Column(Integer, primary_key=True, index=True)
 
-    # internal tag used to link a step configuration
+    # Tag used to identify a step
     tag = Column(String, index=True, nullable=False)
 
-    # The step configuration name as specified by the provider
+    # The step name as specified by the provider
     name = Column(String, index=True, nullable=False)
+
+    # Number of points for the step
+    points = Column(Integer, index=True, nullable=False)
 
     job_configuration_id = Column(
         Integer, ForeignKey("job_configurations.id"), index=True, nullable=False
@@ -28,10 +31,13 @@ class StepConfiguration(Base, DateMixin):
         foreign_keys=[job_configuration_id],
     )
 
-    metadata_configurations = relationship(
-        "MetadataConfiguration",
+    events = relationship(
+        "Event",
         back_populates="step_configuration",
+        foreign_keys="Event.step_configuration_id",
     )
 
-    # TODO: This should be linked to billing configuration in the future
-    points = Column(Integer, index=True, nullable=False)
+    # metadata_configurations = relationship(
+    #     "MetadataConfiguration",
+    #     back_populates="step_configuration",
+    # )

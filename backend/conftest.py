@@ -2,7 +2,7 @@ import os
 import random
 
 import pytest
-from app import schemas, services
+from app import schemas, services, models
 from app.models.base import truncate_all_tables
 from fastapi.testclient import TestClient
 
@@ -16,12 +16,19 @@ from app.main import app
 config.setup("test")
 
 user_counter = 0
+job_configuration_counter = 0
 
 
 def get_next_user_count():
     global user_counter
     user_counter = user_counter + 1
     return user_counter
+
+
+def get_next_job_configuration_count():
+    global job_configuration_counter
+    job_configuration_counter = job_configuration_counter + 1
+    return job_configuration_counter
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -99,7 +106,7 @@ def random_provider_user(db):
 # users for a test. See https://stackoverflow.com/a/21590140
 @pytest.fixture
 def random_test_user_factory(db):
-    class ThingFactory(object):
+    class Factory(object):
         @staticmethod
         def get():
             random_tag = get_next_user_count()
@@ -114,4 +121,38 @@ def random_test_user_factory(db):
             )
             return test_user
 
-    return ThingFactory()
+    return Factory()
+
+
+@pytest.fixture
+def random_job_configuration_factory(db, random_provider_user):
+    class Factory(object):
+        @staticmethod
+        def get(num_steps=0):
+            count = get_next_job_configuration_count()
+            test_job_configuration = models.JobConfiguration(
+                tag=f"test_job_{count}",
+                name="Test Job",
+                provider_id=random_provider_user.id,
+                version="0.0." + str(get_next_user_count()),
+            )
+
+            if num_steps > 0:
+                [
+                    test_job_configuration.step_configurations.append(
+                        models.StepConfiguration(
+                            name=f"Step {i}",
+                            tag=f"step_{i}",
+                            points=10,
+                            job_configuration=test_job_configuration,
+                        )
+                    )
+                    for i in range(num_steps)
+                ]
+
+            db.add(test_job_configuration)
+            db.commit()
+            db.refresh(test_job_configuration)
+            return test_job_configuration
+
+    return Factory()
