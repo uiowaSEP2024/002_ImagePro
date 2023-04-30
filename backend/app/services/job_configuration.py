@@ -1,4 +1,5 @@
 import json
+from typing import Union
 
 from fastapi import HTTPException
 from sqlalchemy import desc
@@ -84,7 +85,7 @@ def create_job_configuration(
 
 
 def get_job_configuration_by_composite_key(
-    db: Session, provider_id: str, tag: str, version: str | PydanticVersion
+    db: Session, provider_id: str, tag: str, version: Union[str, PydanticVersion]
 ):
     """
     Returns a unique job configuration give the composite key comprising the provider_id, tag, and version
