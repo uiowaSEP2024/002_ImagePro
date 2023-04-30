@@ -1,4 +1,4 @@
-import { backendUrl, fetchAPIkeys } from "@/data";
+import { fetchAPIkeys, fetchGenAPIKeys } from "@/data";
 import { Key } from "@/data/types";
 import React, { useCallback, useMemo } from "react";
 import { useState, useEffect } from "react";
@@ -19,7 +19,9 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
   useDisclosure,
-  Stack
+  Stack,
+  VStack,
+  Box
 } from "@chakra-ui/react";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { withAuthenticated } from "@/components/withAuthenticated";
@@ -45,55 +47,42 @@ function ApiKeys() {
     loadKeys();
   }, [currentUser, loadKeys]);
 
-  const generateAPIKey = () => {
-    fetch(`${backendUrl}/api-keys`, {
-      credentials: "include",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        note: note
-      })
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setFirstNote(data.note);
-        setKey(data.key);
-        onOpen();
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
-
   const closeAlert = useCallback(() => {
     onClose();
     loadKeys();
   }, [loadKeys, onClose]);
 
+  const sendGenAPIKeyRequest = async () => {
+    try {
+      const data = await fetchGenAPIKeys({
+        note
+      });
+      setFirstNote(data.note);
+      setKey(data.key);
+      onOpen();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
-    <Container maxW="container.lg" py={"6"}>
-      <Grid>
-        <GridItem>
-          <Heading>API Keys</Heading>
-        </GridItem>
-        <GridItem>
-          <Text>Manage API Keys for your provider account</Text>
-        </GridItem>
+    <Container pt={12} maxW="container.lg">
+      <Box mb={8}>
+        <Heading>API Keys</Heading>
+        <Text>Manage API Keys for your provider account</Text>
+      </Box>
 
-        <Heading pt={8} size={"lg"}>
-          Create API Key
-        </Heading>
-
+      <VStack alignItems={"flex-start"} spacing={8}>
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            generateAPIKey();
+            sendGenAPIKeyRequest();
             setNote("");
           }}
         >
-          <Stack maxWidth={"sm"} gap={2} direction={"column"}>
+          <Heading size={"lg"}>Create API Key</Heading>
+
+          <Stack mt={4} maxWidth={"sm"} gap={2} direction={"column"}>
             <Input
               placeholder="Note"
               size="lg"
@@ -102,19 +91,24 @@ function ApiKeys() {
               onChange={(e) => setNote(e.target.value)}
             />
 
-            <Button width={"fit-content"} type="submit" colorScheme="telegram">
+            <Button
+              width={"fit-content"}
+              type="submit"
+              data-testid="submit"
+              colorScheme="telegram"
+            >
               Create Key
             </Button>
           </Stack>
         </form>
 
-        <Heading pt={8} size={"lg"}>
-          Existing Keys ({keys.length})
-        </Heading>
+        <Box width={"full"}>
+          <Heading pt={8} size={"lg"}>
+            Existing Keys ({keys.length})
+          </Heading>
 
-        <GridItem>
           {reversedKeys.map((card) => (
-            <Grid key={card.id} data-testid="testkeys">
+            <Grid width={"full"} key={card.id} data-testid="testkeys">
               <Card
                 borderRadius={"none"}
                 borderColor={"gray.300"}
@@ -145,8 +139,9 @@ function ApiKeys() {
               </Card>
             </Grid>
           ))}
-        </GridItem>
-      </Grid>
+        </Box>
+      </VStack>
+
       <AlertDialog
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}

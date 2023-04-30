@@ -13,12 +13,14 @@ import {
   Progress,
   Tooltip,
   Divider,
+  Link,
   Box,
+  Text,
   Spinner,
   Center,
   ThemingProps
 } from "@chakra-ui/react";
-import Link from "next/link";
+//import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 
@@ -144,59 +146,75 @@ function JobPage({ initialIsPageLoading = true }) {
   };
 
   return (
-    <Container maxW="container.lg" py={"6"}>
-      <VStack gap={"4"} w={"full"} align="left">
-        <Link href={"/jobs"} passHref>
-          <Button
-            size={"md"}
-            fontWeight={"semibold"}
-            variant={"link"}
-            _hover={{}}
-            leftIcon={<ArrowBackIcon />}
+    <>
+      <Container maxW="container.lg" py={"6"}>
+        <VStack gap={"4"} w={"full"} align="left">
+          <Link data-testid="backlink" href={"/jobs"}>
+            <Button
+              size={"md"}
+              fontWeight={"semibold"}
+              variant={"link"}
+              _hover={{}}
+              data-testid="backarrow"
+              leftIcon={<ArrowBackIcon />}
+            >
+              Back to Jobs
+            </Button>
+          </Link>
+
+          <Tooltip label={`${progressAmount}% complete`}>
+            <Progress
+              borderRadius={"xl"}
+              isAnimated={Number(progressAmount) < 100}
+              size="md"
+              data-testid="progressFull"
+              hasStripe={Number(progressAmount) < 100}
+              colorScheme={progressColorScheme}
+              value={Number(progressAmount)}
+            />
+          </Tooltip>
+
+          <Box>
+            <Heading fontWeight={"semibold"} size={"lg"} alignItems="center">
+              Job #{jobId}
+            </Heading>
+            <Metadata metadata={jobDetails} />
+          </Box>
+          <Divider />
+
+          <Center
+            alignSelf={"center"}
+            data-testid={"events-timeline"}
+            flexDirection="column"
+            gap={2}
           >
-            Back to Jobs
-          </Button>
-        </Link>
+            {reversedEvents.map((event, idx) => {
+              return (
+                <EventTimeline
+                  isStart={idx === events.length - 1}
+                  key={event.id}
+                  title={event.name}
+                  kind={event.kind as any}
+                  metadata={event.event_metadata}
+                />
+              );
+            })}
+          </Center>
+        </VStack>
+      </Container>
 
-        <Tooltip label={`${progressAmount}% complete`}>
-          <Progress
-            borderRadius={"xl"}
-            isAnimated={Number(progressAmount) < 100}
-            size="md"
-            hasStripe={Number(progressAmount) < 100}
-            colorScheme={progressColorScheme}
-            value={Number(progressAmount)}
-          />
-        </Tooltip>
-
-        <Box>
-          <Heading fontWeight={"semibold"} size={"lg"} alignItems="center">
-            Job #{jobId}
-          </Heading>
-          <Metadata metadata={jobDetails} />
-        </Box>
-        <Divider />
-
-        <Center
-          alignSelf={"center"}
-          data-testid={"events-timeline"}
-          flexDirection="column"
-          gap={2}
-        >
-          {reversedEvents.map((event, idx) => {
-            return (
-              <EventTimeline
-                isStart={idx === events.length - 1}
-                key={event.id}
-                title={event.name}
-                kind={event.kind as any}
-                metadata={event.event_metadata}
-              />
-            );
-          })}
-        </Center>
-      </VStack>
-    </Container>
+      <Box align-self={"center"} m={10}>
+        <Text align={"center"}>
+          Issue with this job? Contact system administrator at{" "}
+          <Link
+            href={`mailto:admin@botimage.com?subject=Job #${jobId} Report`}
+            color={"#0072f5"}
+          >
+            admin@botimage.com
+          </Link>
+        </Text>
+      </Box>
+    </>
   );
 }
 
