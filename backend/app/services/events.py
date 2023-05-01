@@ -22,7 +22,7 @@ def create_event(db: Session, event: schemas.EventCreatePublic, provider):
         )
         params.update(dict(step_configuration_id=step_configuration.id))
 
-    db_event = models.Event(params)
+    db_event = models.Event(**params)
     db.add(db_event)
     db.commit()
     db.refresh(db_event)
