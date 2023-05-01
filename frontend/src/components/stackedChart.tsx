@@ -8,6 +8,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { fetchJobs } from "@/data";
 import { Bar } from "react-chartjs-2";
 
 ChartJS.register(
@@ -36,6 +37,8 @@ export const options = {
     },
   },
 };
+
+
 
 const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
