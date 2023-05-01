@@ -33,13 +33,13 @@ def get_job_configurations_by_tag(db: Session, tag: str, provider_id: int):
             models.JobConfiguration.tag == tag,
             models.JobConfiguration.provider_id == provider_id,
         )
-    ).all()
+        .all()
+    )
 
 
 def get_list_of_latest_versions_for_all_job_configurations(
     db: Session, provider_id: int
 ):
-
     job_configurations = (
         db.query(models.JobConfiguration)
         .order_by(desc(models.JobConfiguration.created_at))

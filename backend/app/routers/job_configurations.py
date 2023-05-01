@@ -74,12 +74,10 @@ def get_job_configurations_by_tag_and_version(
         ]
     # case 3: get all job configurations for a particular tag
     elif tag and version is None:
-        job_configurations = [
-            job_configuration
-            for job_configuration in services.get_job_configurations_by_tag(
-                db, tag, provider.id
-            )
-        ]
+        job_configurations = services.get_job_configurations_by_tag(
+            db, tag, provider.id
+        )
+
     # case 4: get latest version for all
     elif tag is None and (version is None or version == "latest"):
         job_configurations = (
