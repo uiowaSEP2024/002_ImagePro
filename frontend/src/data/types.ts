@@ -45,17 +45,6 @@ export type Job = {
   num_steps?: number;
 };
 
-export type JobWithTag = {
-  id: number;
-  provider_job_name: string;
-  customer_id: number;
-  provider_job_id: string;
-  provider_id: number;
-  created_at?: string;
-  num_steps?: number;
-  tag: string;
-};
-
 export type Key = {
   id: number;
   user_id: number,
