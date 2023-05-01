@@ -1,4 +1,4 @@
-import { Job, JobEvent, Key, Provider, User, UserCreate, JobConfiguration, JobWithTag } from "./types";
+import { Job, JobEvent, Key, Provider, User, UserCreate } from "./types";
 
 export const backendUrl = process.env.BACKEND_URL || "http://localhost:8000";
 
@@ -8,27 +8,6 @@ export const providers: Record<string, Provider> = {
     name: "BotImage"
   }
 };
-
-export const jobswithtags: JobWithTag[] = [
-  {
-    id: 1,
-    provider_job_name: "Fried Rice",
-    customer_id: 1,
-    provider_job_id: "236",
-    provider_id: 2,
-    created_at: "2021-03-01T00:00:00.000Z",
-    tag: "fried_rice",
-  },
-  {
-    id: 2,
-    provider_job_name: "Sushi",
-    customer_id: 1,
-    provider_job_id: "237",
-    provider_id: 2,
-    created_at: "2021-03-01T00:00:00.000Z",
-    tag: "sushi",
-  },
-]
 
 
 export const jobs: Record<string, Job> = {
