@@ -38,6 +38,10 @@ function JobPage({ initialIsPageLoading = true }) {
     return events.slice().reverse();
   }, [events]);
 
+
+  const numSteps = job?.job_configuration?.step_configurations.length
+
+
   useEffect(() => {
     async function loadJob() {
       const data = await fetchJobById(jobId as unknown as number);
@@ -60,16 +64,10 @@ function JobPage({ initialIsPageLoading = true }) {
       return "error";
     }
 
-    if (job?.num_steps) {
-      const numStepEvents = events.filter(
-        (event) => event.kind === "step"
-      ).length;
-      return numStepEvents === job.num_steps ? "success" : "pending";
-    }
 
     const hasCompleteEvent = events.some((event) => event.kind === "complete");
     return hasCompleteEvent ? "success" : "pending";
-  }, [events, job]);
+  }, [events]);
 
   useEffect(() => {
     const loadJobEvents = async () => {
@@ -99,12 +97,12 @@ function JobPage({ initialIsPageLoading = true }) {
     return () => clearInterval(interval);
   }, [job, jobId, jobStatus]);
 
-  // Derive the progress percentage based on either job.num_steps
+  // Derive the progress percentage based on either numSteps
   // if it is available, or do 0 -> 1 -> 50 -> 100 based on the presence of any events
   const progressAmount = useMemo(() => {
-    if (job?.num_steps) {
-      const stepEvents = events.filter((event) => event.kind === "step");
-      return ((stepEvents.length / job?.num_steps) * 100).toFixed(0);
+    if (numSteps) {
+      const stepEvents = events.filter((event) => !!event.step_configuration);
+      return ((stepEvents.length / numSteps) * 100).toFixed(0);
     }
 
     if (jobStatus === "success") {
@@ -116,7 +114,7 @@ function JobPage({ initialIsPageLoading = true }) {
     }
 
     return 1;
-  }, [job, jobStatus, events]);
+  }, [numSteps, jobStatus, events]);
 
   // Derive the color of the progress bar based on computed job status
   const progressColorScheme = useMemo((): ThemingProps["colorScheme"] => {
@@ -139,10 +137,10 @@ function JobPage({ initialIsPageLoading = true }) {
   }
 
   const jobDetails = {
-    "Job Name": job?.provider_job_name,
+    "Job Name": job?.job_configuration.name,
     "Requested At": new Date().toLocaleTimeString(),
     "Customer ID": job?.customer_id,
-    Provider: "-"
+    Provider: job?.provider.first_name
   };
 
   return (
@@ -193,7 +191,8 @@ function JobPage({ initialIsPageLoading = true }) {
                 <EventTimeline
                   isStart={idx === events.length - 1}
                   key={event.id}
-                  title={event.name}
+                  title={event?.step_configuration?.name || "-"}
+                  metadataConfigurations={event.step_configuration?.metadata_configurations}
                   kind={event.kind as any}
                   metadata={event.event_metadata}
                 />

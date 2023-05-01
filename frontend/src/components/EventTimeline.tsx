@@ -38,6 +38,7 @@ type EventTimelineProps = {
   kind: Kind;
   title: string;
   metadata?: Record<string, any>;
+  metadataConfigurations?: any[];
   isStart?: boolean;
 };
 
@@ -45,7 +46,8 @@ export const EventTimeline: React.FC<EventTimelineProps> = ({
   kind: propKind = "info",
   title,
   metadata,
-  isStart
+  isStart,
+  metadataConfigurations
 }) => {
   const kind = KINDS[propKind] || "info";
   const circleBg = bgColors[kind];
@@ -67,7 +69,7 @@ export const EventTimeline: React.FC<EventTimelineProps> = ({
   }, [metadata]);
 
   return (
-    <Flex width={"100%"} alignItems={"baseline"} flex={1} gap={4}>
+    <Flex width={"100%"} alignItems={"flex-start"} flex={1} gap={4}>
       <Flex gap={2} alignItems={"center"} direction={"column"}>
         <Center width={circleSize}>
           <Circle color={"white"} size={circleSize} bg={circleBg}>
@@ -87,7 +89,7 @@ export const EventTimeline: React.FC<EventTimelineProps> = ({
           {title}
         </Heading>
         {!!metadata && (
-          <Metadata fontSize={"sm"} ref={metadataRef} metadata={metadata} />
+          <Metadata configurations={metadataConfigurations} fontSize={"sm"} ref={metadataRef} metadata={metadata} />
         )}
       </Flex>
     </Flex>
