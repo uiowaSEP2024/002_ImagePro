@@ -38,3 +38,4 @@ class Event(EventCreate):
 
 class EventCreatePublic(EventCreate):
     provider_job_id: str
+    tag: str

@@ -13,7 +13,7 @@ class StepConfigurationBase(UniqueTagModel):
 
 
 class StepConfigurationCreate(StepConfigurationBase):
-    metadata_configurations: Optional[List[MetadataConfigurationCreate]]
+    metadata_configurations: Optional[List[MetadataConfigurationCreate]] = []
 
 
 class StepConfiguration(StepConfigurationBase):
