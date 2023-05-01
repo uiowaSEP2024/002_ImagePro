@@ -2,13 +2,13 @@ from fastapi import Depends, APIRouter
 from sqlalchemy.orm import Session
 from starlette import status
 
-from app import schemas, services
+from app import schemas, services, models
 from app.dependencies import get_db, get_user_from_api_key
 from app import schemas, services
 from app.dependencies import get_db, get_current_user_from_token
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from typing import Union
+from typing import Union, List
 
 router = APIRouter()
 router.tags = ["job_configurations"]
@@ -47,15 +47,29 @@ def get_job_configuration_by_id(
     return job_configuration
 
 
-@router.get("/job_configurations/", response_model=schemas.JobConfiguration)
+@router.get("/job_configurations/", response_model=List[schemas.JobConfiguration])
 def get_job_configurations_by_tag_and_version(
     tag: Union[str, None] = None,
     version: Union[str, None] = None,
     db: Session = Depends(get_db),
     provider=Depends(get_current_user_from_token),
 ):
+    job_configurations = None
 
-    # case 5: get specific configuration if both tag and version are provided
-    return services.get_job_configuration_by_composite_key(
-        db, provider.id, tag, version
-    )
+    # case 1: get specific configuration if both tag and version are provided
+    if tag and (type(version) is str and version is not "latest"):
+        job_configurations = [
+            services.get_job_configuration_by_composite_key(
+                db, provider.id, tag, version
+            )
+        ]
+
+    if job_configurations == None:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail={
+                "msg": f"Could not find job configuration(s) for tag: {tag} and version: {version}"
+            },
+        )
+
+    return job_configurations
