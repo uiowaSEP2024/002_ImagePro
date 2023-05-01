@@ -57,7 +57,8 @@ class TrackerApi:
 
     def __post(self, url, data):
         response = requests.post(url, json=data, headers=self.__headers)
-        print(response.json())
+        if response.status_code != 200:
+            print("Response Body (non-200 status code):", response.text)
         response.raise_for_status()
         return response
 
