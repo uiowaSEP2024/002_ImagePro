@@ -68,6 +68,14 @@ def get_job_configurations_by_tag_and_version(
         job_configurations = [
             services.get_job_configuration_by_tag(db, tag, provider.id)
         ]
+    # case 3: get all job configurations for a particular tag
+    elif tag and version is None:
+        job_configurations = [
+            job_configuration
+            for job_configuration in services.get_job_configurations_by_tag(
+                db, tag, provider.id
+            )
+        ]
 
     if job_configurations == None:
         raise HTTPException(
