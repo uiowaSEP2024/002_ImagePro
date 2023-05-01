@@ -1,6 +1,6 @@
 from sqlalchemy import Column, ForeignKey, UniqueConstraint
-from sqlalchemy.sql.sqltypes import String, Integer
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql.sqltypes import Integer, String
 
 from .base import Base, DateMixin
 
@@ -37,7 +37,8 @@ class StepConfiguration(Base, DateMixin):
         foreign_keys="Event.step_configuration_id",
     )
 
-    # metadata_configurations = relationship(
-    #     "MetadataConfiguration",
-    #     back_populates="step_configuration",
-    # )
+    metadata_configurations = relationship(
+        "MetadataConfiguration",
+        back_populates="step_configuration",
+        foreign_keys="MetadataConfiguration.step_configuration_id",
+    )
