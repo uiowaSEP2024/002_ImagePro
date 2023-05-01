@@ -56,6 +56,10 @@ def get_job_configurations_by_tag_and_version(
 ):
     job_configurations = None
 
+    job_configurations = (
+        services.get_list_of_latest_versions_for_all_job_configurations(db, provider.id)
+    )
+
     # case 1: get specific configuration if both tag and version are provided
     if tag and (type(version) is str and version != "latest"):
         job_configurations = [
@@ -76,8 +80,14 @@ def get_job_configurations_by_tag_and_version(
                 db, tag, provider.id
             )
         ]
-
-    if job_configurations == None:
+    # case 4: get latest version for all
+    elif tag is None and (version is None or version == "latest"):
+        job_configurations = (
+            services.get_list_of_latest_versions_for_all_job_configurations(
+                db, provider.id
+            )
+        )
+    if job_configurations is None:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail={
