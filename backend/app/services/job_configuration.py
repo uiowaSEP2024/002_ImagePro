@@ -10,6 +10,7 @@ from app import models, schemas
 from app.schemas.pydantic_version import PydanticVersion
 
 from deepdiff import DeepDiff
+import numpy as np
 
 
 def get_job_configuration_by_tag(db: Session, tag: str, provider_id: int):
@@ -32,15 +33,29 @@ def get_job_configurations_by_tag(db: Session, tag: str, provider_id: int):
             models.JobConfiguration.tag == tag,
             models.JobConfiguration.provider_id == provider_id,
         )
-    )
+    ).all()
 
 
-def get_latest_versions_for_all_configurations(db: Session, provider_id: int):
+def get_list_of_latest_versions_for_all_job_configurations(
+    db: Session, provider_id: int
+):
+
     job_configurations = (
         db.query(models.JobConfiguration)
         .order_by(desc(models.JobConfiguration.created_at))
         .filter(models.JobConfiguration.provider_id == provider_id)
-    )
+    ).all()
+
+    if job_configurations is not None:
+        tag_list = []
+        for job_configuration in job_configurations:
+            tag_list.append(job_configuration.tag)
+        unique_tag_list = np.unique(tag_list)
+        job_configurations = []
+        for tag in unique_tag_list:
+            job_configurations.append(
+                get_job_configuration_by_tag(db, tag, provider_id)
+            )
 
     return job_configurations
 
