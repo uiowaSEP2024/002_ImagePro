@@ -35,7 +35,7 @@ const JobTableCell: React.FC<JobTableCellProps> = ({ job, colId }) => {
   if (!job) return null;
 
   if (colId === "name") {
-    return <Text>{job.provider_job_name} </Text>;
+    return <Text>{job.job_configuration.name} </Text>;
   }
 
   if (colId === "reference_number") {
@@ -47,7 +47,7 @@ const JobTableCell: React.FC<JobTableCellProps> = ({ job, colId }) => {
   }
 
   if (colId === "provider_name") {
-    return <Text>--</Text>;
+    return <Text>{job.provider.first_name}</Text>;
   }
 
   if (colId === "status") {
@@ -83,7 +83,7 @@ function Jobs() {
       .slice()
       .filter(
         (item) =>
-          item.provider_job_name.toLowerCase().includes(search.toLowerCase()) ||
+          item.job_configuration.name.toLowerCase().includes(search.toLowerCase()) ||
           String(item.id).includes(search)
       );
   }, [jobs, search]);
