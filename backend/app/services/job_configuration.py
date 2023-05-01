@@ -12,13 +12,37 @@ from app.schemas.pydantic_version import PydanticVersion
 from deepdiff import DeepDiff
 
 
-def get_job_configuration_by_tag(db: Session, tag: str):
+def get_job_configuration_by_tag(db: Session, tag: str, provider_id: int):
     return (
         db.query(models.JobConfiguration)
         .order_by(desc(models.JobConfiguration.created_at))
-        .filter(models.JobConfiguration.tag == tag)
+        .filter(
+            models.JobConfiguration.tag == tag,
+            models.JobConfiguration.provider_id == provider_id,
+        )
         .first()
     )
+
+
+def get_job_configurations_by_tag(db: Session, tag: str, provider_id: int):
+    return (
+        db.query(models.JobConfiguration)
+        .order_by(desc(models.JobConfiguration.created_at))
+        .filter(
+            models.JobConfiguration.tag == tag,
+            models.JobConfiguration.provider_id == provider_id,
+        )
+    )
+
+
+def get_latest_versions_for_all_configurations(db: Session, provider_id: int):
+    job_configurations = (
+        db.query(models.JobConfiguration)
+        .order_by(desc(models.JobConfiguration.created_at))
+        .filter(models.JobConfiguration.provider_id == provider_id)
+    )
+
+    return job_configurations
 
 
 def create_job_configuration(

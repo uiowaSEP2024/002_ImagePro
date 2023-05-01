@@ -131,6 +131,8 @@ def test_create_job_configuration_with_same_information(
         response.json()["step_configurations"]
         == original_configuration.step_configurations
     )
+
+
 def test_get_job_configuration(
     app_client,
     db,
@@ -161,3 +163,39 @@ def test_get_job_configuration(
     assert response.json()["tag"] == job_configuration.tag
     assert response.json()["version"] == job_configuration.version
     assert response.json()["name"] == job_configuration.name
+
+
+def test_get_job_configurations_with_specific_tag_and_version(
+    app_client, db, random_provider_user_with_api_key, random_job_configuration_factory
+):
+    job_configuration = services.create_job_configuration(
+        db,
+        provider_id=random_provider_user_with_api_key.id,
+        job_configuration=schemas.JobConfigurationCreate(
+            tag="lung_cancer",
+            name="Lung Cancer",
+            version="1.0.0",
+            step_configurations=[],
+        ),
+    )
+
+    # Simulate user log in
+    response = app_client.post(
+        "/login",
+        data={"username": random_provider_user_with_api_key.email, "password": "abc"},
+    )
+
+    # Grab access token for user
+    access_token = response.json()["access_token"]
+
+    response = app_client.get(
+        f"/job_configurations/?tag={job_configuration.tag}&version={job_configuration.version}",
+        cookies={"access_token": access_token},
+    )
+
+    assert response.json()[0]["id"] == job_configuration.id
+    assert response.json()[0]["provider_id"] == job_configuration.provider_id
+    assert response.json()[0]["created_at"] is not None
+    assert response.json()[0]["tag"] == job_configuration.tag
+    assert response.json()[0]["version"] == job_configuration.version
+    assert response.json()[0]["name"] == job_configuration.name
