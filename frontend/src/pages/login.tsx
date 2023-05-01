@@ -1,15 +1,31 @@
 import React, { FormEvent } from "react";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import {AiFillEye, AiFillEyeInvisible} from "react-icons/ai";
-import { Container, Icon, IconButton, Text, Box, Input, Button, InputGroup, InputRightElement, Link, Center, VStack } from "@chakra-ui/react";
-import { ExternalLinkIcon } from "@chakra-ui/icons"
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import {
+  Container,
+  Icon,
+  IconButton,
+  Text,
+  Box,
+  Input,
+  Button,
+  InputGroup,
+  InputRightElement,
+  Link,
+  VStack,
+  Flex,
+  Heading
+} from "@chakra-ui/react";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { withUnauthenticated } from "@/components/withAuthenticated";
 
+import NextLink from "next/link";
+
 function Login() {
   const router = useRouter();
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -18,8 +34,7 @@ function Login() {
   const { logIn } = useAuthContext();
 
   const handleLogin = async (e: FormEvent) => {
-    e.preventDefault()
-    console.log("Submit")
+    e.preventDefault();
     try {
       const result = await logIn(email, password);
       if (result && result.user) {
@@ -33,35 +48,82 @@ function Login() {
   };
 
   return (
-    <Container display={"flex"} justifyContent={"center"} maxW={"container.lg"} py={"6"}>
-      <Center maxW={"xs"} display="flex" flexDirection='column' paddingTop={"20vh"}>
-        {!!notificationMessage && <Text>{notificationMessage}</Text>}
-        <form onSubmit={handleLogin}> 
-          <VStack spacing={4}>
-            <Text role="heading" fontSize='36px' as='b' marginBottom='10px'>Login</Text>
-            <Box w={"100%"} flex={1} bg='white' marginBlock='5px'>
-              <Text fontSize='lg' fontWeight='500'>Email</Text>
-              <Input variant='outline' placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
-            </Box>
-            <Box flex={1}  w={"100%"}  bg='white' marginBlock='5px'>
-              <Text fontSize='lg' fontWeight='500'>Password</Text>
-              <InputGroup>
-                <Input variant='outline' placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} type={showPassword ? "text" : "password"}/>
-                <InputRightElement w={"max-content"} height='100%'>
-                  {showPassword ? <IconButton variant={"ghost"} onClick={() => setShowPassword(!showPassword)} aria-label="Hidden-Password" icon={<Icon as={AiFillEye}/>}/> : 
-                    <IconButton variant={"ghost"} onClick={() => setShowPassword(!showPassword)} aria-label="Hidden-Password" icon={<Icon as={AiFillEyeInvisible}/>}/>}
-                </InputRightElement>
-              </InputGroup>
-            </Box>
-        
-            <Button type="submit" alignSelf={"flex-start"} name="login" role="button" data-testid="login" >Login</Button>
-        
-            <Link w='fit-content' href="/signup">
-        New user? Create an account. <ExternalLinkIcon mx='2px' mb='2px' />
-            </Link>
-          </VStack>
-        </form>
-      </Center>
+    <Container
+      pt={"15vh"}
+      display={"flex"}
+      justifyContent={"center"}
+      maxW={"md"}
+      alignItems={"center"}
+      flexDirection={"column"}
+    >
+      {!!notificationMessage && <Text>{notificationMessage}</Text>}
+      <Heading role="heading" fontSize="3xl" mb={4}>
+        Login
+      </Heading>
+      <form style={{ width: "100%" }} onSubmit={handleLogin}>
+        <VStack align={"flex-start"} spacing={4}>
+          <Box w={"100%"} flex={1} bg="white" marginBlock="5px">
+            <Text fontSize="md" fontWeight="medium">
+              Email
+            </Text>
+            <Input
+              variant="outline"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </Box>
+          <Box flex={1} w={"100%"} bg="white" marginBlock="5px">
+            <Text fontSize="md" fontWeight="medium">
+              Password
+            </Text>
+            <InputGroup>
+              <Input
+                variant="outline"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                type={showPassword ? "text" : "password"}
+              />
+              <InputRightElement w={"max-content"} height="100%">
+                {showPassword ? (
+                  <IconButton
+                    variant={"ghost"}
+                    onClick={() => setShowPassword(!showPassword)}
+                    aria-label="Hidden-Password"
+                    icon={<Icon as={AiFillEye} />}
+                  />
+                ) : (
+                  <IconButton
+                    data-testid="showbutton"
+                    variant={"ghost"}
+                    onClick={() => setShowPassword(!showPassword)}
+                    aria-label="Hidden-Password"
+                    icon={<Icon as={AiFillEyeInvisible} />}
+                  />
+                )}
+              </InputRightElement>
+            </InputGroup>
+          </Box>
+
+          <Button
+            type="submit"
+            alignSelf={"flex-start"}
+            name="login"
+            role="button"
+            data-testid="login"
+          >
+            Login
+          </Button>
+
+          <Link passHref as={NextLink} href="/signup">
+            <Flex alignItems={"center"} gap={2}>
+              <Text>New user? Create an account.</Text>
+              <ExternalLinkIcon bgSize={"sm"} />
+            </Flex>
+          </Link>
+        </VStack>
+      </form>
     </Container>
   );
 }
