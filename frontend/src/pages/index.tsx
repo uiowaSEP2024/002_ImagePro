@@ -58,7 +58,6 @@ export default function Home() {
           >
             <Button
               onClick={() => router.push(jobs)}
-              rounded={"full"}
               size={"lg"}
               fontWeight={"normal"}
               px={6}
@@ -70,7 +69,6 @@ export default function Home() {
             </Button>
             <Button
               onClick={() => router.push(analytics)}
-              rounded={"full"}
               size={"lg"}
               fontWeight={"normal"}
               bg={"#0072f5"}
