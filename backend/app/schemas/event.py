@@ -19,6 +19,7 @@ class EventBase(BaseModel):
 
 
 class EventCreate(EventBase):
+    name: Optional[str]
     kind: EventKindEnum
     event_metadata: Optional[Dict[str, Union[str, int, float, bool]]]
 
@@ -29,7 +30,7 @@ class Event(EventCreate):
     created_at: datetime = None
     updated_at: datetime = None
 
-    step_configuration: StepConfiguration
+    step_configuration: Optional[StepConfiguration]
 
     class Config:
         orm_mode = True
