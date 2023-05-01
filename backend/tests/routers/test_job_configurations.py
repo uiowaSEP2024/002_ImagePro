@@ -166,7 +166,7 @@ def test_get_job_configuration(
 
 
 def test_get_job_configurations_with_specific_tag_and_version(
-    app_client, db, random_provider_user_with_api_key, random_job_configuration_factory
+    app_client, db, random_provider_user_with_api_key
 ):
     job_configuration = services.create_job_configuration(
         db,
@@ -199,3 +199,52 @@ def test_get_job_configurations_with_specific_tag_and_version(
     assert response.json()[0]["tag"] == job_configuration.tag
     assert response.json()[0]["version"] == job_configuration.version
     assert response.json()[0]["name"] == job_configuration.name
+
+
+def test_job_configuration_with_tag_and_latest_version(
+    app_client, db, random_provider_user_with_api_key
+):
+    job_configuration1 = (
+        services.create_job_configuration(
+            db,
+            provider_id=random_provider_user_with_api_key.id,
+            job_configuration=schemas.JobConfigurationCreate(
+                tag="lung_cancer",
+                name="Lung Cancer",
+                version="1.0.0",
+                step_configurations=[],
+            ),
+        ),
+    )
+
+    job_configuration2 = services.create_job_configuration(
+        db,
+        provider_id=random_provider_user_with_api_key.id,
+        job_configuration=schemas.JobConfigurationCreate(
+            tag="lung_cancer",
+            name="Lung Cancer",
+            version="1.0.1",
+            step_configurations=[],
+        ),
+    )
+
+    # Simulate user log in
+    response = app_client.post(
+        "/login",
+        data={"username": random_provider_user_with_api_key.email, "password": "abc"},
+    )
+
+    # Grab access token for user
+    access_token = response.json()["access_token"]
+
+    response = app_client.get(
+        f"/job_configurations/?tag={job_configuration2.tag}&version={'latest'}",
+        cookies={"access_token": access_token},
+    )
+
+    assert response.json()[0]["id"] == job_configuration2.id
+    assert response.json()[0]["provider_id"] == job_configuration2.provider_id
+    assert response.json()[0]["created_at"] is not None
+    assert response.json()[0]["tag"] == job_configuration2.tag
+    assert response.json()[0]["version"] == job_configuration2.version
+    assert response.json()[0]["name"] == job_configuration2.name
