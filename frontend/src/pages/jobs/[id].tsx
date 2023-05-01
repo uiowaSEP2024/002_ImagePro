@@ -38,9 +38,10 @@ function JobPage({ initialIsPageLoading = true }) {
     return events.slice().reverse();
   }, [events]);
 
-
-  const numSteps = job?.job_configuration?.step_configurations.length
-
+  const numSteps = useMemo(
+    () => job?.job_configuration?.step_configurations.length,
+    [job]
+  );
 
   useEffect(() => {
     async function loadJob() {
@@ -63,7 +64,6 @@ function JobPage({ initialIsPageLoading = true }) {
     if (lastEvent?.kind === "error") {
       return "error";
     }
-
 
     const hasCompleteEvent = events.some((event) => event.kind === "complete");
     return hasCompleteEvent ? "success" : "pending";
@@ -136,9 +136,12 @@ function JobPage({ initialIsPageLoading = true }) {
     );
   }
 
+  const jobDate = job?.created_at ? new Date(job?.created_at) : null;
+
   const jobDetails = {
     "Job Name": job?.job_configuration.name,
-    "Requested At": new Date().toLocaleTimeString(),
+    Date: jobDate ? jobDate.toLocaleDateString() : "-",
+    Time: jobDate ? jobDate.toLocaleTimeString() : "-",
     "Customer ID": job?.customer_id,
     Provider: job?.provider.first_name
   };
@@ -169,6 +172,11 @@ function JobPage({ initialIsPageLoading = true }) {
               hasStripe={Number(progressAmount) < 100}
               colorScheme={progressColorScheme}
               value={Number(progressAmount)}
+              sx={{
+                "& > div:first-child": {
+                  transitionProperty: "width"
+                }
+              }}
             />
           </Tooltip>
 
@@ -192,7 +200,9 @@ function JobPage({ initialIsPageLoading = true }) {
                   isStart={idx === events.length - 1}
                   key={event.id}
                   title={event?.step_configuration?.name || "-"}
-                  metadataConfigurations={event.step_configuration?.metadata_configurations}
+                  metadataConfigurations={
+                    event.step_configuration?.metadata_configurations
+                  }
                   kind={event.kind as any}
                   metadata={event.event_metadata}
                 />
