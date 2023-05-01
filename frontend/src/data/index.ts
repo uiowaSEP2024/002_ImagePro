@@ -1,4 +1,4 @@
-import { Job, JobEvent, Key, Provider, User, UserCreate, JobConfiguration } from "./types";
+import { Job, JobEvent, Key, Provider, User, UserCreate, JobConfiguration, JobWithTag } from "./types";
 
 export const backendUrl = process.env.BACKEND_URL || "http://localhost:8000";
 
@@ -9,68 +9,26 @@ export const providers: Record<string, Provider> = {
   }
 };
 
-const jobConfig: JobConfiguration = {
-  job_configs: [
-    {
-      name: "Sample Job 1",
-      tag: "my_job1",
-      steps: [
-        {
-          name: "Say Hello",
-          tag: "say_hello",
-          points: 10,
-        },
-        {
-          name: "Generate Random Number",
-          tag: "random_number",
-          points: 15,
-        },
-        {
-          name: "Say Bye",
-          tag: "say_bye",
-          points: 10,
-        },
-      ],
-    },
-    {
-      name: "Sample Job 2",
-      tag: "my_job2",
-      steps: [
-        {
-          name: "Say Hello",
-          tag: "say_hello",
-          points: 10,
-        },
-        {
-          name: "Generate Random Number",
-          tag: "random_number",
-          points: 15,
-        },
-      ],
-    },
-    {
-      name: "Sample Job 3",
-      tag: "my_job3",
-      steps: [
-        {
-          name: "Say Hello",
-          tag: "say_hello",
-          points: 10,
-        },
-        {
-          name: "Generate Random Number",
-          tag: "random_number",
-          points: 15,
-        },
-        {
-          name: "Say Bye",
-          tag: "say_bye",
-          points: 10,
-        },
-      ],
-    },
-  ],
-};
+export const jobswithtags: JobWithTag[] = [
+  {
+    id: 1,
+    provider_job_name: "Fried Rice",
+    customer_id: 1,
+    provider_job_id: "236",
+    provider_id: 2,
+    created_at: "2021-03-01T00:00:00.000Z",
+    tag: "fried_rice",
+  },
+  {
+    id: 2,
+    provider_job_name: "Sushi",
+    customer_id: 1,
+    provider_job_id: "237",
+    provider_id: 2,
+    created_at: "2021-03-01T00:00:00.000Z",
+    tag: "sushi",
+  },
+]
 
 
 export const jobs: Record<string, Job> = {
