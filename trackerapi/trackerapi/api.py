@@ -71,7 +71,6 @@ class TrackerApi:
         self.__get(self.urls.api_key_verify_url)
 
     def register_job_config(self, config: JobConfig):
-        print(config.dict())
         self.__post(self.urls.jobs_config_url, config.dict())
 
     def create_job(self, provider_job_id: str, customer_id: int, tag: str):
