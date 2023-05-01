@@ -1,15 +1,13 @@
 import json
 from typing import Union
 
+from app import models, schemas
+from app.schemas.pydantic_version import PydanticVersion
+from deepdiff import DeepDiff
 from fastapi import HTTPException
 from sqlalchemy import desc
 from sqlalchemy.orm import Session
 from starlette import status
-
-from app import models, schemas
-from app.schemas.pydantic_version import PydanticVersion
-
-from deepdiff import DeepDiff
 
 
 def get_job_configuration_by_tag(db: Session, tag: str):
@@ -42,13 +40,24 @@ def create_job_configuration(
 
         # Create nested step_configurations for the job
         for step_configuration in job_configuration.step_configurations:
-            db_job_configuration.step_configurations.append(
-                models.StepConfiguration(
-                    name=step_configuration.name,
-                    tag=step_configuration.tag,
-                    points=step_configuration.points,
-                )
+            db_step_configuration = models.StepConfiguration(
+                name=step_configuration.name,
+                tag=step_configuration.tag,
+                points=step_configuration.points,
             )
+
+            step_configuration: schemas.StepConfigurationCreate = step_configuration
+
+            for metadata_configuration in step_configuration.metadata_configurations:
+                db_step_configuration.metadata_configurations.append(
+                    models.MetadataConfiguration(
+                        name=metadata_configuration.name,
+                        kind=metadata_configuration.kind,
+                        units=metadata_configuration.units,
+                    )
+                )
+
+            db_job_configuration.step_configurations.append(db_step_configuration)
 
         db.add(db_job_configuration)
         db.commit()
@@ -66,7 +75,13 @@ def create_job_configuration(
         {
             **old_configuration.__dict__,
             "step_configurations": [
-                s.__dict__ for s in old_configuration.step_configurations
+                {
+                    **s.__dict__,
+                    "metadata_configurations": [
+                        m.__dict__ for m in s.metadata_configurations
+                    ],
+                }
+                for s in old_configuration.step_configurations
             ],
         }
     )
