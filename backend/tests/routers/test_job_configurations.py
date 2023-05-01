@@ -330,7 +330,6 @@ def test_get_all_configurations_for_tag_with_missing_version(
 def test_get_list_of_latest_versions_for_all_job_configurations_with_version_latest(
     app_client, db, random_provider_user_with_api_key
 ):
-
     job_configuration1 = services.create_job_configuration(
         db,
         provider_id=random_provider_user_with_api_key.id,
@@ -392,19 +391,19 @@ def test_get_list_of_latest_versions_for_all_job_configurations_with_version_lat
     assert response.status_code == 200
     assert len(response.json()) == 2
 
-    assert response.json()[0]["id"] == job_configuration4.id
-    assert response.json()[0]["provider_id"] == job_configuration4.provider_id
+    assert response.json()[0]["id"] == job_configuration3.id
+    assert response.json()[0]["provider_id"] == job_configuration3.provider_id
     assert response.json()[0]["created_at"] is not None
-    assert response.json()[0]["tag"] == job_configuration4.tag
-    assert response.json()[0]["version"] == job_configuration4.version
-    assert response.json()[0]["name"] == job_configuration4.name
+    assert response.json()[0]["tag"] == job_configuration3.tag
+    assert response.json()[0]["version"] == job_configuration3.version
+    assert response.json()[0]["name"] == job_configuration3.name
 
-    assert response.json()[1]["id"] == job_configuration3.id
-    assert response.json()[1]["provider_id"] == job_configuration3.provider_id
+    assert response.json()[1]["id"] == job_configuration4.id
+    assert response.json()[1]["provider_id"] == job_configuration4.provider_id
     assert response.json()[1]["created_at"] is not None
-    assert response.json()[1]["tag"] == job_configuration3.tag
-    assert response.json()[1]["version"] == job_configuration3.version
-    assert response.json()[1]["name"] == job_configuration3.name
+    assert response.json()[1]["tag"] == job_configuration4.tag
+    assert response.json()[1]["version"] == job_configuration4.version
+    assert response.json()[1]["name"] == job_configuration4.name
 
 
 def test_get_list_of_latest_versions_for_all_job_configurations_with_empty_query_params(
@@ -471,16 +470,16 @@ def test_get_list_of_latest_versions_for_all_job_configurations_with_empty_query
     assert response.status_code == 200
     assert len(response.json()) == 2
 
-    assert response.json()[0]["id"] == job_configuration4.id
-    assert response.json()[0]["provider_id"] == job_configuration4.provider_id
+    assert response.json()[0]["id"] == job_configuration3.id
+    assert response.json()[0]["provider_id"] == job_configuration3.provider_id
     assert response.json()[0]["created_at"] is not None
-    assert response.json()[0]["tag"] == job_configuration4.tag
-    assert response.json()[0]["version"] == job_configuration4.version
-    assert response.json()[0]["name"] == job_configuration4.name
+    assert response.json()[0]["tag"] == job_configuration3.tag
+    assert response.json()[0]["version"] == job_configuration3.version
+    assert response.json()[0]["name"] == job_configuration3.name
 
-    assert response.json()[1]["id"] == job_configuration3.id
-    assert response.json()[1]["provider_id"] == job_configuration3.provider_id
+    assert response.json()[1]["id"] == job_configuration4.id
+    assert response.json()[1]["provider_id"] == job_configuration4.provider_id
     assert response.json()[1]["created_at"] is not None
-    assert response.json()[1]["tag"] == job_configuration3.tag
-    assert response.json()[1]["version"] == job_configuration3.version
-    assert response.json()[1]["name"] == job_configuration3.name
+    assert response.json()[1]["tag"] == job_configuration4.tag
+    assert response.json()[1]["version"] == job_configuration4.version
+    assert response.json()[1]["name"] == job_configuration4.name
