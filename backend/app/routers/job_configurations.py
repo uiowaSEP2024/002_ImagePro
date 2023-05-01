@@ -57,11 +57,16 @@ def get_job_configurations_by_tag_and_version(
     job_configurations = None
 
     # case 1: get specific configuration if both tag and version are provided
-    if tag and (type(version) is str and version is not "latest"):
+    if tag and (type(version) is str and version != "latest"):
         job_configurations = [
             services.get_job_configuration_by_composite_key(
                 db, provider.id, tag, version
             )
+        ]
+    # case 2: get the latest job configuration for a specific tag
+    elif tag and version == "latest":
+        job_configurations = [
+            services.get_job_configuration_by_tag(db, tag, provider.id)
         ]
 
     if job_configurations == None:
