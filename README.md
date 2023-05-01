@@ -47,8 +47,7 @@ Outside of the BotImage case study, the cloud solution we are developing should 
 
 *Database*: Postgres
 
-*Testing*: Jest, Playright, Pytest, Nose, Jasmine, Selenium
-
+*Testing*: Jest, Pytest
 **Sprint 1**
 
 **Goal:** Research and AWS Setup
