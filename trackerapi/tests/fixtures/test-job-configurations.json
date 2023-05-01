@@ -4,7 +4,7 @@
     {
       "name": "Test Schema Job",
       "tag": "test_schema_job",
-      "steps": [
+      "step_configurations": [
         {
           "name": "Step 1",
           "tag": "step_1",
