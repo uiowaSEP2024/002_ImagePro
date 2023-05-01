@@ -40,24 +40,18 @@ def get_job_configurations_by_tag(db: Session, tag: str, provider_id: int):
 def get_list_of_latest_versions_for_all_job_configurations(
     db: Session, provider_id: int
 ):
-    job_configurations = (
+    return (
         db.query(models.JobConfiguration)
-        .order_by(desc(models.JobConfiguration.created_at))
         .filter(models.JobConfiguration.provider_id == provider_id)
-    ).all()
-
-    if job_configurations is not None:
-        tag_list = []
-        for job_configuration in job_configurations:
-            tag_list.append(job_configuration.tag)
-        unique_tag_list = np.unique(tag_list)
-        job_configurations = []
-        for tag in unique_tag_list:
-            job_configurations.append(
-                get_job_configuration_by_tag(db, tag, provider_id)
-            )
-
-    return job_configurations
+        .order_by(
+            models.JobConfiguration.tag.desc(),
+            models.JobConfiguration.created_at.desc(),
+        )
+        .distinct(
+            models.JobConfiguration.tag,
+        )
+        .all()
+    )
 
 
 def create_job_configuration(
