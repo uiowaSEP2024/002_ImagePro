@@ -1,9 +1,8 @@
-from .base import Base
-from .user import User
 from .api_key import Apikey
-from .job import Job
+from .base import Base
 from .event import Event
+from .job import Job
 from .job_configuration import JobConfiguration
+from .metadata_configuration import MetadataConfiguration
 from .step_configuration import StepConfiguration
-
-# from .metadata_configuration import MetadataConfiguration
+from .user import User
