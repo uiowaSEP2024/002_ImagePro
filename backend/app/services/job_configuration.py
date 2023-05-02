@@ -1,6 +1,7 @@
 import json
 from typing import Union
 
+from deepdiff import DeepDiff
 from fastapi import HTTPException
 from sqlalchemy import desc
 from sqlalchemy.orm import Session
@@ -8,9 +9,6 @@ from starlette import status
 
 from app import models, schemas
 from app.schemas.pydantic_version import PydanticVersion
-
-from deepdiff import DeepDiff
-import numpy as np
 
 
 def get_job_configuration_by_tag(db: Session, tag: str, provider_id: int):
