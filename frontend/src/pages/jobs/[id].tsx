@@ -173,7 +173,7 @@ function JobPage({ initialIsPageLoading = true }) {
               colorScheme={progressColorScheme}
               value={Number(progressAmount)}
               sx={{
-                "& > div:first-child": {
+                "& > div:first-of-type": {
                   transitionProperty: "width"
                 }
               }}
