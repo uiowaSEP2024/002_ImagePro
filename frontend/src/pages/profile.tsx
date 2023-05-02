@@ -10,7 +10,8 @@ import {
   GridItem,
   Container,
   Heading,
-  Link
+  Link,
+  Text
 } from "@chakra-ui/react";
 import { fetchJobs } from "@/data";
 import { Job } from "@/data/types";
@@ -120,7 +121,8 @@ function Profile() {
             borderRadius="lg"
             overflow="hidden"
           >
-            <Heading>{job.provider_job_name}</Heading>
+            <Heading>{job.job_configuration.name} </Heading>
+            <Text>#{job.id}</Text>
             <chakra.p>
               See this job{" "}
               <Link as={NextLink} href={`/jobs/${job.id}`} color="blue.500">

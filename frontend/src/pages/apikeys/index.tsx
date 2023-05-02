@@ -1,5 +1,5 @@
 import { fetchAPIkeys, fetchGenAPIKeys } from "@/data";
-import { Key } from "@/data/types";
+import { ApiKey } from "@/data/types";
 import React, { useCallback, useMemo } from "react";
 import { useState, useEffect } from "react";
 import {
@@ -29,7 +29,7 @@ import { withAuthenticated } from "@/components/withAuthenticated";
 function ApiKeys() {
   const { currentUser } = useAuthContext();
   const [note, setNote] = useState("");
-  const [keys, setKeys] = useState<Key[]>([]);
+  const [keys, setKeys] = useState<ApiKey[]>([]);
   const [key, setKey] = useState("");
   const [firstNote, setFirstNote] = useState("");
   const cancelRef = React.useRef(null);

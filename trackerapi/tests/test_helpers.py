@@ -9,7 +9,8 @@ from trackerapi.helpers import DuplicateJobConfigException, MissingJobConfigExce
 test_job_config = JobConfig(
     name="Test Job",
     tag="test_job",
-    steps=[StepConfig(name="Test Step", tag="test_step", points=10)],
+    step_configurations=[StepConfig(name="Test Step", tag="test_step", points=10)],
+    version="1.0.0",
 )
 
 
@@ -22,7 +23,9 @@ def test_job_config_manager_init_from_configs():
     assert (
         config_result.tag == "test_job"
     ), "Expected config tag to be same as provided in init"
-    assert len(config_result.steps) == 1, "Expected config's steps to be present"
+    assert (
+        len(config_result.step_configurations) == 1
+    ), "Expected config's steps to be present"
 
     assert (
         len(job_config_manager.tags) == 1
@@ -52,11 +55,11 @@ def test_job_config_manager_init_from_config_file():
     ), "Expected config tag to be same as provided in configuration file"
 
     assert (
-        len(config_result.steps) == 1
-    ), "Expected config's steps to be same as configuration file"
+        len(config_result.step_configurations) == 1
+    ), "Expected config's step_configurations to be same as configuration file"
     assert (
-        len(config_b_result.steps) == 2
-    ), "Expected config's steps to be same as configuration file"
+        len(config_b_result.step_configurations) == 2
+    ), "Expected config's step_configurations to be same as configuration file"
 
     assert (
         len(job_config_manager.tags) == 2

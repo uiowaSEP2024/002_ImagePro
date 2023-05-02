@@ -50,7 +50,22 @@ jest.spyOn(data, "fetchJobs").mockImplementation(() =>
       customer_id: 1,
       provider_job_id: "236",
       provider_id: 2,
-      created_at: "2021-03-01T00:00:00.000Z"
+      created_at: "2021-03-01T00:00:00.000Z",
+      job_configuration_id: 1,
+      job_configuration: {
+        id: 1,
+        name: "Kidney Cancer Detection",
+        tag: "kidney_cancer_detection",
+        step_configurations: [],
+        version: "1.0.0",
+        provider_id: 1
+      },
+      provider: {
+        id: 1,
+        first_name: "BotImage",
+        last_name: "",
+        email: "botimage@gmail.com"
+      }
     }
   ])
 );
@@ -62,7 +77,22 @@ jest.spyOn(data, "fetchJobById").mockImplementation(() =>
     customer_id: 1,
     provider_job_id: "236",
     provider_id: 2,
-    created_at: "2021-03-01T00:00:00.000Z"
+    created_at: "2021-03-01T00:00:00.000Z",
+    job_configuration_id: 1,
+    job_configuration: {
+      id: 1,
+      name: "Kidney Cancer Detection",
+      tag: "kidney_cancer_detection",
+      step_configurations: [],
+      version: "1.0.0",
+      provider_id: 1
+    },
+    provider: {
+      id: 1,
+      first_name: "BotImage",
+      last_name: "",
+      email: "botimage@gmail.com"
+    }
   })
 );
 
