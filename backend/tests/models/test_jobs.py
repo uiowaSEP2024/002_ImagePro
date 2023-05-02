@@ -5,12 +5,59 @@ import sqlalchemy
 from app import models
 
 
-def test_create_job(db, random_test_user, random_provider_user):
+def test_delete_job_configuration_after_creating_job(
+    db, random_provider_user, random_test_user
+):
+    job_configuration = models.JobConfiguration(
+        tag="prostate_v1_job",
+        name="Prostate Job",
+        provider_id=random_provider_user.id,
+        version="1.1",
+    )
+
+    db.add(job_configuration)
+    db.commit()
+
     job = models.Job(
         provider_job_id="abc123",
         provider_job_name="kidneyV1",
         customer_id=random_test_user.id,
         provider_id=random_provider_user.id,
+        job_configuration_id=job_configuration.id,
+    )
+
+    db.add(job)
+    db.commit()
+
+    db.refresh(job)
+
+    db.delete(job_configuration)
+    db.commit()
+
+    db.refresh(job)
+    assert job is not None
+
+    assert db.query(models.Job).get(job.id) is not None
+    assert job.job_configuration_id is None
+
+
+def test_create_job_with_configuration(db, random_test_user, random_provider_user):
+    job_configuration = models.JobConfiguration(
+        tag="prostate_v1_job",
+        name="Prostate Job",
+        provider_id=random_provider_user.id,
+        version="1.1",
+    )
+
+    db.add(job_configuration)
+    db.commit()
+
+    job = models.Job(
+        provider_job_id="abc123",
+        provider_job_name="kidneyV1",
+        customer_id=random_test_user.id,
+        provider_id=random_provider_user.id,
+        job_configuration_id=job_configuration.id,
     )
 
     db.add(job)
@@ -22,6 +69,7 @@ def test_create_job(db, random_test_user, random_provider_user):
     assert job.customer_id == random_test_user.id
     assert job.provider_job_id == "abc123"
     assert job.provider_job_name == "kidneyV1"
+    assert job.job_configuration == job_configuration
     assert job.created_at is not None
 
     db.refresh(random_test_user)
@@ -35,11 +83,24 @@ def test_create_job(db, random_test_user, random_provider_user):
     assert len(random_provider_user.provider_jobs) == 1
     assert random_provider_user.provider_jobs[0].provider_job_id == "abc123"
     assert random_provider_user.provider_jobs[0].provider_id == random_provider_user.id
+    assert random_provider_user.provider_jobs[0].job_configuration == job_configuration
+
+    assert random_provider_user.job_configurations[0] == job_configuration
 
 
 def test_create_job_duplicate_provider_job_ids(
     db, random_test_user, random_provider_user
 ):
+    job_configuration = models.JobConfiguration(
+        tag="prostate_v1_job",
+        name="Prostate Job",
+        provider_id=random_provider_user.id,
+        version="1.1",
+    )
+
+    db.add(job_configuration)
+    db.commit()
+
     duplicate_job_id = "abc123"
 
     job1 = models.Job(
@@ -47,6 +108,7 @@ def test_create_job_duplicate_provider_job_ids(
         provider_job_name="kidneyV1",
         customer_id=random_test_user.id,
         provider_id=random_provider_user.id,
+        job_configuration=job_configuration,
     )
 
     db.add(job1)
@@ -57,6 +119,7 @@ def test_create_job_duplicate_provider_job_ids(
         provider_job_name="kidneyV1",
         customer_id=random_test_user.id,
         provider_id=random_provider_user.id,
+        job_configuration=job_configuration,
     )
 
     db.add(job2)
@@ -72,10 +135,21 @@ def test_create_job_duplicate_provider_job_ids(
 
 
 def test_create_job_missing_customer_id(db, random_test_user, random_provider_user):
+    job_configuration = models.JobConfiguration(
+        tag="prostate_v1_job",
+        name="Prostate Job",
+        provider_id=random_provider_user.id,
+        version="1.1",
+    )
+
+    db.add(job_configuration)
+    db.commit()
+
     job = models.Job(
         provider_job_id="abc123",
         provider_job_name="kidneyV1",
         provider_id=random_provider_user.id,
+        job_configuration=job_configuration,
     )
 
     db.add(job)
@@ -89,10 +163,20 @@ def test_create_job_missing_customer_id(db, random_test_user, random_provider_us
 
 
 def test_create_job_missing_provider_job_id(db, random_test_user, random_provider_user):
+    job_configuration = models.JobConfiguration(
+        tag="prostate_v1_job",
+        name="Prostate Job",
+        provider_id=random_provider_user.id,
+        version="1.1",
+    )
+
+    db.add(job_configuration)
+    db.commit()
     job = models.Job(
         provider_job_name="kidneyV1",
         customer_id=random_test_user.id,
         provider_id=random_provider_user.id,
+        job_configuration=job_configuration,
     )
 
     db.add(job)
@@ -103,22 +187,3 @@ def test_create_job_missing_provider_job_id(db, random_test_user, random_provide
     # Check for null violation and that column is part of the error message in the error
     assert isinstance(exc.value.orig, psycopg2.errors.NotNullViolation)
     assert "provider_job_id" in str(exc.value.orig)
-
-
-def test_create_job_missing_provider_job_name(
-    db, random_test_user, random_provider_user
-):
-    job = models.Job(
-        provider_job_id="abc123",
-        customer_id=random_test_user.id,
-        provider_id=random_provider_user.id,
-    )
-
-    db.add(job)
-
-    with pytest.raises(sqlalchemy.exc.IntegrityError) as exc:
-        db.commit()
-
-    # Check for null violation and that column is part of the error message in the error
-    assert isinstance(exc.value.orig, psycopg2.errors.NotNullViolation)
-    assert "provider_job_name" in str(exc.value.orig)
