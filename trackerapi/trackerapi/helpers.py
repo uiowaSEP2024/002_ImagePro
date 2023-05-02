@@ -1,8 +1,8 @@
-from pathlib import Path
-from typing import List, Dict
-
-from trackerapi.schemas import JobConfigs, JobConfig
 import json
+from pathlib import Path
+from typing import Dict, List, Union
+
+from trackerapi.schemas import JobConfig, JobConfigs
 
 
 def load_job_configurations_from_json(filepath: str):
@@ -31,7 +31,9 @@ class JobConfigManager:
     """
 
     def __init__(
-        self, configs: List[JobConfig] = None, configurations_file: Path | str = None
+        self,
+        configs: List[JobConfig] = None,
+        configurations_file: Union[Path, str] = None,
     ):
         self.config_dict: Dict[str, JobConfig] = {}
         self.init_from_job_configs(configs) if configs else None
@@ -52,7 +54,7 @@ class JobConfigManager:
             )
         self.config_dict[config.tag] = config
 
-    def init_from_bulk_job_config_json(self, filepath: Path | str):
+    def init_from_bulk_job_config_json(self, filepath: Union[Path, str]):
         """
         Initializes the job config dictionary from the filepath to a json configuration
         :param filepath:

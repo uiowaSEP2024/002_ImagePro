@@ -169,6 +169,8 @@ export interface components {
       };
       /** Provider Job Id */
       provider_job_id: string;
+      /** Tag */
+      tag?: string;
     };
     /**
      * EventKindEnum 
@@ -195,6 +197,11 @@ export interface components {
       job_configuration_id: number;
       provider: components["schemas"]["User"];
       job_configuration: components["schemas"]["JobConfiguration"];
+      /**
+       * Events 
+       * @default []
+       */
+      events?: (components["schemas"]["Event"])[];
       /**
        * Created At 
        * Format: date-time
@@ -322,7 +329,10 @@ export interface components {
       name: string;
       /** Points */
       points: number;
-      /** Metadata Configurations */
+      /**
+       * Metadata Configurations 
+       * @default []
+       */
       metadata_configurations?: (components["schemas"]["MetadataConfigurationCreate"])[];
     };
     /** Token */

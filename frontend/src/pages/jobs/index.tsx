@@ -13,7 +13,8 @@ import {
   Tr,
   Th,
   Tbody,
-  Td
+  Td,
+  Tag
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import React, { useMemo } from "react";
@@ -51,7 +52,14 @@ const JobTableCell: React.FC<JobTableCellProps> = ({ job, colId }) => {
   }
 
   if (colId === "status") {
-    return <Text>--</Text>;
+    const numCompletedSteps = job.events?.filter(
+      (event) => event.kind === "step" || event.kind === "complete"
+    ).length;
+    const numSteps = job.job_configuration.step_configurations.length;
+    const status = numCompletedSteps === numSteps ? "Done" : "Waiting";
+    return (
+      <Tag colorScheme={status === "Done" ? "green" : "yellow"}>{status}</Tag>
+    );
   }
 
   return null;
@@ -83,8 +91,9 @@ function Jobs() {
       .slice()
       .filter(
         (item) =>
-          item.job_configuration.name.toLowerCase().includes(search.toLowerCase()) ||
-          String(item.id).includes(search)
+          item.job_configuration.name
+            .toLowerCase()
+            .includes(search.toLowerCase()) || String(item.id).includes(search)
       );
   }, [jobs, search]);
 
