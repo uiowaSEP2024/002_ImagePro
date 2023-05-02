@@ -16,7 +16,8 @@ class Config:
     def __setup_settings(
         self, app_env: Literal["production", "development", "test"] = None
     ):
-        app_env = app_env if app_env else os.environ.get("APP_ENV")
+        app_env_environ = os.environ.get("APP_ENV")
+        app_env = app_env if app_env else app_env_environ if app_env_environ else ""
 
         # Load settings corresponding to the APP_ENV
         settings_cls = settings_dict.get(app_env.lower())
@@ -24,7 +25,7 @@ class Config:
         if not settings_cls:
             valid_keys = " | ".join(settings_dict.keys())
             raise EnvironmentError(
-                f"Invalid value for APP_ENV environment variable. Expected any of: {valid_keys} \n"
+                f"Invalid value for APP_ENV environment variable: '{app_env}'. Expected any of: {valid_keys} \n"
                 f"If running command from a shell, run the command as follows:\n"
                 f"\tAPP_ENV=<environment> <command>\n"
                 f"Alternatively, if running via AWS Lambda, set the APP_ENV at\n"

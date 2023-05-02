@@ -1,8 +1,10 @@
 from datetime import datetime
+from enum import Enum
+from typing import Dict, Optional, Union
 
 from pydantic import BaseModel, Json
-from typing import Union, Dict, Optional
-from enum import Enum
+
+from .step_configuration import StepConfiguration
 
 
 class EventKindEnum(str, Enum):
@@ -17,8 +19,8 @@ class EventBase(BaseModel):
 
 
 class EventCreate(EventBase):
+    name: Optional[str]
     kind: EventKindEnum
-    name: str
     event_metadata: Optional[Dict[str, Union[str, int, float, bool]]]
 
 
@@ -28,9 +30,12 @@ class Event(EventCreate):
     created_at: datetime = None
     updated_at: datetime = None
 
+    step_configuration: Optional[StepConfiguration]
+
     class Config:
         orm_mode = True
 
 
 class EventCreatePublic(EventCreate):
     provider_job_id: str
+    tag: Optional[str]

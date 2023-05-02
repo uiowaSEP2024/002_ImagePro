@@ -13,12 +13,14 @@ import {
   Progress,
   Tooltip,
   Divider,
+  Link,
   Box,
+  Text,
   Spinner,
   Center,
   ThemingProps
 } from "@chakra-ui/react";
-import Link from "next/link";
+//import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 
@@ -35,6 +37,11 @@ function JobPage({ initialIsPageLoading = true }) {
   const reversedEvents = useMemo(() => {
     return events.slice().reverse();
   }, [events]);
+
+  const numSteps = useMemo(
+    () => job?.job_configuration?.step_configurations.length,
+    [job]
+  );
 
   useEffect(() => {
     async function loadJob() {
@@ -58,16 +65,9 @@ function JobPage({ initialIsPageLoading = true }) {
       return "error";
     }
 
-    if (job?.num_steps) {
-      const numStepEvents = events.filter(
-        (event) => event.kind === "step"
-      ).length;
-      return numStepEvents === job.num_steps ? "success" : "pending";
-    }
-
     const hasCompleteEvent = events.some((event) => event.kind === "complete");
     return hasCompleteEvent ? "success" : "pending";
-  }, [events, job]);
+  }, [events]);
 
   useEffect(() => {
     const loadJobEvents = async () => {
@@ -97,12 +97,12 @@ function JobPage({ initialIsPageLoading = true }) {
     return () => clearInterval(interval);
   }, [job, jobId, jobStatus]);
 
-  // Derive the progress percentage based on either job.num_steps
+  // Derive the progress percentage based on either numSteps
   // if it is available, or do 0 -> 1 -> 50 -> 100 based on the presence of any events
   const progressAmount = useMemo(() => {
-    if (job?.num_steps) {
-      const stepEvents = events.filter((event) => event.kind === "step");
-      return ((stepEvents.length / job?.num_steps) * 100).toFixed(0);
+    if (numSteps) {
+      const stepEvents = events.filter((event) => !!event.step_configuration);
+      return ((stepEvents.length / numSteps) * 100).toFixed(0);
     }
 
     if (jobStatus === "success") {
@@ -114,7 +114,7 @@ function JobPage({ initialIsPageLoading = true }) {
     }
 
     return 1;
-  }, [job, jobStatus, events]);
+  }, [numSteps, jobStatus, events]);
 
   // Derive the color of the progress bar based on computed job status
   const progressColorScheme = useMemo((): ThemingProps["colorScheme"] => {
@@ -136,67 +136,94 @@ function JobPage({ initialIsPageLoading = true }) {
     );
   }
 
+  const jobDate = job?.created_at ? new Date(job?.created_at) : null;
+
   const jobDetails = {
-    "Job Name": job?.provider_job_name,
-    "Requested At": new Date().toLocaleTimeString(),
+    "Job Name": job?.job_configuration.name,
+    Date: jobDate ? jobDate.toLocaleDateString() : "-",
+    Time: jobDate ? jobDate.toLocaleTimeString() : "-",
     "Customer ID": job?.customer_id,
-    Provider: "-"
+    Provider: job?.provider.first_name
   };
 
   return (
-    <Container maxW="container.lg" py={"6"}>
-      <VStack gap={"4"} w={"full"} align="left">
-        <Link href={"/jobs"} passHref>
-          <Button
-            size={"md"}
-            fontWeight={"semibold"}
-            variant={"link"}
-            _hover={{}}
-            leftIcon={<ArrowBackIcon />}
+    <>
+      <Container maxW="container.lg" py={"6"}>
+        <VStack gap={"4"} w={"full"} align="left">
+          <Link data-testid="backlink" href={"/jobs"}>
+            <Button
+              size={"md"}
+              fontWeight={"semibold"}
+              variant={"link"}
+              _hover={{}}
+              data-testid="backarrow"
+              leftIcon={<ArrowBackIcon />}
+            >
+              Back to Jobs
+            </Button>
+          </Link>
+
+          <Tooltip label={`${progressAmount}% complete`}>
+            <Progress
+              borderRadius={"xl"}
+              isAnimated={Number(progressAmount) < 100}
+              size="md"
+              data-testid="progressFull"
+              hasStripe={Number(progressAmount) < 100}
+              colorScheme={progressColorScheme}
+              value={Number(progressAmount)}
+              sx={{
+                "& > div:first-of-type": {
+                  transitionProperty: "width"
+                }
+              }}
+            />
+          </Tooltip>
+
+          <Box>
+            <Heading fontWeight={"semibold"} size={"lg"} alignItems="center">
+              Job #{jobId}
+            </Heading>
+            <Metadata metadata={jobDetails} />
+          </Box>
+          <Divider />
+
+          <Center
+            alignSelf={"center"}
+            data-testid={"events-timeline"}
+            flexDirection="column"
+            gap={2}
           >
-            Back to Jobs
-          </Button>
-        </Link>
+            {reversedEvents.map((event, idx) => {
+              return (
+                <EventTimeline
+                  isStart={idx === events.length - 1}
+                  key={event.id}
+                  title={event?.step_configuration?.name || "-"}
+                  metadataConfigurations={
+                    event.step_configuration?.metadata_configurations
+                  }
+                  kind={event.kind as any}
+                  metadata={event.event_metadata}
+                />
+              );
+            })}
+          </Center>
+        </VStack>
+      </Container>
 
-        <Tooltip label={`${progressAmount}% complete`}>
-          <Progress
-            borderRadius={"xl"}
-            isAnimated={Number(progressAmount) < 100}
-            size="md"
-            hasStripe={Number(progressAmount) < 100}
-            colorScheme={progressColorScheme}
-            value={Number(progressAmount)}
-          />
-        </Tooltip>
-
-        <Box>
-          <Heading fontWeight={"semibold"} size={"lg"} alignItems="center">
-            Job #{jobId}
-          </Heading>
-          <Metadata metadata={jobDetails} />
-        </Box>
-        <Divider />
-
-        <Center
-          alignSelf={"center"}
-          data-testid={"events-timeline"}
-          flexDirection="column"
-          gap={2}
-        >
-          {reversedEvents.map((event, idx) => {
-            return (
-              <EventTimeline
-                isStart={idx === events.length - 1}
-                key={event.id}
-                title={event.name}
-                kind={event.kind as any}
-                metadata={event.event_metadata}
-              />
-            );
-          })}
-        </Center>
-      </VStack>
-    </Container>
+      <Box align-self={"center"} m={10}>
+        <Text align={"center"}>
+          Issue with this job? Contact system administrator at{" "}
+          <Link
+            href={`mailto:admin@botimage.com?subject=Job #${jobId} Report`}
+            color={"#0072f5"}
+          >
+            admin@botimage.com
+          </Link>
+        </Text>
+      </Box>
+    </>
   );
 }
 
