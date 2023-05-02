@@ -9,7 +9,7 @@ from .job_configuration import get_job_configuration_by_tag
 
 
 def create_job(db: Session, job: schemas.JobCreate, provider):
-    job_configuration = get_job_configuration_by_tag(db, job.tag)
+    job_configuration = get_job_configuration_by_tag(db, job.tag, provider.id)
 
     if job_configuration is None:
         raise HTTPException(

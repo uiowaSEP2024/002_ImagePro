@@ -1,6 +1,7 @@
 import json
 from typing import Union
 
+from deepdiff import DeepDiff
 from fastapi import HTTPException
 from sqlalchemy import desc
 from sqlalchemy.orm import Session
@@ -9,15 +10,45 @@ from starlette import status
 from app import models, schemas
 from app.schemas.pydantic_version import PydanticVersion
 
-from deepdiff import DeepDiff
 
-
-def get_job_configuration_by_tag(db: Session, tag: str):
+def get_job_configuration_by_tag(db: Session, tag: str, provider_id: int):
     return (
         db.query(models.JobConfiguration)
         .order_by(desc(models.JobConfiguration.created_at))
-        .filter(models.JobConfiguration.tag == tag)
+        .filter(
+            models.JobConfiguration.tag == tag,
+            models.JobConfiguration.provider_id == provider_id,
+        )
         .first()
+    )
+
+
+def get_job_configurations_by_tag(db: Session, tag: str, provider_id: int):
+    return (
+        db.query(models.JobConfiguration)
+        .order_by(desc(models.JobConfiguration.created_at))
+        .filter(
+            models.JobConfiguration.tag == tag,
+            models.JobConfiguration.provider_id == provider_id,
+        )
+        .all()
+    )
+
+
+def get_list_of_latest_versions_for_all_job_configurations(
+    db: Session, provider_id: int
+):
+    return (
+        db.query(models.JobConfiguration)
+        .filter(models.JobConfiguration.provider_id == provider_id)
+        .order_by(
+            models.JobConfiguration.tag.desc(),
+            models.JobConfiguration.created_at.desc(),
+        )
+        .distinct(
+            models.JobConfiguration.tag,
+        )
+        .all()
     )
 
 
@@ -107,3 +138,7 @@ def get_job_configuration_by_composite_key(
         )
         .first()
     )
+
+
+def get_job_configuration_by_id(db: Session, job_configuration_id: int):
+    return db.query(models.JobConfiguration).get(job_configuration_id)
