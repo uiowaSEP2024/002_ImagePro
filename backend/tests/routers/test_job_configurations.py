@@ -1,7 +1,6 @@
-from starlette import status
-
-from app import services, schemas
+from app import schemas, services
 from app.dependencies import API_KEY_HEADER_NAME
+from starlette import status
 
 
 def test_create_job_configurations(app_client, random_provider_user_with_api_key):
@@ -29,14 +28,25 @@ def test_create_job_configurations(app_client, random_provider_user_with_api_key
 def test_create_job_configurations_with_new_version(
     db, app_client, random_provider_user_with_api_key
 ):
-    services.create_job_configuration(
+    result = services.create_job_configuration(
         db,
         provider_id=random_provider_user_with_api_key.id,
         job_configuration=schemas.JobConfigurationCreate(
             tag="lung_cancer",
             name="Lung Cancer",
             version="1.0.0",
-            step_configurations=[],
+            step_configurations=[
+                schemas.StepConfigurationCreate(
+                    name="Lung Search",
+                    points=10,
+                    tag="lung_search",
+                    metadata_configurations=[
+                        schemas.MetadataConfigurationCreate(
+                            name="Protein Density", units="gm/cc", kind="number"
+                        )
+                    ],
+                )
+            ],
         ),
     )
 
@@ -44,9 +54,21 @@ def test_create_job_configurations_with_new_version(
         "tag": "lung_cancer",
         "name": "Lung Cancer Again",
         "version": "1.0.1",
-        "step_configurations": [],
+        "step_configurations": [
+            {
+                "name": "Lung Search",
+                "points": 10,
+                "tag": "lung_search",
+                "metadata_configurations": [
+                    {
+                        "name": "Protein Density",
+                        "units": "gm/cc",
+                        "kind": "number",
+                    }
+                ],
+            }
+        ],
     }
-
     response = app_client.post(
         "/job_configurations",
         json=data,
@@ -59,7 +81,10 @@ def test_create_job_configurations_with_new_version(
     assert response.json()["name"] == "Lung Cancer Again"
     assert response.json()["tag"] == "lung_cancer"
     assert response.json()["version"] == "1.0.1"
-    assert len(response.json()["step_configurations"]) == 0
+    assert len(response.json()["step_configurations"]) == 1
+    assert (
+        len(response.json()["step_configurations"][0]["metadata_configurations"]) == 1
+    )
 
 
 def test_create_job_configuration_with_conflicting_version(
@@ -81,6 +106,62 @@ def test_create_job_configuration_with_conflicting_version(
         "name": "Lung Cancer Again",  # New field but same version + tag
         "version": "1.0.0",
         "step_configurations": [],
+    }
+
+    response = app_client.post(
+        "/job_configurations",
+        json=data,
+        headers={
+            API_KEY_HEADER_NAME: random_provider_user_with_api_key.api_keys[0].key
+        },
+    )
+
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+
+def test_create_job_configuration_with_conflicting_version_on_metadata(
+    db, app_client, random_provider_user_with_api_key
+):
+    result = services.create_job_configuration(
+        db,
+        provider_id=random_provider_user_with_api_key.id,
+        job_configuration=schemas.JobConfigurationCreate(
+            tag="lung_cancer",
+            name="Lung Cancer",
+            version="1.0.0",
+            step_configurations=[
+                schemas.StepConfigurationCreate(
+                    name="Lung Search",
+                    points=10,
+                    tag="lung_search",
+                    metadata_configurations=[
+                        schemas.MetadataConfigurationCreate(
+                            name="Protein Density", units="gm/cc", kind="number"
+                        )
+                    ],
+                )
+            ],
+        ),
+    )
+
+    data = {
+        "tag": "lung_cancer",
+        "name": "Lung Cancer",
+        "version": "1.0.0",
+        "step_configurations": [
+            {
+                "name": "Lung Search",
+                "points": 10,
+                "tag": "lung_search",
+                "metadata_configurations": [
+                    {
+                        "name": "Protein Density 2",  # New field but same version + tag
+                        "units": "gm/cc",
+                        "kind": "number",
+                    }
+                ],
+            }
+        ],
     }
 
     response = app_client.post(

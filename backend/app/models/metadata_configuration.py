@@ -1,27 +1,28 @@
-from sqlalchemy import Column, ForeignKey, UniqueConstraint
-from sqlalchemy.sql.sqltypes import String, Integer
+from sqlalchemy import Column, Enum, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql.sqltypes import Integer, String
 
 from .base import Base, DateMixin
 
 
 class MetadataConfiguration(Base, DateMixin):
     __tablename__ = "metadata_configurations"
-    __table_args__ = (UniqueConstraint("step_configuration_id"),)
     # Auto-generated internal metadata configuration id
     id = Column(Integer, primary_key=True, index=True)
 
     # name of the field specified by the provider
-    field_name = Column(String, index=True, nullable=False)
+    name = Column(String, index=True, nullable=False)
 
     # type of the field specified by the provider
-    field_type = Column(String, index=True, nullable=False)
-
-    # value of the field specified by the provider
-    field_value = Column(String, index=True, nullable=False)
+    kind = Column(
+        Enum("text", "number", "link", name="metadata_kind"),
+        index=False,
+        nullable=False,
+        server_default="text",
+    )
 
     # units of the field specified by the provider
-    field_units = Column(String, index=True, nullable=False)
+    units = Column(String, index=False, nullable=True)
 
     step_configuration_id = Column(
         Integer, ForeignKey("step_configurations.id"), index=True, nullable=False
