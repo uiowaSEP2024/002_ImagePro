@@ -44,7 +44,11 @@ def test_job():
     )
 
     responses.add(url=tracker.urls.jobs_config_url, method=responses.POST, json={})
-    tracker.register_job_config(JobConfig(name="Test Job", tag="test_job", steps=[]))
+    tracker.register_job_config(
+        JobConfig(
+            name="Test Job", tag="test_job", step_configurations=[], version="1.0.0"
+        )
+    )
     # TODO: make meaningful assertion about the job config once implemented
 
     responses.add(
@@ -57,7 +61,7 @@ def test_job():
     ), "Expected TrackerJobApi to set the returned job_provider_id on itself"
 
     responses.add(url=tracker.urls.events_url, method=responses.POST, json={"id": 1})
-    tracker_eventapi = tracker_jobapi.send_event(kind="step", name="My Event")
+    tracker_eventapi = tracker_jobapi.send_event(kind="step", tag="step_1")
     assert (
         tracker_eventapi.event_id == 1
     ), "Expected TrackerEventApi to set the returned event id on itself"

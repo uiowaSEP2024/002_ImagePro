@@ -57,12 +57,17 @@
           "items": {
             "$ref": "#/definitions/StepConfig"
           }
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
         }
       },
       "required": [
         "tag",
         "name",
-        "step_configurations"
+        "step_configurations",
+        "version"
       ]
     }
   }
