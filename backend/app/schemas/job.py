@@ -16,7 +16,7 @@ class Job(JobBase):
     id: int
     provider_id: int
     job_configuration_id: int
-    
+
     created_at: datetime = None
     updated_at: datetime = None
 
