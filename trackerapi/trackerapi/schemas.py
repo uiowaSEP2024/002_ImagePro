@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List, Dict
+from typing import Dict, List
 
 from pydantic import BaseModel, StrictInt, StrictStr, conlist
 
@@ -24,10 +24,24 @@ class StepConfig(UniqueTagModel):
 
 class JobConfig(UniqueTagModel):
     name: StrictStr
-    steps: conlist(StepConfig, unique_items=True)
+    step_configurations: conlist(StepConfig, unique_items=True)
+    version: str
 
-    def __init__(self, name: str, tag: str, steps: List[StepConfig], **kwargs):
-        super().__init__(name=name, tag=tag, steps=steps, **kwargs)
+    def __init__(
+        self,
+        name: str,
+        tag: str,
+        step_configurations: List[StepConfig],
+        version: str,
+        **kwargs
+    ):
+        super().__init__(
+            name=name,
+            tag=tag,
+            step_configurations=step_configurations,
+            version=version,
+            **kwargs
+        )
 
 
 class JobConfigs(BaseModel):
