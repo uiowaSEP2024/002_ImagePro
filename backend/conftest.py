@@ -44,7 +44,11 @@ def app_client():
 
 @pytest.fixture
 def db():
-    return config.db.SessionLocal()
+    db = config.db.SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 @pytest.fixture
