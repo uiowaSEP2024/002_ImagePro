@@ -10,6 +10,17 @@ from sqlalchemy.orm import Session
 from starlette import status
 
 
+def get_step_configuration_by_composite_key(
+    db: Session, job_configuration_id: str, tag: str
+):
+    return (
+        db.query(models.StepConfiguration)
+        .filter(models.StepConfiguration.tag == tag)
+        .filter(models.StepConfiguration.job_configuration_id == job_configuration_id)
+        .first()
+    )
+
+
 def get_job_configuration_by_tag(db: Session, tag: str, provider_id: int):
     return (
         db.query(models.JobConfiguration)
@@ -80,14 +91,17 @@ def create_job_configuration(
 
             step_configuration: schemas.StepConfigurationCreate = step_configuration
 
-            for metadata_configuration in step_configuration.metadata_configurations:
-                db_step_configuration.metadata_configurations.append(
-                    models.MetadataConfiguration(
-                        name=metadata_configuration.name,
-                        kind=metadata_configuration.kind,
-                        units=metadata_configuration.units,
+            if step_configuration.metadata_configurations is not None:
+                for (
+                    metadata_configuration
+                ) in step_configuration.metadata_configurations:
+                    db_step_configuration.metadata_configurations.append(
+                        models.MetadataConfiguration(
+                            name=metadata_configuration.name,
+                            kind=metadata_configuration.kind,
+                            units=metadata_configuration.units,
+                        )
                     )
-                )
 
             db_job_configuration.step_configurations.append(db_step_configuration)
 

@@ -89,7 +89,12 @@ export const EventTimeline: React.FC<EventTimelineProps> = ({
           {title}
         </Heading>
         {!!metadata && (
-          <Metadata configurations={metadataConfigurations} fontSize={"sm"} ref={metadataRef} metadata={metadata} />
+          <Metadata
+            configurations={metadataConfigurations}
+            fontSize={"sm"}
+            ref={metadataRef}
+            metadata={metadata}
+          />
         )}
       </Flex>
     </Flex>
