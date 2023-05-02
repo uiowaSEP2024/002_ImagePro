@@ -1,14 +1,11 @@
-from fastapi import Depends, APIRouter
-from sqlalchemy.orm import Session
-from starlette import status
+from typing import Union, List
 
-from app import schemas, services, models
-from app.dependencies import get_db, get_user_from_api_key
-from app import schemas, services
-from app.dependencies import get_db, get_current_user_from_token
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from typing import Union, List
+
+from app import schemas, services
+from app.dependencies import get_db
+from app.dependencies import get_user_from_api_key, get_current_provider
 
 router = APIRouter()
 router.tags = ["job_configurations"]
@@ -32,7 +29,7 @@ def create_job(
 def get_job_configuration_by_id(
     job_configuration_id: int,
     db: Session = Depends(get_db),
-    provider=Depends(get_current_user_from_token),
+    provider=Depends(get_current_provider),
 ):
     job_configuration = services.get_job_configuration_by_id(
         db, job_configuration_id=job_configuration_id
@@ -52,45 +49,42 @@ def get_job_configurations_by_tag_and_version(
     tag: Union[str, None] = None,
     version: Union[str, None] = None,
     db: Session = Depends(get_db),
-    provider=Depends(get_current_user_from_token),
+    provider=Depends(get_current_provider),
 ):
-    job_configurations = None
-
-    job_configurations = (
-        services.get_list_of_latest_versions_for_all_job_configurations(db, provider.id)
+    # case 1: get specific configuration if both tag and version are provided
+    should_get_specific_version_of_tag = tag and (
+        type(version) is str and version != "latest"
     )
 
-    # case 1: get specific configuration if both tag and version are provided
-    if tag and (type(version) is str and version != "latest"):
-        job_configurations = [
+    if should_get_specific_version_of_tag:
+        return [
             services.get_job_configuration_by_composite_key(
                 db, provider.id, tag, version
             )
         ]
+
     # case 2: get the latest job configuration for a specific tag
-    elif tag and version == "latest":
-        job_configurations = [
-            services.get_job_configuration_by_tag(db, tag, provider.id)
-        ]
+    should_get_latest_version_of_tag = tag and version == "latest"
+
+    if should_get_latest_version_of_tag:
+        return [services.get_job_configuration_by_tag(db, tag, provider.id)]
+
     # case 3: get all job configurations for a particular tag
-    elif tag and version is None:
-        job_configurations = services.get_job_configurations_by_tag(
-            db, tag, provider.id
-        )
+    should_get_all_versions_of_tag = tag and version is None
+
+    if should_get_all_versions_of_tag:
+        return services.get_job_configurations_by_tag(db, tag, provider.id)
 
     # case 4: get latest version for all
-    elif tag is None and (version is None or version == "latest"):
-        job_configurations = (
-            services.get_list_of_latest_versions_for_all_job_configurations(
-                db, provider.id
-            )
-        )
-    if job_configurations is None:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail={
-                "msg": f"Could not find job configuration(s) for tag: {tag} and version: {version}"
-            },
+    should_get_latest_versions_of_all_tags = tag is None and (
+        version is None or version == "latest"
+    )
+
+    if should_get_latest_versions_of_all_tags:
+        return services.get_list_of_latest_versions_for_all_job_configurations(
+            db, provider.id
         )
 
-    return job_configurations
+    return services.get_list_of_latest_versions_for_all_job_configurations(
+        db, provider.id
+    )
