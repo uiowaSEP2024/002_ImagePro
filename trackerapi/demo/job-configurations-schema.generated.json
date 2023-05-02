@@ -50,19 +50,24 @@
           "title": "Name",
           "type": "string"
         },
-        "steps": {
-          "title": "Steps",
+        "step_configurations": {
+          "title": "Step Configurations",
           "uniqueItems": true,
           "type": "array",
           "items": {
             "$ref": "#/definitions/StepConfig"
           }
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
         }
       },
       "required": [
         "tag",
         "name",
-        "steps"
+        "step_configurations",
+        "version"
       ]
     }
   }

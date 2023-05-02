@@ -1,44 +1,7 @@
-export type User = {
-  first_name: string;
-  last_name: string;
-  email: string;
-};
+import { components } from "./schema";
 
-export type UserCreate = {
-  email: string;
-  password: string;
-  first_name: string;
-  last_name: string;
-};
-
-export type Provider = {
-  id: number;
-  name: string;
-};
-
-export type Job = {
-  id: number;
-  provider_job_name: string;
-  customer_id: number;
-  provider_job_id: string;
-  provider_id: number;
-  created_at?: string;
-  num_steps?: number;
-};
-
-export type Key = {
-  id: number;
-  user_id: number,
-  key: string,
-  note: string,
-  created_at?: string
-};
-
-export type JobEvent = {
-  kind: string;
-  name: string;
-  job_id: number;
-  id: number;
-  created_at?: string;
-  event_metadata?: Record<string, any>;
-};
+export type User = components["schemas"]["User"];
+export type UserCreate = components["schemas"]["UserCreate"];
+export type Job = components["schemas"]["Job"];
+export type ApiKey = components["schemas"]["ApikeyPublic"];
+export type JobEvent = components["schemas"]["Event"];

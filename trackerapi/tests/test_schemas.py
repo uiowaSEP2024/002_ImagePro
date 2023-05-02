@@ -9,14 +9,15 @@ def test_no_duplicate_steps():
         config = JobConfig(
             name="Test Job",
             tag="test_job",
-            steps=[
+            step_configurations=[
                 StepConfig(tag="step_1", name="Step 1", points=1),
                 StepConfig(tag="step_1", name="Step 2", points=1),
             ],
+            version="1.0.0",
         )
     exception: ValidationError = exc._excinfo[1]
     assert len(exception.errors()) == 1
-    assert "steps" in exception.errors()[0]["loc"]
+    assert "step_configurations" in exception.errors()[0]["loc"]
     assert "value_error.list.unique_items" == exception.errors()[0]["type"]
 
 
@@ -24,8 +25,18 @@ def test_no_duplicate_jobs():
     with pytest.raises(ValidationError) as exc:
         JobConfigs(
             job_configs=[
-                JobConfig(name="Test Job", tag="test_job", steps=[]),
-                JobConfig(name="Test Job", tag="test_job", steps=[]),
+                JobConfig(
+                    name="Test Job",
+                    tag="test_job",
+                    step_configurations=[],
+                    version="1.0.0",
+                ),
+                JobConfig(
+                    name="Test Job",
+                    tag="test_job",
+                    step_configurations=[],
+                    version="1.0.0",
+                ),
             ]
         )
 
