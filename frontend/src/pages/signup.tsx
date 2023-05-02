@@ -2,7 +2,6 @@ import React, { FormEvent, useCallback, useState } from "react";
 import {
   Text,
   Container,
-  Center,
   VStack,
   Box,
   Input,
@@ -14,7 +13,9 @@ import {
   Link,
   RadioGroup,
   Radio,
-  Stack
+  Stack,
+  Heading,
+  Flex
 } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
@@ -22,6 +23,8 @@ import { useAuthContext } from "@/hooks/useAuthContext";
 import { fetchSignUp } from "@/data";
 import { withUnauthenticated } from "@/components/withAuthenticated";
 import { User } from "@/data/types";
+
+import NextLink from "next/link";
 
 function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
@@ -48,7 +51,7 @@ function SignUp() {
       }
 
       try {
-        const data = await fetchSignUp({
+        await fetchSignUp({
           email,
           first_name,
           last_name,
@@ -67,129 +70,130 @@ function SignUp() {
 
   return (
     <Container
+      pt={"5vh"}
       display={"flex"}
       justifyContent={"center"}
-      maxW={"container.lg"}
-      py={"6"}
+      maxW={"md"}
+      alignItems={"center"}
+      flexDirection={"column"}
     >
-      <Center
-        maxW={"xs"}
-        display="flex"
-        flexDirection="column"
-        paddingTop={"6vh"}
-      >
-        {!!notificationMessage && (
-          <Text data-test-id="notification-message">{notificationMessage}</Text>
-        )}
-        <form onSubmit={sendSignUpReq}>
-          <VStack spacing={4}>
-            <Text role="heading" fontSize="36px" as="b">
-              Sign up
+      {!!notificationMessage && (
+        <Text data-test-id="notification-message">{notificationMessage}</Text>
+      )}
+
+      <Heading role="heading" fontSize="3xl" mb={8}>
+        Sign up
+      </Heading>
+
+      <form style={{ width: "100%" }} onSubmit={sendSignUpReq}>
+        <VStack alignItems={"flex-start"} spacing={4}>
+          <Box flex="1" w="100%">
+            <Text fontSize="md" fontWeight="medium">
+              First Name
             </Text>
-            <Box flex="1" w="100%" bg="white">
-              <Text fontSize="lg" fontWeight="500">
-                First Name
-              </Text>
+            <Input
+              variant="outline"
+              placeholder="First Name"
+              value={first_name}
+              onChange={(e) => setFirstName(e.target.value)}
+            />
+          </Box>
+          <Box flex="1" w="100%">
+            <Text fontSize="md" fontWeight="medium">
+              Last Name
+            </Text>
+            <Input
+              variant="outline"
+              placeholder="Last Name"
+              value={last_name}
+              onChange={(e) => setLastName(e.target.value)}
+            />
+          </Box>
+          <Box flex="1" w="100%">
+            <Text fontSize="md" fontWeight="medium">
+              Email
+            </Text>
+            <Input
+              variant="outline"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </Box>
+          <Box flex={1} w={"100%"}>
+            <Text fontSize="md" fontWeight="medium">
+              Password
+            </Text>
+            <InputGroup>
               <Input
                 variant="outline"
-                placeholder="First Name"
-                value={first_name}
-                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                type={showPassword ? "text" : "password"}
               />
-            </Box>
-            <Box flex="1" w="100%" bg="white">
-              <Text fontSize="lg" fontWeight="500">
-                Last Name
-              </Text>
-              <Input
-                variant="outline"
-                placeholder="Last Name"
-                value={last_name}
-                onChange={(e) => setLastName(e.target.value)}
-              />
-            </Box>
-            <Box flex="1" w="100%" bg="white">
-              <Text fontSize="lg" fontWeight="500">
-                Email
-              </Text>
-              <Input
-                variant="outline"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </Box>
-            <Box flex={1} w={"100%"} bg="white">
-              <Text fontSize="lg" fontWeight="500">
-                Password
-              </Text>
-              <InputGroup>
-                <Input
-                  variant="outline"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  type={showPassword ? "text" : "password"}
-                />
-                <InputRightElement w={"max-content"} height="100%">
-                  {showPassword ? (
-                    <IconButton
-                      variant={"ghost"}
-                      onClick={() => setShowPassword(!showPassword)}
-                      aria-label="Hidden-Password"
-                      icon={<Icon as={AiFillEye} />}
-                    />
-                  ) : (
-                    <IconButton
-                      variant={"ghost"}
-                      onClick={() => setShowPassword(!showPassword)}
-                      aria-label="Hidden-Password"
-                      icon={<Icon as={AiFillEyeInvisible} />}
-                    />
-                  )}
-                </InputRightElement>
-              </InputGroup>
-            </Box>
-            <Box flex="1" w="100%" bg="white">
-              <Text fontSize="lg" fontWeight="500">
-                Confirm Password
-              </Text>
-              <Input
-                variant="outline"
-                type="password"
-                placeholder="Confirm Password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
-            </Box>
+              <InputRightElement w={"max-content"} height="100%">
+                {showPassword ? (
+                  <IconButton
+                    variant={"ghost"}
+                    onClick={() => setShowPassword(!showPassword)}
+                    aria-label="Hidden-Password"
+                    icon={<Icon as={AiFillEye} />}
+                  />
+                ) : (
+                  <IconButton
+                    variant={"ghost"}
+                    onClick={() => setShowPassword(!showPassword)}
+                    aria-label="Hidden-Password"
+                    icon={<Icon as={AiFillEyeInvisible} />}
+                  />
+                )}
+              </InputRightElement>
+            </InputGroup>
+          </Box>
+          <Box flex="1" w="100%">
+            <Text fontSize="md" fontWeight="medium">
+              Confirm Password
+            </Text>
+            <Input
+              variant="outline"
+              type="password"
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          </Box>
 
-            <RadioGroup
-              alignSelf={"flex-start"}
-              onChange={(value) => setRole(value as User["role"])}
-              value={role}
-            >
-              <Stack direction="row" gap={8}>
-                <Radio value="customer">Customer</Radio>
-                <Radio value="provider">Provider</Radio>
-              </Stack>
-            </RadioGroup>
+          <RadioGroup
+            alignSelf={"flex-start"}
+            onChange={(value) => setRole(value as User["role"])}
+            value={role}
+          >
+            <Stack direction="row" gap={8}>
+              <Radio value="customer">Customer</Radio>
+              <Radio value="provider">Provider</Radio>
+            </Stack>
+          </RadioGroup>
 
-            <Button
-              type="submit"
-              alignSelf={"flex-start"}
-              name="signup"
-              role="button"
-              data-testid="signup"
-            >
-              Create Account
-            </Button>
-            <Link w="fit-content" href="/login">
-              Already have an account? Log in.{" "}
+          <Button
+            type="submit"
+            alignSelf={"flex-start"}
+            name="signup"
+            role="button"
+            data-testid="signup"
+          >
+            Create Account
+          </Button>
+
+          <Link passHref as={NextLink} w="fit-content" href="/login">
+            <Flex alignItems={"center"} gap={2}>
+              <Text>Already have an account? Log in. </Text>
+
               <ExternalLinkIcon mx="2px" mb="2px" />
-            </Link>
-          </VStack>
-        </form>
-      </Center>
+            </Flex>
+          </Link>
+        </VStack>
+      </form>
     </Container>
   );
 }

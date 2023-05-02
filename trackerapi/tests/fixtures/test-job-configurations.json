@@ -4,18 +4,19 @@
     {
       "name": "Test Schema Job",
       "tag": "test_schema_job",
-      "steps": [
+      "step_configurations": [
         {
           "name": "Step 1",
           "tag": "step_1",
           "points": 10
         }
-      ]
+      ],
+      "version": "1.0.0"
     },
     {
       "name": "Test Schema Job B",
       "tag": "test_schema_job_b",
-      "steps": [
+      "step_configurations": [
         {
           "name": "Step 1",
           "tag": "step_1",
@@ -26,7 +27,8 @@
           "tag": "step_2",
           "points": 10
         }
-      ]
+      ],
+      "version": "1.0.0"
     }
   ]
 }
