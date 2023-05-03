@@ -6,7 +6,7 @@ def test_create_event(app_client, job_for_random_user_with_api_key, db):
     job = job_for_random_user_with_api_key
     data = {
         "kind": "step",
-        "name": job.provider_job_name,
+        "name": "Scanning",
         "provider_job_id": job.provider_job_id,
         "event_metadata": {"official": "Yes"},
     }

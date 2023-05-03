@@ -51,7 +51,7 @@ function SignUp() {
       }
 
       try {
-        const data = await fetchSignUp({
+        await fetchSignUp({
           email,
           first_name,
           last_name,
