@@ -13,11 +13,16 @@
     "json-summary": "jest --coverage --coverageReporters json-summary",
     "coverage-report": "jest --coverage --reporters=default --reporters=jest-junit | tee ./coverage.txt && exit $(PIPESTATUS[0])",
     "snapshot:update": "jest --updateSnapshot",
-    "schema:update": "npx openapi-typescript http://127.0.0.1:8000/openapi.json  --output 'src/data/schema.ts'"
-  },
+    "schema:update": "npx openapi-typescript http://127.0.0.1:8000/openapi.json  --output 'src/data/schema.ts'",
+    "cucumber": "cucumber-js --require cucumber.js --require /features/*.features --require /features/step_definitions/*.js"
+    },
+    "bin": {
+      "cucumber-js": "bin/cucumber.js"
+    },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.18",
     "@chakra-ui/react": "^2.5.5",
+    "@cucumber/cucumber": "^9.1.1",
     "@next/font": "13.1.6",
     "@types/node": "18.14.0",
     "@types/node-fetch": "^2.6.2",
