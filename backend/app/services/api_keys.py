@@ -28,6 +28,12 @@ def get_apikey(db: Session, apikey_id: int) -> models.Apikey:
     return db.query(models.Apikey).get(apikey_id)
 
 
+def get_apikey_by_key(db: Session, key: str):
+    results = db.query(models.Apikey).filter(models.Apikey.key == key).all()
+    assert len(results) <= 1, "Encountered duplicate api keys"
+    return results[0] if len(results) == 1 else None
+
+
 def is_apikey_expired(api_key: models.Apikey):
     return (
         isinstance(api_key.expires_at, datetime)
@@ -59,11 +65,12 @@ def expire_apikey_for_user(db: Session, user_id: int, id: int):
 
 
 @validate_arguments(config=dict(arbitrary_types_allowed=True))
-def get_user_from_api_key(db: Session, api_key: str):
+def get_user_from_apikey_key(db: Session, key: str):
     # TODO: only allow fetching for api keys that have not expired
-    api_key = db.query(models.Apikey).filter(models.Apikey.key == api_key)
-    if api_key.first():
-        return api_key.one().user
+    api_key = get_apikey_by_key(db, key)
+
+    if api_key:
+        return api_key.user
 
 
 def create_apikey_for_user(db: Session, user_id: int, key: schemas.ApikeyCreate):
