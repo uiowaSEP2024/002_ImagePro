@@ -35,7 +35,10 @@ The Columns associated with the entity:
 The columns associated with the entity:
 
 1. `kind` : It is an enum that dictates the type of the event among **step**, **error**, **info**, **complete**.
-2. `provider_job_id` : This is the provider that is associated to the event.
+2. `job_id` : This is the job that is associated to the event.
+3. `name` : This is the name of the event.
+4. `step_configuration_id` : This is the step configuration that is associated with the event.
+5. `event_metadata` : This is the metadata associated with the event.
 
 ## API-Keys
 
@@ -44,3 +47,20 @@ The columns associated with the entity:
 1. `user_id` : The user that is associated to the API Key.
 2. `key` : The random secret string that represents the API Key.
 3. `note` : The description of the API Key.
+4. `expires_at` : This denotes the date when the API key will expire.
+
+## Jobs
+
+The columns associated with the entity:
+
+1. `provider_id` : This represents the provider that has issued the job.
+2. `customer_id` : This represents the customer for whom the job was issued for.
+3. `job_configuration_id` : This represents the configuration that is associated with the job.
+4. `provider_job_id` : This represents the ID of the job issued by the provider.
+5. `provider_job_name` : This represents the name of the job issued by the provider.
+
+## Job Configurations
+
+The columns associated with the entity:
+
+1.
