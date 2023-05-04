@@ -14,6 +14,10 @@ There are currently four entities in our database that support the application. 
 2. `Events`
 3. `Jobs`
 4. `API-Keys`
+5. `Job Configurations`
+6. `Step Configurations`
+7. `Metadata Configurations`
+8. `Alembic Version`
 
 ## Users
 
