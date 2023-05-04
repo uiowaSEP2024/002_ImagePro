@@ -8,19 +8,21 @@ class ApiKeyCreateRequest(BaseModel):
 
 
 class ApikeyBase(BaseModel):
-    key: str
-
-
-class ApikeyCreate(BaseModel):
     note: str
+
+
+class ApikeyCreate(ApikeyBase):
+    pass
 
 
 class Apikey(ApikeyBase):
     id: int
     user_id: int
-    note: str
+    key: str
+
     created_at: datetime = None
     updated_at: datetime = None
+    expires_at: datetime = None
 
     class Config:
         orm_mode = True
