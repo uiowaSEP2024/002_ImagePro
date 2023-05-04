@@ -141,4 +141,18 @@ describe("Profile", () => {
 
     expect(job).toBeInTheDocument();
   });
+
+  it("renders copy id section for customer", async () => {
+    await act(async () =>
+      render(<Profile />, { wrapper: AuthContextProvider })
+    );
+
+    const copyIdText = await waitFor(() => screen.getByText(/Copy.*id/i));
+    const copyButton = await waitFor(() =>
+      screen.getByTestId("copy-id-button")
+    );
+
+    expect(copyIdText).toBeInTheDocument();
+    expect(copyButton).toBeInTheDocument();
+  });
 });
