@@ -76,3 +76,12 @@ The columns associated with the entity:
 2. `tag` : This represents the unique tag for the step configuration.
 3. `name` : This represents the name of the step.
 4. `points` : This represents the weighted points for the step.
+
+## Metadata Configurations
+
+The columns associated with the entity:
+
+1. `step_configuration_id` : This represents the step configuration that is associated with this metadata configuration.
+2. `kind` : It is an enum that dictates the type of the event among **text**, **number**, **link**.
+3. `name` : This represents the name of the metadata.
+4. `units` : This represents the base unit kind of the metadata.
