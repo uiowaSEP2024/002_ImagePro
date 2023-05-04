@@ -20,7 +20,7 @@ import { Job } from "@/data/types";
 import { useState, useEffect, useMemo, useCallback } from "react";
 
 import NextLink from "next/link";
-import { FiCopy, FiInfo } from "react-icons/fi";
+import { FiCopy } from "react-icons/fi";
 
 function Profile() {
   const { currentUser } = useAuthContext();
@@ -63,7 +63,6 @@ function Profile() {
             height={"full"}
             p="50"
             w="100%"
-            height="100%"
             borderWidth="1px"
             borderRadius="lg"
             overflow="hidden"
@@ -101,6 +100,7 @@ function Profile() {
                       their services.
                     </Text>
                     <IconButton
+                      data-testid="copy-id-button"
                       icon={<Icon onClick={onCopyId} as={FiCopy} />}
                       aria-label={"copy-id-button"}
                       variant={"ghost"}
