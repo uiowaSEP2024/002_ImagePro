@@ -65,5 +65,14 @@ The columns associated with the entity:
 
 1. `provider_id` : This represents the provider who is using this job configuration.
 2. `tag` : This represents the unique tag for the job configuration.
-3. `name` : This represents the name of the job configuration.
+3. `name` : This represents the name of the job.
 4. `version` : This represents the version of the job configuration.
+
+## Step Configurations
+
+The columns associated with the entity:
+
+1. `job_configuration_id` : This represents the job configuration that is associated with this step configuration.
+2. `tag` : This represents the unique tag for the step configuration.
+3. `name` : This represents the name of the step.
+4. `points` : This represents the weighted points for the step.
