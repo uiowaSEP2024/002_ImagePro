@@ -7,7 +7,7 @@ export const backendUrl = (
 export const fetchJobs = async (): Promise<Job[] | void> => {
   return fetch(`${backendUrl}/jobs`, {
     credentials: "include",
-    method: "GET",
+    method: "GET"
   })
     .then(async (response) => {
       if (response.status == 200) {
@@ -23,7 +23,7 @@ export const fetchJobs = async (): Promise<Job[] | void> => {
 export const fetchJobById = async (id: number): Promise<Job | void> => {
   return await fetch(`${backendUrl}/jobs/${id}`, {
     credentials: "include",
-    method: "GET",
+    method: "GET"
   })
     .then(async (response) => {
       if (response.status == 200) {
@@ -38,7 +38,7 @@ export const fetchJobById = async (id: number): Promise<Job | void> => {
 export const generateAPIKeys = async () => {
   await fetch(`${backendUrl}/api-keys`, {
     credentials: "include",
-    method: "POST",
+    method: "POST"
   })
     .then((response) => response.json())
     .then((data) => {
@@ -53,7 +53,7 @@ export const generateAPIKeys = async () => {
 export const fetchAPIkeys = async (): Promise<ApiKey[] | void> => {
   return await fetch(`${backendUrl}/api-keys`, {
     credentials: "include",
-    method: "GET",
+    method: "GET"
   })
     .then(async (response) => {
       if (response.status == 200) {
@@ -70,9 +70,9 @@ export const fetchGenAPIKeys = async (data: { note: string }) => {
     method: "POST",
     credentials: "include",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify(data)
   });
 
   return await response.json();
@@ -83,7 +83,7 @@ export const fetchEvents = async (
 ): Promise<JobEvent[] | void> => {
   return await fetch(`${backendUrl}/jobs/${jobId}/events`, {
     credentials: "include",
-    method: "GET",
+    method: "GET"
   })
     .then(async (response) => {
       if (response.status == 200) {
@@ -99,7 +99,7 @@ export async function fetchCheckUserLoggedIn() {
   try {
     const result = await fetch(`${backendUrl}/login`, {
       credentials: "include",
-      method: "GET",
+      method: "GET"
     });
 
     return result.json() as unknown as { user?: User; message: string };
@@ -112,7 +112,7 @@ export async function fetchCheckUserLoggedIn() {
 export const fetchLogout = async () => {
   const response = await fetch(`${backendUrl}/logout`, {
     method: "POST",
-    credentials: "include",
+    credentials: "include"
   });
 
   return response.json();
@@ -123,12 +123,12 @@ export const fetchLogin = async (email: string, password: string) => {
     credentials: "include",
     method: "POST",
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+      "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
     },
     body: new URLSearchParams({
       username: email,
-      password: password,
-    }),
+      password: password
+    })
   });
 
   // TODO: check for wider range of error codes
@@ -143,9 +143,18 @@ export const fetchSignUp = async (data: UserCreate) => {
   const response = await fetch(`${backendUrl}/users`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify(data)
+  });
+
+  return await response.json();
+};
+
+export const fetchExpireApiKey = async (id: number) => {
+  const response = await fetch(`${backendUrl}/api-keys/${id}`, {
+    credentials: "include",
+    method: "DELETE"
   });
 
   return await response.json();
