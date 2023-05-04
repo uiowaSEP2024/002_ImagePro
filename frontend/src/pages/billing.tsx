@@ -7,7 +7,12 @@ function Billing() {
       <Heading lineHeight={1.5} textAlign={"center"}>
         Billing
       </Heading>
-      <Text textAlign={"center"}>Coming soon...</Text>
+      <Text fontSize={"2xl"} textAlign={"center"}>
+        Under construction...
+      </Text>
+      <Heading fontSize={"8xl"} mt={"20vh"} textAlign={"center"}>
+        🏗️
+      </Heading>
     </Container>
   );
 }
