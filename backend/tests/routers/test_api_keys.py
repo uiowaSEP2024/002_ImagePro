@@ -1,3 +1,4 @@
+from datetime import datetime
 from app import services, schemas
 from app.dependencies import (
     API_KEY_HEADER_NAME,
@@ -81,6 +82,79 @@ def test_missing_api_key_on_protected_route(app_client, db, random_test_user):
 def test_bad_api_key_on_protected_route(app_client, db, random_test_user):
     response = app_client.get(
         "/api-keys/protected", headers={API_KEY_HEADER_NAME: "key that does not exist"}
+    )
+
+    result = response.json()
+
+    assert response.status_code == 403
+    assert result["detail"] == INVALID_API_KEY_CREDENTIALS_UNAUTHORIZED
+
+
+def test_expire_api_key(db, app_client, random_provider_user):
+    api_key = services.create_apikey_for_user(
+        db, random_provider_user.id, key=schemas.ApikeyCreate(note="key-note")
+    )
+
+    data = {"username": random_provider_user.email, "password": "abc"}
+    app_client.post("/login", data=data)
+
+    app_client.delete(
+        f"/api-keys/{api_key.id}",
+        headers={
+            "Content-Type": "application/json",
+        },
+    )
+
+    response = app_client.get("/api-keys/", params=data)
+    assert response.status_code == 200
+
+    result = response.json()
+
+    assert len(result) == 1
+    assert result[0]["user_id"] == random_provider_user.id
+    assert result[0]["key"] is not None
+    assert result[0]["note"] == "key-note"
+    assert result[0]["created_at"] is not None
+    assert result[0]["expires_at"] is not None
+    assert (
+        datetime.fromisoformat(result[0]["expires_at"]).timestamp()
+        < datetime.now().timestamp()
+    )
+
+
+def test_expire_already_expired_apikey(db, app_client, random_provider_user):
+    api_key = services.create_apikey_for_user(
+        db, random_provider_user.id, key=schemas.ApikeyCreate(note="key-note")
+    )
+
+    services.expire_apikey_for_user(db, random_provider_user.id, api_key.id)
+
+    data = {"username": random_provider_user.email, "password": "abc"}
+    app_client.post("/login", data=data)
+
+    response = app_client.delete(
+        f"/api-keys/{api_key.id}",
+        headers={
+            "Content-Type": "application/json",
+        },
+    )
+
+    print(response.json())
+    assert response.status_code == 400
+
+    result = response.json()
+    assert result["detail"]["msg"] == "Cannot expire already expired key"
+
+
+def test_cannot_use_expired_key(db, app_client, random_provider_user):
+    api_key = services.create_apikey_for_user(
+        db, random_provider_user.id, key=schemas.ApikeyCreate(note="key-note")
+    )
+
+    services.expire_apikey_for_user(db, random_provider_user.id, api_key.id)
+
+    response = app_client.get(
+        "/api-keys/protected", headers={API_KEY_HEADER_NAME: api_key.key}
     )
 
     result = response.json()
