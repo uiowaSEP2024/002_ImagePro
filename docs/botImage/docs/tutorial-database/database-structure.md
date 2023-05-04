@@ -85,3 +85,7 @@ The columns associated with the entity:
 2. `kind` : It is an enum that dictates the type of the event among **text**, **number**, **link**.
 3. `name` : This represents the name of the metadata.
 4. `units` : This represents the base unit kind of the metadata.
+
+## Alembic Versions
+
+This table keeps track of the version of the migrations.
