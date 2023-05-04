@@ -106,8 +106,10 @@ const Navbar = () => {
     ? linksLeftAuthenticated
     : linksLeftUnauthenticated;
 
+  const navBarColor = currentUser?.role == "provider" ? "gray.100" : undefined;
+
   return (
-    <Center boxShadow={"xs"}>
+    <Center bgColor={navBarColor} boxShadow={"xs"}>
       <Container py={2} maxW={"container.xl"} px={4}>
         <Flex alignItems={"center"} justifyContent={"space-between"}>
           <HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }}>
