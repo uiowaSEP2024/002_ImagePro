@@ -57,6 +57,43 @@
           "points": 20
         }
       ]
+    },
+    {
+      "version": "1.0.1",
+      "name": "Demo Job",
+      "tag": "demo_job",
+      "step_configurations": [
+        {
+          "name": "Start Demo",
+          "tag": "step_1",
+          "points": 10
+        },
+        {
+          "name": "Say Hello",
+          "tag": "step_2",
+          "points": 15
+        },
+        {
+          "name": "Present the Amazing Content",
+          "tag": "step_3",
+          "points": 20
+        },
+        {
+          "name": "Take Questions!",
+          "tag": "step_4",
+          "points": 10
+        },
+        {
+          "name": "Round things up",
+          "tag": "step_5",
+          "points": 15
+        },
+        {
+          "name": "Say Goodbye!",
+          "tag": "step_6",
+          "points": 20
+        }
+      ]
     }
   ]
 }
