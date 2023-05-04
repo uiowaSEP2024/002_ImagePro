@@ -11,17 +11,21 @@ import {
   Container,
   Heading,
   Link,
-  Text
+  Text,
+  Icon,
+  IconButton
 } from "@chakra-ui/react";
 import { fetchJobs } from "@/data";
 import { Job } from "@/data/types";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 
 import NextLink from "next/link";
+import { FiCopy, FiInfo } from "react-icons/fi";
 
 function Profile() {
   const { currentUser } = useAuthContext();
   const [jobs, setJobs] = useState<Job[]>([]);
+  const [copied, setCopied] = useState(false);
 
   const reversedJobs = useMemo(() => jobs.slice().reverse(), [jobs]);
 
@@ -35,6 +39,15 @@ function Profile() {
     loadJobs();
   }, []);
 
+  const isCustomer = currentUser?.role === "customer";
+
+  const onCopyId = useCallback(() => {
+    if (!currentUser) return;
+    navigator.clipboard.writeText(currentUser.id.toString());
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }, [currentUser]);
+
   return (
     <Box as={Container} maxW="7xl" mt={14} p={4}>
       <Grid
@@ -47,6 +60,7 @@ function Profile() {
       >
         <GridItem colSpan={1}>
           <Box
+            height={"full"}
             p="50"
             w="100%"
             height="100%"
@@ -54,7 +68,11 @@ function Profile() {
             borderRadius="lg"
             overflow="hidden"
           >
-            <VStack alignItems="flex-start" spacing="20px">
+            <VStack
+              position={"relative"}
+              alignItems="flex-start"
+              spacing="20px"
+            >
               <Heading fontSize="6xl" fontWeight="700" color="black">
                 {currentUser?.first_name} {currentUser?.last_name}
               </Heading>
@@ -67,13 +85,38 @@ function Profile() {
                 fontWeight="700"
                 color="red.400"
               >
-                {currentUser?.role}
+                {currentUser?.role}{" "}
+                {isCustomer ? `(id: #${currentUser.id})` : ""}
               </Heading>
+
+              {isCustomer &&
+                (copied ? (
+                  <Text fontSize="sm" color="green.500">
+                    Copied to clipboard!
+                  </Text>
+                ) : (
+                  <Flex gap={1} color={"gray"} alignItems={"baseline"}>
+                    <Text fontSize="sm">
+                      Copy and share your unique ID with your provider to use
+                      their services.
+                    </Text>
+                    <IconButton
+                      icon={<Icon onClick={onCopyId} as={FiCopy} />}
+                      aria-label={"copy-id-button"}
+                      variant={"ghost"}
+                      m={0}
+                      p={0}
+                      minH={0}
+                      minW={0}
+                      h={0}
+                    />
+                  </Flex>
+                ))}
             </VStack>
           </Box>
         </GridItem>
         <GridItem>
-          <Flex>
+          <Flex height={"full"}>
             <Box
               p="50"
               alignItems="centered"
@@ -104,13 +147,18 @@ function Profile() {
         </GridItem>
       </Grid>
       <Divider mt={12} mb={12} />
-      <Heading fontSize={"3xl"} p="5">
+      <Heading fontSize={"3xl"} py="5">
         Recent Jobs
       </Heading>
       <Flex
         direction={{ base: "column", md: "row" }}
         gap={{ base: "2", sm: "4", md: "8" }}
       >
+        {reversedJobs.length === 0 && (
+          <Text fontSize={"1xl"} textAlign={"center"}>
+            No jobs found.
+          </Text>
+        )}
         {reversedJobs.slice(0, 4).map((job) => (
           <Box
             key={job.id}
