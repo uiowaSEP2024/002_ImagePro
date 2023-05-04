@@ -98,8 +98,8 @@ def test_expire_api_key(db, app_client, random_provider_user):
     data = {"username": random_provider_user.email, "password": "abc"}
     app_client.post("/login", data=data)
 
-    app_client.delete(
-        f"/api-keys/{api_key.id}",
+    app_client.post(
+        f"/api-keys/{api_key.id}/expire",
         headers={
             "Content-Type": "application/json",
         },
@@ -132,8 +132,8 @@ def test_expire_already_expired_apikey(db, app_client, random_provider_user):
     data = {"username": random_provider_user.email, "password": "abc"}
     app_client.post("/login", data=data)
 
-    response = app_client.delete(
-        f"/api-keys/{api_key.id}",
+    response = app_client.post(
+        f"/api-keys/{api_key.id}/expire",
         headers={
             "Content-Type": "application/json",
         },

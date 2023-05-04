@@ -23,9 +23,9 @@ export interface paths {
     /** Generate Api Key */
     post: operations["generate_api_key_api_keys_post"];
   };
-  "/api-keys/{apikey_id}": {
+  "/api-keys/{apikey_id}/expire": {
     /** Expire Apikey */
-    delete: operations["expire_apikey_api_keys__apikey_id__delete"];
+    post: operations["expire_apikey_api_keys__apikey_id__expire_post"];
   };
   "/api-keys/protected": {
     /** Read Api Key Protected Route */
@@ -516,7 +516,7 @@ export interface operations {
     };
   };
   /** Expire Apikey */
-  expire_apikey_api_keys__apikey_id__delete: {
+  expire_apikey_api_keys__apikey_id__expire_post: {
     parameters: {
       path: {
         apikey_id: number;

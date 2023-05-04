@@ -33,7 +33,7 @@ def read_apikeys(user=Depends(get_current_provider), db: Session = Depends(get_d
     return services.get_api_keys_for_user(db, user.id)
 
 
-@router.delete("/api-keys/{apikey_id}", response_model=schemas.ApikeyPublic)
+@router.post("/api-keys/{apikey_id}/expire", response_model=schemas.ApikeyPublic)
 def expire_apikey(
     apikey_id: int, user=Depends(get_current_provider), db: Session = Depends(get_db)
 ):
