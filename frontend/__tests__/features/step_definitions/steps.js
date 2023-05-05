@@ -1,8 +1,14 @@
 const assert = require('assert')
-const { When, Then, Given } = require('@cucumber/cucumber')
+const {
+  When,
+  Given,
+  Then
+} = require("cypress-cucumber-preprocessor/steps")
 
 Given('user is on the homepage',  function () {
-  assert.equal("cat", "cat")
+  cy.visit('http://localhost:3000').then(() => {
+    cy.window().its('Cypress').should('be.an', 'object');
+  });
 });
 
 Given('user clicks sign up', function () {
