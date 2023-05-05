@@ -59,6 +59,18 @@ export interface paths {
     /** Create Job */
     post: operations["create_job_job_configurations_post"];
   };
+  "/job_configurations/{job_configuration_id}": {
+    /** Get Job Configuration By Id */
+    get: operations["get_job_configuration_by_id_job_configurations__job_configuration_id__get"];
+  };
+  "/job_configurations/": {
+    /** Get Job Configurations By Tag And Version */
+    get: operations["get_job_configurations_by_tag_and_version_job_configurations__get"];
+  };
+  "/reporting": {
+    /** Get Reporting */
+    get: operations["get_reporting_reporting_get"];
+  };
 }
 
 export type webhooks = Record<string, never>;
@@ -195,13 +207,6 @@ export interface components {
       provider_id: number;
       /** Job Configuration Id */
       job_configuration_id: number;
-      provider: components["schemas"]["User"];
-      job_configuration: components["schemas"]["JobConfiguration"];
-      /**
-       * Events 
-       * @default []
-       */
-      events?: (components["schemas"]["Event"])[];
       /**
        * Created At 
        * Format: date-time
@@ -212,6 +217,13 @@ export interface components {
        * Format: date-time
        */
       updated_at?: string;
+      provider: components["schemas"]["User"];
+      job_configuration: components["schemas"]["JobConfiguration"];
+      /**
+       * Events 
+       * @default []
+       */
+      events?: (components["schemas"]["Event"])[];
     };
     /** JobConfiguration */
     JobConfiguration: {
@@ -661,6 +673,70 @@ export interface operations {
           "application/json": components["schemas"]["JobConfiguration"];
         };
       };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Job Configuration By Id */
+  get_job_configuration_by_id_job_configurations__job_configuration_id__get: {
+    parameters: {
+      path: {
+        job_configuration_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["JobConfiguration"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Job Configurations By Tag And Version */
+  get_job_configurations_by_tag_and_version_job_configurations__get: {
+    parameters: {
+      query: {
+        tag?: string;
+        version?: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": (components["schemas"]["JobConfiguration"])[];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Reporting */
+  get_reporting_reporting_get: {
+    parameters: {
+      query: {
+        start_date?: string;
+        end_date?: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: never;
       /** @description Validation Error */
       422: {
         content: {
