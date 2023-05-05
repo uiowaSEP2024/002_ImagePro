@@ -1,52 +1,43 @@
-import webpack from "@cypress/webpack-preprocessor";
-import { defineConfig } from "cypress";
 
-async function setupNodeEvents(
-  on: Cypress.PluginEvents,
-  config: Cypress.PluginConfigOptions
-): Promise<Cypress.PluginConfigOptions> {
+import { defineConfig } from 'cypress';
+import webpackPreprocessor from '@cypress/webpack-preprocessor';
+import { addCucumberPreprocessorPlugin } from '@badeball/cypress-cucumber-preprocessor';
 
-  on(
-    "file:preprocessor",
-    webpack({
-      webpackOptions: {
-        resolve: {
-          extensions: [".ts", ".js"],
-        },
-        module: {
-          rules: [
-            {
-              test: /\.ts$/,
-              exclude: [/node_modules/],
-              use: [
-                {
-                  loader: "ts-loader",
-                },
-              ],
-            },
-            {
-              test: /\.feature$/,
-              use: [
-                {
-                  loader: "webpack",
-                  options: config,
-                },
-              ],
-            },
-          ],
-        },
+
+async function setupNodeEvents(on: any, config: any) {
+  await addCucumberPreprocessorPlugin(on, config);
+
+  const options = {
+    webpackOptions: {
+      module: {
+        rules: [
+          {
+            test: /\.feature$/,
+            use: [
+              {
+                loader: '@badeball/cypress-cucumber-preprocessor/webpack',
+                options: config,
+              },
+            ],
+          },
+        ],
       },
-    })
-  );
+    },
 
-  // Make sure to return the config object as it might have been modified by the plugin.
+  };
+
+  on('file:preprocessor', webpackPreprocessor(options));
+
   return config;
-};
+}
 
-export default {
-  e2e: {
-    setupNodeEvents,
-    baseUrl: 'http://localhost:3000',
-    specPattern: "__tests__/features/*.feature"
-  },
+module.exports = {
+  default: defineConfig({
+    e2e: {
+      baseUrl: 'http://localhost:3000',
+      specPattern: '**/features/*.feature',
+      supportFile: false,
+      setupNodeEvents,
+    },
+  }),
 };

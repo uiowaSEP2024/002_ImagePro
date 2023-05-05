@@ -14,12 +14,12 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "types": ["cypress", "node"],
+    "types": ["cypress", "node", "@badeball/cypress-cucumber-preprocessor"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "../node_modules/cypress", "../node_modules/@badeball/cypress-cucumber-preprocessor"],
   "exclude": ["node_modules"]
 }

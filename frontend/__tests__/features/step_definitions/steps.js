@@ -3,7 +3,7 @@ const {
   When,
   Given,
   Then
-} = require("cypress-cucumber-preprocessor/steps")
+} = require("@badeball/cypress-cucumber-preprocessor/steps")
 
 Given('user is on the homepage',  function () {
   cy.visit('http://localhost:3000').then(() => {
