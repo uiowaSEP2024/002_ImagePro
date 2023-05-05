@@ -19,7 +19,12 @@
   "bin": {
     "cucumber-js": "bin/cucumber.js"
   },
+  "cypress-cucumber-preprocessor": {
+    "nonGlobalStepDefinitions": false,
+    "stepDefinitions": "cypress/stepsDefinition"
+  },
   "dependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^17.0.0",
     "@chakra-ui/icons": "^2.0.18",
     "@chakra-ui/react": "^2.5.5",
     "@cucumber/cucumber": "^9.1.1",
@@ -51,7 +56,6 @@
     "@types/isomorphic-fetch": "^0.0.36",
     "@typescript-eslint/eslint-plugin": "^5.53.0",
     "@typescript-eslint/parser": "^5.53.0",
-    "cypress-cucumber-preprocessor": "^4.3.1",
     "eslint": "^8.34.0",
     "eslint-config-standard-with-typescript": "^34.0.0",
     "eslint-plugin-import": "^2.27.5",
