@@ -17,18 +17,22 @@ class JobCreate(JobBase):
     tag: str
 
 
-class Job(JobBase):
+class JobPure(JobBase):
     id: int
     provider_id: int
     job_configuration_id: int
 
-    provider: User
-    job_configuration: JobConfiguration
-
-    events: List[Event] = []
-
     created_at: datetime = None
     updated_at: datetime = None
+
+    class Config:
+        orm_mode = True
+
+
+class Job(JobPure):
+    provider: User
+    job_configuration: JobConfiguration
+    events: List[Event] = []
 
     class Config:
         orm_mode = True

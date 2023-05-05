@@ -7,7 +7,7 @@ export const backendUrl = (
 export const fetchJobs = async (): Promise<Job[] | void> => {
   return fetch(`${backendUrl}/jobs`, {
     credentials: "include",
-    method: "GET",
+    method: "GET"
   })
     .then(async (response) => {
       if (response.status == 200) {
@@ -23,7 +23,7 @@ export const fetchJobs = async (): Promise<Job[] | void> => {
 export const fetchJobById = async (id: number): Promise<Job | void> => {
   return await fetch(`${backendUrl}/jobs/${id}`, {
     credentials: "include",
-    method: "GET",
+    method: "GET"
   })
     .then(async (response) => {
       if (response.status == 200) {
@@ -38,7 +38,7 @@ export const fetchJobById = async (id: number): Promise<Job | void> => {
 export const generateAPIKeys = async () => {
   await fetch(`${backendUrl}/api-keys`, {
     credentials: "include",
-    method: "POST",
+    method: "POST"
   })
     .then((response) => response.json())
     .then((data) => {
@@ -53,7 +53,7 @@ export const generateAPIKeys = async () => {
 export const fetchAPIkeys = async (): Promise<ApiKey[] | void> => {
   return await fetch(`${backendUrl}/api-keys`, {
     credentials: "include",
-    method: "GET",
+    method: "GET"
   })
     .then(async (response) => {
       if (response.status == 200) {
@@ -70,9 +70,9 @@ export const fetchGenAPIKeys = async (data: { note: string }) => {
     method: "POST",
     credentials: "include",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify(data)
   });
 
   return await response.json();
@@ -83,7 +83,7 @@ export const fetchEvents = async (
 ): Promise<JobEvent[] | void> => {
   return await fetch(`${backendUrl}/jobs/${jobId}/events`, {
     credentials: "include",
-    method: "GET",
+    method: "GET"
   })
     .then(async (response) => {
       if (response.status == 200) {
@@ -99,7 +99,7 @@ export async function fetchCheckUserLoggedIn() {
   try {
     const result = await fetch(`${backendUrl}/login`, {
       credentials: "include",
-      method: "GET",
+      method: "GET"
     });
 
     return result.json() as unknown as { user?: User; message: string };
@@ -112,7 +112,7 @@ export async function fetchCheckUserLoggedIn() {
 export const fetchLogout = async () => {
   const response = await fetch(`${backendUrl}/logout`, {
     method: "POST",
-    credentials: "include",
+    credentials: "include"
   });
 
   return response.json();
@@ -123,12 +123,12 @@ export const fetchLogin = async (email: string, password: string) => {
     credentials: "include",
     method: "POST",
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+      "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
     },
     body: new URLSearchParams({
       username: email,
-      password: password,
-    }),
+      password: password
+    })
   });
 
   // TODO: check for wider range of error codes
@@ -143,10 +143,56 @@ export const fetchSignUp = async (data: UserCreate) => {
   const response = await fetch(`${backendUrl}/users`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify(data)
   });
 
   return await response.json();
+};
+
+export const fetchDownloadReport = async (
+  startDateStr: string,
+  endDateStr: string
+) => {
+  console.log(startDateStr, endDateStr);
+  const startDate = new Date(startDateStr);
+  const endDate = new Date(endDateStr);
+
+  startDate.setHours(new Date().getHours());
+  startDate.setMinutes(new Date().getMinutes());
+  startDate.setSeconds(new Date().getSeconds());
+  startDate.setMilliseconds(new Date().getMilliseconds());
+
+  endDate.setHours(new Date().getHours());
+  endDate.setMinutes(new Date().getMinutes());
+  endDate.setSeconds(new Date().getSeconds());
+  endDate.setMilliseconds(new Date().getMilliseconds());
+
+  const startTimestampSeconds = (startDate.getTime() / 1000).toFixed(6);
+  const endTimestampSeconds = (endDate.getTime() / 1000).toFixed(6);
+
+  console.log(startTimestampSeconds, endTimestampSeconds);
+
+  const endpointUrl = `${backendUrl}/reporting?reporting?start_date=${startTimestampSeconds}&end_date=1683263397.421076`;
+
+  console.log(endpointUrl);
+
+  const response = await fetch(endpointUrl, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "text/csv"
+    }
+  });
+
+  const blob = await response.blob();
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `report-${startDateStr}-${endDateStr}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  window.URL.revokeObjectURL(url);
 };
