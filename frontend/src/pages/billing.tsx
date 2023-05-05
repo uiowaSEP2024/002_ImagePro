@@ -1,13 +1,16 @@
-import { Container, Heading, Text } from "@chakra-ui/react";
+import { Container, Heading, Spacer } from "@chakra-ui/react";
 import { withAuthenticated } from "@/components/withAuthenticated";
+import JobsChart from "@/components/stackedChart";
 
 function Billing() {
   return (
     <Container pt={8} maxW={"container.lg"} justifyContent={"center"}>
       <Heading lineHeight={1.5} textAlign={"center"}>
-        Billing
+        Analytics
       </Heading>
-      <Text textAlign={"center"}>Coming soon...</Text>
+      <Spacer height='20px' />
+      {/* <Text textAlign={"center"}>Coming soon...</Text> */}
+      <JobsChart />
     </Container>
   );
 }
