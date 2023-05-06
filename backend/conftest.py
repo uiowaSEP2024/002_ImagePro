@@ -2,10 +2,11 @@ import os
 import random
 
 import pytest
-from app import schemas, services
+from app import schemas, services, models
 from app.models.base import truncate_all_tables
 from fastapi.testclient import TestClient
 
+from app.schemas.user import UserRoleEnum
 from config import config
 
 from app.main import app
@@ -15,12 +16,19 @@ from app.main import app
 config.setup("test")
 
 user_counter = 0
+job_configuration_counter = 0
 
 
 def get_next_user_count():
     global user_counter
     user_counter = user_counter + 1
     return user_counter
+
+
+def get_next_job_configuration_count():
+    global job_configuration_counter
+    job_configuration_counter = job_configuration_counter + 1
+    return job_configuration_counter
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -36,7 +44,11 @@ def app_client():
 
 @pytest.fixture
 def db():
-    return config.db.SessionLocal()
+    db = config.db.SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 @pytest.fixture
@@ -64,13 +76,17 @@ def random_provider_user_with_api_key(db, random_provider_user):
 
 
 @pytest.fixture
-def job_for_random_user_with_api_key(db, random_provider_user_with_api_key):
+def job_for_random_user_with_api_key(
+    db, random_provider_user_with_api_key, random_job_configuration_factory
+):
+    job_configuration = random_job_configuration_factory.get()
+
     job = services.create_job(
         db,
         schemas.JobCreate(
             provider_job_id="145254",
             customer_id=random_provider_user_with_api_key.id,
-            provider_job_name="Scanning",
+            tag=job_configuration.tag,
         ),
         provider=random_provider_user_with_api_key,
     )
@@ -88,6 +104,7 @@ def random_provider_user(db):
             password="abc",
             first_name="first",
             last_name="last",
+            role=UserRoleEnum.provider,
         ),
     )
     return test_provider_user
@@ -97,7 +114,7 @@ def random_provider_user(db):
 # users for a test. See https://stackoverflow.com/a/21590140
 @pytest.fixture
 def random_test_user_factory(db):
-    class ThingFactory(object):
+    class Factory(object):
         @staticmethod
         def get():
             random_tag = get_next_user_count()
@@ -112,4 +129,35 @@ def random_test_user_factory(db):
             )
             return test_user
 
-    return ThingFactory()
+    return Factory()
+
+
+@pytest.fixture
+def random_job_configuration_factory(db, random_provider_user):
+    class Factory(object):
+        @staticmethod
+        def get(num_steps=0):
+            count = get_next_job_configuration_count()
+            test_job_configuration = models.JobConfiguration(
+                tag=f"test_job_{count}",
+                name="Test Job",
+                provider_id=random_provider_user.id,
+                version="0.0." + str(get_next_user_count()),
+            )
+
+            for i in range(num_steps):
+                test_job_configuration.step_configurations.append(
+                    models.StepConfiguration(
+                        name=f"Step {i}",
+                        tag=f"step_{i}",
+                        points=10,
+                        job_configuration=test_job_configuration,
+                    )
+                )
+
+            db.add(test_job_configuration)
+            db.commit()
+            db.refresh(test_job_configuration)
+            return test_job_configuration
+
+    return Factory()

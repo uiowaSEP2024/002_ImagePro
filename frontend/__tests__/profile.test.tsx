@@ -34,9 +34,64 @@ jest.spyOn(data, "fetchCheckUserLoggedIn").mockImplementation(() =>
       first_name: "John",
       last_name: "Doe",
       email: "johndoe@gmail.com",
-      id: 1
+      id: 1,
+      role: "customer"
     },
     message: ""
+  })
+);
+
+jest.spyOn(data, "fetchJobs").mockImplementation(() =>
+  Promise.resolve([
+    {
+      id: 1,
+      provider_job_name: "Kidney Cancer Detection",
+      customer_id: 1,
+      provider_job_id: "236",
+      provider_id: 2,
+      created_at: "2021-03-01T00:00:00.000Z",
+      job_configuration_id: 1,
+      job_configuration: {
+        id: 1,
+        name: "Kidney Cancer Detection",
+        tag: "kidney_cancer_detection",
+        step_configurations: [],
+        version: "1.0.0",
+        provider_id: 1
+      },
+      provider: {
+        id: 1,
+        first_name: "BotImage",
+        last_name: "",
+        email: "botimage@gmail.com"
+      }
+    }
+  ])
+);
+jest.spyOn(data, "fetchEvents").mockImplementation(() => Promise.resolve([]));
+jest.spyOn(data, "fetchJobById").mockImplementation(() =>
+  Promise.resolve({
+    id: 1,
+    provider_job_name: "Kidney Cancer Detection",
+    customer_id: 1,
+    provider_job_id: "236",
+    provider_id: 2,
+    created_at: "2021-03-01T00:00:00.000Z",
+    job_configuration_id: 1,
+    job_configuration: {
+      id: 1,
+      name: "Kidney Cancer Detection",
+      tag: "kidney_cancer_detection",
+      step_configurations: [],
+      version: "1.0.0",
+      provider_id: 1
+    },
+    provider: {
+      id: 1,
+      first_name: "BotImage",
+      last_name: "",
+      email: "botimage@gmail.com"
+    }
   })
 );
 
@@ -50,10 +105,40 @@ describe("Profile", () => {
 
     const heading = await waitFor(() =>
       screen.getByRole("heading", {
-        name: /First Name/i
+        name: /John Doe/i
+      })
+    );
+    const role = await waitFor(() => screen.getByTestId("role"));
+    const email = await waitFor(() =>
+      screen.getByRole("heading", {
+        name: /johndoe@gmail.com/i
       })
     );
 
     expect(heading).toBeInTheDocument();
+    expect(role).toBeInTheDocument();
+    expect(email).toBeInTheDocument();
+  });
+
+  it("renders job", async () => {
+    await act(async () =>
+      render(<Profile />, { wrapper: AuthContextProvider })
+    );
+
+    const job = await waitFor(() =>
+      screen.getByText("Kidney Cancer Detection")
+    );
+
+    expect(job).toBeInTheDocument();
+  });
+
+  it("renders number of jobs", async () => {
+    await act(async () =>
+      render(<Profile />, { wrapper: AuthContextProvider })
+    );
+
+    const job = await waitFor(() => screen.getByText("1 jobs"));
+
+    expect(job).toBeInTheDocument();
   });
 });

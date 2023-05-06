@@ -1,8 +1,8 @@
 import argparse
-import sys
 import os
-import psycopg2
+import sys
 
+import psycopg2
 from config import config
 from seed import seed_db
 
@@ -164,12 +164,22 @@ def db_dev_seed():
     seed_db()
 
 
+@task
+def db_dev_seed_auto():
+    config.setup("development")
+    db_dev_reset()
+    db_dev_upgrade()
+    db_dev_seed()
+
+
 # fmt: off
 commands = {
     "db:test:reset": db_test_reset,
     "db:dev:reset": db_dev_reset,
 
     "db:dev:seed": db_dev_seed,
+    "db:dev:seed_auto": db_dev_seed_auto,
+
 
     "db:dev:upgrade": db_dev_upgrade,
     "db:test:upgrade": db_test_upgrade,

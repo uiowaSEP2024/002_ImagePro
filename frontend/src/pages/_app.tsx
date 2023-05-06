@@ -1,23 +1,24 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
-import Navbar from "src/components/Navbar";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { AuthContextProvider } from "@/contexts/authContext";
-import { ChakraProvider } from "@chakra-ui/react";
-import { NextUIProvider } from "@nextui-org/react";
+import { ChakraProvider, Flex } from "@chakra-ui/react";
 import { fontPrimary, theme } from "@/theme/theme";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <div className={fontPrimary.className}>
       <ChakraProvider theme={theme}>
-        <NextUIProvider>
-          <AuthContextProvider>
-            {/* Render the Navbar */}
+        <AuthContextProvider>
+          <Flex minH={"100vh"} direction="column">
             <Navbar />
-            {/* Render the page */}
-            <Component {...pageProps} />
-          </AuthContextProvider>
-        </NextUIProvider>
+            <Flex minH={"90vh"} direction={"column"} flex={1}>
+              <Component {...pageProps} />
+            </Flex>
+            <Footer />
+          </Flex>
+        </AuthContextProvider>
       </ChakraProvider>
     </div>
   );
