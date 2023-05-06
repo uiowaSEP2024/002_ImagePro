@@ -1,43 +1,23 @@
+import { defineConfig } from "cypress";
+import createBundler from "@bahmutov/cypress-esbuild-preprocessor";
+import { addCucumberPreprocessorPlugin } from "@badeball/cypress-cucumber-preprocessor";
+const createEsbuildPlugin = require("@badeball/cypress-cucumber-preprocessor/esbuild");
 
-import { defineConfig } from 'cypress';
-import webpackPreprocessor from '@cypress/webpack-preprocessor';
-import { addCucumberPreprocessorPlugin } from '@badeball/cypress-cucumber-preprocessor';
-
-
-async function setupNodeEvents(on: any, config: any) {
-  await addCucumberPreprocessorPlugin(on, config);
-
-  const options = {
-    webpackOptions: {
-      module: {
-        rules: [
-          {
-            test: /\.feature$/,
-            use: [
-              {
-                loader: '@badeball/cypress-cucumber-preprocessor/webpack',
-                options: config,
-              },
-            ],
-          },
-        ],
-      },
+export default defineConfig({
+  e2e: {
+    specPattern: "**/*.feature",
+    async setupNodeEvents(
+      on: Cypress.PluginEvents,
+      config: Cypress.PluginConfigOptions
+    ): Promise<Cypress.PluginConfigOptions> {
+      await addCucumberPreprocessorPlugin(on, config);
+      on(
+        "file:preprocessor",
+        createBundler({
+          plugins: [createEsbuildPlugin(config)],
+        })
+      );
+      return config;
     },
-
-  };
-
-  on('file:preprocessor', webpackPreprocessor(options));
-
-  return config;
-}
-
-module.exports = {
-  default: defineConfig({
-    e2e: {
-      baseUrl: 'http://localhost:3000',
-      specPattern: '**/features/*.feature',
-      supportFile: false,
-      setupNodeEvents,
-    },
-  }),
-};
+  },
+});
