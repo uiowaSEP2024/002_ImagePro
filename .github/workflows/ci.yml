@@ -1,5 +1,8 @@
 name: Continuous integration workflow
 on:
+  push:
+    branches:
+      - "main"
   pull_request:
     branches:
       - "main"
@@ -16,6 +19,6 @@ jobs:
     name: CDK Infra CI
     uses: ./.github/workflows/cdk-infra-ci.yml
 
-  frontend_lint:
+  frontend_ci:
     name: Frontend CI
     uses: ./.github/workflows/frontend-ci.yml

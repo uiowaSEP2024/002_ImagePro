@@ -1,6 +1,11 @@
 from datetime import datetime
+from typing import List
 
-from pydantic import BaseModel
+from pydantic import BaseModel, StrictStr
+
+from . import Event
+from .job_configuration import JobConfiguration
+from .user import User
 
 
 class JobBase(BaseModel):
@@ -9,12 +14,19 @@ class JobBase(BaseModel):
 
 
 class JobCreate(JobBase):
-    provider_job_name: str
+    tag: str
 
 
-class Job(JobCreate):
+class Job(JobBase):
     id: int
     provider_id: int
+    job_configuration_id: int
+
+    provider: User
+    job_configuration: JobConfiguration
+
+    events: List[Event] = []
+
     created_at: datetime = None
     updated_at: datetime = None
 

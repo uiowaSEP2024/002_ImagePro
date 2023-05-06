@@ -10,20 +10,14 @@ jest.mock("@/data", () => ({
   ...jest.requireActual("@/data")
 }));
 
+const mockRouterPush = jest.fn();
 jest.mock("next/router", () => ({
   useRouter() {
     return {
       route: "/",
       pathname: "",
       query: "",
-      asPath: "",
-      push: jest.fn(),
-      events: {
-        on: jest.fn(),
-        off: jest.fn()
-      },
-      beforePopState: jest.fn(() => null),
-      prefetch: jest.fn(() => null)
+      push: mockRouterPush
     };
   }
 }));
@@ -34,7 +28,8 @@ jest.spyOn(data, "fetchCheckUserLoggedIn").mockImplementation(() =>
       first_name: "John",
       last_name: "Doe",
       email: "johndoe@gmail.com",
-      id: 1
+      id: 1,
+      role: "provider"
     },
     message: ""
   })
@@ -50,10 +45,7 @@ describe("Dashboard", () => {
     expect(useRouter().push).not.toBeCalledWith("/login");
 
     const heading = await waitFor(() =>
-      screen.getByRole("heading", {
-        name: /Welcome/i
-      })
-    );
+      screen.getByText("Explore our tools"));
 
     expect(heading).toBeInTheDocument();
   });
@@ -64,9 +56,7 @@ describe("Dashboard", () => {
     expect(useRouter().push).not.toBeCalledWith('/login');
 
     const table = await waitFor(() =>
-    screen.getByRole("heading", {
-      name: /Jobs/i,
-    }));
+    screen.getByText("Jobs"));
 
     expect(table).toBeInTheDocument();
 
