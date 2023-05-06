@@ -18,7 +18,7 @@ module.exports = {
         {
           test: /\.feature$/,
           use: [{
-            loader: "@badeball/cypress-cucumber-preprocessor/loader"
+            loader: "./node_modules/@badeball/cypress-cucumber-preprocessor/loader"
           }]
         }
       ]

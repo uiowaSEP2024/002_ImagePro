@@ -21,11 +21,10 @@
   },
   "cypress-cucumber-preprocessor": {
     "nonGlobalStepDefinitions": false,
-    "stepDefinitions": "cypress/stepsDefinition"
+    "stepDefinitions": "cypress/**/*.{js,ts}"
   },
   "dependencies": {
     "@badeball/cypress-cucumber-preprocessor": "^17.0.0",
-    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.0",
     "@chakra-ui/icons": "^2.0.18",
     "@chakra-ui/react": "^2.5.5",
     "@cucumber/cucumber": "^9.1.1",
@@ -51,6 +50,8 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.21.2",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.0",
+    "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@types/cucumber": "^7.0.0",
