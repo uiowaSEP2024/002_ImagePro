@@ -54,7 +54,7 @@ class CdkInfraStack(cdk.Stack):
                 "POSTGRES_PORT": cdk.SecretValue.secrets_manager(
                     build_config.DatabaseAccessSecretName, json_field="port"
                 ).unsafe_unwrap(),
-                "POSTGRES_HOST": cdk.SecretValue.secrets_manager(
+                "POSTGRES_SERVER": cdk.SecretValue.secrets_manager(
                     build_config.DatabaseAccessSecretName, json_field="host"
                 ).unsafe_unwrap(),
                 "POSTGRES_PASSWORD": cdk.SecretValue.secrets_manager(
