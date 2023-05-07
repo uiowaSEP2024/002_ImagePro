@@ -20,6 +20,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "../node_modules/cypress", "../node_modules/@badeball/cypress-cucumber-preprocessor"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "../node_modules/cypress", "../node_modules/@badeball/cypress-cucumber-preprocessor", "cypress/**/*.ts"],
   "exclude": ["node_modules"]
 }
