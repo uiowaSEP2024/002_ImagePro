@@ -3,3 +3,4 @@ from .jobs import *
 from .users import *
 from .events import *
 from .job_configuration import *
+from .reporting import *
