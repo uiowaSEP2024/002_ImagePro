@@ -1,12 +1,16 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "esModuleInterop": false,
+    "esModuleInterop": true,
     "noEmit": false,
     "module": "esnext",
     "moduleResolution": "node",
@@ -14,12 +18,27 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "types": ["cypress", "node", "@badeball/cypress-cucumber-preprocessor"],
+    "types": [
+      "cypress",
+      "node",
+      "@badeball/cypress-cucumber-preprocessor"
+    ],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "../node_modules/cypress", "../node_modules/@badeball/cypress-cucumber-preprocessor", "cypress/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "../node_modules/cypress",
+    "../node_modules/@badeball/cypress-cucumber-preprocessor",
+    "cypress/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
