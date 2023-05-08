@@ -151,6 +151,15 @@ export const fetchSignUp = async (data: UserCreate) => {
   return await response.json();
 };
 
+export const fetchExpireApiKey = async (id: number) => {
+  const response = await fetch(`${backendUrl}/api-keys/${id}/expire`, {
+    credentials: "include",
+    method: "POST"
+  });
+
+  return await response.json();
+};
+
 export const fetchDownloadReport = async (
   startDateStr: string,
   endDateStr: string
