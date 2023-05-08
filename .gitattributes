@@ -106,3 +106,10 @@
 /docs/botImage/static/img/Engine-Options.png filter=lfs diff=lfs merge=lfs -text
 /docs/botImage/static/img/Templates.png filter=lfs diff=lfs merge=lfs -text
 /frontend/cucumber-report.html filter=lfs diff=lfs merge=lfs -text
+/frontend/cypress/screenshots/dashboard.feature/Dashboard[[:space:]]--[[:space:]]API[[:space:]]Keys[[:space:]]Route[[:space:]](failed).png filter=lfs diff=lfs merge=lfs -text
+/frontend/cypress/screenshots/dashboard.feature/Dashboard[[:space:]]--[[:space:]]Analytics[[:space:]]route[[:space:]](failed).png filter=lfs diff=lfs merge=lfs -text
+/frontend/cypress/screenshots/dashboard.feature/Dashboard[[:space:]]--[[:space:]]Jobs[[:space:]]route[[:space:]](failed).png filter=lfs diff=lfs merge=lfs -text
+/frontend/cypress/screenshots/home.feature/Home[[:space:]]--[[:space:]]Jobs[[:space:]]route[[:space:]](failed).png filter=lfs diff=lfs merge=lfs -text
+/frontend/cypress/screenshots/login.feature/Login[[:space:]]--[[:space:]]Login[[:space:]]Success[[:space:]](failed).png filter=lfs diff=lfs merge=lfs -text
+/frontend/cypress/screenshots/profile.feature/Profile[[:space:]]--[[:space:]]User[[:space:]]profile[[:space:]](failed).png filter=lfs diff=lfs merge=lfs -text
+/frontend/cypress/screenshots/signup.feature/Signup[[:space:]]--[[:space:]]Create[[:space:]]a[[:space:]]New[[:space:]]User[[:space:]](failed).png filter=lfs diff=lfs merge=lfs -text

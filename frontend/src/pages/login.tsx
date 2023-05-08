@@ -68,6 +68,7 @@ function Login() {
             </Text>
             <Input
               variant="outline"
+              id="Email"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -80,6 +81,7 @@ function Login() {
             <InputGroup>
               <Input
                 variant="outline"
+                id="Password"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
