@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from app import models, schemas
 
 
-def get_reports_events(
+def get_reporting_events(
     db: Session, provider_id: int, start_date: float, end_date: float
 ):
     end_date = datetime.fromtimestamp(end_date)
