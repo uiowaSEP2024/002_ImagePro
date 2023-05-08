@@ -66,13 +66,16 @@ jest.spyOn(data, "fetchCheckUserLoggedIn").mockImplementation(() =>
   })
 );
 
-jest.mock('react-chartjs-2', () => ({
-  Bar: () => null
+jest.mock("react-chartjs-2", () => ({
+  Bar: () => null,
 }));
 
 // jest.mock("@/components/StackedChart", () => () => null)
 
 describe("Billing", () => {
+  jest.mock("react-chartjs-2", () => ({
+    Bar: () => null,
+  }));
   it("renders a heading", async () => {
     await act(async () =>
       render(<Billing />, { wrapper: AuthContextProvider })
@@ -98,8 +101,4 @@ describe("Billing", () => {
 
     expect(useRouter().push).toBeCalledWith("/dashboard");
   });
-
-  jest.mock('react-chartjs-2', () => ({
-    Bar: () => null,
-  }))
 });
