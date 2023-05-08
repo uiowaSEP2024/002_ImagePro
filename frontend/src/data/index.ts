@@ -174,7 +174,7 @@ export const fetchDownloadReport = async (
 
   console.log(startTimestampSeconds, endTimestampSeconds);
 
-  const endpointUrl = `${backendUrl}/reports?start_date=${startTimestampSeconds}&end_date=${endTimestampSeconds}`;
+  const endpointUrl = `${backendUrl}/reporting?start_date=${startTimestampSeconds}&end_date=${endTimestampSeconds}`;
 
   console.log(endpointUrl);
 
