@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, func
 from sqlalchemy.orm import relationship
 
 from .base import Base, DateMixin
@@ -11,5 +11,7 @@ class Apikey(Base, DateMixin):
     user_id = Column(Integer, ForeignKey("users.id"))
     key = Column(String, unique=True)
     note = Column(String)
+
+    expires_at = Column(DateTime(timezone=True), nullable=True)
 
     user = relationship("User", back_populates="api_keys")
