@@ -12,6 +12,8 @@ import "@testing-library/jest-dom";
 import { useRouter } from "next/router";
 import { AuthContextProvider } from "@/contexts/authContext";
 
+import * as data from "@/data";
+
 const mockRouterPush = jest.fn();
 jest.mock("next/router", () => ({
   useRouter() {
@@ -51,6 +53,10 @@ jest.mock("@/data", () => ({
       });
       resolve(data);
     });
+  },
+
+  fetchJobs() {
+    return new Promise((resolve) => resolve([]));
   }
 }));
 
