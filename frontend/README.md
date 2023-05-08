@@ -28,6 +28,21 @@ The `pages/api` directory is mapped to `/api/*`. Files in this directory are tre
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
+
+## Testing
+The frontend is currently being tested with Jest for unit tests, and with Cypress + Cucumber for integration tests. To run Jest tests, run the following commands:
+
+```bash
+npm run test
+```
+
+To run the Cypress tests, first ensure that you have a running local server by running `npm run dev` on the frontend, and then on the backend follow the `backend` README instructions to get it started. Then, run the following commands:
+
+```bash
+npm run tests:e2e
+```
+
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
