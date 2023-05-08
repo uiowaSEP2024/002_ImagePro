@@ -7,40 +7,50 @@ Given("user is on the homepage", function () {
 });
 
 Given("user clicks sign up", function () {
-  assert.equal("cat", "cat");
+  cy.get('[href="/signup"]').click({multiple: true })
+});
+
+Then("user should be on sign up page", function () {
+  cy.location("pathname").should('match', new RegExp("/signup") );
 });
 
 When(
   "user fills First Name with John and Last Name with Thomas and Email with john@gmail.com",
   function () {
-    assert.equal("cat", "cat");
+    cy.get('[id="First Name"]').type(`John{enter}`);
+    cy.get('[id="Last Name"]').type(`Thomas{enter}`);
+    cy.get('[id="Email"]').type(`john@gmail.com{enter}`);
   }
 );
 
 When("user fills Password with abd", function () {
-  assert.equal("cat", "cat");
+  cy.get('[id="Password"]').type(`abd{enter}`);
 });
 
 When("user fills Confirm Password with abd", function () {
-  assert.equal("cat", "cat");
+  cy.get('[id="Confirm Password"]').type(`abd{enter}`);
 });
 
 When("user clicks create account button", function () {
-  assert.equal("cat", "cat");
+  cy.get('[data-testid="signup"]').click()
 });
 
 Then("user should see Sign up successful", function () {
-  assert.equal("cat", "cat");
+  cy.on('window:alert', (text) => {
+    expect(text).to.contains('Sign up successful');
+  });
 });
 
 Then("user should still be on signup page", function () {
-  assert.equal("cat", "cat");
+  cy.location("pathname").should('match', new RegExp("/signup") );
 });
 
 When("user puts Confirm Password as cat", function () {
-  assert.equal("cat", "cat");
+  cy.get('[id="Confirm Password"]').type(`cat{enter}`);
 });
 
 Then("error message should display with Passwords Do Not Match", function () {
-  assert.equal("cat", "cat");
+  cy.on('window:alert', (text) => {
+    expect(text).to.contains('Sign up successful');
+  });
 });

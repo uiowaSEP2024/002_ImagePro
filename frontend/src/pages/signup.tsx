@@ -93,6 +93,7 @@ function SignUp() {
             </Text>
             <Input
               variant="outline"
+              id="First Name"
               placeholder="First Name"
               value={first_name}
               onChange={(e) => setFirstName(e.target.value)}
@@ -104,6 +105,7 @@ function SignUp() {
             </Text>
             <Input
               variant="outline"
+              id="Last Name"
               placeholder="Last Name"
               value={last_name}
               onChange={(e) => setLastName(e.target.value)}
@@ -115,6 +117,7 @@ function SignUp() {
             </Text>
             <Input
               variant="outline"
+              id="Email"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -128,6 +131,7 @@ function SignUp() {
               <Input
                 variant="outline"
                 placeholder="Password"
+                id="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 type={showPassword ? "text" : "password"}
@@ -158,6 +162,7 @@ function SignUp() {
             <Input
               variant="outline"
               type="password"
+              id="Confirm Password"
               placeholder="Confirm Password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
