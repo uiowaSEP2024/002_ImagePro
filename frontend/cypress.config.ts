@@ -1,41 +1,27 @@
 import { defineConfig } from "cypress";
-
-const cucumber = require("@badeball/cypress-cucumber-preprocessor").default;
-
-const createEsbuildPlugin =
-  require("@badeball/cypress-cucumber-preprocessor/esbuild").createEsbuildPlugin;
-
-const createBundler = require("@bahmutov/cypress-esbuild-preprocessor");
-const nodePolyfills =
-  require("@esbuild-plugins/node-modules-polyfill").NodeModulesPolyfillPlugin;
-
-const addCucumberPreprocessorPlugin =
-  require("@badeball/cypress-cucumber-preprocessor").addCucumberPreprocessorPlugin;
+import createBundler from "@bahmutov/cypress-esbuild-preprocessor";
+import { addCucumberPreprocessorPlugin } from "@badeball/cypress-cucumber-preprocessor";
+import createEsbuildPlugin from "@badeball/cypress-cucumber-preprocessor/esbuild";
 
 export default defineConfig({
   e2e: {
-    specPattern: [
-      "cypress/**/*.{js,jsx,ts,tsx}",
-      "__tests__/features/*.feature"
-    ],
+    specPattern: ["**/*.feature"],
     async setupNodeEvents(
       on: Cypress.PluginEvents,
       config: Cypress.PluginConfigOptions
     ): Promise<Cypress.PluginConfigOptions> {
+      // This is required for the preprocessor to be able to generate JSON reports after each run, and more,
       await addCucumberPreprocessorPlugin(on, config);
+
       on(
         "file:preprocessor",
         createBundler({
-          plugins: [nodePolyfills(), createEsbuildPlugin(config)]
+          plugins: [createEsbuildPlugin(config)]
         })
       );
+
+      // Make sure to return the config object as it might have been modified by the plugin.
       return config;
-    },
-    env: {
-      omitFiltered: true,
-      filterSpecs: true
-    },
-    fixturesFolder: false,
-    baseUrl: "http://localhost:3000"
+    }
   }
 });

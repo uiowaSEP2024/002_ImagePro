@@ -1,9 +1,4 @@
-const assert = require("assert");
-const {
-  When,
-  Given,
-  Then
-} = require("@badeball/cypress-cucumber-preprocessor/steps");
+import { When, Then, Given } from "@badeball/cypress-cucumber-preprocessor";
 
 Given("user is on the homepage", function () {
   cy.visit("http://localhost:3000").then(() => {
