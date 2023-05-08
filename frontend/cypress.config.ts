@@ -1,21 +1,23 @@
 import { defineConfig } from "cypress";
 
-const cucumber = require('@badeball/cypress-cucumber-preprocessor').default
+const cucumber = require("@badeball/cypress-cucumber-preprocessor").default;
 
 const createEsbuildPlugin =
-  require('@badeball/cypress-cucumber-preprocessor/esbuild').createEsbuildPlugin
+  require("@badeball/cypress-cucumber-preprocessor/esbuild").createEsbuildPlugin;
 
-const createBundler = require('@bahmutov/cypress-esbuild-preprocessor')
+const createBundler = require("@bahmutov/cypress-esbuild-preprocessor");
 const nodePolyfills =
-  require('@esbuild-plugins/node-modules-polyfill').NodeModulesPolyfillPlugin
+  require("@esbuild-plugins/node-modules-polyfill").NodeModulesPolyfillPlugin;
 
 const addCucumberPreprocessorPlugin =
-  require('@badeball/cypress-cucumber-preprocessor').addCucumberPreprocessorPlugin
-
+  require("@badeball/cypress-cucumber-preprocessor").addCucumberPreprocessorPlugin;
 
 export default defineConfig({
   e2e: {
-    specPattern: ["cypress/**/*.{js,jsx,ts,tsx}”]", "__test__/features/*.feature"],
+    specPattern: [
+      "cypress/**/*.{js,jsx,ts,tsx}",
+      "__tests__/features/*.feature"
+    ],
     async setupNodeEvents(
       on: Cypress.PluginEvents,
       config: Cypress.PluginConfigOptions
@@ -24,7 +26,7 @@ export default defineConfig({
       on(
         "file:preprocessor",
         createBundler({
-          plugins: [nodePolyfills(), createEsbuildPlugin(config)],
+          plugins: [nodePolyfills(), createEsbuildPlugin(config)]
         })
       );
       return config;
@@ -34,6 +36,6 @@ export default defineConfig({
       filterSpecs: true
     },
     fixturesFolder: false,
-    baseUrl: 'http://localhost:3000'
-  },
+    baseUrl: "http://localhost:3000"
+  }
 });

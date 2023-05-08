@@ -1,6 +1,6 @@
 Feature: Signup
 
-  Background: 
+  Background:
     Given user is on the homepage
     And user clicks sign up
 
