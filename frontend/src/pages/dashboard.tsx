@@ -78,7 +78,7 @@ function Dashboard() {
       icon: <Icon as={IoLogoBitcoin} color={"green.500"} w={5} h={5} />,
       iconBg: "green.100",
       show: currentUser?.role === "provider",
-      link: "/billing",
+      link: "/analytics",
       description: "View analytics and data aggregation"
     },
     {
