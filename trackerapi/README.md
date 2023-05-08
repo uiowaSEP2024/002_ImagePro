@@ -75,7 +75,7 @@ contents:
         {
           "name": "My Job",
           "tag": "my_job",
-          "steps": [
+          "step_configurations": [
             {
               "name": "Say Hello",
               "tag": "say_hello",
@@ -98,7 +98,7 @@ contents:
     ```
     
     > In this schema file, we define one job configuration, with a tag, "my_job", a display name, "My Job", and then a list
-        of steps, each with a unique tag, a display name, and points (indicating how much work is to be done for the step).
+        of step_configurations, each with a unique tag, a display name, and points (indicating how much work is to be done for the step).
     
     > Tip: You can actually define multiple configurations in a single JSON file, and name the file whatever you want. Organization is up to you!
 
@@ -188,17 +188,17 @@ the running backend service that you want to send jos to.
         # Do the first step (The say_hello step)
         message = f"Hello {name}!"
         print(message)
-        tracker_job.send_event(kind="step", name=job_config.steps[0].tag, metadata={ "Message": message })
+        tracker_job.send_event(kind="step", name=job_config.step_configurations[0].tag, metadata={ "Message": message })
 
         # Do the second step (The random_number step)
         random_number = random.randint(0, 100)
         print("Random Number", random_number)
-        tracker_job.send_event(kind="step", name=job_config.steps[1].tag, metadata={ "Random Number": random_number })
+        tracker_job.send_event(kind="step", name=job_config.step_configurations[1].tag, metadata={ "Random Number": random_number })
         
         # Do the last step (The say_bye step)
         message = f"Bye {name}!"
         print(message)
-        tracker_job.send_event(kind="step", name=job_config.steps[2].tag, metadata={ "Message": message })
+        tracker_job.send_event(kind="step", name=job_config.step_configurations[2].tag, metadata={ "Message": message })
 
     
     if __name__ == "__main__":
