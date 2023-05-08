@@ -6,7 +6,7 @@ function Billing() {
   return (
     <Container pt={8} maxW={"container.lg"} justifyContent={"center"}>
       <Heading lineHeight={1.5} textAlign={"center"}>
-        Analytics
+        Billing
       </Heading>
       <Spacer height='20px' />
       {/* <Text textAlign={"center"}>Coming soon...</Text> */}
