@@ -10,17 +10,17 @@ import io
 import pandas as pd
 
 router = APIRouter()
-router.tags = ["reporting"]
+router.tags = ["reports"]
 
 
-@router.get("/reporting", response_class=StreamingResponse)
-def get_reporting(
+@router.get("/reports", response_class=StreamingResponse)
+def get_reports(
     db: Session = Depends(get_db),
     provider=Depends(get_current_provider),
     start_date: float = (datetime.now() - timedelta(days=1 * 365)).timestamp(),
     end_date: float = datetime.now().timestamp(),
 ):
-    data = services.get_reporting_events_smarter(
+    data = services.get_reports_events(
         db,
         provider_id=provider.id,
         start_date=start_date,

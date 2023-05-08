@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from app import models, schemas
 
 
-def get_reporting_events_smarter(
+def get_reports_events(
     db: Session, provider_id: int, start_date: float, end_date: float
 ):
     end_date = datetime.fromtimestamp(end_date)
@@ -21,8 +21,8 @@ def get_reporting_events_smarter(
         )
         .select_from(models.Event)
         .join(models.Job, models.Event.job)
-        .join(models.JobConfiguration)
-        .join(models.StepConfiguration)
+        .join(models.JobConfiguration, models.Job.job_configuration)
+        .join(models.StepConfiguration, models.Event.step_configuration)
         .filter(models.Job.provider_id == provider_id)
         .filter(models.Event.created_at >= start_date)
         .filter(models.Event.created_at <= end_date)
@@ -58,41 +58,6 @@ def get_reporting_events_smarter(
             },
         }
         for event, job, job_configuration, step_configuration in results
-    ]
-
-    return final
-
-
-def get_reporting_events_labeled(db: Session, provider_id: int):
-    query = (
-        db.query(
-            models.Event.id.label("event_id"),
-        )
-        .select_from(models.Event)
-        .join(models.Job, models.Event.job)
-        .join(models.JobConfiguration)
-        .join(models.StepConfiguration)
-        .filter(models.Job.provider_id == provider_id)
-    )
-
-    print(query)
-    results = query.all()
-    print(results)
-
-    final = [
-        # {
-        #     **{k + ".event": v for k, v in event.__dict__.items()},
-        #     **{
-        #         k + ".job_configuration": v
-        #         for k, v in job_configuration.__dict__.items()
-        #     },
-        #     **{k + ".job": v for k, v in job.__dict__.items()},
-        #     **{
-        #         k + ".step_configuration": v
-        #         for k, v in step_configuration.__dict__.items()
-        #     },
-        # }
-        # for event, job, job_configuration, step_configuration in results
     ]
 
     return final
