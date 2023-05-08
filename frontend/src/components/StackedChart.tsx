@@ -108,7 +108,11 @@ const JobsChart = () => {
       };
     }),
   };
-  return <Bar data={data} options={options} />;
+  return (
+    <div>
+      <Bar data={data} options={options} />
+    </div>
+  );
 };
 
 export default JobsChart;
