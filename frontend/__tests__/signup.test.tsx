@@ -3,10 +3,10 @@ import {
   render,
   screen,
   waitFor,
-  fireEvent,
+  fireEvent
 } from "@testing-library/react";
 import Signup from "@/pages/signup";
-import Billing from "@/pages/billing";
+import Analytics from "@/pages/analytics";
 import Dashboard from "@/pages/dashboard";
 import "@testing-library/jest-dom";
 import { useRouter } from "next/router";
@@ -21,9 +21,9 @@ jest.mock("next/router", () => ({
       route: "/",
       pathname: "",
       query: "",
-      push: mockRouterPush,
+      push: mockRouterPush
     };
-  },
+  }
 }));
 
 jest.mock("@/data", () => ({
@@ -39,7 +39,7 @@ jest.mock("@/data", () => ({
         email: "user@example.com",
         first_name: "string",
         last_name: "string",
-        id: 0,
+        id: 0
       };
       resolve(data);
     });
@@ -49,7 +49,7 @@ jest.mock("@/data", () => ({
     return new Promise((resolve) => {
       const data = new URLSearchParams({
         email: "user@example.com",
-        password: "abc",
+        password: "abc"
       });
       resolve(data);
     });
@@ -57,13 +57,13 @@ jest.mock("@/data", () => ({
 
   fetchJobs() {
     return new Promise((resolve) => resolve([]));
-  },
+  }
 }));
 
 // TODO: explore fixing snapshot testing with https://github.com/mui/material-ui/issues/21293#issuecomment-654921524
 describe("SignUp", () => {
   jest.mock("react-chartjs-2", () => ({
-    Bar: () => null,
+    Bar: () => null
   }));
   it("renders text", async () => {
     await act(async () => render(<Signup />, { wrapper: AuthContextProvider }));
@@ -71,7 +71,7 @@ describe("SignUp", () => {
 
     const text = await waitFor(() =>
       screen.getByRole("heading", {
-        name: /Sign Up/i,
+        name: /Sign Up/i
       })
     );
 
@@ -123,10 +123,9 @@ describe("SignUp", () => {
   });
 
   it("does not render internal pages", async () => {
-
     // Tests commented out as React-ChartJS throwing errors on testing.
     // await act(async () =>
-    //   render(<Billing />, { wrapper: AuthContextProvider })
+    //   render(<Analytics />, { wrapper: AuthContextProvider })
     // );
 
     // expect(useRouter().push).toBeCalledWith("/login");

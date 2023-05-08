@@ -70,9 +70,9 @@ const Navbar = () => {
       show: !!currentUser
     },
     {
-      to: "/billing",
-      name: "Billing",
-      id: "billing",
+      to: "/analytics",
+      name: "Analytics",
+      id: "analytics",
       show: currentUser?.role === "provider"
     },
     {
