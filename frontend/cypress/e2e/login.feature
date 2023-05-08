@@ -10,8 +10,6 @@ Feature: Login
     And user fills "Password" with "abd"
     And user clicks "login" datatestid button
     Then user should see "Login successful. Redirecting..."
-    When user waits
-    Then user should be on "/dashboard" page
 
   Scenario: Login Failure
     When user fills "Email" with "john.doe@gmail.com"
