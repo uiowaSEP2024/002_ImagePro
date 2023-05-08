@@ -30,14 +30,14 @@ USERS_DATA = [
     # Customers
     dict(
         email="johndoe@gmail.com",
-        password="abc",
+        password="abcdefg",
         first_name="John",
         last_name="Doe",
         role=UserRoleEnum.customer,
     ),
     dict(
         email="janeblack@gmail.com",
-        password="abc",
+        password="abcdefg",
         first_name="Jane",
         last_name="Black",
         role=UserRoleEnum.customer,
@@ -45,13 +45,13 @@ USERS_DATA = [
     # Providers
     dict(
         email="noodlesco@gmail.com",
-        password="abc",
+        password="abcdefg",
         first_name="NoodlesCo",
         role=UserRoleEnum.provider,
     ),
     dict(
         email="botimage@gmail.com",
-        password="abc",
+        password="abcdefg",
         first_name="BotImage",
         role=UserRoleEnum.provider,
     ),
@@ -244,7 +244,7 @@ EVENTS_DATA = [
         event_metadata={
             "Protein Density": 50,
             "Opacity": 0.9,
-            "Report": "https://www.google.com",
+            "Report": "http://wwbp.org/papers/PsychSci2015_HeartDisease.pdf",
             "Color": "Lime Pink",
         },
     ),
@@ -257,7 +257,7 @@ EVENTS_DATA = [
         event_metadata={
             "Protein Density": 50,
             "Opacity": 0.9,
-            "Report": "https://www.google.com",
+            "Report": "http://wwbp.org/papers/PsychSci2015_HeartDisease.pdf",
             "Color": "Lime Pink",
         },
     ),
@@ -280,7 +280,7 @@ EVENTS_DATA = [
         event_metadata={
             "Protein Density": 50,
             "Opacity": 0.9,
-            "Report": "https://www.google.com",
+            "Report": "http://wwbp.org/papers/PsychSci2015_HeartDisease.pdf",
             "Color": "Lime Pink",
         },
     ),
@@ -293,7 +293,7 @@ EVENTS_DATA = [
         event_metadata={
             "Protein Density": 50,
             "Opacity": 0.9,
-            "Report": "https://www.google.com",
+            "Report": "http://wwbp.org/papers/PsychSci2015_HeartDisease.pdf",
             "Color": "Lime Pink",
         },
     ),
@@ -326,7 +326,7 @@ EVENTS_DATA = [
         event_metadata={
             "Protein Density": 50,
             "Opacity": 0.9,
-            "Report": "https://www.google.com",
+            "Report": "http://wwbp.org/papers/PsychSci2015_HeartDisease.pdf",
             "Color": "Lime Pink",
         },
     ),
@@ -339,7 +339,7 @@ EVENTS_DATA = [
         event_metadata={
             "Protein Density": 50,
             "Opacity": 0.9,
-            "Report": "https://www.google.com",
+            "Report": "http://wwbp.org/papers/PsychSci2015_HeartDisease.pdf",
             "Color": "Lime Pink",
         },
     ),

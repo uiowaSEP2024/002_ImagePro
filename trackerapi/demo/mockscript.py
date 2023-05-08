@@ -53,16 +53,17 @@ def run_mock_job(customer_id=None):
             # Do some work lasting anywhere between 1-2 seconds
             time.sleep(step.points / 10)
 
+            step_time = str(datetime.now())
             # Prepare log data
             log_data = {
                 "job_id": job_id,
                 "customer_id": customer_id,
                 "step": step.name,
-                "time": str(datetime.now()),
+                "time": step_time,
             }
 
             # sample metadata
-            metadata = {"Official": "Yes"}
+            metadata = {"Certified": "Yes", "Duration": f"{step.points/10}s"}
 
             json_str = json.dumps(log_data)
 
