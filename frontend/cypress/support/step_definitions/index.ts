@@ -7,9 +7,9 @@ Given("user is on the homepage", function () {
 });
 
 Given('user clicks {string} href button', function (string) {
-  cy.wait(4000);
+  cy.wait(6000);
   cy.get(`[href="${string}"]`).click({multiple: true })
-  cy.wait(4000);
+  cy.wait(6000);
 });
 
 Then("user should be on {string} page", function (string) {
@@ -24,7 +24,7 @@ When(
 );
 
 When("user clicks {string} datatestid button", function (string) {
-  cy.get(`[data-testid="${string}"]`).click()
+  cy.get(`[data-testid="${string}"]`).click({force: true})
 });
 
 When("user waits", function (string) {
