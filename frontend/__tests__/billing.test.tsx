@@ -4,7 +4,6 @@ import Billing from "@/pages/billing";
 import Login from "@/pages/login";
 import Signup from "@/pages/signup";
 import "@testing-library/jest-dom";
-import JobsChart from "@/components/stackedChart";
 import { useRouter } from "next/router";
 import * as data from "@/data";
 import { AuthContextProvider } from "@/contexts/authContext";
@@ -16,14 +15,14 @@ jest.mock("next/router", () => ({
       route: "/",
       pathname: "",
       query: "",
-      push: mockRouterPush
+      push: mockRouterPush,
     };
-  }
+  },
 }));
 
 jest.mock("@/data", () => ({
   __esModule: true,
-  ...jest.requireActual("@/data")
+  ...jest.requireActual("@/data"),
 }));
 
 jest.spyOn(data, "fetchJobs").mockImplementation(() =>
@@ -42,15 +41,15 @@ jest.spyOn(data, "fetchJobs").mockImplementation(() =>
         tag: "kidney_cancer_detection",
         step_configurations: [],
         version: "1.0.0",
-        provider_id: 1
+        provider_id: 1,
       },
       provider: {
         id: 1,
         first_name: "BotImage",
         last_name: "",
-        email: "botimage@gmail.com"
-      }
-    }
+        email: "botimage@gmail.com",
+      },
+    },
   ])
 );
 
@@ -61,11 +60,17 @@ jest.spyOn(data, "fetchCheckUserLoggedIn").mockImplementation(() =>
       last_name: "Doe",
       email: "johndoe@gmail.com",
       id: 1,
-      role: "provider"
+      role: "provider",
     },
-    message: ""
+    message: "",
   })
 );
+
+jest.mock('react-chartjs-2', () => ({
+  Bar: () => null
+}));
+
+// jest.mock("@/components/StackedChart", () => () => null)
 
 describe("Billing", () => {
   it("renders a heading", async () => {
@@ -77,7 +82,7 @@ describe("Billing", () => {
 
     const heading = await waitFor(() =>
       screen.getByRole("heading", {
-        name: /Billing/i
+        name: /Billing/i,
       })
     );
 
@@ -85,23 +90,16 @@ describe("Billing", () => {
   });
 
   it("does not render login or signup", async () => {
-    await act(async () =>
-      render(<Login />, { wrapper: AuthContextProvider })
-    );
+    await act(async () => render(<Login />, { wrapper: AuthContextProvider }));
 
     expect(useRouter().push).toBeCalledWith("/dashboard");
 
-    await act(async () =>
-      render(<Signup />, { wrapper: AuthContextProvider })
-    );
+    await act(async () => render(<Signup />, { wrapper: AuthContextProvider }));
 
     expect(useRouter().push).toBeCalledWith("/dashboard");
   });
 
-  // it("Renders a Stacked Chart", () => {
-  //   const wrapper = mount(
-  //     <JobsChart />,
-  //   )
-  //   expect(wrapper).toMatchSnapshot()
-  // })
+  jest.mock('react-chartjs-2', () => ({
+    Bar: () => null,
+  }))
 });

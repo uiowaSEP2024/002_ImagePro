@@ -1,6 +1,6 @@
 import { Container, Heading, Spacer } from "@chakra-ui/react";
 import { withAuthenticated } from "@/components/withAuthenticated";
-import JobsChart from "@/components/stackedChart";
+import JobsChart from "@/components/StackedChart";
 
 function Billing() {
   return (
