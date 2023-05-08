@@ -24,16 +24,18 @@ class EventCreate(EventBase):
     event_metadata: Optional[Dict[str, Union[str, int, float, bool]]]
 
 
-class Event(EventCreate):
+class EventPure(EventCreate):
     id: int
     job_id: int
     created_at: datetime = None
     updated_at: datetime = None
 
-    step_configuration: Optional[StepConfiguration]
-
     class Config:
         orm_mode = True
+
+
+class Event(EventPure):
+    step_configuration: Optional[StepConfiguration]
 
 
 class EventCreatePublic(EventCreate):
