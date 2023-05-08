@@ -23,6 +23,10 @@ export interface paths {
     /** Generate Api Key */
     post: operations["generate_api_key_api_keys_post"];
   };
+  "/api-keys/{apikey_id}/expire": {
+    /** Expire Apikey */
+    post: operations["expire_apikey_api_keys__apikey_id__expire_post"];
+  };
   "/api-keys/protected": {
     /** Read Api Key Protected Route */
     get: operations["read_api_key_protected_route_api_keys_protected_get"];
@@ -59,6 +63,14 @@ export interface paths {
     /** Create Job */
     post: operations["create_job_job_configurations_post"];
   };
+  "/job_configurations/{job_configuration_id}": {
+    /** Get Job Configuration By Id */
+    get: operations["get_job_configuration_by_id_job_configurations__job_configuration_id__get"];
+  };
+  "/job_configurations/": {
+    /** Get Job Configurations By Tag And Version */
+    get: operations["get_job_configurations_by_tag_and_version_job_configurations__get"];
+  };
 }
 
 export type webhooks = Record<string, never>;
@@ -67,14 +79,14 @@ export interface components {
   schemas: {
     /** Apikey */
     Apikey: {
-      /** Key */
-      key: string;
+      /** Note */
+      note: string;
       /** Id */
       id: number;
       /** User Id */
       user_id: number;
-      /** Note */
-      note: string;
+      /** Key */
+      key: string;
       /**
        * Created At 
        * Format: date-time
@@ -85,6 +97,11 @@ export interface components {
        * Format: date-time
        */
       updated_at?: string;
+      /**
+       * Expires At 
+       * Format: date-time
+       */
+      expires_at?: string;
     };
     /** ApikeyCreate */
     ApikeyCreate: {
@@ -93,17 +110,17 @@ export interface components {
     };
     /** ApikeyPublic */
     ApikeyPublic: {
+      /** Note */
+      note: string;
+      /** Id */
+      id: number;
+      /** User Id */
+      user_id: number;
       /**
        * Key 
        * Format: password
        */
       key: string;
-      /** Id */
-      id: number;
-      /** User Id */
-      user_id: number;
-      /** Note */
-      note: string;
       /**
        * Created At 
        * Format: date-time
@@ -114,6 +131,11 @@ export interface components {
        * Format: date-time
        */
       updated_at?: string;
+      /**
+       * Expires At 
+       * Format: date-time
+       */
+      expires_at?: string;
     };
     /** Body_login_login_post */
     Body_login_login_post: {
@@ -493,6 +515,28 @@ export interface operations {
       };
     };
   };
+  /** Expire Apikey */
+  expire_apikey_api_keys__apikey_id__expire_post: {
+    parameters: {
+      path: {
+        apikey_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["ApikeyPublic"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
   /** Read Api Key Protected Route */
   read_api_key_protected_route_api_keys_protected_get: {
     responses: {
@@ -659,6 +703,51 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["JobConfiguration"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Job Configuration By Id */
+  get_job_configuration_by_id_job_configurations__job_configuration_id__get: {
+    parameters: {
+      path: {
+        job_configuration_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["JobConfiguration"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Job Configurations By Tag And Version */
+  get_job_configurations_by_tag_and_version_job_configurations__get: {
+    parameters: {
+      query: {
+        tag?: string;
+        version?: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": (components["schemas"]["JobConfiguration"])[];
         };
       };
       /** @description Validation Error */
