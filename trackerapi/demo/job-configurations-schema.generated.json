@@ -15,6 +15,41 @@
     "job_configs"
   ],
   "definitions": {
+    "MetadataKindEnum": {
+      "title": "MetadataKindEnum",
+      "description": "An enumeration.",
+      "enum": [
+        "text",
+        "number",
+        "link"
+      ],
+      "type": "string"
+    },
+    "MetadataConfig": {
+      "title": "MetadataConfig",
+      "type": "object",
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "kind": {
+          "default": "text",
+          "allOf": [
+            {
+              "$ref": "#/definitions/MetadataKindEnum"
+            }
+          ]
+        },
+        "units": {
+          "title": "Units",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
     "StepConfig": {
       "title": "StepConfig",
       "type": "object",
@@ -30,6 +65,14 @@
         "name": {
           "title": "Name",
           "type": "string"
+        },
+        "metadata_configurations": {
+          "title": "Metadata Configurations",
+          "default": [],
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MetadataConfig"
+          }
         }
       },
       "required": [
