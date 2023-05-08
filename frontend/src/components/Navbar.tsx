@@ -76,6 +76,12 @@ const Navbar = () => {
       show: currentUser?.role === "provider"
     },
     {
+      to: "/reporting",
+      name: "Reporting",
+      id: "reporting",
+      show: currentUser?.role === "provider"
+    },
+    {
       to: "/apikeys",
       name: "Generate API Keys",
       id: "apikeys",

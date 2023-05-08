@@ -159,3 +159,49 @@ export const fetchExpireApiKey = async (id: number) => {
 
   return await response.json();
 };
+
+export const fetchDownloadReport = async (
+  startDateStr: string,
+  endDateStr: string
+) => {
+  console.log(startDateStr, endDateStr);
+  const startDate = new Date(startDateStr);
+  const endDate = new Date(endDateStr);
+
+  startDate.setHours(new Date().getHours());
+  startDate.setMinutes(new Date().getMinutes());
+  startDate.setSeconds(new Date().getSeconds());
+  startDate.setMilliseconds(new Date().getMilliseconds());
+
+  endDate.setHours(new Date().getHours());
+  endDate.setMinutes(new Date().getMinutes());
+  endDate.setSeconds(new Date().getSeconds());
+  endDate.setMilliseconds(new Date().getMilliseconds());
+
+  const startTimestampSeconds = startDate.getTime() / 1000;
+  const endTimestampSeconds = endDate.getTime() / 1000;
+
+  console.log(startTimestampSeconds, endTimestampSeconds);
+
+  const endpointUrl = `${backendUrl}/reporting?start_date=${startTimestampSeconds}&end_date=${endTimestampSeconds}`;
+
+  console.log(endpointUrl);
+
+  const response = await fetch(endpointUrl, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "text/csv"
+    }
+  });
+
+  const blob = await response.blob();
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `report-${startDateStr}-${endDateStr}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  window.URL.revokeObjectURL(url);
+};
