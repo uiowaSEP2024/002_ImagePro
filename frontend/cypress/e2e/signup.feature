@@ -17,8 +17,8 @@ Feature: Signup
 
   Scenario: User does not follow form validations
     When user fills "First Name" with "John"
-    And user fills "Last Name" with "Thomas"
-    And user fills "Email" with "john@gmail.com"
+    And user fills "Last Name" with "Thom"
+    And user fills "Email" with "john1@gmail.com"
     And user fills "Password" with "abd"
     And user fills "Confirm Password" with "cat"
     Then user should see "Passwords Do Not Match"
