@@ -1,6 +1,6 @@
 Feature: Dashboard
 
-  Background: 
+  Background:
     Given user is on the homepage
     And user clicks "/login" href button
     Then user should be on "/login" page
@@ -17,8 +17,8 @@ Feature: Dashboard
     Then user should be on "/jobs" page
 
   Scenario: Analytics route
-    When user clicks "/billing" href button
-    Then user should be on "/billing" page
+    When user clicks "/analytics" href button
+    Then user should be on "/analytics" page
 
   Scenario: API Keys Route
     When user clicks "/apikeys" href button
