@@ -38,3 +38,8 @@ next-env.d.ts
 # coverage reports
 junit.xml
 coverage.txt
+
+
+# Cypress
+cypress/videos
+cypress/screenshots

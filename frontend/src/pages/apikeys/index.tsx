@@ -114,6 +114,7 @@ function ApiKeys() {
           <Stack mt={4} maxWidth={"sm"} gap={2} direction={"column"}>
             <Input
               placeholder="Note"
+              id="Note"
               size="lg"
               value={note}
               required
