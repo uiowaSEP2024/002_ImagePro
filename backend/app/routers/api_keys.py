@@ -33,11 +33,17 @@ def read_apikeys(user=Depends(get_current_provider), db: Session = Depends(get_d
     return services.get_api_keys_for_user(db, user.id)
 
 
+@router.post("/api-keys/{apikey_id}/expire", response_model=schemas.ApikeyPublic)
+def expire_apikey(
+    apikey_id: int, user=Depends(get_current_provider), db: Session = Depends(get_db)
+):
+    return services.expire_apikey_for_user(db, user.id, apikey_id)
+
+
 @router.get(
     "/api-keys/protected",
     response_model=str,
     openapi_extra={API_KEY_HEADER_NAME: "your-api-key"},
 )
 def read_api_key_protected_route(user=Depends(get_user_from_api_key)):
-    print(user)
     return "Authorized!"

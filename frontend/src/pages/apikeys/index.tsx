@@ -1,4 +1,4 @@
-import { fetchAPIkeys, fetchGenAPIKeys } from "@/data";
+import { fetchAPIkeys, fetchExpireApiKey, fetchGenAPIKeys } from "@/data";
 import { ApiKey } from "@/data/types";
 import React, { useCallback, useMemo } from "react";
 import { useState, useEffect } from "react";
@@ -21,10 +21,16 @@ import {
   useDisclosure,
   Stack,
   VStack,
-  Box
+  Box,
+  HStack,
+  IconButton,
+  Icon,
+  Badge,
+  Tag
 } from "@chakra-ui/react";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { withAuthenticated } from "@/components/withAuthenticated";
+import { FiCopy } from "react-icons/fi";
 
 function ApiKeys() {
   const { currentUser } = useAuthContext();
@@ -34,9 +40,11 @@ function ApiKeys() {
   const [firstNote, setFirstNote] = useState("");
   const cancelRef = React.useRef(null);
 
+  const [copied, setCopied] = useState(false);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const reversedKeys = useMemo(() => keys.slice().reverse(), [keys]);
+  const reversedApiKeys = useMemo(() => keys.slice().reverse(), [keys]);
 
   const loadKeys = useCallback(async () => {
     const data = await fetchAPIkeys();
@@ -50,6 +58,8 @@ function ApiKeys() {
   const closeAlert = useCallback(() => {
     onClose();
     loadKeys();
+    setKey("");
+    setCopied(false);
   }, [loadKeys, onClose]);
 
   const sendGenAPIKeyRequest = async () => {
@@ -64,6 +74,25 @@ function ApiKeys() {
       console.log(e);
     }
   };
+
+  const sendExpireApiKeyRequest = async (id: number) => {
+    try {
+      const data = await fetchExpireApiKey(id);
+      console.log(data);
+      loadKeys();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handleCopy = useCallback(() => {
+    navigator.clipboard.writeText(key);
+    setCopied(true);
+
+    setTimeout(() => {
+      setCopied(false);
+    }, 5000);
+  }, [key]);
 
   return (
     <Container pt={12} maxW="container.lg">
@@ -107,38 +136,59 @@ function ApiKeys() {
             Existing Keys ({keys.length})
           </Heading>
 
-          {reversedKeys.map((card) => (
-            <Grid width={"full"} key={card.id} data-testid="testkeys">
-              <Card
-                borderRadius={"none"}
-                borderColor={"gray.300"}
-                borderBottomWidth={1}
-                boxShadow={"none"}
-              >
-                <CardBody aria-label="key">
-                  <Grid templateColumns="repeat(2, 1fr)" gap={4}>
-                    <GridItem
-                      display={"flex"}
-                      flexDirection={"row"}
-                      alignItems={"center"}
-                      gap={2}
-                    >
-                      <Text mr={2} fontSize={"lg"}>
-                        {card.note}
-                      </Text>
-                      <Text color={"gray.500"}>{card.key}</Text>
-                    </GridItem>
-                    {/* TODO: add support for removing api keys */}
-                    {/* <GridItem colStart={3}>
-                      <Button size="sm" variant="delete">
-                        Remove
-                      </Button>
-                    </GridItem> */}
-                  </Grid>
-                </CardBody>
-              </Card>
-            </Grid>
-          ))}
+          {reversedApiKeys.map((apiKey) => {
+            const isExpired =
+              !!apiKey.expires_at && new Date(apiKey.expires_at) < new Date();
+
+            const expiredDate = !!apiKey.expires_at
+              ? new Date(apiKey.expires_at)
+              : "";
+            const formattedExpiredDate = expiredDate
+              ? expiredDate.toLocaleString()
+              : "";
+
+            return (
+              <Grid width={"full"} key={apiKey.id} data-testid="testkeys">
+                <Card
+                  borderRadius={"none"}
+                  borderColor={"gray.300"}
+                  borderBottomWidth={1}
+                  boxShadow={"none"}
+                >
+                  <CardBody aria-label="key">
+                    <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+                      <GridItem
+                        display={"flex"}
+                        flexDirection={"row"}
+                        alignItems={"center"}
+                        gap={2}
+                      >
+                        <Text mr={2} fontSize={"lg"}>
+                          {apiKey.note}
+                        </Text>
+                        <Text color={"gray.500"}>{apiKey.key}</Text>
+                      </GridItem>
+                      <GridItem colStart={3}>
+                        {isExpired ? (
+                          <Text color={"gray.500"}>
+                            Expired at {formattedExpiredDate}
+                          </Text>
+                        ) : (
+                          <Button
+                            onClick={() => sendExpireApiKeyRequest(apiKey.id)}
+                            size="sm"
+                            variant="delete"
+                          >
+                            Expire
+                          </Button>
+                        )}
+                      </GridItem>
+                    </Grid>
+                  </CardBody>
+                </Card>
+              </Grid>
+            );
+          })}
         </Box>
       </VStack>
 
@@ -156,13 +206,31 @@ function ApiKeys() {
             </AlertDialogHeader>
             <Grid>
               <AlertDialogBody>
-                <GridItem>
-                  Please copy this key for later. This is the only time you will
-                  see it.
-                </GridItem>
-                <GridItem>
-                  <Text as="b">{key}</Text>
-                </GridItem>
+                <VStack alignItems={"flex-start"}>
+                  <Text>
+                    Please copy this key for later. This is the only time you
+                    will see it.
+                  </Text>
+                  <HStack gap={2}>
+                    <Text as="b">{key}</Text>
+                    {copied ? (
+                      <Tag m={0} colorScheme="green">
+                        Copied!
+                      </Tag>
+                    ) : (
+                      <IconButton
+                        aria-label="Copy"
+                        icon={<Icon as={FiCopy} />}
+                        onClick={handleCopy}
+                        variant={"ghost"}
+                        minH={0}
+                        h={0}
+                        w={0}
+                        minW={0}
+                      />
+                    )}
+                  </HStack>
+                </VStack>
               </AlertDialogBody>
             </Grid>
             <AlertDialogFooter>
