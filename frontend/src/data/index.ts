@@ -169,12 +169,12 @@ export const fetchDownloadReport = async (
   endDate.setSeconds(new Date().getSeconds());
   endDate.setMilliseconds(new Date().getMilliseconds());
 
-  const startTimestampSeconds = (startDate.getTime() / 1000).toFixed(6);
-  const endTimestampSeconds = (endDate.getTime() / 1000).toFixed(6);
+  const startTimestampSeconds = startDate.getTime() / 1000;
+  const endTimestampSeconds = endDate.getTime() / 1000;
 
   console.log(startTimestampSeconds, endTimestampSeconds);
 
-  const endpointUrl = `${backendUrl}/reporting?reporting?start_date=${startTimestampSeconds}&end_date=1683263397.421076`;
+  const endpointUrl = `${backendUrl}/reports?start_date=${startTimestampSeconds}&end_date=${endTimestampSeconds}`;
 
   console.log(endpointUrl);
 
