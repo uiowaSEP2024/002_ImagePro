@@ -106,3 +106,6 @@
 /docs/botImage/static/img/Engine-Options.png filter=lfs diff=lfs merge=lfs -text
 /docs/botImage/static/img/Templates.png filter=lfs diff=lfs merge=lfs -text
 /frontend/cucumber-report.html filter=lfs diff=lfs merge=lfs -text
+/frontend/cypress/screenshots/dashboard.feature/Dashboard[[:space:]]--[[:space:]]API[[:space:]]Keys[[:space:]]Route[[:space:]](failed).png filter=lfs diff=lfs merge=lfs -text
+/frontend/cypress/screenshots/dashboard.feature/Dashboard[[:space:]]--[[:space:]]Analytics[[:space:]]route[[:space:]](failed).png filter=lfs diff=lfs merge=lfs -text
+/frontend/cypress/screenshots/dashboard.feature/Dashboard[[:space:]]--[[:space:]]Jobs[[:space:]]route[[:space:]](failed).png filter=lfs diff=lfs merge=lfs -text
