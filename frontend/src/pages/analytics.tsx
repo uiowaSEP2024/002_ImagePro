@@ -1,18 +1,11 @@
-import {
-  Container,
-  Heading,
-  Input,
-  Select,
-  Spacer,
-  VStack
-} from "@chakra-ui/react";
+import { Container, Heading, Select, Spacer, VStack } from "@chakra-ui/react";
 import { withAuthenticated } from "@/components/withAuthenticated";
 import JobsChart from "@/components/StackedChart";
 import { fetchJobs } from "@/data";
 import { Job } from "@/data/types";
 import { useState, useEffect, useMemo } from "react";
 
-function Billing() {
+function Analytics() {
   const [jobs, setJobs] = useState<Job[]>([]);
 
   useEffect(() => {
@@ -50,7 +43,7 @@ function Billing() {
   return (
     <Container pt={8} maxW={"container.lg"} justifyContent={"center"}>
       <Heading lineHeight={1.5} textAlign={"center"}>
-        Billing
+        Analytics
       </Heading>
       <Spacer height="20px" />
 
@@ -61,13 +54,13 @@ function Billing() {
 
         <Select
           marginX={8}
-          defaultValue={String(defaultYear)}
+          value={finalYear}
           onChange={(e) => setYear(Number(e.target.value))}
           placeholder="Select option"
         >
           {availableYears.map((year) => {
             return (
-              <option selected={year === defaultYear} key={year} value={year}>
+              <option key={year} value={year}>
                 {year}
               </option>
             );
@@ -79,4 +72,4 @@ function Billing() {
   );
 }
 
-export default withAuthenticated(Billing, ["provider"]);
+export default withAuthenticated(Analytics, ["provider"]);
