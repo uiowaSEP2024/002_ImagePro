@@ -31,6 +31,6 @@ Looks like you are done! Click on the create Database button and you will have a
 6.  In the `General` tab, type in your server name and in the `Connection` tab, type in your DB endpoint in the `Host name/address` field. Your port number will be **5432** (Standard port for all PG databases).
     ![Server Name](/img/Server-Name.png)
     ![Server Endpoint](/img/Connection.png)
-7.  In the `Connection` tab, type in your master username in the `Username` field and your master password in the `Password` field.
+7.  In the `Connection` tab, type in your master username in the `Username` field and your master password in the `Password` field. You can find your `Username` in the configuration section of your RDS instance in the AWS console.
 8.  Click on save and you will have your server connected to your DB instance.
 9.  You can now view all your tables and perform SQL queries in your DB instance.
