@@ -28,7 +28,7 @@ def test_create_api_key(db, random_test_user):
     assert len(api_keys_for_user) > 0
     assert api_keys_for_user[0].key == api_key.key
 
-    user_from_api_key = services.get_user_from_api_key(db, api_key.key)
+    user_from_api_key = services.get_user_from_apikey_key(db, api_key.key)
     assert isinstance(user_from_api_key, models.User)
     assert user_from_api_key.id == random_test_user.id
 
@@ -54,6 +54,6 @@ def test_get_user_from_api_key(db, random_test_user):
     api_key = services.create_apikey_for_user(
         db, random_test_user.id, key=schemas.ApikeyCreate(note="key")
     )
-    user_from_api_key = services.get_user_from_api_key(db, api_key.key)
+    user_from_api_key = services.get_user_from_apikey_key(db, api_key.key)
     assert isinstance(user_from_api_key, models.User)
     assert user_from_api_key.id == random_test_user.id
