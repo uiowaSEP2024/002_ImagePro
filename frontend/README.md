@@ -36,10 +36,10 @@ The frontend is currently being tested with Jest for unit tests, and with Cypres
 npm run test
 ```
 
-To run the Cypress tests, first ensure that you have a running local server by running `npm run dev` on the frontend, and then on the backend follow the `backend` README instructions to get it started. Then, run the following commands:
+To run the Cypress tests, first ensure that you have a running local server by running `npm run dev` on the frontend, and then on the `backend` follow the `backend` README instructions to get it started. Then, run the following commands:
 
 ```bash
-npm run tests:e2e
+npm run test:e2e
 ```
 
 
