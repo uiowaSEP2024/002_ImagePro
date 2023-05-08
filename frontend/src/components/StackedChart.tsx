@@ -22,7 +22,13 @@ ChartJS.register(
   Legend
 );
 
-const colorsList = ['rgb(255, 99, 132)', 'rgb(75, 192, 192)', 'rgb(53, 162, 235)', 'rgb(89, 23, 235)', 'rgb(125, 69, 200)'];
+const colorsList = [
+  "rgb(255, 99, 132)",
+  "rgb(75, 192, 192)",
+  "rgb(53, 162, 235)",
+  "rgb(89, 23, 235)",
+  "rgb(125, 69, 200)",
+];
 
 const JobsChart = () => {
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -64,7 +70,7 @@ const JobsChart = () => {
     "September",
     "October",
     "November",
-    "December"
+    "December",
   ];
   const options = {
     plugins: {
