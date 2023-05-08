@@ -103,7 +103,7 @@ def get_current_user_from_token(
 get_api_key_from_header = APIKeyHeader(name=API_KEY_HEADER_NAME, auto_error=False)
 
 
-def get_current_provider(user=Depends(get_current_user_from_token)):
+def get_current_provider(user=Depends(get_current_user_from_token)) -> User:
     if user.role == UserRoleEnum.provider:
         return user
 
@@ -130,11 +130,12 @@ async def get_user_from_api_key(
             detail=INVALID_API_KEY_CREDENTIALS_MISSING,
         )
 
-    user = services.get_user_from_api_key(db=db, api_key=api_key_header_value)
+    api_key = services.get_apikey_by_key(db, api_key_header_value)
 
-    if user:
-        return user
+    if not api_key or services.is_apikey_expired(api_key):
+        raise HTTPException(
+            status_code=HTTP_403_FORBIDDEN,
+            detail=INVALID_API_KEY_CREDENTIALS_UNAUTHORIZED,
+        )
 
-    raise HTTPException(
-        status_code=HTTP_403_FORBIDDEN, detail=INVALID_API_KEY_CREDENTIALS_UNAUTHORIZED
-    )
+    return api_key.user
