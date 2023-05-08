@@ -14,11 +14,7 @@
     "json-summary": "jest --coverage --coverageReporters json-summary",
     "coverage-report": "jest --coverage --reporters=default --reporters=jest-junit | tee ./coverage.txt && exit $(PIPESTATUS[0])",
     "snapshot:update": "jest --updateSnapshot",
-    "schema:update": "npx openapi-typescript http://127.0.0.1:8000/openapi.json  --output 'src/data/schema.ts'",
-    "cucumber": "cucumber-js --require cucumber.js --require /features/*.features --require /features/step_definitions/*.js"
-  },
-  "bin": {
-    "cucumber-js": "bin/cucumber.js"
+    "schema:update": "npx openapi-typescript http://127.0.0.1:8000/openapi.json  --output 'src/data/schema.ts'"
   },
   "dependencies": {
     "@badeball/cypress-cucumber-preprocessor": "^17.0.0",
