@@ -3,7 +3,6 @@
  * Do not make direct changes to the file.
  */
 
-
 export interface paths {
   "/": {
     /** Read Root */
@@ -22,6 +21,10 @@ export interface paths {
     get: operations["read_apikeys_api_keys_get"];
     /** Generate Api Key */
     post: operations["generate_api_key_api_keys_post"];
+  };
+  "/api-keys/{apikey_id}/expire": {
+    /** Expire Apikey */
+    post: operations["expire_apikey_api_keys__apikey_id__expire_post"];
   };
   "/api-keys/protected": {
     /** Read Api Key Protected Route */
@@ -79,24 +82,29 @@ export interface components {
   schemas: {
     /** Apikey */
     Apikey: {
-      /** Key */
-      key: string;
+      /** Note */
+      note: string;
       /** Id */
       id: number;
       /** User Id */
       user_id: number;
-      /** Note */
-      note: string;
+      /** Key */
+      key: string;
       /**
-       * Created At 
+       * Created At
        * Format: date-time
        */
       created_at?: string;
       /**
-       * Updated At 
+       * Updated At
        * Format: date-time
        */
       updated_at?: string;
+      /**
+       * Expires At
+       * Format: date-time
+       */
+      expires_at?: string;
     };
     /** ApikeyCreate */
     ApikeyCreate: {
@@ -105,27 +113,32 @@ export interface components {
     };
     /** ApikeyPublic */
     ApikeyPublic: {
-      /**
-       * Key 
-       * Format: password
-       */
-      key: string;
+      /** Note */
+      note: string;
       /** Id */
       id: number;
       /** User Id */
       user_id: number;
-      /** Note */
-      note: string;
       /**
-       * Created At 
+       * Key
+       * Format: password
+       */
+      key: string;
+      /**
+       * Created At
        * Format: date-time
        */
       created_at?: string;
       /**
-       * Updated At 
+       * Updated At
        * Format: date-time
        */
       updated_at?: string;
+      /**
+       * Expires At
+       * Format: date-time
+       */
+      expires_at?: string;
     };
     /** Body_login_login_post */
     Body_login_login_post: {
@@ -136,7 +149,7 @@ export interface components {
       /** Password */
       password: string;
       /**
-       * Scope 
+       * Scope
        * @default
        */
       scope?: string;
@@ -159,12 +172,12 @@ export interface components {
       /** Job Id */
       job_id: number;
       /**
-       * Created At 
+       * Created At
        * Format: date-time
        */
       created_at?: string;
       /**
-       * Updated At 
+       * Updated At
        * Format: date-time
        */
       updated_at?: string;
@@ -185,15 +198,15 @@ export interface components {
       tag?: string;
     };
     /**
-     * EventKindEnum 
-     * @description An enumeration. 
+     * EventKindEnum
+     * @description An enumeration.
      * @enum {string}
      */
     EventKindEnum: "step" | "error" | "info" | "complete";
     /** HTTPValidationError */
     HTTPValidationError: {
       /** Detail */
-      detail?: (components["schemas"]["ValidationError"])[];
+      detail?: components["schemas"]["ValidationError"][];
     };
     /** Job */
     Job: {
@@ -208,22 +221,22 @@ export interface components {
       /** Job Configuration Id */
       job_configuration_id: number;
       /**
-       * Created At 
+       * Created At
        * Format: date-time
        */
       created_at?: string;
       /**
-       * Updated At 
+       * Updated At
        * Format: date-time
        */
       updated_at?: string;
       provider: components["schemas"]["User"];
       job_configuration: components["schemas"]["JobConfiguration"];
       /**
-       * Events 
+       * Events
        * @default []
        */
-      events?: (components["schemas"]["Event"])[];
+      events?: components["schemas"]["Event"][];
     };
     /** JobConfiguration */
     JobConfiguration: {
@@ -234,18 +247,18 @@ export interface components {
       /** Version */
       version: unknown;
       /** Step Configurations */
-      step_configurations: (components["schemas"]["StepConfiguration"])[];
+      step_configurations: components["schemas"]["StepConfiguration"][];
       /** Id */
       id: number;
       /** Provider Id */
       provider_id: number;
       /**
-       * Created At 
+       * Created At
        * Format: date-time
        */
       created_at?: string;
       /**
-       * Updated At 
+       * Updated At
        * Format: date-time
        */
       updated_at?: string;
@@ -259,7 +272,7 @@ export interface components {
       /** Version */
       version: unknown;
       /** Step Configurations */
-      step_configurations: (components["schemas"]["StepConfigurationCreate"])[];
+      step_configurations: components["schemas"]["StepConfigurationCreate"][];
     };
     /** JobCreate */
     JobCreate: {
@@ -283,12 +296,12 @@ export interface components {
       /** Step Configuration Id */
       step_configuration_id: number;
       /**
-       * Created At 
+       * Created At
        * Format: date-time
        */
       created_at?: string;
       /**
-       * Updated At 
+       * Updated At
        * Format: date-time
        */
       updated_at?: string;
@@ -303,8 +316,8 @@ export interface components {
       units?: string;
     };
     /**
-     * MetadataKindEnum 
-     * @description An enumeration. 
+     * MetadataKindEnum
+     * @description An enumeration.
      * @enum {string}
      */
     MetadataKindEnum: "text" | "number" | "link";
@@ -321,14 +334,14 @@ export interface components {
       /** Job Configuration Id */
       job_configuration_id: number;
       /** Metadata Configurations */
-      metadata_configurations?: (components["schemas"]["MetadataConfiguration"])[];
+      metadata_configurations?: components["schemas"]["MetadataConfiguration"][];
       /**
-       * Created At 
+       * Created At
        * Format: date-time
        */
       created_at?: string;
       /**
-       * Updated At 
+       * Updated At
        * Format: date-time
        */
       updated_at?: string;
@@ -342,10 +355,10 @@ export interface components {
       /** Points */
       points: number;
       /**
-       * Metadata Configurations 
+       * Metadata Configurations
        * @default []
        */
-      metadata_configurations?: (components["schemas"]["MetadataConfigurationCreate"])[];
+      metadata_configurations?: components["schemas"]["MetadataConfigurationCreate"][];
     };
     /** Token */
     Token: {
@@ -367,12 +380,12 @@ export interface components {
       /** Id */
       id: number;
       /**
-       * Created At 
+       * Created At
        * Format: date-time
        */
       created_at?: string;
       /**
-       * Updated At 
+       * Updated At
        * Format: date-time
        */
       updated_at?: string;
@@ -391,8 +404,8 @@ export interface components {
       password: string;
     };
     /**
-     * UserRoleEnum 
-     * @description An enumeration. 
+     * UserRoleEnum
+     * @description An enumeration.
      * @enum {string}
      */
     UserRoleEnum: "customer" | "provider";
@@ -416,7 +429,6 @@ export interface components {
 export type external = Record<string, never>;
 
 export interface operations {
-
   /** Read Root */
   read_root__get: {
     responses: {
@@ -478,7 +490,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": (components["schemas"]["ApikeyPublic"])[];
+          "application/json": components["schemas"]["ApikeyPublic"][];
         };
       };
     };
@@ -495,6 +507,28 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["Apikey"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Expire Apikey */
+  expire_apikey_api_keys__apikey_id__expire_post: {
+    parameters: {
+      path: {
+        apikey_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["ApikeyPublic"];
         };
       };
       /** @description Validation Error */
@@ -566,7 +600,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": (components["schemas"]["Job"])[];
+          "application/json": components["schemas"]["Job"][];
         };
       };
     };
@@ -626,7 +660,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": (components["schemas"]["Event"])[];
+          "application/json": components["schemas"]["Event"][];
         };
       };
       /** @description Validation Error */
@@ -715,7 +749,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": (components["schemas"]["JobConfiguration"])[];
+          "application/json": components["schemas"]["JobConfiguration"][];
         };
       };
       /** @description Validation Error */
@@ -730,8 +764,8 @@ export interface operations {
   get_reporting_reporting_get: {
     parameters: {
       query: {
-        start_date?: string;
-        end_date?: string;
+        start_date?: number;
+        end_date?: number;
       };
     };
     responses: {
