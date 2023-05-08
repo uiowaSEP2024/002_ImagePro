@@ -1,8 +1,9 @@
 Feature: Signup
 
-  Background:
+  Background: 
     Given user is on the homepage
     And user clicks sign up
+    Then user should be on sign up page
 
   Scenario: Create a New User
     When user fills First Name with John and Last Name with Thomas and Email with john@gmail.com
