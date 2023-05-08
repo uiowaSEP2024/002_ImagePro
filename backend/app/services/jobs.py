@@ -45,5 +45,9 @@ def get_jobs_for_customer(db: Session, user_id: int):
     return get_user(db, user_id).jobs
 
 
+def get_jobs_for_provider(db: Session, user_id: int):
+    return get_user(db, user_id).provider_jobs
+
+
 def get_job_by_id(db: Session, job_id: int):
     return db.query(models.Job).get(job_id)

@@ -15,7 +15,7 @@ export default function Home() {
   const router = useRouter();
   const { currentUser } = useAuthContext();
   var jobs = "jobs";
-  var analytics = "billing";
+  var analytics = "analytics";
   if (!currentUser) {
     jobs = "login";
     analytics = "login";
