@@ -2,12 +2,14 @@
 ## Description
 _Use the following format to name and describe your user stories_
 
-<br>
+As a " ", <br>
+So that " ", <br>
+I want " "
 
 _Example:_
 _As a customer,_
 _so that I can see my past purchases,_
-_I can view my billing history_
+_I want to view my billing history_
 
 ## Acceptance Criteria
 _What are some implicit tasks/criteria to be achieved within this story?_
