@@ -548,3 +548,4 @@ dmypy.json
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode
 **/__pycache__/**
+/job-monitoring-app/.old_reference_github/
