@@ -20,6 +20,7 @@ _Example:_
 _What happy paths have been tested?_
 
 _What sad paths have been tested?_
-
+# Problems Faced
+_Did you run into any problems, if so how did you resolve them?
 # Screenshots
 _Any screenshots/videos demonstrating the functioning of the changes made in this pull request?_
