@@ -1,0 +1,9 @@
+[tool.black]
+line-length = 88
+target-version = ['py310'] # Can be extened in future if needed
+include = '\.pyi?$'
+
+[tool.ruff]
+line-length = 88
+exclude = []
+# Add any additional setup options here
