@@ -36,15 +36,15 @@ jobs:
         uses: MishaKav/pytest-coverage-comment@main
         with:
           title: CDK-Infra Coverage Report
-          pytest-coverage-path: cdk-infra/pytest-coverage.txt
-          pytest-xml-coverage-path: cdk-infra/coverage.xml
+          pytest-coverage-path: job-monitoring-app/cdk-infra/pytest-coverage.txt
+          pytest-xml-coverage-path: job-monitoring-app/cdk-infra/coverage.xml
           hide-badge: false
           hide-report: false
           create-new-comment: false
           hide-comment: false
           report-only-changed-files: false
           remove-link-from-badge: false
-          junitxml-path: cdk-infra/pytest.xml
+          junitxml-path: job-monitoring-app/cdk-infra/pytest.xml
           junitxml-title: CDK Infra Test Summary
           unique-id-for-comment: "cdk-infra-unit-tests"
 
