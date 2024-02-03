@@ -71,7 +71,7 @@ jobs:
       - name: Jest Coverage Comment
         uses: MishaKav/jest-coverage-comment@main
         with:
-          coverage-summary-path: frontend/coverage/coverage-summary.json
+          coverage-summary-path: job-monitoring-app/frontend/coverage/coverage-summary.json
           title: Jest Coverage
           summary-title: Summary
           badge-title: Coverage
@@ -79,6 +79,6 @@ jobs:
           create-new-comment: false
           hide-summary: false
           junitxml-title: Junit Summary
-          junitxml-path: frontend/junit.xml
+          junitxml-path: job-monitoring-app/frontend/junit.xml
           coverage-title: Coverage Report
-          coverage-path: frontend/coverage.txt
+          coverage-path: job-monitoring-app/frontend/coverage.txt
