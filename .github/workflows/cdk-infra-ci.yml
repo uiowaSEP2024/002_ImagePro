@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{matrix.os}}
     defaults:
       run:
-        working-directory: cdk-infra
+        working-directory: job-monitoring-app/cdk-infra
         shell: bash
         # Service containers to run with `runner-job`
     steps:
@@ -57,7 +57,7 @@ jobs:
     runs-on: ${{matrix.os}}
     defaults:
       run:
-        working-directory: cdk-infra
+        working-directory: job-monitoring-app/cdk-infra
         shell: bash
 
     steps:
