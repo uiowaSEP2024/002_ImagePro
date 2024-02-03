@@ -36,15 +36,15 @@ jobs:
       - name: Pytest Coverage Comment
         uses: MishaKav/pytest-coverage-comment@main
         with:
-          pytest-coverage-path: trackerapi/pytest-coverage.txt
-          pytest-xml-coverage-path: trackerapi/coverage.xml
+          pytest-coverage-path: job-monitoring-app/trackerapi/pytest-coverage.txt
+          pytest-xml-coverage-path: job-monitoring-app/trackerapi/coverage.xml
           hide-badge: false
           hide-report: false
           create-new-comment: false
           hide-comment: false
           report-only-changed-files: false
           remove-link-from-badge: false
-          junitxml-path: trackerapi/pytest.xml
+          junitxml-path: job-monitoring-app/trackerapi/pytest.xml
           junitxml-title: Tracker API Test Summary
           unique-id-for-comment: "trackerapi-unit-tests"
 
