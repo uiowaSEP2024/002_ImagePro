@@ -70,15 +70,15 @@ jobs:
         uses: MishaKav/pytest-coverage-comment@main
         with:
           title: Backend Coverage Report
-          pytest-coverage-path: backend/pytest-coverage.txt
-          pytest-xml-coverage-path: backend/coverage.xml
+          pytest-coverage-path: job-monitoring-app/backend/pytest-coverage.txt
+          pytest-xml-coverage-path: job-monitoring-app/backend/coverage.xml
           hide-badge: false
           hide-report: false
           create-new-comment: false
           hide-comment: false
           report-only-changed-files: false
           remove-link-from-badge: false
-          junitxml-path: backend/pytest.xml
+          junitxml-path: job-monitoring-app/backend/pytest.xml
           junitxml-title: Backend Test Summary
           unique-id-for-comment: "backend-unit-tests"
 
