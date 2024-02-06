@@ -104,20 +104,14 @@ class BrainmaskModel(pl.LightningModule):
             norm=Norm.BATCH,
         )
 
-        self.learning_rate = lr
-        self.dice = Dice(average="macro", num_classes=2, ignore_index=0)
-        self.loss_function = GeneralizedDiceFocalLoss(to_onehot_y=True, softmax=True)
-        self.scaler = torch.cuda.amp.GradScaler()
-        self.validation_step_outputs = []
-
     def forward(self, x):
         return self.model(x)
 
 
-def brainmask_inference(data, out_dir=None, postfix=None):
+def brainmask_inference(data: list, model_file: str, out_dir: str, postfix='brainmask') -> None:
     print("\nDATA: ", data)
     model = BrainmaskModel.load_from_checkpoint(
-        checkpoint_path=f"/tmp/NeuroPred_Brainmask_model_file/brainmask_gdf_loss_epoch=123-val_dice_epoch=0.97484.ckpt",
+        checkpoint_path=model_file,
     )
     # set device, GPU or CPU
     # device = torch.device("cuda:0")
