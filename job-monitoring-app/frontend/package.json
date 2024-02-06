@@ -17,7 +17,7 @@
     "schema:update": "npx openapi-typescript http://127.0.0.1:8000/openapi.json  --output 'src/data/schema.ts'"
   },
   "dependencies": {
-    "@badeball/cypress-cucumber-preprocessor": "^17.0.0",
+    "@badeball/cypress-cucumber-preprocessor": "^16.0.3",
     "@chakra-ui/icons": "^2.0.18",
     "@chakra-ui/react": "^2.5.5",
     "@cucumber/cucumber": "^9.1.1",
