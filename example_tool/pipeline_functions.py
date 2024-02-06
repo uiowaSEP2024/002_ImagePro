@@ -154,17 +154,20 @@ def brainmask_inference(data: list, model_file: str, out_dir: str, postfix='brai
         )  # extract image and label from loaded dataset
         with torch.no_grad():  # perform the inference
             test_output = model.model(item["image"].unsqueeze(dim=0).to(device))
+            # convert from one hot encoding
             out_im = (
                 torch.argmax(test_output, dim=1).detach().cpu()
-            )  # convert from one hot encoding
-        # out_im = out_im * item["brainmask"]
-        item["inferred_label"] = out_im
+            )
+
+        print(out_im.shape)
+        item["inferred_label"] = out_im #.squeeze(dim=0)
         item["inferred_label_meta_dict"] = item["image_meta_dict"]
+        item["inferred_label_meta_dict"]["filename"] = item["image_meta_dict"][
+            "filename"
+        ].replace(f"_{item['image_meta_dict']['filename'].split('_')[-1]}", ".nii.gz")
 
         out_transforms = Compose(
             [
-                KeepLargestConnectedComponentd(keys=["inferred_label"]),
-                FillHolesd(keys=["inferred_label"]),
                 ToITKImaged(keys=["inferred_label"]),
                 ResampleMaskToOgd(keys=["inferred_label", "og_image"]),
                 SaveITKImaged(
