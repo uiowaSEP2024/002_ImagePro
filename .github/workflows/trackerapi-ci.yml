@@ -4,6 +4,8 @@ on:
 jobs:
   unit_tests:
     name: TrackerAPI Unit Tests
+    env:
+      GITHUB_TOKEN: ${{ secrets.GH_ACTION_PERMISSIONS }}
     strategy:
       matrix:
         os: ["ubuntu-latest"]
