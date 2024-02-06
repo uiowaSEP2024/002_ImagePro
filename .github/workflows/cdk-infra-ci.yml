@@ -4,8 +4,6 @@ on:
 jobs:
   unit_tests:
     name: CDK Infra unit tests
-    env:
-      GITHUB_TOKEN: ${{ secrets.GH_ACTION_PERMISSIONS }}
     strategy:
       matrix:
         os: ["ubuntu-latest"]
