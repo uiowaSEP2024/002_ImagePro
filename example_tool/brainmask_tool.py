@@ -29,6 +29,7 @@ args = parser.parse_args()
 
 from subprocess import run
 from pipeline_functions import *
+from pdf_report import generate_report
 from pathlib import Path
 
 # create output directory
@@ -61,4 +62,15 @@ if not Path(brainmask_output_dir).exists():
 print("Running brainmask inference")
 brainmask_inference(data_dict, "brainmask_model.ckpt", brainmask_output_dir)
 
+# create output directory for report
+report_output_dir = Path(nifti_path).parent.as_posix() + "/report"
+if not Path(report_output_dir).exists():
+    print("Creating report output directory")
+    run(["mkdir", "-p", report_output_dir])
 
+
+# generate report
+print("Generating report")
+im_path = raw_anat_nifti_files[0]
+mask_path = list(Path(brainmask_output_dir).glob("*.nii.gz"))[0]
+generate_report(im_path, mask_path, report_output_dir)
