@@ -52,7 +52,7 @@ psycopg2==2.9.5
 psycopg2-binary==2.9.5
 pyasn1==0.4.8
 pycodestyle==2.10.0
-pydantic==1.10.5
+pydantic~=1.10.6
 pydocstyle==6.3.0
 pyflakes==3.0.1
 pylama==8.4.1
