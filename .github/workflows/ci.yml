@@ -22,3 +22,7 @@ jobs:
   frontend_ci:
     name: Frontend CI
     uses: ./.github/workflows/frontend-ci.yml
+
+  sonar_scan:
+    name: Sonar
+    uses: ./.github/workflows/sonar.yml
