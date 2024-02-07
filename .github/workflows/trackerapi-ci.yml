@@ -29,24 +29,10 @@ jobs:
         run: |
           pip install -q -r requirements.txt
 
-      - name: Coverage File
-        run: |
-          pytest --cov=trackerapi --junitxml=pytest.xml --cov-report "xml:coverage.xml" --cov-report=term-missing:skip-covered | tee pytest-coverage.txt
+      - name: Run Tests with Coverage
+        run:
+            pytest --cov-report "xml:coverage.xml" --cov --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov
 
-      - name: Pytest Coverage Comment
-        uses: MishaKav/pytest-coverage-comment@main
-        with:
-          pytest-coverage-path: job-monitoring-app/trackerapi/pytest-coverage.txt
-          pytest-xml-coverage-path: job-monitoring-app/trackerapi/coverage.xml
-          hide-badge: false
-          hide-report: false
-          create-new-comment: false
-          hide-comment: false
-          report-only-changed-files: false
-          remove-link-from-badge: false
-          junitxml-path: job-monitoring-app/trackerapi/pytest.xml
-          junitxml-title: Tracker API Test Summary
-          unique-id-for-comment: "trackerapi-unit-tests"
 
   shellcheck:
     name: Shellcheck
