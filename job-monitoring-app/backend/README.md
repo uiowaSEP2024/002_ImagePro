@@ -21,7 +21,6 @@ Here are some steps to get started running the application locally:
    ```bash
    pip install -r requirements.txt
    ```
-   
 5. Create a file called .env.local, and then copy and paste the contents from .env.example file
    into it, replacing with your own values as appropriate.
 
@@ -174,3 +173,70 @@ There are two ways to start the application:
 > persisted in a `pg_data` file within the same directory, so that data placed in the development environment
 > during local development remains after the container is destroyed.
 > If you want to start with a fresh database, you can delete `pg_data` directory.
+
+
+## TroubleShooting
+### Installing PostgreSQL on macOS
+
+If you are developing on a Mac and run into issues with `psycopg2`, you may need to install `postgres` using Homebrew:
+
+```bash
+brew install postgresql
+```
+
+After installing PostgreSQL, you should start the service:
+
+```bash
+brew services start postgresql
+```
+
+This ensures that PostgreSQL runs in the background.
+
+### Setting Up `psycopg2`
+
+`psycopg2` is a PostgreSQL adapter for Python. If you encounter issues during its installation, follow these steps:
+
+1. **Ensure PostgreSQL's `pg_config` is in your PATH**
+
+   Add the following to your `.zshrc` or `.bash_profile`:
+
+   ```bash
+   export PATH=$HOME/bin:/usr/local/bin:$PATH
+   export PATH="/usr/local/opt/postgresql@15/bin:$PATH"
+   ```
+
+   Then, reload your shell configuration:
+
+   ```bash
+   source ~/.zshrc
+   ```
+
+2. **Verify `pg_config` Access**
+
+   Confirm that `pg_config` can be found by your system:
+
+   ```bash
+   which pg_config
+   ```
+
+3. **Installation of `psycopg2`**
+
+   With `pg_config` accessible, install `psycopg2`:
+
+   ```bash
+   pip install psycopg2
+   ```
+
+   If you prefer not to compile from source or face issues, install the binary version:
+
+   ```bash
+   pip install psycopg2-binary
+   ```
+
+4. **Notes**
+
+   - Ensure you're using the correct version of `pip` associated with your project's Python version.
+   - If using a virtual environment, activate it before installing packages.
+   - In case of persistent issues, review the error messages for clues or consider using `psycopg2-binary`.
+   - This guide assumes you're using `zsh` as your shell. If you're using `bash`, apply these instructions to your `.bash_profile` or `.bashrc`.
+   - Adjust the PostgreSQL version in the PATH export command as necessary based on the version you have installed.
