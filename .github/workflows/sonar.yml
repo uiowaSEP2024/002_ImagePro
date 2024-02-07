@@ -3,9 +3,6 @@ name: Sonar
 on:
   workflow_call:
 
-permissions:
-  secrets: read
-
 jobs:
   build:
     name: Build
