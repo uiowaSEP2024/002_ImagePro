@@ -15,7 +15,7 @@ RUN yum install -y gcc python-dev postgresql-devel
 # Install the function's dependencies using file requirements.txt
 # from your project folder.
 # TODO Ensure that Project folder is set as an environment variable I dont like the ../../hardcoding
-COPY ../../requirements.txt  .
+COPY requirements.txt  .
 
 RUN  pip3 install -r "${LAMBDA_TASK_ROOT}/requirements.txt"
 
