@@ -18,6 +18,7 @@
 **/.idea
 **/__pycache__
 
+**/pytest.xml/**
 ### C ###
 # Prerequisites
 *.d
@@ -553,3 +554,4 @@ dmypy.json
 /.coverage
 /coverage.xml
 /pytest.xml
+/job-monitoring-app/backend/pytest.xml
