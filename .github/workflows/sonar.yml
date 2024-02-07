@@ -3,12 +3,13 @@ name: Sonar
 on:
   workflow_call:
 
+permissions:
+  secrets: read
 
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    # permissions: read-all
     steps:
       - uses: actions/checkout@v3
         with:
