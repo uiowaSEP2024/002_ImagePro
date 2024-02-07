@@ -28,25 +28,10 @@ jobs:
           pip install -r requirements.txt
           pip install -r requirements-dev.txt
 
-      - name: Run tests with Coverage
-        run: |
-          pytest --cov-report "xml:coverage.xml" --cov --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov | tee pytest-coverage.txt
+      - name: Run Tests with Coverage
+        run:
+            pytest --cov-report "xml:coverage.xml" --cov --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov
 
-      - name: Pytest Coverage comment
-        uses: MishaKav/pytest-coverage-comment@main
-        with:
-          title: CDK-Infra Coverage Report
-          pytest-coverage-path: job-monitoring-app/cdk-infra/pytest-coverage.txt
-          pytest-xml-coverage-path: job-monitoring-app/cdk-infra/coverage.xml
-          hide-badge: false
-          hide-report: false
-          create-new-comment: false
-          hide-comment: false
-          report-only-changed-files: false
-          remove-link-from-badge: false
-          junitxml-path: job-monitoring-app/cdk-infra/pytest.xml
-          junitxml-title: CDK Infra Test Summary
-          unique-id-for-comment: "cdk-infra-unit-tests"
 
   black:
     name: Black Lint

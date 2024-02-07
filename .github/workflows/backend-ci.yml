@@ -47,10 +47,6 @@ jobs:
         with:
           python-version: ${{ matrix.version }}
           cache: pip
-
-      - name: Create temporary directory
-        run: mkdir -p temp
-
       - name: Install python dependencies
         run: |
           pip install -q -r requirements.txt
@@ -67,23 +63,12 @@ jobs:
           python tasks.py db:test:reset
           python tasks.py db:test:upgrade
           alembic upgrade head
-          pytest --cov-report "xml:coverage.xml" --cov --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov | tee pytest-coverage.txt
+        
 
-      - name: Pytest Coverage Comment
-        uses: MishaKav/pytest-coverage-comment@main
-        with:
-          title: Backend Coverage Report
-          pytest-coverage-path: temp/pytest-coverage.txt
-          pytest-xml-coverage-path: temp/coverage.xml
-          hide-badge: false
-          hide-report: false
-          create-new-comment: false
-          hide-comment: false
-          report-only-changed-files: false
-          remove-link-from-badge: false
-          junitxml-path: temp/pytest.xml
-          junitxml-title: Backend Test Summary
-          unique-id-for-comment: "backend-unit-tests"
+      - name: Run Tests with Coverage
+        run:
+            pytest --cov-report "xml:coverage.xml" --cov --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov
+
 
   shellcheck:
     name: Shellcheck
