@@ -70,7 +70,7 @@ print("Processing DICOM data")
 session_path = Path(args.session_dir)
 output_path = Path(args.output_dir)
 
-status = Enum("dicom_inference_and_conversion", "brainmask_inference", "report_generation")
+status = Status.DICOM_INFERENCE_AND_CONVERSION
 stage_name = "dicom_inference_and_conversion"
 print(f"Running stage: {stage_name}")
 try :
