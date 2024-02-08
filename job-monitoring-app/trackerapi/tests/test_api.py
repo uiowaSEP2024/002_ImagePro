@@ -13,7 +13,7 @@ def test_init():
 
 def test_init_without_api_key():
     with pytest.raises(TypeError):
-        tracker = TrackerApi()
+        _ = TrackerApi()
 
 
 def test_requests_made_with_api_key():
