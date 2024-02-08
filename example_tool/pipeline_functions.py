@@ -1,7 +1,14 @@
-from cnn_transforms import *
+from cnn_transforms import (
+    LoadITKImaged,
+    ResampleStartRegionBrainMaskd,
+    ITKImageToNumpyd,
+    AddChanneld,
+    ToITKImaged,
+    ResampleMaskToOgd,
+    SaveITKImaged,
+)
 import pytorch_lightning as pl
 from monai.data import CacheDataset
-
 from monai.networks.layers import Norm
 from monai.networks.nets import UNet
 from monai.transforms import (
@@ -9,15 +16,8 @@ from monai.transforms import (
     ScaleIntensityRangePercentilesd,
     ToTensord,
     CopyItemsd,
-    KeepLargestConnectedComponentd,
-    FillHolesd
 )
-from torchmetrics.classification import Dice
 import torch
-from monai.losses.dice import GeneralizedDiceFocalLoss
-
-itk.MultiThreaderBase.SetGlobalDefaultNumberOfThreads(1)
-
 from pathlib import Path
 from dcm_classifier.study_processing import ProcessOneDicomStudyToVolumesMappingBase
 from dcm_classifier.image_type_inference import ImageTypeClassifierBase
@@ -25,6 +25,10 @@ from dcm_classifier.namic_dicom_typing import itk_read_from_dicomfn_list
 import re
 from pydicom import dcmread
 from subprocess import run
+import itk
+
+
+itk.MultiThreaderBase.SetGlobalDefaultNumberOfThreads(1)
 
 
 def validate_subject_id(subject_id: str) -> str:
@@ -82,9 +86,13 @@ def dicom_inference_and_conversion(
             fname = f"{validate_subject_id(sub)}_{validate_session_id(ses)}_acq-{plane}_{modality}"
             series_vol_list = series.get_volume_list()
             if len(series_vol_list) > 1:
-                print(f"Series {series_number} not supported. More than one volume in series.")
+                print(
+                    f"Series {series_number} not supported. More than one volume in series."
+                )
             else:
-                itk_im = itk_read_from_dicomfn_list(series_vol_list[0].get_one_volume_dcm_filenames())
+                itk_im = itk_read_from_dicomfn_list(
+                    series_vol_list[0].get_one_volume_dcm_filenames()
+                )
                 itk.imwrite(itk_im, f"{sub_ses_dir}/{fname}.nii.gz")
 
     return sub_ses_dir
@@ -108,7 +116,9 @@ class BrainmaskModel(pl.LightningModule):
         return self.model(x)
 
 
-def brainmask_inference(data: list, model_file: str, out_dir: str, postfix='brainmask') -> None:
+def brainmask_inference(
+    data: list, model_file: str, out_dir: str, postfix="brainmask"
+) -> None:
     print("\nDATA: ", data)
     model = BrainmaskModel.load_from_checkpoint(
         checkpoint_path=model_file,
@@ -155,12 +165,10 @@ def brainmask_inference(data: list, model_file: str, out_dir: str, postfix='brai
         with torch.no_grad():  # perform the inference
             test_output = model.model(item["image"].unsqueeze(dim=0).to(device))
             # convert from one hot encoding
-            out_im = (
-                torch.argmax(test_output, dim=1).detach().cpu()
-            )
+            out_im = torch.argmax(test_output, dim=1).detach().cpu()
 
         print(out_im.shape)
-        item["inferred_label"] = out_im #.squeeze(dim=0)
+        item["inferred_label"] = out_im  # .squeeze(dim=0)
         item["inferred_label_meta_dict"] = item["image_meta_dict"]
         item["inferred_label_meta_dict"]["filename"] = item["image_meta_dict"][
             "filename"
@@ -176,4 +184,3 @@ def brainmask_inference(data: list, model_file: str, out_dir: str, postfix='brai
             ]
         )
         out_transforms(item)
-

@@ -150,8 +150,8 @@ class AddChanneld(object):
         return d
 
 
-unsqueze_lambda = lambda x: x.squeeze(dim=0)
-shape_lambda = lambda x: x.shape
+# unsqueze_lambda = lambda x: x.squeeze(dim=0)
+# shape_lambda = lambda x: x.shape
 
 
 class ResampleMaskToOgd(object):

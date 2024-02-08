@@ -6,8 +6,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from io import BytesIO
 import base64
-import subprocess
-import platform
 
 
 # CSS Content
@@ -102,8 +100,7 @@ def generate_image(im_path, mask_path):
     return image_base64
 
 
-def generate_pdf(brain_volume, image_base64, file_path
-):
+def generate_pdf(brain_volume, image_base64, file_path):
     # HTML Content
     html_string = f"""
     <!DOCTYPE html>
