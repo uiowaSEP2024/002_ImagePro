@@ -1,6 +1,6 @@
 from sqlalchemy import Column, ForeignKey, UniqueConstraint
 from sqlalchemy.sql.sqltypes import String, Integer
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy.orm import relationship
 
 from .base import Base, DateMixin
 

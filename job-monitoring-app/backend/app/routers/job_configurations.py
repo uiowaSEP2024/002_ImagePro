@@ -38,7 +38,7 @@ def get_job_configuration_by_id(
     if job_configuration is None:
         raise HTTPException(status_code=404, detail="Job not found")
 
-    if not (provider.id in [job_configuration.provider_id]):
+    if provider.id not in [job_configuration.provider_id]:
         raise HTTPException(status_code=403, detail="Not allowed")
 
     return job_configuration
@@ -53,7 +53,7 @@ def get_job_configurations_by_tag_and_version(
 ):
     # case 1: get specific configuration if both tag and version are provided
     should_get_specific_version_of_tag = tag and (
-        type(version) is str and version != "latest"
+        isinstance(version, str) and version != "latest"
     )
 
     if should_get_specific_version_of_tag:

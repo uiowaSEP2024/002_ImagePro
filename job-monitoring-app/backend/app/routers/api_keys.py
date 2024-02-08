@@ -2,11 +2,10 @@ from app.dependencies import (
     get_db,
     get_user_from_api_key,
     API_KEY_HEADER_NAME,
-    get_current_user_from_token,
     get_current_provider,
 )
 from app import schemas, services
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 router = APIRouter()

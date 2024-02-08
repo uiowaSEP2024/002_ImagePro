@@ -10,7 +10,6 @@ from sqlalchemy.orm import Session
 
 from datetime import datetime
 
-from .users import get_user
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 

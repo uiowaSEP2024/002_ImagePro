@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import List
 
-from pydantic import BaseModel, StrictStr
+from pydantic import BaseModel
 
 from . import Event
 from .job_configuration import JobConfiguration

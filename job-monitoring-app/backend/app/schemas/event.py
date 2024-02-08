@@ -2,7 +2,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Dict, Optional, Union
 
-from pydantic import BaseModel, Json
+from pydantic import BaseModel
 
 from .step_configuration import StepConfiguration
 

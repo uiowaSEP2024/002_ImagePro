@@ -28,7 +28,7 @@ def test_create_job_configurations(app_client, random_provider_user_with_api_key
 def test_create_job_configurations_with_new_version(
     db, app_client, random_provider_user_with_api_key
 ):
-    result = services.create_job_configuration(
+    _ = services.create_job_configuration(
         db,
         provider_id=random_provider_user_with_api_key.id,
         job_configuration=schemas.JobConfigurationCreate(
@@ -90,7 +90,7 @@ def test_create_job_configurations_with_new_version(
 def test_create_job_configuration_with_conflicting_version(
     db, app_client, random_provider_user_with_api_key
 ):
-    result = services.create_job_configuration(
+    _ = services.create_job_configuration(
         db,
         provider_id=random_provider_user_with_api_key.id,
         job_configuration=schemas.JobConfigurationCreate(
@@ -122,7 +122,7 @@ def test_create_job_configuration_with_conflicting_version(
 def test_create_job_configuration_with_conflicting_version_on_metadata(
     db, app_client, random_provider_user_with_api_key
 ):
-    result = services.create_job_configuration(
+    _ = services.create_job_configuration(
         db,
         provider_id=random_provider_user_with_api_key.id,
         job_configuration=schemas.JobConfigurationCreate(
@@ -286,7 +286,7 @@ def test_get_job_configurations_with_specific_tag_and_version(
 def test_job_configuration_with_tag_and_latest_version(
     app_client, db, random_provider_user_with_api_key
 ):
-    job_configuration1 = (
+    _ = (
         services.create_job_configuration(
             db,
             provider_id=random_provider_user_with_api_key.id,
@@ -411,7 +411,7 @@ def test_get_all_configurations_for_tag_with_missing_version(
 def test_get_list_of_latest_versions_for_all_job_configurations_with_version_latest(
     app_client, db, random_provider_user_with_api_key
 ):
-    job_configuration1 = services.create_job_configuration(
+    _ = services.create_job_configuration(
         db,
         provider_id=random_provider_user_with_api_key.id,
         job_configuration=schemas.JobConfigurationCreate(
@@ -422,7 +422,7 @@ def test_get_list_of_latest_versions_for_all_job_configurations_with_version_lat
         ),
     )
 
-    job_configuration2 = services.create_job_configuration(
+    _ = services.create_job_configuration(
         db,
         provider_id=random_provider_user_with_api_key.id,
         job_configuration=schemas.JobConfigurationCreate(
@@ -471,7 +471,7 @@ def test_get_list_of_latest_versions_for_all_job_configurations_with_version_lat
 
     assert response.status_code == 200
     assert len(response.json()) == 2
-
+    # TODO Check this test, why is only job configuration 3 and 4 used?
     assert response.json()[0]["id"] == job_configuration3.id
     assert response.json()[0]["provider_id"] == job_configuration3.provider_id
     assert response.json()[0]["created_at"] is not None
@@ -490,7 +490,7 @@ def test_get_list_of_latest_versions_for_all_job_configurations_with_version_lat
 def test_get_list_of_latest_versions_for_all_job_configurations_with_empty_query_params(
     app_client, db, random_provider_user_with_api_key
 ):
-    job_configuration1 = services.create_job_configuration(
+    _ = services.create_job_configuration(
         db,
         provider_id=random_provider_user_with_api_key.id,
         job_configuration=schemas.JobConfigurationCreate(
@@ -501,7 +501,7 @@ def test_get_list_of_latest_versions_for_all_job_configurations_with_empty_query
         ),
     )
 
-    job_configuration2 = services.create_job_configuration(
+    _ = services.create_job_configuration(
         db,
         provider_id=random_provider_user_with_api_key.id,
         job_configuration=schemas.JobConfigurationCreate(
@@ -544,7 +544,7 @@ def test_get_list_of_latest_versions_for_all_job_configurations_with_empty_query
     access_token = response.json()["access_token"]
 
     response = app_client.get(
-        f"/job_configurations/",
+        "/job_configurations/",
         cookies={"access_token": access_token},
     )
 
