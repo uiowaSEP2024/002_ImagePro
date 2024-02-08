@@ -19,3 +19,4 @@ repos:
   # Run the linter.
   - id: ruff
     args: [ --fix , --ignore , "F403" ]
+    exclude: "__init__"

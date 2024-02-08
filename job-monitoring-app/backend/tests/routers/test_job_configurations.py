@@ -471,7 +471,7 @@ def test_get_list_of_latest_versions_for_all_job_configurations_with_version_lat
 
     assert response.status_code == 200
     assert len(response.json()) == 2
-    # TODO Check this test, why is only job configuration 3 and 4 used?
+
     assert response.json()[0]["id"] == job_configuration3.id
     assert response.json()[0]["provider_id"] == job_configuration3.provider_id
     assert response.json()[0]["created_at"] is not None

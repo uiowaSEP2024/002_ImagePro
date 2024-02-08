@@ -3,8 +3,12 @@ from pathlib import Path
 
 import pytest
 
-from trackerapi import JobConfig, JobConfigManager, StepConfig
-from trackerapi.helpers import DuplicateJobConfigException, MissingJobConfigException
+from trackerapi.schemas import JobConfig, StepConfig
+from trackerapi.helpers import (
+    DuplicateJobConfigException,
+    MissingJobConfigException,
+    JobConfigManager,
+)
 
 test_job_config = JobConfig(
     name="Test Job",
