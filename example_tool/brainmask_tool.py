@@ -3,14 +3,12 @@ import sys
 import argparse
 
 import pydicom
-from pdf2dcm import Pdf2EncapsDCM, Pdf2RgbSC
+from pdf2dcm import Pdf2EncapsDCM
 from subprocess import run
-from pipeline_functions import *
+from pipeline_functions import dicom_inference_and_conversion, brainmask_inference
 from pdf_report import generate_report
 from pydicom import dcmread
 from pathlib import Path
-from enum import Enum, auto
-
 
 
 description = "author: Michal Brzus\nBrainmask Tool\n"
@@ -51,7 +49,7 @@ session_path = Path(args.session_dir)
 output_path = Path(args.output_dir)
 
 
-try :
+try:
     nifti_path = dicom_inference_and_conversion(
         session_dir=session_path.as_posix(),
         output_dir=output_path.as_posix(),
@@ -101,7 +99,9 @@ im_path = raw_anat_nifti_files[0]
 mask_path = list(Path(brainmask_output_dir).glob("*.nii.gz"))[0]
 stage_name = "report_generation"
 try:
-    pdf_fn = generate_report(im_path.as_posix(), mask_path.as_posix(), report_output_dir)
+    pdf_fn = generate_report(
+        im_path.as_posix(), mask_path.as_posix(), report_output_dir
+    )
     print(f"Report created: {pdf_fn}")
 except Exception as e:
     print(f"Error in stage: {stage_name}")
@@ -114,22 +114,23 @@ template_dcm = sorted(session_path.glob("*.IMA"))[0]
 
 try:
     converter = Pdf2EncapsDCM()
-    converted_dcm = converter.run(path_pdf=pdf_fn, path_template_dcm=template_dcm.as_posix(), suffix =".dcm")[0]
+    converted_dcm = converter.run(
+        path_pdf=pdf_fn, path_template_dcm=template_dcm.as_posix(), suffix=".dcm"
+    )[0]
     del report_output_dir, brainmask_output_dir, nifti_path
 
     print(f"Report created: {converted_dcm}")
 
     # Adding needed metadata to the report
     """"""
-    pdf_dcm = dcmread(converted_dcm,stop_before_pixels=True)
-
+    pdf_dcm = dcmread(converted_dcm, stop_before_pixels=True)
 
     extra_metadata = [
-    (
-        "SeriesDescription",
-        "0008,103e",
-        f"This is a rough brainmask",
-    ),
+        (
+            "SeriesDescription",
+            "0008,103e",
+            "This is a rough brainmask",
+        ),
     ]
     for info in extra_metadata:
         title = info[0]
