@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import List, Optional
 
-from pydantic import StrictInt, StrictStr, conlist
+from pydantic import StrictInt, StrictStr
 
 from .metadata_configuration import MetadataConfiguration, MetadataConfigurationCreate
 from .unique_tag import UniqueTagModel

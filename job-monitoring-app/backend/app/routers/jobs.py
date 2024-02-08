@@ -42,7 +42,7 @@ def get_job(
     if job is None:
         raise HTTPException(status_code=404, detail="Job not found")
 
-    if not (user.id in [job.customer_id, job.provider_id]):
+    if user.id not in [job.customer_id, job.provider_id]:
         # TODO: add job.provider_id to the list of allowed users that can
         #  access this once we have api key based access? See above comment
         raise HTTPException(status_code=403, detail="Not allowed")
@@ -62,7 +62,7 @@ def get_job_events(
     if job is None:
         raise HTTPException(status_code=404, detail="Job not found")
 
-    if not (user.id in [job.customer_id, job.provider_id]):
+    if user.id not in [job.customer_id, job.provider_id]:
         raise HTTPException(status_code=403, detail="Not allowed")
 
     return job.events

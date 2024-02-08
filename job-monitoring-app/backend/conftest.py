@@ -1,6 +1,3 @@
-import os
-import random
-
 import pytest
 from app import schemas, services, models
 from app.models.base import truncate_all_tables

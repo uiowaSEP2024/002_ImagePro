@@ -111,7 +111,7 @@ def test_get_jobs_as_customer(
     access_token = response.json()["access_token"]
 
     # Use access token in the request to get a job
-    response = app_client.get(f"/jobs", cookies={"access_token": access_token})
+    response = app_client.get("/jobs", cookies={"access_token": access_token})
 
     assert response.status_code == 200
     assert len(response.json()) == 2

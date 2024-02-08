@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Enum, ForeignKey, UniqueConstraint
+from sqlalchemy import Column, Enum, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import Integer, String
 
