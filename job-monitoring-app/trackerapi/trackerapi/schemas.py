@@ -1,5 +1,4 @@
-from abc import ABC, abstractmethod
-from typing import Dict, List, Optional
+from typing import List, Optional
 
 from pydantic import BaseModel, StrictInt, StrictStr, conlist
 from enum import Enum
@@ -33,10 +32,24 @@ class StepConfig(UniqueTagModel):
 
     metadata_configurations: Optional[List[MetadataConfig]] = []
 
-    def __init__(self, name: str, tag: str, points: int, metadata_configurations: List[MetadataConfig] = None,
-                 **kwargs):
-        metadata_configurations = metadata_configurations if metadata_configurations else []
-        super().__init__(name=name, tag=tag, points=points, metadata_configurations=metadata_configurations, **kwargs)
+    def __init__(
+        self,
+        name: str,
+        tag: str,
+        points: int,
+        metadata_configurations: List[MetadataConfig] = None,
+        **kwargs
+    ):
+        metadata_configurations = (
+            metadata_configurations if metadata_configurations else []
+        )
+        super().__init__(
+            name=name,
+            tag=tag,
+            points=points,
+            metadata_configurations=metadata_configurations,
+            **kwargs
+        )
 
 
 class JobConfig(UniqueTagModel):
@@ -45,12 +58,12 @@ class JobConfig(UniqueTagModel):
     version: str
 
     def __init__(
-            self,
-            name: str,
-            tag: str,
-            step_configurations: List[StepConfig],
-            version: str,
-            **kwargs
+        self,
+        name: str,
+        tag: str,
+        step_configurations: List[StepConfig],
+        version: str,
+        **kwargs
     ):
         super().__init__(
             name=name,
