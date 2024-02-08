@@ -1,5 +1,3 @@
-import json
-
 import aws_cdk as cdk
 import aws_cdk.aws_amplify_alpha as aws_amplify
 import aws_cdk.aws_apigateway as aws_apigateway
@@ -139,7 +137,7 @@ class CdkInfraStack(cdk.Stack):
         tracker_amplify_app.node.default_child.platform = "WEB_COMPUTE"
 
         # Amplify App Build Trigger on Create
-        build_trigger = aws_custom_resources.AwsCustomResource(
+        _ = aws_custom_resources.AwsCustomResource(
             self,
             TRACKER_PREFIX
             + "AmplifyBuildTrigger"
