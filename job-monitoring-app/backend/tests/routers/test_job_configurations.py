@@ -3,6 +3,28 @@ from app.dependencies import API_KEY_HEADER_NAME
 from starlette import status
 
 
+def create_data_dict(tag, name, version, step_name, points, step_tag, meta_name, units, kind):
+    return {
+        "tag": tag,
+        "name": name,
+        "version": version,
+        "step_configurations": [
+            {
+                "name": step_name,
+                "points": points,
+                "tag": step_tag,
+                "metadata_configurations": [
+                    {
+                        "name": meta_name,
+                        "units": units,
+                        "kind": kind,
+                    }
+                ],
+            }
+        ],
+    }
+
+
 def test_create_job_configurations(app_client, random_provider_user_with_api_key):
     data = {
         "tag": "lung_cancer",
@@ -50,25 +72,18 @@ def test_create_job_configurations_with_new_version(
         ),
     )
 
-    data = {
-        "tag": "lung_cancer",
-        "name": "Lung Cancer Again",
-        "version": "1.0.1",
-        "step_configurations": [
-            {
-                "name": "Lung Search",
-                "points": 10,
-                "tag": "lung_search",
-                "metadata_configurations": [
-                    {
-                        "name": "Protein Density",
-                        "units": "gm/cc",
-                        "kind": "number",
-                    }
-                ],
-            }
-        ],
-    }
+    data = create_data_dict(
+        tag="lung_cancer",
+        name="Lung Cancer Again",
+        version="1.0.1",
+        step_name="Lung Search",
+        points=10,
+        step_tag="lung_search",
+        meta_name="Protein Density",  # Specify the unique name here
+        units="gm/cc",
+        kind="number",
+    )
+
     response = app_client.post(
         "/job_configurations",
         json=data,
@@ -144,25 +159,17 @@ def test_create_job_configuration_with_conflicting_version_on_metadata(
         ),
     )
 
-    data = {
-        "tag": "lung_cancer",
-        "name": "Lung Cancer",
-        "version": "1.0.0",
-        "step_configurations": [
-            {
-                "name": "Lung Search",
-                "points": 10,
-                "tag": "lung_search",
-                "metadata_configurations": [
-                    {
-                        "name": "Protein Density 2",  # New field but same version + tag
-                        "units": "gm/cc",
-                        "kind": "number",
-                    }
-                ],
-            }
-        ],
-    }
+    data = create_data_dict(
+        tag="lung_cancer",
+        name="Lung Cancer",
+        version="1.0.0",
+        step_name="Lung Search",
+        points=10,
+        step_tag="lung_search",
+        meta_name="Protein Density 2",  # Specify the unique name here
+        units="gm/cc",
+        kind="number",
+    )
 
     response = app_client.post(
         "/job_configurations",
