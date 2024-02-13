@@ -30,6 +30,7 @@ networkx==3.2.1
 numpy==1.26.3
 onnxruntime==1.17.0
 pandas==2.2.0
+pdf2dcm==0.4.1
 pillow==10.2.0
 # platformdirs==4.1.0
 protobuf==4.25.2
