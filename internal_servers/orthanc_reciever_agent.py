@@ -4,6 +4,7 @@ import pyorthanc
 import time
 import subprocess
 from pathlib import Path
+from orthanc_data_logging import MedicalImageLogger
 
 
 def check_study_stable(study: pyorthanc.Study) -> bool:
@@ -41,6 +42,17 @@ def process_data(data_path):
     subprocess.run(["python", "process_data_script.py", data_path], check=True)
 
 
+def map_aet_to_hospital_id(aet: str) -> str:
+    """
+    Map an AET to a hospital ID.
+    This function maps an AET to a hospital ID. This is useful for identifying the hospital that sent a study.
+    param aet: The AET to map.
+    return: The hospital ID.
+    """
+    # TODO Implement mapping logic
+    return "H123"  # Placeholder for mapping logic
+
+
 # TODO make the study_processed_dict its own class
 def make_list_of_studies_to_process(
     study_processed_dict: dict[str, any], orthanc_client: pyorthanc.Orthanc
@@ -61,12 +73,7 @@ def make_list_of_studies_to_process(
         study_id = study.id_
         has_properties = False
         if study_id not in study_processed_dict:
-            is_stable = check_study_stable(study)
-            if not is_stable:
-                print(
-                    f"Study {study_id} is not stable yet. Waiting for it to become stable.."
-                )
-                continue
+            hospital_id = None
             for series in study.series:
                 # This is ensures that the study has a series with the description "PROPERTIES" as we will
                 # need this in the future to process the study
@@ -75,12 +82,35 @@ def make_list_of_studies_to_process(
                     == "PROPERTIES"
                 ):
                     has_properties = True
+                    # TODO Update this to have the hospital_id
+                    hospital_id = map_aet_to_hospital_id(
+                        series.get_main_information()["MainDicomTags"]["2100-0140"]
+                    )
+
                     break
+            # This logic is redundant currently but may be useful in the future
+            # The properties files should be created on the first reception of the studies Dicom files
+            # The only way to not have properties is if the study was not received correctly
+            #
+            if has_properties and hospital_id is not None:
+                study_processed_dict[study_id] = MedicalImageLogger(
+                    hospital_id, study_id
+                )
+            else:
+                print(f"Study {study_id} does not have properties. Skipping..")
+                # TODO: Check if we want to delete the study if it does not have properties
+                continue
+            is_stable = check_study_stable(study)
+            if not is_stable:
+                print(
+                    f"Study {study_id} is not stable yet. Waiting for it to become stable.."
+                )
+                continue
         else:
             print(f"Study {study_id} has already been processed. Skipping..")
         if not has_properties:
             print(f"Study {study_id} does not have properties. Skipping..")
-            # TODO: Check if we want to delete the study if it does not have properties
+
             continue
         else:
             studies_to_process.append(study)
