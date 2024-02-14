@@ -2,7 +2,7 @@ import json
 from typing import List
 
 
-class MedicalImageLogger:
+class OrthancStudyLogger:
     def __init__(self, hospital_id, study_id, log_file_path="medical_image_log.json"):
         self.hospital_id = hospital_id
         self.study_id = study_id
@@ -10,8 +10,10 @@ class MedicalImageLogger:
         self.steps = [
             {"step_name": "Data Receiving", "status": "in progress"},
             {"step_name": "Data Download", "status": "incomplete"},
-            {"step_name": "Data Passed for Processing", "status": "incomplete"}
+            {"step_name": "Data Processing", "status": "incomplete"},
+            {"step_name": "Data Sent to Hospital", "status": "incomplete"},
         ]
+        self.internal_product_log = None
         self._write_log()
 
     def _write_log(self):
@@ -31,6 +33,7 @@ class MedicalImageLogger:
     def mark_step_complete(self, step_name):
         """Marks a given step as complete."""
         self.update_step_status(step_name, "complete")
+
 
 # Example of using the MedicalImageLogger
 logger = MedicalImageLogger(hospital_id="H123", study_id="S456")
