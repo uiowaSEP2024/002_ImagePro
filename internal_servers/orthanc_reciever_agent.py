@@ -2,9 +2,7 @@ from datetime import datetime
 
 import pyorthanc
 import time
-import subprocess
-from pathlib import Path
-from orthanc_data_logging import MedicalImageLogger
+from orthanc_data_logging import OrthancStudyLogger
 
 
 def check_study_stable(study: pyorthanc.Study) -> bool:
@@ -40,7 +38,15 @@ def process_data(data_path):
     """
     Call another script to process the downloaded data.
     """
-    subprocess.run(["python", "process_data_script.py", data_path], check=True)
+    pass
+    # subprocess.run(["python", "process_data_script.py", data_path], check=True)
+
+
+def send_data_to_hospital(data_path, hospital_id):
+    """
+    Send the processed data to the hospital.
+    """
+    pass  # Placeholder for sending data to hospital logic
 
 
 def map_aet_to_hospital_id(aet: str) -> str:
@@ -95,7 +101,7 @@ def make_list_of_studies_to_process(
             # The only way to not have properties is if the study was not received correctly
             #
             if has_properties and hospital_id is not None:
-                study_processed_dict[study_id] = MedicalImageLogger(
+                study_processed_dict[study_id] = OrthancStudyLogger(
                     hospital_id, study_id
                 )
             else:
@@ -134,14 +140,33 @@ def main():
                 study_processed_dict, internal_orthanc
             )
             for study in studies:
+                current_logger = study_processed_dict[study.id_]
                 if check_study_stable(study):
-                    # Download study data
-                    download_path = Path("downloaded_data")
-                    download_study(study.id_, download_path)
-                    # Process the downloaded data
-                    process_data(download_path)
-                else:
-                    print(f"Study {study.id_} is not stable yet. Skipping download.")
+                    current_logger.update_step_status(1, "complete")
+                if current_logger.step_is_ready(2):
+                    current_logger.update_step_status(2, "in_progress")
+                    try:
+                        download_study(study.id_, "download_path")
+                        current_logger.update_step_status(2, "complete")
+                    except Exception as e:
+                        current_logger.update_step_status(2, "failed", str(e))
+                if current_logger.step_is_ready(3):
+                    current_logger.update_step_status(3, "in_progress")
+                    try:
+                        process_data("download_path")
+                        current_logger.update_data_processing("download_path")
+                    except Exception as e:
+                        current_logger.update_step_status(3, "failed", str(e))
+                if current_logger.step_is_ready(4):
+                    current_logger.update_step_status(4, "in_progress")
+                    try:
+                        send_data_to_hospital(
+                            "processed_data_path", current_logger.hospital_id
+                        )
+                        current_logger.update_step_status(4, "complete")
+                    except Exception as e:
+                        current_logger.update_step_status(4, "failed", str(e))
+            print("Sleeping for 5 seconds..")
             time.sleep(5)
 
 
