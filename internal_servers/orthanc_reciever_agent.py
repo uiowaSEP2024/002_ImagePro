@@ -11,7 +11,8 @@ def check_study_stable(study: pyorthanc.Study) -> bool:
     """
     Check if the study is stable.
 
-    This function checks if the study is stable by fetching the main information of the study and checking the "IsStable" key.
+    This function checks if the study is stable by fetching the main information
+    of the study and checking the "IsStable" key.
     param study: The study to check.
     return: True if the study is stable, False otherwise.
     """
@@ -59,7 +60,8 @@ def make_list_of_studies_to_process(
 ) -> list[pyorthanc.Study]:
     """
     Fetch the list of studies to process from Orthanc.
-    This function uses PyOrthanc to fetch the list of studies from Orthanc and then filters out invalid studies for a variety of reasons.
+    This function uses PyOrthanc to fetch the list of studies from Orthanc and then filters out invalid studies for a
+    variety of reasons.
 
     param study_processed_dict: A dictionary of studies that have already been processed.
         The keys are the study IDs and the values are the time the study was processed.
@@ -102,6 +104,7 @@ def make_list_of_studies_to_process(
                 continue
             is_stable = check_study_stable(study)
             if not is_stable:
+                # TODO Check if this logic is desired here or if it should be moved to the main loop as its own stage
                 print(
                     f"Study {study_id} is not stable yet. Waiting for it to become stable.."
                 )
@@ -110,7 +113,6 @@ def make_list_of_studies_to_process(
             print(f"Study {study_id} has already been processed. Skipping..")
         if not has_properties:
             print(f"Study {study_id} does not have properties. Skipping..")
-
             continue
         else:
             studies_to_process.append(study)
@@ -131,10 +133,7 @@ def main():
             studies = make_list_of_studies_to_process(
                 study_processed_dict, internal_orthanc
             )
-
             for study in studies:
-                # TODO : ADD initial Log HERE
-
                 if check_study_stable(study):
                     # Download study data
                     download_path = Path("downloaded_data")
