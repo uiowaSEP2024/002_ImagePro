@@ -68,6 +68,8 @@ def make_list_of_studies_to_process(
                 )
                 continue
             for series in study.series:
+                # This is ensures that the study has a series with the description "PROPERTIES" as we will
+                # need this in the future to process the study
                 if (
                     series.get_main_information()["MainDicomTags"]["SeriesDescription"]
                     == "PROPERTIES"
@@ -112,19 +114,6 @@ def main():
                 else:
                     print(f"Study {study.id_} is not stable yet. Skipping download.")
             time.sleep(5)
-
-
-# class orthanc_reciever_agent:
-#     def __init__(self, orthanc_url):
-#         self.orthanc_url = orthanc_url
-#         self.orthanc_client = pyorthanc.Orthanc(self.orthanc_url)
-#         self.study_processed_dict = dict[str, study_log_file]
-#
-#
-# class study_log_file:
-#     def __init__(self, study_id: str, base_log_path: Path):
-#         self.study_id = study_id
-#         self.log_path = base_log_path / f"{self.study_id}_{datetime.strptime(datetime.now("%y%h%m"))}.json"
 
 
 if __name__ == "__main__":
