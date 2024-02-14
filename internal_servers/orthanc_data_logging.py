@@ -8,10 +8,10 @@ class OrthancStudyLogger:
         self.study_id = study_id
         self.log_file_path = log_file_path
         self.steps = [
-            {"step_name": "Data Receiving", "status": "in progress"},
-            {"step_name": "Data Download", "status": "incomplete"},
-            {"step_name": "Data Processing", "status": "incomplete"},
-            {"step_name": "Data Sent to Hospital", "status": "incomplete"},
+            {"step_id": 1, "step_name": "Data Receiving", "status": "in progress"},
+            {"step_id": 2, "step_name": "Data Download", "status": "incomplete"},
+            {"step_id": 3, "step_name": "Data Processing", "status": "incomplete", "Reason": None},
+            {"step_id": 4, "step_name": "Data Sent to Hospital", "status": "incomplete"},
         ]
         self.internal_product_log = None
         self._write_log()
@@ -22,12 +22,35 @@ class OrthancStudyLogger:
         with open(self.log_file_path, 'w') as log_file:
             json.dump(log_entries, log_file, indent=4)
 
-    def update_step_status(self, step_name, status):
+    def update_step_status(self, step_id: int, status: str, reason: str = None):
         """Updates the status of a given step and re-writes the log file."""
         for step in self.steps:
-            if step["step_name"] == step_name:
+            if step["step_id"] == step_id:
                 step["status"] = status
+                if reason:
+                    step["Reason"] = reason
                 break
+        self._write_log()
+
+    def update_data_processing(self, log_file_path: str):
+        """
+        Updates the status of data processing based on product produced log file.
+        The log file should be a json file with the following format:
+        {
+            "status": "complete/failed"
+            "reason": "optional message"
+        }
+        If the status is failed, the reason should be included.
+
+        If the status is complete, the data processing step is marked as complete.
+        """
+        with open(log_file_path, 'r') as log_file:
+            self.internal_product_log = json.load(log_file)
+        if self.internal_product_log["status"] == "complete":
+            self.update_step_status(3, "complete")
+        else:
+            self.update_step_status(3, "failed", reason=self.internal_product_log["reason"])
+
         self._write_log()
 
     def mark_step_complete(self, step_name):
@@ -36,6 +59,6 @@ class OrthancStudyLogger:
 
 
 # Example of using the MedicalImageLogger
-logger = MedicalImageLogger(hospital_id="H123", study_id="S456")
+logger = OrthancStudyLogger(hospital_id="H123", study_id="S456")
 logger.mark_step_complete("Data receiving detected")
 logger.mark_step_complete("Data stable")
