@@ -38,6 +38,7 @@ class OrthancStudyLogger:
         self, step_id: int, status: str, reason: Optional[str] = None
     ):
         """Updates the status of a given step and re-writes the log file."""
+        print(f"Updating step {step_id} to {status}")
         for step in self.steps:
             if step["step_id"] == step_id:
                 step["status"] = status
@@ -55,6 +56,11 @@ class OrthancStudyLogger:
                 is_ready = False
                 break
         return is_ready
+
+    def _stage_is_complete(self, stage_id: int) -> bool:
+        """Checks if a given stage is complete."""
+        stage = self.steps[stage_id - 1]
+        return stage["status"] == "complete"
 
     def update_data_processing(self, log_file_path: str):
         """

@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from pathlib import Path
 import pyorthanc
 import time
 from orthanc_data_logging import OrthancStudyLogger
@@ -60,6 +60,20 @@ def map_aet_to_hospital_id(aet: str) -> str:
     return "H123"  # Placeholder for mapping logic
 
 
+def get_default_output_path():
+    """
+    Get the default output path for the agent.
+    This function gets the default output path for the agent. This is useful for identifying where to save logs and
+    other files.
+    return: The default output path.
+    """
+    # TODO Replace this with the actual default output path logic or move to agent configuration
+    file_loc: Path = Path(__file__)
+    example_tool_dir: Path = file_loc.parent.parent / "example_tool"
+    output_path: Path = example_tool_dir / "example_output"
+    return output_path  # Placeholder for default output path logic
+
+
 # TODO make the study_processed_dict its own class
 def make_list_of_studies_to_process(
     study_processed_dict: dict[str, any], orthanc_client: pyorthanc.Orthanc
@@ -91,9 +105,11 @@ def make_list_of_studies_to_process(
                 ):
                     has_properties = True
                     # TODO Update this to have the hospital_id
-                    hospital_id = map_aet_to_hospital_id(
-                        series.get_main_information()["MainDicomTags"]["2100-0140"]
-                    )
+                    # TODO Look into Orthanc Logic to see if we can get the hospital_id from the study
+                    # https://orthanc.uclouvain.be/book/plugins/python.html
+                    # aet = series.get_main_information()["MainDicomTags"]["2100-0140"]
+                    aet = "ExampleAET"
+                    hospital_id = map_aet_to_hospital_id(aet)
 
                     break
             # This logic is redundant currently but may be useful in the future
@@ -101,8 +117,10 @@ def make_list_of_studies_to_process(
             # The only way to not have properties is if the study was not received correctly
             #
             if has_properties and hospital_id is not None:
+                output_path = get_default_output_path()
+                log_file_path = output_path / f"{hospital_id}_{study_id}_log.json"
                 study_processed_dict[study_id] = OrthancStudyLogger(
-                    hospital_id, study_id
+                    hospital_id, study_id, log_file_path
                 )
             else:
                 print(f"Study {study_id} does not have properties. Skipping..")
@@ -139,6 +157,8 @@ def main():
             studies = make_list_of_studies_to_process(
                 study_processed_dict, internal_orthanc
             )
+            print(f"Found {len(studies)} studies to process")
+
             for study in studies:
                 current_logger = study_processed_dict[study.id_]
                 if check_study_stable(study):
@@ -154,7 +174,9 @@ def main():
                     current_logger.update_step_status(3, "in_progress")
                     try:
                         process_data("download_path")
-                        current_logger.update_data_processing("download_path")
+                        # TODO Update this to have the processed data path
+                        current_logger.update_step_status(3, "complete")
+                        # current_logger.update_data_processing("download_path")
                     except Exception as e:
                         current_logger.update_step_status(3, "failed", str(e))
                 if current_logger.step_is_ready(4):
@@ -166,8 +188,15 @@ def main():
                         current_logger.update_step_status(4, "complete")
                     except Exception as e:
                         current_logger.update_step_status(4, "failed", str(e))
-            print("Sleeping for 5 seconds..")
-            time.sleep(5)
+
+                if current_logger._stage_is_complete(4):
+                    print(f"Study {study.id_} has been processed and sent to hospital")
+                    print(f"Deleting study {study.id_}")
+                    internal_orthanc.delete_studies_id(study.id_)
+                    study_processed_dict.pop(study.id_)
+
+            print("Sleeping for 10 seconds..")
+            time.sleep(10)
 
 
 if __name__ == "__main__":
