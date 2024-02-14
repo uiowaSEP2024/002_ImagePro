@@ -44,9 +44,10 @@ args = parser.parse_args()
 # setup
 session_path = Path(args.session_dir)
 output_path = Path(args.output_dir)
+study_id = args.study_id
 status = None
 reason = None
-log_file_path = output_path / "log.json"
+log_file_path = output_path / f"{study_id}_log.json"
 
 stage_name = "Input Data Validation and Conversion"
 print(f"Running stage: {stage_name}")
@@ -67,7 +68,7 @@ try:
 except Exception as e:
     reason = f"Error in stage: {stage_name}"
     status = "failed"
-    write_json_log(log_file_path, args.study_id, status, reason)
+    write_json_log(log_file_path, study_id, status, reason)
     print(reason)
     print(e)
     sys.exit(1)
@@ -96,7 +97,7 @@ try:
 except Exception as e:
     reason = f"Error in stage: {stage_name}"
     status = "failed"
-    write_json_log(log_file_path, args.study_id, status, reason)
+    write_json_log(log_file_path, study_id, status, reason)
     print(reason)
     print(e)
     sys.exit(1)
@@ -120,7 +121,7 @@ try:
 except Exception as e:
     reason = f"Error in stage: {stage_name}"
     status = "failed"
-    write_json_log(log_file_path, args.study_id, status, reason)
+    write_json_log(log_file_path, study_id, status, reason)
     print(reason)
     print(e)
     sys.exit(1)
@@ -161,13 +162,13 @@ try:
 except Exception as e:
     reason = f"Error in stage: {stage_name}"
     status = "failed"
-    write_json_log(log_file_path, args.study_id, status, reason)
+    write_json_log(log_file_path, study_id, status, reason)
     print(reason)
     print(e)
     sys.exit(1)
 
 status = "Completed"
-write_json_log(log_file_path, args.study_id, status, reason)
+write_json_log(log_file_path, study_id, status, reason)
 print(f"Successfully finished stage: {stage_name}")
 
 # [ 'tests/test_data/test_file.dcm' ]
