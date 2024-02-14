@@ -25,10 +25,28 @@ from dcm_classifier.namic_dicom_typing import itk_read_from_dicomfn_list
 import re
 from pydicom import dcmread
 from subprocess import run
+from typing import Optional, Union
 import itk
+import json
+from pathlib import Path
 
 
 itk.MultiThreaderBase.SetGlobalDefaultNumberOfThreads(1)
+
+
+def write_json_log(log_file_path: Path, study_id: str, status: str, reason: Optional[str]) -> None:
+    """
+    Writes the current log to the file.
+    :param log_file_path: path to the log file
+    :param study_id: unique identifier for the study
+    :param status: status of the job
+    :param reason: reason for the status
+    :return: None
+    """
+    log_entries = {"study_id": study_id, "status": status, "reason": reason}
+    # write as json using dump
+    with open(log_file_path, "w") as log_file:
+        json.dump(log_entries, log_file, indent=4)
 
 
 def validate_subject_id(subject_id: str) -> str:
