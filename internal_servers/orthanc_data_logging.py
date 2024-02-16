@@ -25,21 +25,23 @@ class OrthancStudyLogger:
         # Signal the start of a new job
         self.tracker_job = tracker.create_job(study_id, hospital_id, job_config.tag)
 
+        # TODO: the steps are used to check if step is complete for the orthanc receiver
+        self.steps = {
+            0: {"status": "In Progress"},
+            1: {"status": "Incomplete"},
+            2: {"status": "Incomplete"},
+            3: {"status": "Incomplete"},
+        }
+        
         # TODO: code below creates the initial events with initial status
         # TODO: we need to change instead of using "kind" fot "step" or "complete" to use the status in event metadata
         # TODO: look in the mockscript to see how they use kind
-        self.tracker_job.send_event(
-            kind="step",
-            tag=0,
-            provider_job_id=self.hospital_id,
-            metadata={"status": "In Progress"}
-        )
-        for i in range(1, 4):
+        for i in range(0, 4):
             self.tracker_job.send_event(
                 kind="step",
                 tag=i,
                 provider_job_id=self.hospital_id,
-                metadata={"status": "Incomplete"}
+                metadata=self.steps[i], # this will take the initial metadata from self.steps
             )
 
 
@@ -49,6 +51,7 @@ class OrthancStudyLogger:
         """Updates the status of a given step and re-writes the log file."""
         print(f"Updating step {step_tag} to {status}")
         metadata = {"status": status}
+        self.steps[step_tag] = {"status": status}
         if reason:
             metadata["Reason"] = reason
 
@@ -70,10 +73,11 @@ class OrthancStudyLogger:
                 break
         return is_ready
 
-    def _stage_is_complete(self, stage_id: int) -> bool:
+    def _stage_is_complete(self, step_tag: int) -> bool:
         """Checks if a given stage is complete."""
-        stage = self.steps[stage_id - 1]
-        return stage["status"] == "complete"
+        # TODO: I had to update this. It is not tested and might be buggy
+        status = self.steps[step_tag]["status"]
+        return status == "complete"
 
     def update_data_processing(self, log_file_path: str):
         """
@@ -95,8 +99,6 @@ class OrthancStudyLogger:
             self.update_step_status(
                 3, "failed", reason=self.internal_product_log["reason"]
             )
-
-        self._write_log()
 
 
 # Example of using the MedicalImageLogger
