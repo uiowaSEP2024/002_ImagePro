@@ -1,0 +1,33 @@
+{
+  "$schema": "job-configurations-schema.generated.json",
+  "job_configs": [
+    {
+      "version": "0.0.1",
+      "name": "Hospital Job",
+      "tag": "hospital_job",
+      "step_configurations": [
+        {
+          "name": "Data Receiving",
+          "tag": 0,
+          "status": "In Progress"
+        },
+        {
+          "name": "Data Download",
+          "tag": 1,
+          "status": "Incomplete"
+        },
+        {
+          "name": "Data Processing",
+          "tag": 2,
+          "status": "Incomplete",
+          "reason": ""
+        },
+        {
+          "name": "Data Return",
+          "tag": 3,
+          "status": "Incomplete"
+        }
+      ]
+    }
+  ]
+}
