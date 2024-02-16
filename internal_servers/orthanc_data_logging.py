@@ -23,19 +23,19 @@ class OrthancStudyLogger:
         tracker.register_job_config(job_config)
 
         # Signal the start of a new job
-        tracker_job = tracker.create_job(study_id, hospital_id, job_config.tag)
+        self.tracker_job = tracker.create_job(study_id, hospital_id, job_config.tag)
 
         # TODO: code below creates the initial events with initial status
         # TODO: we need to change instead of using "kind" fot "step" or "complete" to use the status in event metadata
         # TODO: look in the mockscript to see how they use kind
-        tracker_job.send_event(
+        self.tracker_job.send_event(
             kind="step",
             tag=0,
             provider_job_id=self.hospital_id,
             metadata={"status": "In Progress"}
         )
         for i in range(1, 4):
-            tracker_job.send_event(
+            self.tracker_job.send_event(
                 kind="step",
                 tag=i,
                 provider_job_id=self.hospital_id,
@@ -43,27 +43,22 @@ class OrthancStudyLogger:
             )
 
 
-    def _write_log(self):
-        """Writes the current log to the file."""
-        log_entries = [
-            {"hospital_id": self.hospital_id, "study_id": self.study_id, **step}
-            for step in self.steps
-        ]
-        with open(self.log_file_path, "w") as log_file:
-            json.dump(log_entries, log_file, indent=4)
-
     def update_step_status(
-        self, step_id: int, status: str, reason: Optional[str] = None
+        self, step_tag: int, status: str, reason: Optional[str] = None
     ):
         """Updates the status of a given step and re-writes the log file."""
-        print(f"Updating step {step_id} to {status}")
-        for step in self.steps:
-            if step["step_id"] == step_id:
-                step["status"] = status
-                if reason:
-                    step["Reason"] = reason
-                break
-        self._write_log()
+        print(f"Updating step {step_tag} to {status}")
+        metadata = {"status": status}
+        if reason:
+            metadata["Reason"] = reason
+
+        # TODO: Update step
+        # TODO: this needs to be implemented to allow for updating step in the api and backend
+        self.tracker_job.update_event(
+                tag=step_tag,
+                provider_job_id=self.hospital_id,
+                metadata=metadata
+            )
 
     def step_is_ready(self, step_id: int) -> bool:
         """Checks if a given step is ready to begin."""
