@@ -2,4 +2,4 @@
 omit =
     # omit anything in a example tool directory
     */example_tool/*
-    
+    */tests/*
