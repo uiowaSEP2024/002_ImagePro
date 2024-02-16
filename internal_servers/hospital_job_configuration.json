@@ -8,19 +8,19 @@
       "step_configurations": [
         {
           "name": "Data Receiving",
-          "tag": 0
-        },
-        {
-          "name": "Data Download",
           "tag": 1
         },
         {
-          "name": "Data Processing",
+          "name": "Data Download",
           "tag": 2
         },
         {
-          "name": "Data Return",
+          "name": "Data Processing",
           "tag": 3
+        },
+        {
+          "name": "Data Return",
+          "tag": 4
         }
       ]
     }

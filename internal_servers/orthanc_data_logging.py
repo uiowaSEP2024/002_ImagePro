@@ -27,16 +27,16 @@ class OrthancStudyLogger:
 
         # TODO: the steps are used to check if step is complete for the orthanc receiver
         self.steps = {
-            0: {"status": "In Progress"},
-            1: {"status": "Incomplete"},
+            1: {"status": "In Progress"},
             2: {"status": "Incomplete"},
             3: {"status": "Incomplete"},
+            4: {"status": "Incomplete"},
         }
-        
+
         # TODO: code below creates the initial events with initial status
         # TODO: we need to change instead of using "kind" fot "step" or "complete" to use the status in event metadata
         # TODO: look in the mockscript to see how they use kind
-        for i in range(0, 4):
+        for i in range(1, 5):
             self.tracker_job.send_event(
                 kind="step",
                 tag=i,
