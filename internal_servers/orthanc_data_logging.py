@@ -1,9 +1,12 @@
 import json
 from typing import Optional
+from pathlib import Path
+from typing import Union
+from job-monitoring-app.trackerapi import JobConfigManager, TrackerApi
 
 
 class OrthancStudyLogger:
-    def __init__(self, hospital_id, study_id, log_file_path="medical_image_log.json"):
+    def __init__(self, hospital_id, study_id, tracker_api_key, job_config_file: Union[Path, str]):
         self.hospital_id = hospital_id
         self.study_id = study_id
         self.log_file_path = log_file_path
@@ -23,7 +26,23 @@ class OrthancStudyLogger:
             },
         ]
         self.internal_product_log = None
-        self._write_log()
+
+        # TODO: This is sudo code how to initiate the connection to the tracker api
+        # TODO: this will allow us to store data in the database without log files
+        # Get job config, use the initial hospital_job.json file
+        job_configurations_file = Path(job_config_file)
+        job_config_manager = JobConfigManager(configurations_file=job_configurations_file)
+        job_config = job_config_manager.get_job_config("hospital_job")
+
+        # Create TrackerAPI object and job session
+        tracker = TrackerApi(tracker_api_key)
+        tracker.register_job_config(job_config)
+
+        # Signal the start of a new job
+        tracker_job = tracker.create_job(study_id, hospital_id, job_config.tag)
+
+
+
 
     def _write_log(self):
         """Writes the current log to the file."""
