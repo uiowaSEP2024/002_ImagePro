@@ -8,24 +8,19 @@
       "step_configurations": [
         {
           "name": "Data Receiving",
-          "tag": 0,
-          "status": "In Progress"
+          "tag": 0
         },
         {
           "name": "Data Download",
-          "tag": 1,
-          "status": "Incomplete"
+          "tag": 1
         },
         {
           "name": "Data Processing",
-          "tag": 2,
-          "status": "Incomplete",
-          "reason": ""
+          "tag": 2
         },
         {
           "name": "Data Return",
-          "tag": 3,
-          "status": "Incomplete"
+          "tag": 3
         }
       ]
     }
