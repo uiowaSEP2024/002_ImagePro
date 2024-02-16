@@ -127,7 +127,7 @@
    **/
 
   // Whether remote hosts can connect to the HTTP server
-  "RemoteAccessAllowed" : false,
+  "RemoteAccessAllowed" : true,
 
   // Whether or not SSL is enabled
   "SslEnabled" : false,
@@ -142,7 +142,7 @@
   // The list of the registered users. Because Orthanc uses HTTP
   // Basic Authentication, the passwords are stored as plain text.
   "RegisteredUsers" : {
-    // "alice" : "alicePassword"
+    "ivan": "password"
   },
 
 
