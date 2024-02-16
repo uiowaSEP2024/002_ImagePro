@@ -9,22 +9,6 @@ class OrthancStudyLogger:
     def __init__(self, hospital_id, study_id, tracker_api_key, job_config_file: Union[Path, str]):
         self.hospital_id = hospital_id
         self.study_id = study_id
-        self.log_file_path = log_file_path
-        self.steps = [
-            {"step_id": 1, "step_name": "Data Receiving", "status": "in progress"},
-            {"step_id": 2, "step_name": "Data Download", "status": "incomplete"},
-            {
-                "step_id": 3,
-                "step_name": "Data Processing",
-                "status": "incomplete",
-                "Reason": None,
-            },
-            {
-                "step_id": 4,
-                "step_name": "Data Sent to Hospital",
-                "status": "incomplete",
-            },
-        ]
         self.internal_product_log = None
 
         # TODO: This is sudo code how to initiate the connection to the tracker api
@@ -41,7 +25,22 @@ class OrthancStudyLogger:
         # Signal the start of a new job
         tracker_job = tracker.create_job(study_id, hospital_id, job_config.tag)
 
-
+        # TODO: code below creates the initial events with initial status
+        # TODO: we need to change instead of using "kind" fot "step" or "complete" to use the status in event metadata
+        # TODO: look in the mockscript to see how they use kind
+        tracker_job.send_event(
+            kind="step",
+            tag=0,
+            provider_job_id=self.hospital_id,
+            metadata={"status": "In Progress"}
+        )
+        for i in range(1, 4):
+            tracker_job.send_event(
+                kind="step",
+                tag=i,
+                provider_job_id=self.hospital_id,
+                metadata={"status": "Incomplete"}
+            )
 
 
     def _write_log(self):
