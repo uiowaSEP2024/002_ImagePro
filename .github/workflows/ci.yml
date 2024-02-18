@@ -15,10 +15,6 @@ jobs:
     name: TrackerAPI CI
     uses: ./.github/workflows/trackerapi-ci.yml
 
-  cdk-infra_ci:
-    name: CDK Infra CI
-    uses: ./.github/workflows/cdk-infra-ci.yml
-
   frontend_ci:
     name: Frontend CI
     uses: ./.github/workflows/frontend-ci.yml
