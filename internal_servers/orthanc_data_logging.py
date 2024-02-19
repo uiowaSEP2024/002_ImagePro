@@ -2,6 +2,7 @@ import json
 from typing import Optional
 from pathlib import Path
 from typing import Union
+from job_monitoring_app.trackerapi.trackerapi import TrackerApi, JobConfigManager
 
 
 class OrthancStudyLogger:
@@ -15,18 +16,18 @@ class OrthancStudyLogger:
         # TODO: This is sudo code how to initiate the connection to the tracker api
         # TODO: this will allow us to store data in the database without log files
         # Get job config, use the initial hospital_job.json file
-        # job_configurations_file = Path(job_config_file)
-        # job_config_manager = JobConfigManager(
-        #     configurations_file=job_configurations_file
-        # )
-        # job_config = job_config_manager.get_job_config("hospital_job")
+        job_configurations_file = Path(job_config_file)
+        job_config_manager = JobConfigManager(
+            configurations_file=job_configurations_file
+        )
+        job_config = job_config_manager.get_job_config("hospital_job")
 
         # Create TrackerAPI object and job session
-        # tracker = TrackerApi(tracker_api_key)
-        # tracker.register_job_config(job_config)
+        tracker = TrackerApi(tracker_api_key)
+        tracker.register_job_config(job_config)
 
         # Signal the start of a new job
-        # self.tracker_job = tracker.create_job(study_id, hospital_id, job_config.tag)
+        self.tracker_job = tracker.create_job(study_id, hospital_id, job_config.tag)
         job_config = None
         # TODO: the steps are used to check if step is complete for the orthanc receiver
         self.steps = {
