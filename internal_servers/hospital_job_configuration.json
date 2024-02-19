@@ -8,19 +8,24 @@
       "step_configurations": [
         {
           "name": "Data Receiving",
-          "tag": 1
+          "tag": "data_receiving",
+          "points": 1
+
         },
         {
           "name": "Data Download",
-          "tag": 2
+          "tag": "data_download",
+          "points": 1
         },
         {
           "name": "Data Processing",
-          "tag": 3
+          "tag": "data_processing",
+          "points": 1
         },
         {
           "name": "Data Return",
-          "tag": 4
+          "tag": "data_return",
+          "points": 1
         }
       ]
     }
