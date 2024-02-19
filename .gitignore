@@ -554,5 +554,5 @@ dmypy.json
 /.coverage
 /coverage.xml
 /pytest.xml
-/job-monitoring-app/backend/pytest.xml
+/job_monitoring_app/backend/pytest.xml
 /example_tool/Orthanc/OrthancStorage/

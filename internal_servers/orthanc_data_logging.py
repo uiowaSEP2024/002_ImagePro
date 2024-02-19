@@ -2,11 +2,12 @@ import json
 from typing import Optional
 from pathlib import Path
 from typing import Union
-from job-monitoring-app.trackerapi import JobConfigManager, TrackerApi
 
 
 class OrthancStudyLogger:
-    def __init__(self, hospital_id, study_id, tracker_api_key, job_config_file: Union[Path, str]):
+    def __init__(
+        self, hospital_id, study_id, tracker_api_key, job_config_file: Union[Path, str]
+    ):
         self.hospital_id = hospital_id
         self.study_id = study_id
         self.internal_product_log = None
@@ -14,17 +15,19 @@ class OrthancStudyLogger:
         # TODO: This is sudo code how to initiate the connection to the tracker api
         # TODO: this will allow us to store data in the database without log files
         # Get job config, use the initial hospital_job.json file
-        job_configurations_file = Path(job_config_file)
-        job_config_manager = JobConfigManager(configurations_file=job_configurations_file)
-        job_config = job_config_manager.get_job_config("hospital_job")
+        # job_configurations_file = Path(job_config_file)
+        # job_config_manager = JobConfigManager(
+        #     configurations_file=job_configurations_file
+        # )
+        # job_config = job_config_manager.get_job_config("hospital_job")
 
         # Create TrackerAPI object and job session
-        tracker = TrackerApi(tracker_api_key)
-        tracker.register_job_config(job_config)
+        # tracker = TrackerApi(tracker_api_key)
+        # tracker.register_job_config(job_config)
 
         # Signal the start of a new job
-        self.tracker_job = tracker.create_job(study_id, hospital_id, job_config.tag)
-
+        # self.tracker_job = tracker.create_job(study_id, hospital_id, job_config.tag)
+        job_config = None
         # TODO: the steps are used to check if step is complete for the orthanc receiver
         self.steps = {
             1: {"status": "In Progress"},
@@ -52,12 +55,12 @@ class OrthancStudyLogger:
                 kind="step",
                 tag=step.tag,
                 provider_job_id=self.hospital_id,
-                metadata=self.steps[idx],  # this will take the initial metadata from self.steps
+                metadata=self.steps[
+                    idx
+                ],  # this will take the initial metadata from self.steps
             )
             # Log the ID of each event
             self.event_ids.append(new_event.id)
-
-
 
     def update_step_status(
         self, step_tag: int, status: str, reason: Optional[str] = None
@@ -72,10 +75,8 @@ class OrthancStudyLogger:
         # TODO: Update step
         # TODO: this needs to be implemented to allow for updating step in the api and backend
         self.tracker_job.update_event(
-                tag=step_tag,
-                provider_job_id=self.hospital_id,
-                metadata=metadata
-            )
+            tag=step_tag, provider_job_id=self.hospital_id, metadata=metadata
+        )
 
     def step_is_ready(self, step_id: int) -> bool:
         """Checks if a given step is ready to begin."""

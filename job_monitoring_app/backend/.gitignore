@@ -1,0 +1,25 @@
+# Ignore Python Venv
+venv
+
+
+#Ignore pycache
+__pycache__
+.pytest_cache
+
+#ignores .idea dir
+.idea
+
+#Ignore Env variables
+.env
+*.env
+.env.*
+
+#ignores coverage
+.coverage
+coverage.xml
+
+pg_data
+
+scratch.sh
+
+event.json
