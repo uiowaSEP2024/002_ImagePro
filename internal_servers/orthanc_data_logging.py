@@ -43,13 +43,19 @@ class OrthancStudyLogger:
         #         provider_job_id=self.hospital_id,
         #         metadata=self.steps[i], # this will take the initial metadata from self.steps
         #     )
+
+        # These are the primary keys for each event logged in the back end
+        self.event_ids = []
+
         for idx, step in enumerate(job_config.step_configurations):
-            self.tracker_job.send_event(
+            new_event = self.tracker_job.send_event(
                 kind="step",
                 tag=step.tag,
                 provider_job_id=self.hospital_id,
                 metadata=self.steps[idx],  # this will take the initial metadata from self.steps
             )
+            # Log the ID of each event
+            self.event_ids.append(new_event.id)
 
 
 
