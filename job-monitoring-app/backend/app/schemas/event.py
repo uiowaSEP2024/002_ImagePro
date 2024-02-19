@@ -23,6 +23,9 @@ class EventCreate(EventBase):
     kind: EventKindEnum
     event_metadata: Optional[Dict[str, Union[str, int, float, bool]]]
 
+class EventUpdate(EventCreate):
+    id: int
+
 
 class EventPure(EventCreate):
     id: int
