@@ -16,6 +16,10 @@ class ApiUrls:
     @property
     def events_url(self):
         return self.url("/events")
+    
+    @property
+    def update_events_url(self):
+        return self.url("/update_events")
 
     @property
     def jobs_url(self):
@@ -101,6 +105,22 @@ class TrackerApi:
         )
 
         return TrackerEventApi(event_id=data["id"], api=self)
+    
+
+    def update_event(self, kind, tag, provider_job_id, metadata):
+        data = self.__to_json(
+            self.__post(
+                self.urls.update_events_url,
+                {
+                    "kind": kind,
+                    "tag": tag,
+                    "provider_job_id": provider_job_id,
+                    "event_metadata": metadata,
+                },
+            )
+        )
+
+        return TrackerEventApi(event_id=data["id"], api=self)
 
 
 class TrackerJobApi:
@@ -111,6 +131,14 @@ class TrackerJobApi:
     def send_event(self, kind, tag, metadata=None):
         metadata = metadata if metadata else {}
         return self.api.send_event(
+            kind=kind,
+            tag=tag,
+            provider_job_id=self.provider_job_id,
+            metadata=metadata,
+        )
+    def update_event(self, kind, tag, metadata=None):
+        metadata = metadata if metadata else {}
+        return self.api.update_event(
             kind=kind,
             tag=tag,
             provider_job_id=self.provider_job_id,
