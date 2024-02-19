@@ -1,0 +1,117 @@
+{
+  "title": "JobConfigs",
+  "type": "object",
+  "properties": {
+    "job_configs": {
+      "title": "Job Configs",
+      "uniqueItems": true,
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/JobConfig"
+      }
+    }
+  },
+  "required": [
+    "job_configs"
+  ],
+  "definitions": {
+    "MetadataKindEnum": {
+      "title": "MetadataKindEnum",
+      "description": "An enumeration.",
+      "enum": [
+        "text",
+        "number",
+        "link"
+      ],
+      "type": "string"
+    },
+    "MetadataConfig": {
+      "title": "MetadataConfig",
+      "type": "object",
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "kind": {
+          "default": "text",
+          "allOf": [
+            {
+              "$ref": "#/definitions/MetadataKindEnum"
+            }
+          ]
+        },
+        "units": {
+          "title": "Units",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "StepConfig": {
+      "title": "StepConfig",
+      "type": "object",
+      "properties": {
+        "tag": {
+          "title": "Tag",
+          "type": "string"
+        },
+        "points": {
+          "title": "Points",
+          "type": "integer"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "metadata_configurations": {
+          "title": "Metadata Configurations",
+          "default": [],
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MetadataConfig"
+          }
+        }
+      },
+      "required": [
+        "tag",
+        "points",
+        "name"
+      ]
+    },
+    "JobConfig": {
+      "title": "JobConfig",
+      "type": "object",
+      "properties": {
+        "tag": {
+          "title": "Tag",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "step_configurations": {
+          "title": "Step Configurations",
+          "uniqueItems": true,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StepConfig"
+          }
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "tag",
+        "name",
+        "step_configurations",
+        "version"
+      ]
+    }
+  }
+}

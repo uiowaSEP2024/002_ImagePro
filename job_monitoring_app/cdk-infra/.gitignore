@@ -1,0 +1,20 @@
+*.swp
+package-lock.json
+__pycache__
+.pytest_cache
+.venv
+*.egg-info
+
+# CDK asset staging directory
+.cdk.staging
+cdk.out
+
+
+# Ignore .idea files
+.idea
+
+# Testing Artifacts
+coverage.xml
+pytest-coverage.txt
+pytest.xml
+.coverage
