@@ -36,13 +36,21 @@ class OrthancStudyLogger:
         # TODO: code below creates the initial events with initial status
         # TODO: we need to change instead of using "kind" fot "step" or "complete" to use the status in event metadata
         # TODO: look in the mockscript to see how they use kind
-        for i in range(1, 5):
+        # for i in range(1, 5):
+        #     self.tracker_job.send_event(
+        #         kind="step",
+        #         tag=i,
+        #         provider_job_id=self.hospital_id,
+        #         metadata=self.steps[i], # this will take the initial metadata from self.steps
+        #     )
+        for idx, step in enumerate(job_config.step_configurations):
             self.tracker_job.send_event(
                 kind="step",
-                tag=i,
+                tag=step.tag,
                 provider_job_id=self.hospital_id,
-                metadata=self.steps[i], # this will take the initial metadata from self.steps
+                metadata=self.steps[idx],  # this will take the initial metadata from self.steps
             )
+
 
 
     def update_step_status(
