@@ -14,3 +14,11 @@ def create_event(
     provider=Depends(get_user_from_api_key),
 ):
     return services.create_event(db=db, event=event, provider=provider)
+
+@router.post("/events/{event_id}", response_model=schemas.Event)
+def update_event(
+    event_id: int,
+    event: schemas.EventUpdate,
+    db: Session = Depends(get_db),
+):
+    return services.update_event(db=db, event=event)
