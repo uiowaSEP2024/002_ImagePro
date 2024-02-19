@@ -17,10 +17,16 @@ ENV TZ=${TZ}
 # Ensure UTF-8 locale
 ENV LANG C.UTF-8
 
+# Add non-root user and group
+# Note: The -S option is for Alpine. Use `adduser` and `addgroup` without -S for Ubuntu.
+# https://stackoverflow.com/questions/27701930/how-to-add-users-to-docker-container
+RUN groupadd nonroot \
+    && useradd -m -s /bin/bash -g nonroot nonroot
+
 # Working directory for the application
 WORKDIR /usr/src/app
 
-# Conditional copy based on the ORTHANC_INSTANCE argument
+# Copy files as root user
 COPY Linux /usr/src/app/Linux
 COPY example_${ORTHANC_INSTANCE}.json.in /usr/src/app/example_${ORTHANC_INSTANCE}.json.in
 COPY example_internal_pacs.lua /usr/src/app/example_internal_pacs.lua
@@ -29,14 +35,22 @@ COPY run_${ORTHANC_INSTANCE}.sh /usr/src/app/run_orthanc.sh
 # Make the script executable
 RUN chmod +x /usr/src/app/run_orthanc.sh
 
-# Install dependencies and clean up in one layer to keep the image size down
-RUN apt-get update && \
-    apt-get install -yq \
-         build-essential \
-         tzdata \
-         && apt-get upgrade -yq \
-         && rm -rf /var/lib/apt/lists/*
+# Change ownership of the app directory to the nonroot user
+RUN chown -R nonroot:nonroot /usr/src/app
 
+
+
+# Install dependencies and clean up in one layer to keep the image size down
+# Combine installation commands and clean up to reduce layer size and simplify.
+# Install dependencies, avoiding recommended and suggested packages, then clean up
+RUN apt-get update && apt-get install --no-install-recommends --no-install-suggests -y \
+    tzdata \
+    build-essential \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Use the nonroot user
+USER nonroot
 # Arguments to customize ports; these can be overridden during build
 ARG DCMPORT
 ARG HTTPPORT
