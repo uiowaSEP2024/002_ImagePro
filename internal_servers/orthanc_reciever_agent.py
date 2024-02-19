@@ -2,7 +2,7 @@ from datetime import datetime
 from pathlib import Path
 import pyorthanc
 import time
-from orthanc_data_logging import OrthancStudyLogger
+from internal_servers.orthanc_data_logging import OrthancStudyLogger
 
 
 def check_study_stable(study: pyorthanc.Study) -> bool:
