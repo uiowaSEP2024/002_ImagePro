@@ -3,7 +3,7 @@
 echo "Select the Orthanc instance to configure:"
 echo "1) Internal PACS"
 echo "2) Hospital PACS"
-read -p "Enter your choice (1 or 2): " choice
+read -r -p "Enter your choice (1 or 2): " choice
 
 case $choice in
     1)
