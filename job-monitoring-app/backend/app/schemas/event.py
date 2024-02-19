@@ -23,8 +23,6 @@ class EventCreate(EventBase):
     kind: EventKindEnum
     event_metadata: Optional[Dict[str, Union[str, int, float, bool]]]
 
-class EventUpdate(EventCreate):
-    id: int
 
 
 class EventPure(EventCreate):
@@ -44,3 +42,7 @@ class Event(EventPure):
 class EventCreatePublic(EventCreate):
     provider_job_id: str
     tag: Optional[str]
+
+
+class EventUpdate(EventCreate):
+    id: int
