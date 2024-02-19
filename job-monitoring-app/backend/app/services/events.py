@@ -31,7 +31,7 @@ def create_event(db: Session, event: schemas.EventCreatePublic, provider):
 def get_event_by_id(db: Session, event_id: int):
     return db.query(models.Event).filter(models.Event.id == event_id).first()
 
-def update_event(db: Session, event: schemas.EventCreatePublic, provider):
+def update_event(db: Session, event: schemas.EventCreate, provider):
     db_update_event = get_event_by_id(db, event.id)
 
     db_update_event.kind = event.kind
