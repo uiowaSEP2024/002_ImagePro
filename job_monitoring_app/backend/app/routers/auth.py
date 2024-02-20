@@ -6,7 +6,7 @@ from fastapi import status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
-from app.dependencies import get_db
+from app.dependencies import get_db, get_current_user_from_token
 from app.schemas.tokens import Token
 from app.services.users import authenticate_user
 from config import config
@@ -60,6 +60,6 @@ def logout(
     return "Logout successful!"
 
 
-# @router.get("/login", response_model=dict)
-# def login(user=Depends(get_current_user_from_token)):
-#     return {"user": user, "message": "already logged in!"}
+@router.get("/login", response_model=dict)
+def login(user=Depends(get_current_user_from_token)):  # noqa: F811
+    return {"user": user, "message": "already logged in!"}
