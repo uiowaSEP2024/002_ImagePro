@@ -117,10 +117,13 @@ def make_list_of_studies_to_process(
             # The only way to not have properties is if the study was not received correctly
             #
             if has_properties and hospital_id is not None:
-                output_path = get_default_output_path()
-                log_file_path = output_path / f"{hospital_id}_{study_id}_log.json"
+                # output_path = get_default_output_path()
+                # log_file_path = output_path / f"{hospital_id}_{study_id}_log.json"
                 study_processed_dict[study_id] = OrthancStudyLogger(
-                    hospital_id, study_id, log_file_path
+                    hospital_id=1,
+                    study_id=1,
+                    tracker_api_key="ci4luW1oBrPh2uyeC_av6j5dO1w",
+                    job_config_file="hospital_job.json",
                 )
             else:
                 print(f"Study {study_id} does not have properties. Skipping..")
