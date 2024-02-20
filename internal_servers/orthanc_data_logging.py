@@ -5,6 +5,8 @@ from typing import Union
 from job_monitoring_app.trackerapi.trackerapi import TrackerApi, JobConfigManager
 
 
+
+
 class OrthancStudyLogger:
     def __init__(
         self, hospital_id, study_id, tracker_api_key, job_config_file: Union[Path, str]
@@ -28,7 +30,7 @@ class OrthancStudyLogger:
 
         # Signal the start of a new job
         self.tracker_job = tracker.create_job(study_id, hospital_id, job_config.tag)
-        job_config = None
+        #job_config = None
         # TODO: the steps are used to check if step is complete for the orthanc receiver
         self.steps = {
             1: {"status": "In Progress"},
@@ -118,4 +120,4 @@ class OrthancStudyLogger:
 
 
 # Example of using the MedicalImageLogger
-logger = OrthancStudyLogger(hospital_id="H123", study_id="S456")
+logger = OrthancStudyLogger(hospital_id=1, study_id=2, tracker_api_key='tusU4BIBFDMaF-rouzwFhh0I0yY', job_config_file="hospital_job_configuration.json")
