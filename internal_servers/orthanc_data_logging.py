@@ -75,9 +75,7 @@ class OrthancStudyLogger:
 
         # TODO: Update step
         # TODO: this needs to be implemented to allow for updating step in the api and backend
-        self.tracker_job.update_event(
-            kind=status , event_id=step_id, metadata=metadata
-        )
+        self.tracker_job.update_event(kind=status, event_id=step_id, metadata=metadata)
 
     def step_is_ready(self, step_id: int) -> bool:
         """Checks if a given step is ready to begin."""
@@ -118,11 +116,16 @@ class OrthancStudyLogger:
 
 
 # Example of using the MedicalImageLogger
-logger = OrthancStudyLogger(
-    hospital_id=1,
-    study_id=2,
-    tracker_api_key="ci4luW1oBrPh2uyeC_av6j5dO1w",
-    job_config_file="hospital_job_configuration.json",
-)
+if __name__ == "__main__":
+    logger = OrthancStudyLogger(
+        hospital_id=1,
+        study_id=2,
+        tracker_api_key="34faWJnoajfaxrpIDqwasxAW_KU",
+        job_config_file="hospital_job_configuration.json",
+    )
+    logger.update_step_status(1, "complete")
+    logger.update_step_status(2, "complete")
+    logger.update_step_status(3, "complete")
+    logger.update_step_status(4, "complete")
 # Note: the tracker_api_key needs to be replaced by creating a provider account on the app
 # and generating an api key for your account and pasting that in the OrthancStudyLogger above
