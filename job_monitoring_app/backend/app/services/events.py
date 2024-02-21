@@ -1,4 +1,4 @@
-from app import models, schemas  # TODO: Fix imports
+from ..app import models, schemas  # TODO: Fix imports
 from sqlalchemy.orm import Session
 
 from .job_configuration import get_step_configuration_by_composite_key
@@ -8,7 +8,7 @@ from .jobs import get_job_by_provider_job_id
 
 
 def create_event(
-    db: Session, event: schemas.EventCreatePublic, provider: models.Provider
+    db: Session, event: schemas.EventCreatePublic, provider: models.User
 ) -> models.Event:
     """
     Create an event for a job
@@ -17,7 +17,7 @@ def create_event(
     Args:
         db (Session): SQLAlchemy session
         event (schemas.EventCreatePublic): Event to create
-        provider: Provider
+        provider: Provider (??? Model.User ???)
     Returns:
         models.Event: Created event
     """
