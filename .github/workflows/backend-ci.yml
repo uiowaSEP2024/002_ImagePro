@@ -55,6 +55,7 @@ jobs:
           echo "pwd: $(pwd)"
           echo "export PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
           export PYTHONPATH=$PYTHONPATH:$(pwd)
+          export PYTHONPATH=$PYTHONPATH:$(pwd)/app
           echo "After export:"
           echo "PYTHONPATH: $PYTHONPATH"
       - name: Install python dependencies
