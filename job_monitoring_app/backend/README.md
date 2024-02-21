@@ -12,7 +12,7 @@ Here are some steps to get started running the application locally:
    ```
 3. Next, activate the virtual environment. **NB: You will have to do this step every time you start/open a fresh terminal**
    ```bash
-   source venv/bin/activate
+   source .venv/bin/activate
    ```
    > If you are working in PyCharm, steps 2 and 3 should be performed automatically for you.
    > Note the above may be .venv or venv depending on PyCharm
