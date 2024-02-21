@@ -55,13 +55,13 @@ class OrthancStudyLogger:
             new_event = self.tracker_job.send_event(
                 kind="step",
                 tag=step.tag,
-                provider_job_id=self.hospital_id,
+                #provider_job_id=self.hospital_id,
                 metadata=self.steps[
-                    idx
+                    idx + 1
                 ],  # this will take the initial metadata from self.steps
             )
             # Log the ID of each event
-            self.event_ids[idx] = new_event.id
+            self.event_ids[idx + 1] = new_event.event_id
 
     def update_step_status(
         self, step_id: int, status: str, reason: Optional[str] = None
@@ -75,7 +75,8 @@ class OrthancStudyLogger:
 
         # TODO: Update step
         # TODO: this needs to be implemented to allow for updating step in the api and backend
-        self.tracker_job.update_event(kind=status, event_id=step_id, metadata=metadata)
+            # event_id becomes the primary key of the event corresponding to this event for this job, which is saved in self.event_ids
+        self.tracker_job.update_event(kind=status, event_id=self.event_ids[step_id], metadata=metadata)
 
     def step_is_ready(self, step_id: int) -> bool:
         """Checks if a given step is ready to begin."""
@@ -119,13 +120,13 @@ class OrthancStudyLogger:
 if __name__ == "__main__":
     logger = OrthancStudyLogger(
         hospital_id=1,
-        study_id=2,
-        tracker_api_key="34faWJnoajfaxrpIDqwasxAW_KU",
+        study_id=3,
+        tracker_api_key="vdqPPIMw8H2eW-ykGm4tR93VOWg",
         job_config_file="hospital_job_configuration.json",
     )
-    logger.update_step_status(1, "complete")
-    logger.update_step_status(2, "complete")
-    logger.update_step_status(3, "complete")
-    logger.update_step_status(4, "complete")
+    # logger.update_step_status(1, "complete")
+    # logger.update_step_status(2, "complete")
+    # logger.update_step_status(3, "complete")
+    # logger.update_step_status(4, "complete")
 # Note: the tracker_api_key needs to be replaced by creating a provider account on the app
 # and generating an api key for your account and pasting that in the OrthancStudyLogger above
