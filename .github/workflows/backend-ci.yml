@@ -50,6 +50,7 @@ jobs:
       - name: Export Python Path
         run: |
           echo "export PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
+          export PYTHONPATH=$PYTHONPATH:$(pwd)
       - name: Install python dependencies
         run: |
           pip install -q -r backend/requirements.txt
