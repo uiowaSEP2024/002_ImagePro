@@ -17,6 +17,10 @@ jobs:
         version: ["3.10"]
     runs-on: ${{matrix.os}}
         # Service containers to run with `runner-job`
+    defaults:
+      run:
+        working-directory: job_monitoring_app/backend
+        shell: bash
     services:
       # Label used to access the service container
       postgres:
@@ -34,6 +38,7 @@ jobs:
         ports:
           # Maps tcp port 5432 on service container to the host
           - 5432:5432
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -50,28 +55,24 @@ jobs:
           echo "pwd: $(pwd)"
           echo "export PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
           export PYTHONPATH=$PYTHONPATH:$(pwd)
-          export PYTHONPATH=$PYTHONPATH:$(pwd)/job_monitoring_app/
-          export PYTHONPATH=$PYTHONPATH:$(pwd)/job_monitoring_app/backend
-          export PYTHONPATH=$PYTHONPATH:$(pwd)/job_monitoring_app/backend/app
-
           echo "After export:"
           echo "PYTHONPATH: $PYTHONPATH"
       - name: Install python dependencies
         run: |
-          pip install -q -r job_monitoring_app/backend/requirements.txt
+          pip install -q -r requirements.txt
 
       - name: Database setup and build coverage file
         run: |
-          touch job_monitoring_app/backend/.env.test
+          touch .env.test
           echo POSTGRES_USER="$POSTGRES_USER" >> .env.test
           echo POSTGRES_SERVER="$POSTGRES_SERVER" >> .env.test
           echo POSTGRES_PORT="$POSTGRES_PORT" >> .env.test
           echo POSTGRES_DB="$POSTGRES_DB" >> .env.test
           echo POSTGRES_PASSWORD="$POSTGRES_PASSWORD" >> .env.test
           echo APP_ENV="$APP_ENV">> .env.test
-          python job_monitoring_app/backend/tasks.py db:test:reset
-          python job_monitoring_app/backend/tasks.py db:test:upgrade
-          job_monitoring_app/backend/alembic upgrade head
+          python tasks.py db:test:reset
+          python tasks.py db:test:upgrade
+          alembic upgrade head
 
 
       - name: Run Tests with Coverage
