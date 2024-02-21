@@ -82,14 +82,13 @@ def create_job_configuration(
         )
 
         # Create nested step_configurations for the job
+        step_configuration: schemas.StepConfigurationCreate
         for step_configuration in job_configuration.step_configurations:
             db_step_configuration = models.StepConfiguration(
                 name=step_configuration.name,
                 tag=step_configuration.tag,
                 points=step_configuration.points,
             )
-
-            step_configuration: schemas.StepConfigurationCreate = step_configuration
 
             if step_configuration.metadata_configurations is not None:
                 for (
