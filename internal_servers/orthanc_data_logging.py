@@ -55,7 +55,7 @@ class OrthancStudyLogger:
             new_event = self.tracker_job.send_event(
                 kind="step",
                 tag=step.tag,
-                #provider_job_id=self.hospital_id,
+                # provider_job_id=self.hospital_id,
                 metadata=self.steps[
                     idx + 1
                 ],  # this will take the initial metadata from self.steps
@@ -75,8 +75,10 @@ class OrthancStudyLogger:
 
         # TODO: Update step
         # TODO: this needs to be implemented to allow for updating step in the api and backend
-            # event_id becomes the primary key of the event corresponding to this event for this job, which is saved in self.event_ids
-        self.tracker_job.update_event(kind=status, event_id=self.event_ids[step_id], metadata=metadata)
+        # event_id becomes the primary key of the event corresponding to this event for this job, which is saved in self.event_ids
+        self.tracker_job.update_event(
+            kind=status, event_id=self.event_ids[step_id], metadata=metadata
+        )
 
     def step_is_ready(self, step_id: int) -> bool:
         """Checks if a given step is ready to begin."""
@@ -120,8 +122,8 @@ class OrthancStudyLogger:
 if __name__ == "__main__":
     logger = OrthancStudyLogger(
         hospital_id=1,
-        study_id=3,
-        tracker_api_key="vdqPPIMw8H2eW-ykGm4tR93VOWg",
+        study_id=1000,
+        tracker_api_key="34faWJnoajfaxrpIDqwasxAW_KU",
         job_config_file="hospital_job_configuration.json",
     )
     # logger.update_step_status(1, "complete")
