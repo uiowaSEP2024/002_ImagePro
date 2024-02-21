@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from trackerapi import JobConfig, StepConfig, JobConfigs
+from ..trackerapi import JobConfig, StepConfig, JobConfigs
 
 
 def test_no_duplicate_steps():

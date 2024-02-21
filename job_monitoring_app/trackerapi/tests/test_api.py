@@ -1,6 +1,6 @@
 import pytest
 
-from trackerapi import TrackerApi, JobConfig
+from ..trackerapi import TrackerApi, JobConfig
 import responses
 import requests_mock
 

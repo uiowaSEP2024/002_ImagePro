@@ -3,8 +3,8 @@ from pathlib import Path
 
 import pytest
 
-from trackerapi.schemas import JobConfig, StepConfig
-from trackerapi.helpers import (
+from ..trackerapi.schemas import JobConfig, StepConfig
+from ..trackerapi.helpers import (
     DuplicateJobConfigException,
     MissingJobConfigException,
     JobConfigManager,
