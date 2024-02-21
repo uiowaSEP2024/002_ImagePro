@@ -1,12 +1,12 @@
 import pytest
-from app import schemas, services, models
-from app.models.base import truncate_all_tables
+from .app import schemas, services, models
+from .app.models.base import truncate_all_tables
 from fastapi.testclient import TestClient
 
-from app.schemas.user import UserRoleEnum
-from app.config import config
+from .app.schemas.user import UserRoleEnum
+from .app.config import config
 
-from app.main import app
+from .app.main import app
 
 # NB: this should happen before any app imports to ensure the environment is set
 
