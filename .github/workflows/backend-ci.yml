@@ -71,7 +71,7 @@ jobs:
           echo APP_ENV="$APP_ENV">> .env.test
           python job_monitoring_app/backend/tasks.py db:test:reset
           python job_monitoring_app/backend/tasks.py db:test:upgrade
-          alembic upgrade head
+          job_monitoring_app/backend/alembic upgrade head
 
 
       - name: Run Tests with Coverage
