@@ -61,9 +61,5 @@ def logout(
 
 
 @router.get("/login", response_model=dict)
-<<<<<<< HEAD
 def login(user=Depends(get_current_user_from_token)):  # noqa: F811
-=======
-def login(user=Depends(get_current_user_from_token)):
->>>>>>> 5fd766ca (BUG: Fixed a schema file and some lines that got commented out)
     return {"user": user, "message": "already logged in!"}
