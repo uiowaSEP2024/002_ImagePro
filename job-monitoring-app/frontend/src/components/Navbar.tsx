@@ -73,7 +73,7 @@ const Navbar = () => {
       to: "/jobs",
       name: "Jobs",
       id: "jobs",
-      show: currentUser?.role === "provider"
+      show: !!currentUser
     },
     {
       to: "/analytics",
