@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 
-from ...app import services
-from ...app.dependencies import get_db, get_current_provider
+from .. import services
+from ..dependencies import get_db, get_current_provider
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from fastapi.responses import StreamingResponse

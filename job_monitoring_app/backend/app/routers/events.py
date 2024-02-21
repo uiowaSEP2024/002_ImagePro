@@ -1,5 +1,5 @@
-from ...app import schemas, services
-from ...app.dependencies import get_db, get_user_from_api_key
+from .. import schemas, services
+from ..dependencies import get_db, get_user_from_api_key
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 

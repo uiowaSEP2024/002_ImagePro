@@ -4,7 +4,7 @@ from ..dependencies import (
     API_KEY_HEADER_NAME,
     get_current_provider,
 )
-from ...app import schemas, services
+from .. import schemas, services
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 

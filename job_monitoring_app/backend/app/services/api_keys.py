@@ -2,8 +2,8 @@ from fastapi import HTTPException
 from sqlalchemy import asc
 from starlette import status
 
-from ...app import models, schemas
-from ...app.internal.crypto import generate_apikey
+from .. import models, schemas
+from ..internal.crypto import generate_apikey
 from passlib.context import CryptContext
 from pydantic import validate_arguments
 from sqlalchemy.orm import Session

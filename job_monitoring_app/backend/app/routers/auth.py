@@ -6,10 +6,10 @@ from fastapi import status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
-from ...app.dependencies import get_db, get_current_user_from_token
-from ...app.schemas.tokens import Token
-from ...app.services.users import authenticate_user
-from ...config import config
+from ..dependencies import get_db, get_current_user_from_token
+from ..schemas.tokens import Token
+from ..services.users import authenticate_user
+from config import config
 from ..internal.security import create_access_token
 
 router = APIRouter()

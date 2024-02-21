@@ -3,9 +3,8 @@ from typing import Union, List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from ...app import schemas, services
-from ...app.dependencies import get_db
-from ...app.dependencies import get_user_from_api_key, get_current_provider
+from .. import schemas, services
+from ..dependencies import get_db, get_user_from_api_key, get_current_provider
 
 router = APIRouter()
 router.tags = ["job_configurations"]
