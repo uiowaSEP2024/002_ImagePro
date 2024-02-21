@@ -6,7 +6,7 @@ from typing import List, Type, Union
 
 from pydantic import BaseModel
 
-from trackerapi.schemas import JobConfigs
+from .schemas import JobConfigs
 
 
 def generate_model_json_schema(

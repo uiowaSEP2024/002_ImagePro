@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 from typing import Dict, List, Union
 
-from trackerapi.schemas import JobConfig, JobConfigs
+from .schemas import JobConfig, JobConfigs
 
 
 def load_job_configurations_from_json(filepath: str):
