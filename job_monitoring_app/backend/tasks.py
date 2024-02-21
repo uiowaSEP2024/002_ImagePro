@@ -3,7 +3,7 @@ import os
 import sys
 
 import psycopg2
-from config import config
+from app.config import config
 from seed import seed_db
 
 

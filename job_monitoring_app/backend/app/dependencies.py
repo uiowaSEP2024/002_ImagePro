@@ -16,7 +16,7 @@ from ..app import services
 from ..app.models.user import User
 from ..app.schemas.user import UserRoleEnum
 from ..app.services.users import get_user_by_email
-from ..config import config
+from job_monitoring_app.backend.app.config import config
 
 API_KEY_HEADER_NAME = "x-api_key"
 

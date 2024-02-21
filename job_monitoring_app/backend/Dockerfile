@@ -25,7 +25,7 @@ RUN yum clean all && rm -rf /var/cache/yum
 
 
 # Copy project code
-COPY config ${LAMBDA_TASK_ROOT}/config
+COPY app/config ${LAMBDA_TASK_ROOT}/config
 COPY app ${LAMBDA_TASK_ROOT}/app
 
 

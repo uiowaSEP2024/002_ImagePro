@@ -9,7 +9,7 @@ from ..app.routers import (
     job_configurations_router,
     reporting_router,
 )
-from ..config import config
+from job_monitoring_app.backend.app.config import config
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from mangum import Mangum

@@ -1,6 +1,6 @@
 from ...app import models
 from ...app.internal.crypto import get_password_hash
-from ...config import config
+from job_monitoring_app.backend.app.config import config
 
 
 def test_login(app_client):

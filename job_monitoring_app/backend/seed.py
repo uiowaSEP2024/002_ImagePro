@@ -1,7 +1,7 @@
 from app import models
 from app.internal.crypto import get_password_hash
 from app.schemas.user import UserRoleEnum
-from config import config
+from app.config import config
 from sqlalchemy import event, inspect
 
 

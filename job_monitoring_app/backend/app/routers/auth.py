@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 from ..dependencies import get_db, get_current_user_from_token
 from ..schemas.tokens import Token
 from ..services.users import authenticate_user
-from config import config
+from ..config import config
 from ..internal.security import create_access_token
 
 router = APIRouter()
