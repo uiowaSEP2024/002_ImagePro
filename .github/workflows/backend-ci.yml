@@ -49,8 +49,13 @@ jobs:
           cache: pip
       - name: Export Python Path
         run: |
+          echo "Before export:"
+          echo "PYTHONPATH: $PYTHONPATH"
+          echo "pwd: $(pwd)"
           echo "export PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
           export PYTHONPATH=$PYTHONPATH:$(pwd)
+          echo "After export:"
+          echo "PYTHONPATH: $PYTHONPATH"
       - name: Install python dependencies
         run: |
           pip install -q -r backend/requirements.txt
