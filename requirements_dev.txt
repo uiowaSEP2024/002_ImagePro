@@ -1,2 +1,2 @@
 -r requirements_medical_tool.txt
--r job-monitoring-app/backend/requirements.txt
+-r job_monitoring_app/backend/requirements.txt
