@@ -2,7 +2,7 @@ import psycopg2.errors
 import pytest
 import sqlalchemy
 
-from app import models
+from ...app import models
 
 
 def test_delete_job_configuration_after_creating_job(

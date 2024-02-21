@@ -2,7 +2,7 @@ import psycopg2.errors
 import pytest
 import sqlalchemy
 
-from app import models
+from ...app import models
 
 
 def test_create_event(db, random_test_user, random_provider_user):

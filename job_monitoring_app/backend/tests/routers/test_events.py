@@ -1,5 +1,5 @@
-from app import services
-from app.dependencies import API_KEY_HEADER_NAME
+from ...app import services
+from ...app.dependencies import API_KEY_HEADER_NAME
 
 
 def test_create_event(app_client, job_for_random_user_with_api_key, db):

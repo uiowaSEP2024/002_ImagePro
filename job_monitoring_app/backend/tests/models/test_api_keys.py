@@ -1,10 +1,10 @@
-from app.internal.crypto import API_KEY_LENGTH
+from ...app.internal.crypto import API_KEY_LENGTH
 
-from app.services.api_keys import (
+from ...app.services.api_keys import (
     generate_apikey,
 )
 
-from app import models, services, schemas
+from ...app import models, services, schemas
 
 
 def test_generate_api_key():

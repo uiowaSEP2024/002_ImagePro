@@ -1,6 +1,6 @@
 from datetime import datetime
-from app import services, schemas
-from app.dependencies import (
+from ...app import services, schemas
+from ...app.dependencies import (
     API_KEY_HEADER_NAME,
     INVALID_API_KEY_CREDENTIALS_MISSING,
     INVALID_API_KEY_CREDENTIALS_UNAUTHORIZED,

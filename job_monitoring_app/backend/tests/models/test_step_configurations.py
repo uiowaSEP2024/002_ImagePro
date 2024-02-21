@@ -2,7 +2,7 @@ import psycopg2.errors
 import pytest
 import sqlalchemy
 
-from app import models
+from ...app import models
 
 
 def test_create_step_configuration(db, random_provider_user):

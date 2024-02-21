@@ -1,6 +1,6 @@
-from app import models
-from app.internal import get_password_hash
-from config import config
+from ...app import models
+from ...app.internal.crypto import get_password_hash
+from ...config import config
 
 
 def test_login(app_client):

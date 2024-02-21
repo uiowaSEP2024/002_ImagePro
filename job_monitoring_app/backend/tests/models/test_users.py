@@ -1,9 +1,9 @@
 import pytest
 import sqlalchemy
 
-from config import config
-from app.schemas import UserCreate
-from app.services.users import create_user
+from ...config import config
+from ...app.schemas.user import UserCreate
+from ...app.services.users import create_user
 
 
 def test_users():

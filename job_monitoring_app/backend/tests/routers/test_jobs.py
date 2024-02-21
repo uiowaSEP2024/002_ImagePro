@@ -1,5 +1,5 @@
-from app import services, schemas
-from app.dependencies import API_KEY_HEADER_NAME
+from ...app import services, schemas
+from ...app.dependencies import API_KEY_HEADER_NAME
 
 
 def test_create_job(

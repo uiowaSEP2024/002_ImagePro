@@ -1,6 +1,6 @@
 from typing import Optional
 from pydantic import BaseSettings
-from root import root_path
+from ..root import root_path
 
 
 class Settings(BaseSettings):

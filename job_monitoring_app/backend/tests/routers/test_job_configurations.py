@@ -1,5 +1,5 @@
-from app import schemas, services
-from app.dependencies import API_KEY_HEADER_NAME
+from ...app import schemas, services
+from ...app.dependencies import API_KEY_HEADER_NAME
 from starlette import status
 
 

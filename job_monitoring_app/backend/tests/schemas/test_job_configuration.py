@@ -1,11 +1,11 @@
 import pytest
 from pydantic import ValidationError
 
-from app import schemas
+from ...app.schemas.job_configuration import JobConfigurationCreate
 
 
 def test_valid_job_configuration():
-    result = schemas.JobConfigurationCreate.parse_obj(
+    result = JobConfigurationCreate.parse_obj(
         {
             "name": "Test Job Configuration",
             "tag": "test_job_configuration",
@@ -19,7 +19,7 @@ def test_valid_job_configuration():
 
 def test_job_configuration_with_invalid_version():
     with pytest.raises(ValidationError) as exc:
-        schemas.JobConfigurationCreate.parse_obj(
+        JobConfigurationCreate.parse_obj(
             {
                 "name": "Test Job Configuration",
                 "tag": "test_job_configuration",
@@ -37,7 +37,7 @@ def test_job_configuration_with_invalid_version():
 
 def test_job_configuration_with_missing_tag():
     with pytest.raises(ValidationError) as exc:
-        schemas.JobConfigurationCreate.parse_obj(
+        JobConfigurationCreate.parse_obj(
             {
                 "name": "Test Job Configuration",
                 "version": "1.0.0",
@@ -54,7 +54,7 @@ def test_job_configuration_with_missing_tag():
 
 def test_job_configuration_with_missing_name():
     with pytest.raises(ValidationError) as exc:
-        schemas.JobConfigurationCreate.parse_obj(
+        JobConfigurationCreate.parse_obj(
             {
                 "tag": "test_job_configuration",
                 "version": "1.0.0",
