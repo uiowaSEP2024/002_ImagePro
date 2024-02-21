@@ -1,5 +1,5 @@
-from app.dependencies import get_db, get_current_user_from_token
-from app import schemas, services
+from ...app.dependencies import get_db, get_current_user_from_token
+from ...app import schemas, services
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 

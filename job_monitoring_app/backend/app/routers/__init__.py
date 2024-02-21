@@ -5,3 +5,5 @@ from .users import router as users_router
 from .events import router as events_router
 from .job_configurations import router as job_configurations_router
 from .reporting import router as reporting_router
+
+# TODO RENAME THE ROUTERS IN THE FILES SO THAT THEY ARE NOT NAMED THE SAME AS THE MODULES

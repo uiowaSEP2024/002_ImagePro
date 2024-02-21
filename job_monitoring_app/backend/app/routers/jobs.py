@@ -1,7 +1,11 @@
 from typing import List
 
-from app import schemas, services
-from app.dependencies import get_db, get_user_from_api_key, get_current_user_from_token
+from ...app import schemas, services
+from ...app.dependencies import (
+    get_db,
+    get_user_from_api_key,
+    get_current_user_from_token,
+)
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 

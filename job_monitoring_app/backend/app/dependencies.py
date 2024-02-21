@@ -12,11 +12,11 @@ from sqlalchemy.orm import Session
 from starlette.status import HTTP_401_UNAUTHORIZED
 from starlette.status import HTTP_403_FORBIDDEN
 
-from app import services
-from app.models import User
-from app.schemas.user import UserRoleEnum
-from app.services.users import get_user_by_email
-from config import config
+from ..app import services
+from ..app.models.user import User
+from ..app.schemas.user import UserRoleEnum
+from ..app.services.users import get_user_by_email
+from ..config import config
 
 API_KEY_HEADER_NAME = "x-api_key"
 

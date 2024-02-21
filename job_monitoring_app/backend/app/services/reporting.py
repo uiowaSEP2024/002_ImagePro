@@ -4,7 +4,7 @@ from datetime import datetime
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
-from app import models, schemas
+from ...app import models, schemas
 
 
 def get_reporting_events(

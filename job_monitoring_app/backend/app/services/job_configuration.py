@@ -1,8 +1,8 @@
 import json
 from typing import Union
 
-from app import models, schemas
-from app.schemas.pydantic_version import PydanticVersion
+from ...app import models, schemas
+from ...app.schemas.pydantic_version import PydanticVersion
 from deepdiff import DeepDiff
 from fastapi import HTTPException
 from sqlalchemy import desc

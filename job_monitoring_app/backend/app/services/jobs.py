@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 from starlette import status
 
-from app import models, schemas
+from ...app import models, schemas
 from sqlalchemy.orm import Session
 from .users import get_user
 

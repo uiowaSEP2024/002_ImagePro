@@ -3,7 +3,7 @@ from typing import List
 
 from pydantic import BaseModel
 
-from . import Event
+from .event import Event
 from .job_configuration import JobConfiguration
 from .user import User
 
