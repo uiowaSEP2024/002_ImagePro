@@ -47,6 +47,9 @@ jobs:
         with:
           python-version: ${{ matrix.version }}
           cache: pip
+      - name: Export Python Path
+        run: |
+          echo "export PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
       - name: Install python dependencies
         run: |
           pip install -q -r requirements.txt

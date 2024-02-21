@@ -1,6 +1,6 @@
 from typing import Optional
 from pydantic import BaseSettings
-from job_monitoring_app.backend.root import root_path
+from ..root import root_path
 
 
 class Settings(BaseSettings):
