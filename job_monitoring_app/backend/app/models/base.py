@@ -1,6 +1,6 @@
 from sqlalchemy import text, Column, DateTime
 from sqlalchemy.ext.declarative import declarative_base
-from backend.config import config
+from ... import config
 
 from sqlalchemy.sql import func
 
