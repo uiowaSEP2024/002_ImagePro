@@ -56,15 +56,15 @@ jobs:
 
       - name: Database setup and build coverage file
         run: |
-          touch .env.test
+          touch backend/.env.test
           echo POSTGRES_USER="$POSTGRES_USER" >> .env.test
           echo POSTGRES_SERVER="$POSTGRES_SERVER" >> .env.test
           echo POSTGRES_PORT="$POSTGRES_PORT" >> .env.test
           echo POSTGRES_DB="$POSTGRES_DB" >> .env.test
           echo POSTGRES_PASSWORD="$POSTGRES_PASSWORD" >> .env.test
           echo APP_ENV="$APP_ENV">> .env.test
-          python tasks.py db:test:reset
-          python tasks.py db:test:upgrade
+          python backend/tasks.py db:test:reset
+          python backend/tasks.py db:test:upgrade
           alembic upgrade head
 
 
