@@ -1,6 +1,6 @@
 import requests
 
-from trackerapi.schemas import JobConfig
+from .schemas import JobConfig
 
 
 class ApiUrls:
