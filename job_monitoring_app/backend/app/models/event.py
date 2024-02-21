@@ -14,7 +14,7 @@ class Event(Base, DateMixin):
     -----------
     id : int
         The primary key of the event
-    job_id : int
+    job : int
         The foreign key of the job
     event_name : str
         The name of the event
@@ -31,11 +31,12 @@ class Event(Base, DateMixin):
     id = Column(Integer, primary_key=True, index=True)
 
     # The job id the events correspond to
+    job_id: Column = Column(Integer, ForeignKey("jobs.id"), index=True, nullable=False)
     job = relationship(
         "Job",
         back_populates="events",
         foreign_keys=[
-            Column(Integer, ForeignKey("jobs.id"), index=True, nullable=False)
+            job_id,
         ],
     )
 
@@ -47,18 +48,16 @@ class Event(Base, DateMixin):
         Enum("step", "error", "info", "complete", name="event_kind"),
         nullable=False,
     )
-
+    step_configuration_id: Column = Column(
+        Integer,
+        ForeignKey("step_configurations.id", ondelete="SET NULL"),
+        index=True,
+        nullable=True,
+    )
     step_configuration = relationship(
         "StepConfiguration",
         back_populates="events",
-        foreign_keys=[
-            Column(
-                Integer,
-                ForeignKey("step_configurations.id", ondelete="SET NULL"),
-                index=True,
-                nullable=True,
-            )
-        ],
+        foreign_keys=[step_configuration_id],
     )
 
     # The event metadata
