@@ -6,6 +6,32 @@ from .base import Base, DateMixin
 
 
 class StepConfiguration(Base, DateMixin):
+    """
+    StepConfiguration model
+
+    A StepConfiguration represents a specific configuration for a step.
+
+    Attributes:
+    -----------
+    id : int
+        Auto-generated internal job configuration id
+    tag : str
+        Tag used to identify a step
+    name : str
+        The step name as specified by the provider
+    points : int
+        Number of points for the step
+        ?? What does this mean exactly??
+        ?? What are points used for??
+        ?? Why do they matter ??
+        ?? Seems to be unneeded complexity ??
+    job_configuration_id : int
+        ForeignKey to JobConfiguration id
+    job_configuration : relationship
+        Relationship to the JobConfiguration model.
+        Represents the job configuration associated with this step configuration
+    """
+
     __tablename__ = "step_configurations"
     __table_args__ = (UniqueConstraint("job_configuration_id", "tag"),)
 
@@ -21,7 +47,7 @@ class StepConfiguration(Base, DateMixin):
     # Number of points for the step
     points = Column(Integer, index=True, nullable=False)
 
-    job_configuration_id = Column(
+    job_configuration_id: Column = Column(
         Integer, ForeignKey("job_configurations.id"), index=True, nullable=False
     )
 
