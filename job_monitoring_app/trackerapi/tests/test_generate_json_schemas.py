@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-from trackerapi.generate_json_schemas import (
+from ..trackerapi.generate_json_schemas import (
     generate_job_configs_json_schema,
     parse_args,
 )
