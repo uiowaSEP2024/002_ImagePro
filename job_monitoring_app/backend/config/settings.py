@@ -1,6 +1,14 @@
 from typing import Optional
 from pydantic import BaseSettings
-from ..root import root_path
+from pathlib import Path
+
+
+file_path = Path(__file__).resolve()
+backend_root = file_path.parent
+
+
+def root_path(path: str = "") -> Path:
+    return backend_root / path
 
 
 class Settings(BaseSettings):
