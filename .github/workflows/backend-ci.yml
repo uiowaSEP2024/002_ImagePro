@@ -18,7 +18,7 @@ jobs:
     runs-on: ${{matrix.os}}
     defaults:
       run:
-        working-directory: job_monitoring_app/backend
+        working-directory: job_monitoring_app
         shell: bash
         # Service containers to run with `runner-job`
     services:
@@ -52,7 +52,7 @@ jobs:
           echo "export PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
       - name: Install python dependencies
         run: |
-          pip install -q -r requirements.txt
+          pip install -q -r backend/requirements.txt
 
       - name: Database setup and build coverage file
         run: |
