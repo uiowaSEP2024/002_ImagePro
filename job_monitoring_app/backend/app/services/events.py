@@ -4,11 +4,11 @@ from sqlalchemy.orm import Session
 from .job_configuration import get_step_configuration_by_composite_key
 from .jobs import get_job_by_provider_job_id
 
-# TODO: @Zach - Can you help me understand the differn
+# TODO: @Zach - Can you help me understand the differnce is between Provider and User?
 
 
 def create_event(
-    db: Session, event: schemas.EventCreatePublic, provider: models.Provider
+    db: Session, event: schemas.EventCreatePublic, provider: models.User
 ) -> models.Event:
     """
     Create an event for a job
