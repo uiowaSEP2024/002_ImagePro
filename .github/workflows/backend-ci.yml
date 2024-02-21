@@ -50,14 +50,15 @@ jobs:
           cache: pip
       - name: Export Python Path
         run: |
-          echo "Before export:"
-          echo "PYTHONPATH: $PYTHONPATH"
-          echo "pwd: $(pwd)"
-          echo "export PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
-          export PYTHONPATH=$PYTHONPATH:$(pwd)
-          export PYTHONPATH=$PYTHONPATH:$(pwd)/app
-          echo "After export:"
-          echo "PYTHONPATH: $PYTHONPATH"
+          echo "Before setting PYTHONPATH:"
+          echo "Current PYTHONPATH: $PYTHONPATH"
+          echo "Current directory: $(pwd)"
+          # Setting PYTHONPATH in one command to include both the current directory and the app directory
+          echo "PYTHONPATH=$(pwd):$(pwd)/app" >> $GITHUB_ENV
+          # Verifying the change
+          echo "After setting PYTHONPATH:"
+          echo "New PYTHONPATH: $(pwd):$(pwd)/app"
+
       - name: Install python dependencies
         run: |
           pip install -q -r requirements.txt
