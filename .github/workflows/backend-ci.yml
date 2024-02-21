@@ -16,10 +16,6 @@ jobs:
         os: ["ubuntu-latest"]
         version: ["3.10"]
     runs-on: ${{matrix.os}}
-    defaults:
-      run:
-        working-directory: job_monitoring_app
-        shell: bash
         # Service containers to run with `runner-job`
     services:
       # Label used to access the service container
@@ -54,23 +50,27 @@ jobs:
           echo "pwd: $(pwd)"
           echo "export PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
           export PYTHONPATH=$PYTHONPATH:$(pwd)
+          export PYTHONPATH=$PYTHONPATH:$(pwd)/job_monitoring_app/
+          export PYTHONPATH=$PYTHONPATH:$(pwd)/job_monitoring_app/backend
+          export PYTHONPATH=$PYTHONPATH:$(pwd)/job_monitoring_app/backend/app
+
           echo "After export:"
           echo "PYTHONPATH: $PYTHONPATH"
       - name: Install python dependencies
         run: |
-          pip install -q -r backend/requirements.txt
+          pip install -q -r job_monitoring_app/backend/requirements.txt
 
       - name: Database setup and build coverage file
         run: |
-          touch backend/.env.test
+          touch job_monitoring_app/backend/.env.test
           echo POSTGRES_USER="$POSTGRES_USER" >> .env.test
           echo POSTGRES_SERVER="$POSTGRES_SERVER" >> .env.test
           echo POSTGRES_PORT="$POSTGRES_PORT" >> .env.test
           echo POSTGRES_DB="$POSTGRES_DB" >> .env.test
           echo POSTGRES_PASSWORD="$POSTGRES_PASSWORD" >> .env.test
           echo APP_ENV="$APP_ENV">> .env.test
-          python backend/tasks.py db:test:reset
-          python backend/tasks.py db:test:upgrade
+          python job_monitoring_app/backend/tasks.py db:test:reset
+          python job_monitoring_app/backend/tasks.py db:test:upgrade
           alembic upgrade head
 
 
