@@ -49,7 +49,7 @@ class OrthancStudyLogger:
         #     )
 
         # These are the primary keys for each event logged in the back end
-        self.event_ids = []
+        self.event_ids = {}
 
         for idx, step in enumerate(job_config.step_configurations):
             new_event = self.tracker_job.send_event(
@@ -61,22 +61,22 @@ class OrthancStudyLogger:
                 ],  # this will take the initial metadata from self.steps
             )
             # Log the ID of each event
-            self.event_ids.append(new_event.id)
+            self.event_ids[idx] = new_event.id
 
     def update_step_status(
-        self, step_tag: int, status: str, reason: Optional[str] = None
+        self, step_id: int, status: str, reason: Optional[str] = None
     ):
         """Updates the status of a given step and re-writes the log file."""
-        print(f"Updating step {step_tag} to {status}")
+        print(f"Updating step {step_id} to {status}")
         metadata = {"status": status}
-        self.steps[step_tag] = {"status": status}
+        self.steps[step_id] = {"status": status}
         if reason:
             metadata["Reason"] = reason
 
         # TODO: Update step
         # TODO: this needs to be implemented to allow for updating step in the api and backend
         self.tracker_job.update_event(
-            tag=step_tag, provider_job_id=self.hospital_id, metadata=metadata
+            kind=status , event_id=step_id, metadata=metadata
         )
 
     def step_is_ready(self, step_id: int) -> bool:
