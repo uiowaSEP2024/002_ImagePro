@@ -6,7 +6,7 @@ job_monitoring_app_directory = current_directory / "job_monitoring_app"
 trackerapi_directory = job_monitoring_app_directory / "trackerapi" / "trackerapi"
 
 # List of directories that contain your modules
-directories = [job_monitoring_app_directory, trackerapi_directory]
+directories = [job_monitoring_app_directory, trackerapi_directory, current_directory]
 
 # Get the current PYTHONPATH
 python_path = os.environ.get("PYTHONPATH", "").split(os.pathsep)
