@@ -16,9 +16,8 @@ def create_event(
     return services.create_event(db=db, event=event, provider=provider)
 
 
-@router.post("/events/{event_id}", response_model=schemas.Event)
+@router.post("/update_event", response_model=schemas.Event)
 def update_event(
-    event_id: int,
     event: schemas.EventUpdate,
     db: Session = Depends(get_db),
 ):

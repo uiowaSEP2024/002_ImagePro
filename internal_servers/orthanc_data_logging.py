@@ -9,8 +9,12 @@ class OrthancStudyLogger:
     def __init__(
         self, hospital_id, study_id, tracker_api_key, job_config_file: Union[Path, str]
     ):
-        self.hospital_id = hospital_id
-        self.study_id = study_id
+        self.hospital_id = (
+            hospital_id  # hospital_id corresponds to the customer_id in the backend
+        )
+        self.study_id = (
+            study_id  # study_id corresponds to the provider_job_id in the backend
+        )
         self.internal_product_log = None
 
         # TODO: This is sudo code how to initiate the connection to the tracker api
@@ -49,19 +53,19 @@ class OrthancStudyLogger:
         #     )
 
         # These are the primary keys for each event logged in the back end
-        self.event_ids = {}
+        self.step_PKs = {}
 
         for idx, step in enumerate(job_config.step_configurations):
             new_event = self.tracker_job.send_event(
                 kind="step",
                 tag=step.tag,
-                #provider_job_id=self.hospital_id,
+                # provider_job_id=self.hospital_id,
                 metadata=self.steps[
                     idx + 1
                 ],  # this will take the initial metadata from self.steps
             )
             # Log the ID of each event
-            self.event_ids[idx + 1] = new_event.event_id
+            self.step_PKs[idx + 1] = new_event.event_id
 
     def update_step_status(
         self, step_id: int, status: str, reason: Optional[str] = None
@@ -75,8 +79,10 @@ class OrthancStudyLogger:
 
         # TODO: Update step
         # TODO: this needs to be implemented to allow for updating step in the api and backend
-            # event_id becomes the primary key of the event corresponding to this event for this job, which is saved in self.event_ids
-        self.tracker_job.update_event(kind=status, event_id=self.event_ids[step_id], metadata=metadata)
+        # event_id becomes the primary key of the event corresponding to this event for this job, which is saved in self.step_PKs
+        self.tracker_job.update_event(
+            kind=status, event_id=self.step_PKs[step_id], metadata=metadata
+        )
 
     def step_is_ready(self, step_id: int) -> bool:
         """Checks if a given step is ready to begin."""
@@ -88,10 +94,10 @@ class OrthancStudyLogger:
                 break
         return is_ready
 
-    def _stage_is_complete(self, step_tag: int) -> bool:
+    def _stage_is_complete(self, step_id: int) -> bool:
         """Checks if a given stage is complete."""
         # TODO: I had to update this. It is not tested and might be buggy
-        status = self.steps[step_tag]["status"]
+        status = self.steps[step_id]["status"]
         return status == "complete"
 
     def update_data_processing(self, log_file_path: str):
