@@ -1,5 +1,6 @@
 import { Flex, Circle, Heading, Icon, Center } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
+import { MdPending } from "react-icons/md";
 import { FiCheck, FiX } from "react-icons/fi/index.js";
 import { Metadata } from "./Metadata";
 import { useEffect, useRef, useState } from "react";
@@ -76,10 +77,10 @@ export const EventTimeline: React.FC<EventTimelineProps> = ({
   isLast,
   metadataConfigurations
 }) => {
-  const kind = KINDS[propKind.toLowerCase() as Kind] || "Info";
-  const circleBg = bgColors[kind.toLowerCase() as Kind];
-  const circleSize = kind === "Info" ? MINI_CIRCLE_SIZE : CIRCLE_SIZE;
-  const IconComponent = IconComponents[kind.toLowerCase() as Kind] || IconComponents["info"];
+  const kind = KINDS[propKind] || "info";
+  const circleBg = bgColors[kind];
+  const circleSize = kind === "info" ? MINI_CIRCLE_SIZE : CIRCLE_SIZE;
+  const IconComponent = IconComponents[kind] || IconComponents["info"];
   const metadataRef = useRef<HTMLElement>(null);
   const [timelineHeight, setTimelineHeight] = useState(
     DEFAULT_TIMELINE_HEIGHT_PX
@@ -96,7 +97,7 @@ export const EventTimeline: React.FC<EventTimelineProps> = ({
   }, [metadata]);
 
   return (
-    <Flex width={"100%"} alignItems={"center"} flex={1} gap={6}>
+    <Flex width={"100%"} alignItems={"center"} flex={1} gap={3}>
       <Flex  alignItems={"center"} direction={"row"}>
         <Center width={circleSize}>
           <Circle color={"white"} size={circleSize} bg={circleBg}>
@@ -105,7 +106,7 @@ export const EventTimeline: React.FC<EventTimelineProps> = ({
         </Center>
       </Flex>
 
-      <Flex direction={"column"}>
+      <Flex direction={"column"} width={"140px"} >
         <Heading m={0} size={"sm"} fontWeight={"medium"}>
           {title}
         </Heading>
