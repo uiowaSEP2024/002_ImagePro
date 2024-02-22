@@ -2,7 +2,6 @@ import React, { FormEvent } from "react";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai/index.js";
-import { MdErrorOutline } from "react-icons/md/index.js";
 import ErrorMessageBox from "@/components/ErrorMessageBox";
 import {
   Container,
@@ -31,7 +30,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [notificationMessage, etNotificationMessage] = useState("");
+  const [notificationMessage, setNotificationMessage] = useState("");
 
   const { logIn } = useAuthContext();
 
