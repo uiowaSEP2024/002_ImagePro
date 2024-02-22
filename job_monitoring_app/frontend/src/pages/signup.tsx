@@ -1,4 +1,5 @@
 import React, { FormEvent, useCallback, useState } from "react";
+import ErrorMessageBox from "@/components/ErrorMessageBox";
 import {
   Text,
   Container,
@@ -18,7 +19,7 @@ import {
   Flex
 } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai/index.js";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { fetchSignUp } from "@/data";
 import { withUnauthenticated } from "@/components/withAuthenticated";
@@ -34,6 +35,7 @@ function SignUp() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const [errorMessage, setErrorMessage] = useState("");
   const [notificationMessage, setNotificationMessage] = useState("");
 
   const [role, setRole] = useState<User["role"]>("customer");
@@ -46,7 +48,7 @@ function SignUp() {
 
       if (confirmPassword !== password) {
         console.log("Passwords Do Not Match");
-        setNotificationMessage("Passwords Do Not Match");
+        setErrorMessage("Passwords Do Not Match");
         return;
       }
 
@@ -62,7 +64,7 @@ function SignUp() {
         await logIn(email, password);
       } catch (e) {
         console.log(e);
-        setNotificationMessage("Sign up failed!");
+        setErrorMessage("Sign up failed!");
       }
     },
     [confirmPassword, email, first_name, last_name, logIn, password, role]
@@ -80,6 +82,7 @@ function SignUp() {
       {!!notificationMessage && (
         <Text data-test-id="notification-message">{notificationMessage}</Text>
       )}
+      {!!errorMessage && <ErrorMessageBox errorMessage={errorMessage} />}
 
       <Heading role="heading" fontSize="3xl" mb={8}>
         Sign up

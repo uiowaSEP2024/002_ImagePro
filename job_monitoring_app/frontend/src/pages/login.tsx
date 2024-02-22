@@ -1,7 +1,8 @@
 import React, { FormEvent } from "react";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai/index.js";
+import ErrorMessageBox from "@/components/ErrorMessageBox";
 import {
   Container,
   Icon,
@@ -28,7 +29,7 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [errorMessage, setErrorMessage] = useState("");
   const [notificationMessage, setNotificationMessage] = useState("");
 
   const { logIn } = useAuthContext();
@@ -43,7 +44,7 @@ function Login() {
       }
     } catch (e) {
       console.log(e);
-      setNotificationMessage("Login failed. Please try again.");
+      setErrorMessage("Login failed. Please try again.");
     }
   };
 
@@ -57,6 +58,7 @@ function Login() {
       flexDirection={"column"}
     >
       {!!notificationMessage && <Text>{notificationMessage}</Text>}
+      {!!errorMessage && <ErrorMessageBox errorMessage={errorMessage} />}
       <Heading role="heading" fontSize="3xl" mb={4}>
         Login
       </Heading>
