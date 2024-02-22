@@ -1,6 +1,5 @@
 import { Flex, Circle, Heading, Icon, Center } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
-import { Flex, Circle, Heading, Icon, Center, Divider } from "@chakra-ui/react";
 import { FiCheck, FiX } from "react-icons/fi/index.js";
 import { Metadata } from "./Metadata";
 import { useEffect, useRef, useState } from "react";
