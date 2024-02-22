@@ -70,7 +70,10 @@ class OrthancStudyLogger:
     def update_step_status(
         self, step_id: int, status: str, reason: Optional[str] = None
     ):
-        """Updates the status of a given step and re-writes the log file."""
+        """
+        Updates the status of a given step and re-writes the log file.
+        TODO: Currently status must be one of the following: step, info, error, complete. This can be changed to be more flexible
+        """
         print(f"Updating step {step_id} to {status}")
         metadata = {"status": status}
         self.steps[step_id] = {"status": status}

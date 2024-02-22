@@ -135,10 +135,12 @@ class TrackerApi:
         """
         Updates an event with the given kind, event_id, and metadata
         Returns a TrackerEventApi object
+        TODO: Kind matches to status in orthanc_data_logging.py, need to make these the same
+        TODO: Need to change 'event' to 'step
         """
         data = self.__to_json(
             self.__post(
-                self.urls.update_events_url(event_id),
+                self.urls.update_events_url,
                 {
                     "kind": kind,
                     "id": event_id,
@@ -164,7 +166,13 @@ class TrackerJobApi:
             metadata=metadata,
         )
 
-    def update_event(self, kind, event_id, metadata=None):
+    def update_event(self, kind: str, event_id: int, metadata: dict):
+        """
+        Updates an event with the given kind, event_id, and metadata
+        Returns a TrackerEventApi object
+        TODO: Kind matches to status in orthanc_data_logging.py, need to make these the same
+        TODO: Need to change 'event' to 'step
+        """
         metadata = metadata if metadata else {}
         return self.api.update_event(
             kind=kind,
