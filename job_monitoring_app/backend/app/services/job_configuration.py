@@ -12,7 +12,18 @@ from starlette import status
 
 def get_step_configuration_by_composite_key(
     db: Session, job_configuration_id: str, tag: str
-):
+) -> models.StepConfiguration:
+    """
+    Returns a unique step configuration given the composite key comprising the job_configuration_id and tag
+    There should be only one step_configuration with a given tag for a given job_configuration_id
+
+    Args:
+        db (Session): SQLAlchemy session
+        job_configuration_id (str): Job configuration id
+        tag (str): Tag
+    Returns:
+        models.StepConfiguration: Step configuration associated with the given job_configuration_id and tag
+    """
     return (
         db.query(models.StepConfiguration)
         .filter(models.StepConfiguration.tag == tag)
@@ -21,7 +32,19 @@ def get_step_configuration_by_composite_key(
     )
 
 
-def get_job_configuration_by_tag(db: Session, tag: str, provider_id: int):
+def get_job_configuration_by_tag(
+    db: Session, tag: str, provider_id: int
+) -> models.JobConfiguration:
+    """
+    Returns a unique job configuration given the tag and provider_id
+
+    Args:
+        db (Session): SQLAlchemy session
+        tag (str): Tag
+        provider_id (int): Provider id
+    Returns:
+        models.JobConfiguration: Job configuration associated with the given tag and provider_id
+    """
     return (
         db.query(models.JobConfiguration)
         .order_by(desc(models.JobConfiguration.created_at))
@@ -33,7 +56,20 @@ def get_job_configuration_by_tag(db: Session, tag: str, provider_id: int):
     )
 
 
-def get_job_configurations_by_tag(db: Session, tag: str, provider_id: int):
+def get_job_configurations_by_tag(
+    db: Session, tag: str, provider_id: int
+) -> list[models.JobConfiguration]:
+    """
+    Returns a list of job configurations given the tag and provider_id
+    get's all job configurations for a particular tag
+
+    Args:
+        db (Session): SQLAlchemy session
+        tag (str): Tag
+        provider_id (int): Provider id
+    Returns:
+        list[models.JobConfiguration]: List of job configurations associated with the given tag and provider_id
+    """
     return (
         db.query(models.JobConfiguration)
         .order_by(desc(models.JobConfiguration.created_at))
@@ -47,7 +83,16 @@ def get_job_configurations_by_tag(db: Session, tag: str, provider_id: int):
 
 def get_list_of_latest_versions_for_all_job_configurations(
     db: Session, provider_id: int
-):
+) -> list[models.JobConfiguration]:
+    """
+    Returns a list of the latest job configurations for all tags
+
+    Args:
+        db (Session): SQLAlchemy session
+        provider_id (int): Provider id
+    Returns:
+        list[models.JobConfiguration]: List of latest job configurations for all tags
+    """
     return (
         db.query(models.JobConfiguration)
         .filter(models.JobConfiguration.provider_id == provider_id)
@@ -64,7 +109,17 @@ def get_list_of_latest_versions_for_all_job_configurations(
 
 def create_job_configuration(
     db: Session, provider_id: str, job_configuration: schemas.JobConfigurationCreate
-):
+) -> models.JobConfiguration:
+    """
+    Create a job configuration
+
+    Args:
+        db (Session): SQLAlchemy session
+        provider_id (str): Provider id
+        job_configuration (schemas.JobConfigurationCreate): Job configuration to create
+    Returns:
+        models.JobConfiguration: Created job configuration
+    """
     old_configuration = get_job_configuration_by_composite_key(
         db,
         provider_id=provider_id,
@@ -154,10 +209,18 @@ def create_job_configuration(
 
 def get_job_configuration_by_composite_key(
     db: Session, provider_id: str, tag: str, version: Union[str, PydanticVersion]
-):
+) -> models.JobConfiguration:
     """
     Returns a unique job configuration give the composite key comprising the provider_id, tag, and version
     There should be only one job_configuration given these fields.
+
+    Args:
+        db (Session): SQLAlchemy session
+        provider_id (str): Provider id
+        tag (str): Tag
+        version (Union[str, PydanticVersion]): Version
+    Returns:
+        models.JobConfiguration: Job configuration associated with the given provider_id, tag, and version
     """
     return (
         db.query(models.JobConfiguration)
@@ -170,5 +233,16 @@ def get_job_configuration_by_composite_key(
     )
 
 
-def get_job_configuration_by_id(db: Session, job_configuration_id: int):
+def get_job_configuration_by_id(
+    db: Session, job_configuration_id: int
+) -> models.JobConfiguration:
+    """
+    Get job configuration by id from the database
+
+    Args:
+        db (Session): SQLAlchemy session
+        job_configuration_id (int): Job configuration id (primary key)
+    Returns:
+        models.JobConfiguration: Job configuration with Primary Key job_configuration_id
+    """
     return db.query(models.JobConfiguration).get(job_configuration_id)
