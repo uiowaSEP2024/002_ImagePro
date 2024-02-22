@@ -79,6 +79,8 @@ def update_event(db: Session, event: schemas.EventUpdate) -> models.Event:
         models.Event: The Updated event
     """
     db_update_event = get_event_by_id(db, event.id)
+    if db_update_event is None:
+        raise ValueError("Event not found")
 
     db_update_event.kind = event.kind
     db_update_event.metadata = event.event_metadata
