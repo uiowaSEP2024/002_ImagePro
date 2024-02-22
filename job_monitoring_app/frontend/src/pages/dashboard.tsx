@@ -19,7 +19,7 @@ import {
   IoAnalyticsSharp,
   IoLogoBitcoin,
   IoSearchSharp
-} from "react-icons/io5";
+} from "react-icons/io5/index.js";
 import { ReactElement } from "react";
 import NextLink from "next/link";
 

@@ -20,7 +20,7 @@ import { Job } from "@/data/types";
 import { useState, useEffect, useMemo, useCallback } from "react";
 
 import NextLink from "next/link";
-import { FiCopy } from "react-icons/fi";
+import { FiCopy } from "react-icons/fi/index.js";
 
 function Profile() {
   const { currentUser } = useAuthContext();
