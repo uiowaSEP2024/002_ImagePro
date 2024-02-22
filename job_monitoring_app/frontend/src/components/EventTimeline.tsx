@@ -1,3 +1,5 @@
+import { Flex, Circle, Heading, Icon, Center } from "@chakra-ui/react";
+import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { Flex, Circle, Heading, Icon, Center, Divider } from "@chakra-ui/react";
 import { FiCheck, FiX } from "react-icons/fi/index.js";
 import { Metadata } from "./Metadata";
@@ -51,7 +53,7 @@ type EventTimelineProps = {
   title: string;
   metadata?: Record<string, any>;
   metadataConfigurations?: any[];
-  isStart?: boolean;
+  isLast?: boolean;
 };
 
 /**
@@ -72,7 +74,7 @@ export const EventTimeline: React.FC<EventTimelineProps> = ({
   kind: propKind = "info",
   title,
   metadata,
-  isStart,
+  isLast,
   metadataConfigurations
 }) => {
   const kind = KINDS[propKind.toLowerCase() as Kind] || "Info";
@@ -95,19 +97,13 @@ export const EventTimeline: React.FC<EventTimelineProps> = ({
   }, [metadata]);
 
   return (
-    <Flex width={"100%"} alignItems={"flex-start"} flex={1} gap={4}>
-      <Flex gap={2} alignItems={"center"} direction={"column"}>
+    <Flex width={"100%"} alignItems={"center"} flex={1} gap={6}>
+      <Flex  alignItems={"center"} direction={"row"}>
         <Center width={circleSize}>
           <Circle color={"white"} size={circleSize} bg={circleBg}>
             {<IconComponent />}
           </Circle>
         </Center>
-        <Divider
-          minH={`${timelineHeight}px`}
-          orientation="vertical"
-          borderColor={"gray.500"}
-        />
-        {isStart && <Circle bgColor={"gray.500"} size={MINI_CIRCLE_SIZE} />}
       </Flex>
 
       <Flex direction={"column"}>
@@ -123,6 +119,10 @@ export const EventTimeline: React.FC<EventTimelineProps> = ({
           />
         )}
       </Flex>
+            <Flex alignItems={"center"} direction={"row"}>
+                {!isLast && <Icon as={ArrowForwardIcon} color="gray.500" boxSize={6} />}
+
+        </Flex>
     </Flex>
   );
 };
