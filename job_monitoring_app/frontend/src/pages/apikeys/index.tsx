@@ -30,7 +30,7 @@ import {
 } from "@chakra-ui/react";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { withAuthenticated } from "@/components/withAuthenticated";
-import { FiCopy } from "react-icons/fi";
+import { FiCopy } from "react-icons/fi/index.js";
 
 function ApiKeys() {
   const { currentUser } = useAuthContext();
