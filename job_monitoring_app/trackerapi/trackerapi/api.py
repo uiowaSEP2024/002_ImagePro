@@ -14,12 +14,14 @@ class ApiUrls:
         return f"{self.base_url}{path}"
 
     @property
+    # TODO this needs to be changed to 'step' instead of 'event'
     def events_url(self):
         return self.url("/events")
 
     @property
-    def update_events_url(self, event_id):
-        return self.url(f"/events/{event_id}")
+    # TODO this needs to be changed to 'step' instead of 'event'
+    def update_events_url(self):
+        return self.url("/update_event")
 
     @property
     def jobs_url(self):
@@ -53,6 +55,9 @@ class TrackerApi:
 
     @property
     def __headers(self):
+        """
+        Returns a JSON object with the API key as the value for the API key header
+        """
         return {TrackerApi.HTTP_API_KEY_HEADER_KEY: self.api_key}
 
     @staticmethod
@@ -60,6 +65,10 @@ class TrackerApi:
         return response.json()
 
     def __post(self, url, data):
+        """
+        Makes a post request to the given URL with the given data
+        Returns the response
+        """
         response = requests.post(url, json=data, headers=self.__headers)
         if response.status_code != 200:
             print("Response Body (non-200 status code):", response.text)
@@ -67,17 +76,29 @@ class TrackerApi:
         return response
 
     def __get(self, url):
+        """
+        Makes a get request to the given URL
+        Returns the response
+        """
         response = requests.get(url, headers=self.__headers)
         response.raise_for_status()
         return response
 
     def verify_api_key(self):
+        """
+        Makes a get request to the apikeys url
+        to verify the api key, which is inserted into the headers
+        """
         self.__get(self.urls.api_key_verify_url)
 
     def register_job_config(self, config: JobConfig):
         self.__post(self.urls.jobs_config_url, config.dict())
 
     def create_job(self, provider_job_id: str, customer_id: int, tag: str):
+        """
+        Creates a job with the given provider_job_id, customer_id, and tag
+        Returns a TrackerJobApi object
+        """
         data = self.__to_json(
             self.__post(
                 self.urls.jobs_url,
@@ -92,6 +113,10 @@ class TrackerApi:
         return TrackerJobApi(provider_job_id=data["provider_job_id"], api=self)
 
     def send_event(self, kind, tag, provider_job_id, metadata):
+        """
+        Sends an event with the given kind, tag, provider_job_id, and metadata
+        Returns a TrackerEventApi object
+        """
         data = self.__to_json(
             self.__post(
                 self.urls.events_url,
@@ -106,7 +131,11 @@ class TrackerApi:
 
         return TrackerEventApi(event_id=data["id"], api=self)
 
-    def update_event(self, kind, event_id, metadata):
+    def update_event(self, kind: str, event_id: int, metadata: dict):
+        """
+        Updates an event with the given kind, event_id, and metadata
+        Returns a TrackerEventApi object
+        """
         data = self.__to_json(
             self.__post(
                 self.urls.update_events_url(event_id),
