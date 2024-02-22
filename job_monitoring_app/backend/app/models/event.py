@@ -45,7 +45,7 @@ class Event(Base, DateMixin):
 
     # The kind of event (info, step, error, etc.)
     kind = Column(
-        Enum("step", "error", "info", "complete", name="event_kind"),
+        Enum("In progress", "Error", "Info", "Complete", "Pending", name="event_kind"),
         nullable=False,
     )
     step_configuration_id: Column = Column(
