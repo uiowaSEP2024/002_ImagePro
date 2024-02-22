@@ -8,10 +8,11 @@ from .step_configuration import StepConfiguration
 
 
 class EventKindEnum(str, Enum):
-    step = "step"
-    error = "error"
-    info = "info"
-    complete = "complete"
+    in_progress = "In progress"
+    error = "Error"
+    info = "Info"
+    complete = "Complete"
+    pending = "Pending"
 
 
 class EventBase(BaseModel):
