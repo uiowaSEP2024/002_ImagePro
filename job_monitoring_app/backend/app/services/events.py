@@ -83,7 +83,7 @@ def update_event(db: Session, event: schemas.EventUpdate) -> models.Event:
         raise ValueError("Event not found")
 
     db_update_event.kind = event.kind
-    db_update_event.metadata = event.event_metadata
+    db_update_event.event_metadata = event.event_metadata
     db.commit()
     db.refresh(db_update_event)
     return db_update_event
