@@ -1,5 +1,4 @@
 import React, { FormEvent, useCallback, useState } from "react";
-import { MdErrorOutline } from "react-icons/md/index.js";
 import ErrorMessageBox from "@/components/ErrorMessageBox";
 import {
   Text,
@@ -20,7 +19,7 @@ import {
   Flex
 } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai/index.js";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { fetchSignUp } from "@/data";
 import { withUnauthenticated } from "@/components/withAuthenticated";
