@@ -5,6 +5,9 @@ from .job_configuration import get_step_configuration_by_composite_key
 from .jobs import get_job_by_provider_job_id
 
 # TODO: @Zach - Can you help me understand the differnce is between Provider and User?
+# A provider is a user, but a user is not necessarily a provider. A provider is a user that has a role of "provider"
+# users can be providers or customers, customers being patients. This will be later removed since we are doing providers
+# and hospitals. It is assumed that providers are the only ones creating events since they are running the jobs
 
 
 def create_event(
@@ -65,8 +68,9 @@ def get_event_by_id(db: Session, event_id: int) -> models.Event:
 def update_event(db: Session, event: schemas.EventUpdate) -> models.Event:
     """
     Update an event in the database
-    Belive this is used to update the status of each step in a workflow job
-    # TODO: @Zach - Can you confirm this? and provide more details on the use case for this function?
+    This function takes an eventUpdate schema consisting of the event id, new status, and new metadata
+    and updates the corresponding event in the database. This is called when an orthanc_data_logging agent
+    updates an event that is part of an ongoing job
 
     Args:
         db (Session): SQLAlchemy session
