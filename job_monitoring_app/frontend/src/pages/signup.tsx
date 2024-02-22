@@ -1,4 +1,6 @@
 import React, { FormEvent, useCallback, useState } from "react";
+import { MdErrorOutline } from "react-icons/md/index.js";
+import ErrorMessageBox from "@/components/ErrorMessageBox";
 import {
   Text,
   Container,
@@ -34,6 +36,7 @@ function SignUp() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const [errorMessage, setErrorMessage] = useState("");
   const [notificationMessage, setNotificationMessage] = useState("");
 
   const [role, setRole] = useState<User["role"]>("customer");
@@ -46,7 +49,7 @@ function SignUp() {
 
       if (confirmPassword !== password) {
         console.log("Passwords Do Not Match");
-        setNotificationMessage("Passwords Do Not Match");
+        setErrorMessage("Passwords Do Not Match");
         return;
       }
 
@@ -62,7 +65,7 @@ function SignUp() {
         await logIn(email, password);
       } catch (e) {
         console.log(e);
-        setNotificationMessage("Sign up failed!");
+        setErrorMessage("Sign up failed!");
       }
     },
     [confirmPassword, email, first_name, last_name, logIn, password, role]
@@ -80,6 +83,7 @@ function SignUp() {
       {!!notificationMessage && (
         <Text data-test-id="notification-message">{notificationMessage}</Text>
       )}
+      {!!errorMessage && <ErrorMessageBox errorMessage={errorMessage} />}
 
       <Heading role="heading" fontSize="3xl" mb={8}>
         Sign up
