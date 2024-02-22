@@ -7,7 +7,7 @@ from app.dependencies import API_KEY_HEADER_NAME
 def test_create_event(app_client, job_for_random_user_with_api_key, db):
     job = job_for_random_user_with_api_key
     data = {
-        "kind": "step",
+        "kind": "Pending",
         "name": "Scanning",
         "provider_job_id": job.provider_job_id,
         "event_metadata": {"official": "Yes"},
@@ -22,7 +22,7 @@ def test_create_event(app_client, job_for_random_user_with_api_key, db):
         },
     )
     assert response.status_code == 200
-    assert response.json()["kind"] == "step"
+    assert response.json()["kind"] == "Pending"
     assert response.json()["name"] == "Scanning"
     assert response.json()["event_metadata"] == {"official": "Yes"}
     db.refresh(job)
@@ -40,7 +40,7 @@ def test_update_event(app_client, job_for_random_user_with_api_key, db):
     # Create an event
     job = job_for_random_user_with_api_key
     event_data = {
-        "kind": "step",
+        "kind": "Pending",
         "name": "Scanning",
         "provider_job_id": job.provider_job_id,
         "event_metadata": {"official": "Yes"},
@@ -64,7 +64,7 @@ def test_update_event(app_client, job_for_random_user_with_api_key, db):
 
     # Prepare data for updating the event
     updated_event_data = {
-        "kind": "complete",
+        "kind": "Complete",
         "id": event_id,
         "event_metadata": {"Reason": "None"},
     }
