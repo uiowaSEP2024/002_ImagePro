@@ -51,8 +51,8 @@ function JobPage({ initialIsPageLoading = true }) {
   const [job, setJob] = useState<Job | null>(null);
   const [isPageLoading, setIsPageLoading] = useState(initialIsPageLoading);
 
-  const reversedEvents = useMemo(() => {
-    return events.slice().reverse();
+  const allEvents = useMemo(() => {
+    return events.slice();
   }, [events]);
 
   const numSteps = useMemo(
@@ -208,13 +208,13 @@ function JobPage({ initialIsPageLoading = true }) {
           <Center
             alignSelf={"center"}
             data-testid={"events-timeline"}
-            flexDirection="column"
-            gap={2}
+            flexDirection="row"
+            gap={3}
           >
-            {reversedEvents.map((event, idx) => {
+            {allEvents.map((event, idx) => {
               return (
                 <EventTimeline
-                  isStart={idx === events.length - 1}
+                  isLast={idx === events.length - 1}
                   key={event.id}
                   title={event?.step_configuration?.name || "-"}
                   metadataConfigurations={
