@@ -65,3 +65,19 @@ def test_job():
     assert (
         tracker_eventapi.event_id == 1
     ), "Expected TrackerEventApi to set the returned event id on itself"
+
+    responses.add(
+        url=tracker.urls.update_events_url,
+        method=responses.POST,
+        json={
+            "kind": "complete",
+            "id": 1,
+            "event_metadata": {"Reason": "None"},
+        },
+    )
+    tracker_update_event_api = tracker_jobapi.update_event(
+        kind="complete", event_id=1, metadata={"Reason": "None"}
+    )
+    assert (
+        tracker_update_event_api.event_id == 1
+    ), "Expected TrackerEventApi to set the returned event id on itself"
