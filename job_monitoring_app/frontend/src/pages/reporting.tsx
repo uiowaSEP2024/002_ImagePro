@@ -1,3 +1,10 @@
+/**
+ * This file contains the Reporting component of the application.
+ * The Reporting component is a React component that provides a feature for the user to download a report of all jobs that have been completed by their provider.
+ * It fetches the user's input for the start and end dates, validates it, and attempts to fetch the report.
+ */
+
+// Import necessary libraries, components, hooks, and types.
 import {
   Badge,
   Box,
@@ -15,11 +22,17 @@ import { withAuthenticated } from "@/components/withAuthenticated";
 import { useState } from "react";
 import { fetchDownloadReport } from "@/data";
 
+/**
+ * The Reporting component is a React component that provides a feature for the user to download a report of all jobs that have been completed by their provider.
+ * It fetches the user's input for the start and end dates, validates it, and attempts to fetch the report.
+ */
 function Reporting() {
+  // Initialize the start and end dates for the report.
   const initialEndDate = new Date();
   const initialStartDate = new Date(initialEndDate);
   initialStartDate.setFullYear(initialStartDate.getFullYear() - 1);
 
+  // Initialize state variables for the start and end dates.
   const [reportStartDate, setReportStartDate] = useState<string>(
     initialStartDate.toISOString().split("T")[0]
   );
@@ -27,6 +40,7 @@ function Reporting() {
     initialEndDate.toISOString().split("T")[0]
   );
 
+  // Render the Reporting component.
   return (
     <Container pt={8} maxW={"container.lg"} justifyContent={"center"}>
       <VStack align={"flex-start"} gap={2}>
@@ -78,4 +92,7 @@ function Reporting() {
   );
 }
 
+/**
+ * Export the Reporting component wrapped with the withAuthenticated higher-order component.
+ */
 export default withAuthenticated(Reporting, ["provider"]);

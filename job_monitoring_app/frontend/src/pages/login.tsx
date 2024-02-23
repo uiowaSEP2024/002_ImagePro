@@ -1,3 +1,6 @@
+/**
+ * Importing necessary libraries, components and hooks.
+ */
 import React, { FormEvent } from "react";
 import { useState } from "react";
 import { useRouter } from "next/router";
@@ -21,9 +24,12 @@ import {
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { withUnauthenticated } from "@/components/withAuthenticated";
-
 import NextLink from "next/link";
 
+/**
+ * Login component.
+ * This component is responsible for rendering the login form and handling the login process.
+ */
 function Login() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
@@ -34,6 +40,10 @@ function Login() {
 
   const { logIn } = useAuthContext();
 
+  /**
+   * Handles the login process.
+   * @param {FormEvent} e - The form event.
+   */
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
     try {
@@ -48,6 +58,9 @@ function Login() {
     }
   };
 
+  /**
+   * Returns the JSX to render.
+   */
   return (
     <Container
       pt={"15vh"}
@@ -132,4 +145,7 @@ function Login() {
   );
 }
 
+/**
+ * Exporting the Login component wrapped with the withUnauthenticated HOC.
+ */
 export default withUnauthenticated(Login);

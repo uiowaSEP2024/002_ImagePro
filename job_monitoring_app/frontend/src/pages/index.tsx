@@ -1,3 +1,10 @@
+/**
+ * This file contains the Home component of the application.
+ * The Home component is a React component that displays the home page of the application.
+ * It fetches the current user's data and displays different features based on the user's authentication status.
+ */
+
+// Import necessary libraries, components, hooks, and types.
 import { useAuthContext } from "@/hooks/useAuthContext";
 import {
   Container,
@@ -11,9 +18,16 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
+/**
+ * The Home component is a React component that displays the home page of the application.
+ * It fetches the current user's data and displays different features based on the user's authentication status.
+ */
 export default function Home() {
+  // Fetch the current user's data and the router instance.
   const router = useRouter();
   const { currentUser } = useAuthContext();
+
+  // Define the routes for the jobs and analytics pages based on the user's authentication status.
   var jobs = "jobs";
   var analytics = "analytics";
   if (!currentUser) {
@@ -21,6 +35,7 @@ export default function Home() {
     analytics = "login";
   }
 
+  // Render the Home component.
   return (
     <Container maxW={"7xl"}>
       <Stack

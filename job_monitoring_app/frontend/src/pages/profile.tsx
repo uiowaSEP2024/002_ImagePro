@@ -1,3 +1,11 @@
+/**
+ * This file contains the Profile component of the application.
+ * The Profile component is a React component that displays the profile page of the current user.
+ * It fetches the current user's data and the jobs associated with the user, and displays them in a user-friendly format.
+ * It also provides a feature for the user to copy their unique ID to the clipboard.
+ */
+
+// Import necessary libraries, components, hooks, and types.
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { withAuthenticated } from "@/components/withAuthenticated";
 import {
@@ -22,13 +30,21 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import NextLink from "next/link";
 import { FiCopy } from "react-icons/fi/index.js";
 
+/**
+ * The Profile component is a React component that displays the profile page of the current user.
+ * It fetches the current user's data and the jobs associated with the user, and displays them in a user-friendly format.
+ * It also provides a feature for the user to copy their unique ID to the clipboard.
+ */
 function Profile() {
+  // Fetch the current user's data and the jobs associated with the user.
   const { currentUser } = useAuthContext();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [copied, setCopied] = useState(false);
 
+  // Reverse the jobs array for display purposes.
   const reversedJobs = useMemo(() => jobs.slice().reverse(), [jobs]);
 
+  // Fetch the jobs data when the component mounts.
   useEffect(() => {
     async function loadJobs() {
       const data = await fetchJobs();
@@ -39,8 +55,10 @@ function Profile() {
     loadJobs();
   }, []);
 
+  // Determine if the current user is a customer.
   const isCustomer = currentUser?.role === "customer";
 
+  // Handle the copy ID button click event.
   const onCopyId = useCallback(() => {
     if (!currentUser) return;
     navigator.clipboard.writeText(currentUser.id.toString());
@@ -184,4 +202,7 @@ function Profile() {
   );
 }
 
+/**
+ * Export the Profile component wrapped with the withAuthenticated higher-order component.
+ */
 export default withAuthenticated(Profile);
