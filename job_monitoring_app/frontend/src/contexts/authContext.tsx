@@ -42,6 +42,9 @@ export const AuthContext = createContext<IAuthContextProps>({
 /**
  * The AuthContextProvider is a React component that provides the actual data and functions that will be passed down to the components that subscribe to the AuthContext.
  * It fetches the current user data from the server, and provides functions for logging in, logging out, and refreshing the authentication data.
+ *
+ * @param props - The children components that the AuthContextProvider will wrap around.
+ * @returns - The AuthContext.Provider component that wraps around the children components, providing them with access to the AuthContext.
  */
 export const AuthContextProvider = (props: React.PropsWithChildren) => {
   // Initialize state variables for the current user data and the authentication loading state.
@@ -54,7 +57,12 @@ export const AuthContextProvider = (props: React.PropsWithChildren) => {
     refreshAuth()
   }, [])
 
-  // Define the logOut function.
+  /**
+   * Define the logOut function.
+   * This function sends a request to the server to log out the current user, then refreshes the authentication data and redirects the user to the login page.
+   * @returns - The data returned from the server after the logout request.
+   * @throws - An error if the logout request fails.
+   */
   const logOut = async () => {
     try {
       await fetchLogout();
@@ -65,7 +73,14 @@ export const AuthContextProvider = (props: React.PropsWithChildren) => {
     }
   };
 
-  // Define the logIn function.
+  /**
+   * Define the logIn function.
+   * This function sends a request to the server to log in a user with the provided email and password, then refreshes the authentication data.
+   *
+   * @param email - The email of the user to log in.
+   * @param password - The password of the user to log in.
+   * @returns - The data returned from the server after the login request.
+   */
   const logIn = async (email:string, password: string) => {
     let data
     try {
@@ -77,7 +92,10 @@ export const AuthContextProvider = (props: React.PropsWithChildren) => {
     return data
   };
 
-  // Define the refreshAuth function.
+  /**
+   * Define the refreshAuth function.
+   * This function sends a request to the server to check if the current user is logged in, then updates the current user data and the authentication loading state based on the response.
+   */
   const refreshAuth = async () =>{
     try{
       const data = await fetchCheckUserLoggedIn()
