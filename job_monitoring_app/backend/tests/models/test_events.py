@@ -32,7 +32,7 @@ def test_create_event(db, random_test_user, random_provider_user):
     db.refresh(job)
 
     assert event.job_id == job.id
-    assert event.kind == "step"
+    assert event.kind == "Pending"
     assert event.name == "Scanning Kidney"
     assert event.event_metadata == {"unofficial": "Yes"}
     assert event.created_at is not None
@@ -42,7 +42,7 @@ def test_create_event(db, random_test_user, random_provider_user):
 
 
 def test_create_event_missing_job_id(db):
-    event = models.Event(name="Scanning Kidney", kind="step")
+    event = models.Event(name="Scanning Kidney", kind="Pending")
 
     db.add(event)
 
@@ -119,7 +119,7 @@ def test_create_event_for_step(
     event = models.Event(
         job_id=job.id,
         name="Scanning Kidney",
-        kind="step",
+        kind="Pending",
         step_configuration_id=job_configuration.step_configurations[0].id,
     )
 
