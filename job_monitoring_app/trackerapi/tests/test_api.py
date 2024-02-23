@@ -70,7 +70,7 @@ def test_job():
         url=tracker.urls.update_events_url,
         method=responses.POST,
         json={
-            "kind": "complete",
+            "kind": "Complete",
             "id": 1,
             "event_metadata": {"Reason": "None"},
         },
