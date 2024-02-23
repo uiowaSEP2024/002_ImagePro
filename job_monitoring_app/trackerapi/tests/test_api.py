@@ -61,7 +61,7 @@ def test_job():
     ), "Expected TrackerJobApi to set the returned job_provider_id on itself"
 
     responses.add(url=tracker.urls.events_url, method=responses.POST, json={"id": 1})
-    tracker_eventapi = tracker_jobapi.send_event(kind="step", tag="step_1")
+    tracker_eventapi = tracker_jobapi.send_event(kind="Pending", tag="step_1")
     assert (
         tracker_eventapi.event_id == 1
     ), "Expected TrackerEventApi to set the returned event id on itself"
@@ -76,7 +76,7 @@ def test_job():
         },
     )
     tracker_update_event_api = tracker_jobapi.update_event(
-        kind="complete", event_id=1, metadata={"Reason": "None"}
+        kind="Complete", event_id=1, metadata={"Reason": "None"}
     )
     assert (
         tracker_update_event_api.event_id == 1

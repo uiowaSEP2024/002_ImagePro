@@ -22,7 +22,7 @@ def test_create_event(db, random_test_user, random_provider_user):
     event = models.Event(
         job_id=job.id,
         name="Scanning Kidney",
-        kind="step",
+        kind="Pending",
         event_metadata={"unofficial": "Yes"},
     )
 

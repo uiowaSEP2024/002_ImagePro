@@ -238,7 +238,7 @@ EVENTS_DATA = [
     #  Job 1 John, Event 1
     dict(
         provider_job_id="botimage-123",
-        kind="step",
+        kind="Pending",
         job_configuration_tag="kidney_cancer",
         step_configuration_tag="kidney_left",
         event_metadata={
@@ -251,7 +251,7 @@ EVENTS_DATA = [
     #  Job 1 John, Event 2
     dict(
         provider_job_id="botimage-123",
-        kind="step",
+        kind="Pending",
         job_configuration_tag="kidney_cancer",
         step_configuration_tag="kidney_right",
         event_metadata={
@@ -264,7 +264,7 @@ EVENTS_DATA = [
     #  Job 1 John, Event 3
     dict(
         provider_job_id="botimage-123",
-        kind="complete",
+        kind="Complete",
         job_configuration_tag="kidney_cancer",
         step_configuration_tag="kidney_results",
         event_metadata={
@@ -274,7 +274,7 @@ EVENTS_DATA = [
     #  Job 2 John, Event 1
     dict(
         provider_job_id="botimage-456",
-        kind="step",
+        kind="Pending",
         job_configuration_tag="heart_cancer",
         step_configuration_tag="heart_left",
         event_metadata={
@@ -287,7 +287,7 @@ EVENTS_DATA = [
     #  Job 2 John, Event 2
     dict(
         provider_job_id="botimage-456",
-        kind="step",
+        kind="Pending",
         job_configuration_tag="heart_cancer",
         step_configuration_tag="heart_right",
         event_metadata={
@@ -300,7 +300,7 @@ EVENTS_DATA = [
     #  Job 2 John, Event 3
     dict(
         provider_job_id="botimage-456",
-        kind="complete",
+        kind="Complete",
         job_configuration_tag="heart_cancer",
         step_configuration_tag="heart_results",
         event_metadata={
@@ -310,7 +310,7 @@ EVENTS_DATA = [
     #  Job 3 John, Event 1
     dict(
         provider_job_id="botimage-789",
-        kind="complete",
+        kind="Complete",
         job_configuration_tag="pancreas_cancer",
         step_configuration_tag="pancreas_results",
         event_metadata={
@@ -320,7 +320,7 @@ EVENTS_DATA = [
     #  Job 1 Jane, Event 1
     dict(
         provider_job_id="noodlesco-123",
-        kind="step",
+        kind="Pending",
         job_configuration_tag="lung_cancer",
         step_configuration_tag="left_lung",
         event_metadata={
@@ -333,7 +333,7 @@ EVENTS_DATA = [
     #  Job 1 Jane, Event 2
     dict(
         provider_job_id="noodlesco-123",
-        kind="step",
+        kind="Pending",
         job_configuration_tag="lung_cancer",
         step_configuration_tag="right_lung",
         event_metadata={
@@ -346,7 +346,7 @@ EVENTS_DATA = [
     #  Job 1 Jane, Event 3
     dict(
         provider_job_id="noodlesco-123",
-        kind="complete",
+        kind="Complete",
         job_configuration_tag="lung_cancer",
         step_configuration_tag="lung_results",
         event_metadata={
