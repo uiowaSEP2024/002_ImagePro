@@ -52,7 +52,7 @@ function JobPage({ initialIsPageLoading = true }) {
   const [isPageLoading, setIsPageLoading] = useState(initialIsPageLoading);
 
   const allEvents = useMemo(() => {
-    return events.slice();
+    return events.slice().sort();
   }, [events]);
 
   const numSteps = useMemo(
@@ -97,6 +97,7 @@ function JobPage({ initialIsPageLoading = true }) {
         setEvents(
           data.map((event, index) => ({ ...event, event_number: index + 1 }))
         );
+
       } catch (e) {
         console.log(e);
       }
@@ -112,7 +113,7 @@ function JobPage({ initialIsPageLoading = true }) {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [job, jobId, jobStatus]);
+  }, [job, jobId, jobStatus, events]);
 
   // Derive the progress percentage based on either numSteps
   // if it is available, or do 0 -> 1 -> 50 -> 100 based on the presence of any events
