@@ -57,7 +57,7 @@ class OrthancStudyLogger:
 
         for idx, step in enumerate(job_config.step_configurations):
             new_event = self.tracker_job.send_event(
-                kind="step",
+                kind="Pending",
                 tag=step.tag,
                 # provider_job_id=self.hospital_id,
                 metadata=self.steps[
