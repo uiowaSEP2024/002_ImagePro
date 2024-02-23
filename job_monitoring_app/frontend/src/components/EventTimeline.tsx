@@ -7,11 +7,12 @@ import { useEffect, useRef, useState } from "react";
  * Define the kinds of events that can be displayed in the timeline.
  */
 const KINDS = {
-  step: "step",
-  complete: "complete",
-  success: "success",
-  error: "error",
-  info: "info"
+  pending: "Pending",
+  complete: "Complete",
+  success: "Success",
+  in_progress: "In progress",
+  error: "Error",
+  info: "Info"
 } as const;
 
 type Kind = keyof typeof KINDS;
@@ -20,8 +21,9 @@ type Kind = keyof typeof KINDS;
  * Define the background colors for the different kinds of events.
  */
 const bgColors: Record<Kind, string> = {
-  step: "whatsapp.500",
   complete: "whatsapp.500",
+  in_progress: "whatsapp.500",
+  pending: "gray.500",
   success: "whatsapp.500",
   error: "red.500",
   info: "gray.500"
@@ -37,10 +39,11 @@ const ICON_SIZE = "6";
  */
 const IconComponents: Record<Kind, React.FC> = {
   complete: () => <Icon as={FiCheck} boxSize={ICON_SIZE} />,
-  step: () => <Icon as={FiCheck} boxSize={ICON_SIZE} />,
+  in_progress: () => <Icon as={FiCheck} boxSize={ICON_SIZE} />,
   success: () => <Icon as={FiCheck} boxSize={ICON_SIZE} />,
   error: () => <Icon as={FiX} boxSize={ICON_SIZE} />,
-  info: () => <Circle bg={"gray"} size={"2"} />
+  info: () => <Circle bg={"gray"} size={"2"} />,
+  pending: () => <Icon as={FiCheck} boxSize={ICON_SIZE} />
 };
 
 type EventTimelineProps = {
@@ -71,11 +74,11 @@ export const EventTimeline: React.FC<EventTimelineProps> = ({
   metadata,
   isStart,
   metadataConfigurations
-}): JSX.Element => {
-  const kind = KINDS[propKind] || "info";
-  const circleBg = bgColors[kind];
-  const circleSize = kind === "info" ? MINI_CIRCLE_SIZE : CIRCLE_SIZE;
-  const IconComponent = IconComponents[kind] || IconComponents["info"];
+}) => {
+  const kind = KINDS[propKind.toLowerCase() as Kind] || "Info";
+  const circleBg = bgColors[kind.toLowerCase() as Kind];
+  const circleSize = kind === "Info" ? MINI_CIRCLE_SIZE : CIRCLE_SIZE;
+  const IconComponent = IconComponents[kind.toLowerCase() as Kind] || IconComponents["info"];
   const metadataRef = useRef<HTMLElement>(null);
   const [timelineHeight, setTimelineHeight] = useState(
     DEFAULT_TIMELINE_HEIGHT_PX

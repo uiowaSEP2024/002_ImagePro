@@ -42,7 +42,7 @@ class OrthancStudyLogger:
         }
 
         # TODO: code below creates the initial events with initial status
-        # TODO: we need to change instead of using "kind" fot "step" or "complete" to use the status in event metadata
+        # TODO: we need to change instead of using "kind" to "step" or "complete" to use the status in event metadata
         # TODO: look in the mockscript to see how they use kind
         # for i in range(1, 5):
         #     self.tracker_job.send_event(
@@ -72,7 +72,8 @@ class OrthancStudyLogger:
     ):
         """
         Updates the status of a given step and re-writes the log file.
-        TODO: Currently status must be one of the following: step, info, error, complete. This can be changed to be more flexible
+        TODO: Currently status must be one of the following: In progress, Error, Pending, Info, Complete.
+        This can be changed to be more flexible
         """
         print(f"Updating step {step_id} to {status}")
         metadata = {"status": status}
@@ -129,13 +130,13 @@ class OrthancStudyLogger:
 if __name__ == "__main__":
     logger = OrthancStudyLogger(
         hospital_id=1,
-        study_id=3,
-        tracker_api_key="vdqPPIMw8H2eW-ykGm4tR93VOWg",
+        study_id=998,
+        tracker_api_key="8CpeW-bUv9uzYUU1K15IKFXfuQ4",
         job_config_file="hospital_job_configuration.json",
     )
-    # logger.update_step_status(1, "Complete")
-    # logger.update_step_status(2, "Complete")
-    # logger.update_step_status(3, "Complete")
-    # logger.update_step_status(4, "Complete")
+    logger.update_step_status(1, "Complete")
+    logger.update_step_status(2, "Complete")
+    logger.update_step_status(3, "Complete")
+    logger.update_step_status(4, "Complete")
 # Note: the tracker_api_key needs to be replaced by creating a provider account on the app
 # and generating an api key for your account and pasting that in the OrthancStudyLogger above

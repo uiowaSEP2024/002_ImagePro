@@ -66,7 +66,7 @@ const JobTableCell: React.FC<JobTableCellProps> = ({ job, colId }) => {
 
   if (colId === "status") {
     const numCompletedSteps = job.events?.filter(
-      (event) => event.kind === "step" || event.kind === "complete"
+      (event) => event.kind === "Complete"
     ).length;
     const numSteps = job.job_configuration.step_configurations.length;
     const status = numCompletedSteps === numSteps ? "Done" : "Waiting";

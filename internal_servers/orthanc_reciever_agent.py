@@ -165,32 +165,32 @@ def main():
             for study in studies:
                 current_logger = study_processed_dict[study.id_]
                 if check_study_stable(study):
-                    current_logger.update_step_status(1, "complete")
+                    current_logger.update_step_status(1, "Complete")
                 if current_logger.step_is_ready(2):
-                    current_logger.update_step_status(2, "in_progress")
+                    current_logger.update_step_status(2, "In progress")
                     try:
                         download_study(study.id_, "download_path")
-                        current_logger.update_step_status(2, "complete")
+                        current_logger.update_step_status(2, "Complete")
                     except Exception as e:
-                        current_logger.update_step_status(2, "failed", str(e))
+                        current_logger.update_step_status(2, "Error", str(e))
                 if current_logger.step_is_ready(3):
-                    current_logger.update_step_status(3, "in_progress")
+                    current_logger.update_step_status(3, "In progress")
                     try:
                         process_data("download_path")
                         # TODO Update this to have the processed data path
-                        current_logger.update_step_status(3, "complete")
+                        current_logger.update_step_status(3, "Complete")
                         # current_logger.update_data_processing("download_path")
                     except Exception as e:
-                        current_logger.update_step_status(3, "failed", str(e))
+                        current_logger.update_step_status(3, "Error", str(e))
                 if current_logger.step_is_ready(4):
-                    current_logger.update_step_status(4, "in_progress")
+                    current_logger.update_step_status(4, "In progress")
                     try:
                         send_data_to_hospital(
                             "processed_data_path", current_logger.hospital_id
                         )
-                        current_logger.update_step_status(4, "complete")
+                        current_logger.update_step_status(4, "Complete")
                     except Exception as e:
-                        current_logger.update_step_status(4, "failed", str(e))
+                        current_logger.update_step_status(4, "Error", str(e))
 
                 if current_logger._stage_is_complete(4):
                     print(f"Study {study.id_} has been processed and sent to hospital")

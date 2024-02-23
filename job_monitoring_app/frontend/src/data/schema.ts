@@ -202,7 +202,7 @@ export interface components {
      * @description An enumeration.
      * @enum {string}
      */
-    EventKindEnum: "step" | "error" | "info" | "complete";
+    EventKindEnum: "Pending" | "Error" | "Info" | "Complete" | "In progress";
     /** HTTPValidationError */
     HTTPValidationError: {
       /** Detail */

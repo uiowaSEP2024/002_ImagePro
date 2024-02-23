@@ -78,11 +78,11 @@ function JobPage({ initialIsPageLoading = true }) {
   const jobStatus = useMemo(() => {
     const lastEvent = events.at(-1);
 
-    if (lastEvent?.kind === "error") {
+    if (lastEvent?.kind === "Error") {
       return "error";
     }
 
-    const hasCompleteEvent = events.some((event) => event.kind === "complete");
+    const hasCompleteEvent = events.some((event) => event.kind === "Complete");
     return hasCompleteEvent ? "success" : "pending";
   }, [events]);
 
