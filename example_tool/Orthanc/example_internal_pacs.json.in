@@ -190,7 +190,7 @@
     "EXAMPLE_HOSPITAL_NAME" :{
       "AET"   : "EXAMPLE_HOSPITAL",
       "Port"  : 4030,
-      "Host"  : "172.1.1.200",
+      "Host"  : "external_pacs",
       "AllowEcho"  : true,
       "AllowFind"  : false,
       "AllowMove"  : false,

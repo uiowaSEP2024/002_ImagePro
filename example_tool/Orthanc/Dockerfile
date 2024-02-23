@@ -51,7 +51,7 @@ RUN apt-get update && apt-get install --no-install-recommends --no-install-sugge
     && rm -rf /var/lib/apt/lists/*
 
 # These IP's are hardcoded so that Orthanc's can communicate with each other
-RUN if [ "$ENV" = "hospital" ] ; then ip addr add 192.168.1.100/24 dev eth0 ; else ip addr add 192.168.1.200/24 dev eth0 ; fi
+#RUN if [ "$ENV" = "hospital" ] ; then ip addr add 192.168.1.100 dev eth0 ; else ip addr add 192.168.1.200 dev eth0 ; fi
 
 # Use the nonroot userRUN if
 USER nonroot
