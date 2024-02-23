@@ -11,8 +11,14 @@ services:
     ports:
       - 4026:4026 # Map the internal PACS DICOM port to the host
       - 8026:8026
+      - host_ip: 192.168.1.100
     networks:
       - orthanc_network # Connect to the orthanc_network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://192.168.1.100:8026" ]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
 
   hospital_pacs:
     build:
@@ -25,9 +31,22 @@ services:
     ports:
       - 4030:4030
       - 8030:8030
+      - host_ip: 192.168.1.200
     networks:
       - orthanc_network # Connect to the orthanc_network
+
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://192.168.1.200:8030" ]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+
+
 # https://docs.docker.com/compose/compose-file/06-networks/
 networks: # Create a network for the Orthanc instances to communicate
   orthanc_network:
     driver: bridge # Use the bridge driver for the network
+    ipam:
+      config:
+        - subnet: 192.168.1.0/24 # Define the subnet for the network
+        - gateway: 192.168.1.1

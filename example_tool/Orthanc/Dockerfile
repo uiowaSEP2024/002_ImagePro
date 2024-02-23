@@ -8,7 +8,7 @@ LABEL maintainer="iejohnson"
 ARG DEBIAN_FRONTEND="noninteractive"
 
 # Argument to determine the Orthanc instance type
-ARG ORTHANC_INSTANCE="default"
+ARG ORTHANC_INSTANCE="internal_pacs"
 
 # Timezone can be overridden during build if needed
 ARG TZ="America/Chicago"
@@ -45,11 +45,15 @@ RUN chown -R nonroot:nonroot /usr/src/app
 # Install dependencies, avoiding recommended and suggested packages, then clean up
 RUN apt-get update && apt-get install --no-install-recommends --no-install-suggests -y \
     tzdata \
+    net-tools \
     build-essential \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Use the nonroot user
+# These IP's are hardcoded so that Orthanc's can communicate with each other
+RUN if [ "$ENV" = "hospital" ] ; then ip addr add 192.168.1.100/24 dev eth0 ; else ip addr add 192.168.1.200/24 dev eth0 ; fi
+
+# Use the nonroot userRUN if
 USER nonroot
 # Arguments to customize ports; these can be overridden during build
 ARG DCMPORT

@@ -189,7 +189,7 @@
     "EXAMPLETOOL" :{
       "AET"   : "EXAMPLETOOL",
       "Port"  : 4026,
-      "Host"  : "127.0.0.1",
+      "Host"  : "172.1.1.100",
       "AllowEcho"  : true,
       "AllowFind"  : false,
       "AllowMove"  : false,
