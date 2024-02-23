@@ -34,7 +34,6 @@ import {
   HStack,
   IconButton,
   Icon,
-  Badge,
   Tag
 } from "@chakra-ui/react";
 import { useAuthContext } from "@/hooks/useAuthContext";
