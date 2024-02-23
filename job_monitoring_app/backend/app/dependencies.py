@@ -22,6 +22,10 @@ API_KEY_HEADER_NAME = "x-api_key"
 
 
 def get_db():
+    """
+    Dependency to get a database session.
+    This function yields a database session and closes it after use.
+    """
     db = config.db.SessionLocal()
     try:
         yield db
@@ -54,7 +58,9 @@ class OAuth2HttpCookieBearer(OAuth2):
         )
 
     async def __call__(self, request: Request) -> Optional[str]:
-        authorization = request.cookies.get("access_token")
+        authorization = request.cookies.get(
+            "access_token"
+        )  # Get the authorization string from the "access_token" cookie.
         scheme, param = get_authorization_scheme_param(authorization)
 
         if not authorization or scheme.lower() != "bearer":
@@ -69,13 +75,19 @@ class OAuth2HttpCookieBearer(OAuth2):
         return param
 
 
-oauth2_http_cookie_bearer_scheme = OAuth2HttpCookieBearer(tokenUrl="login")
+oauth2_http_cookie_bearer_scheme = OAuth2HttpCookieBearer(
+    tokenUrl="login"
+)  # An instance of the OAuth2HttpCookieBearer class.
 
 
 def get_current_user_from_token(
     db: Session = Depends(get_db),
     token: str = Depends(oauth2_http_cookie_bearer_scheme),
 ) -> User:
+    """
+    This function decodes a JWT token, validates it, and returns the associated user.
+    If the token is invalid or the user does not exist, it raises an HTTPException with status code 401.
+    """
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -104,6 +116,10 @@ get_api_key_from_header = APIKeyHeader(name=API_KEY_HEADER_NAME, auto_error=Fals
 
 
 def get_current_provider(user=Depends(get_current_user_from_token)) -> User:
+    """
+    This function checks if the current user is a provider and returns the user if true.
+    If the user is not a provider, it raises an HTTPException with status code 401.
+    """
     if user.role == UserRoleEnum.provider:
         return user
 
@@ -124,6 +140,10 @@ async def get_user_from_api_key(
     api_key_header_value: str = Security(get_api_key_from_header),
     db: Session = Depends(get_db),
 ):
+    """
+    This function validates an API key and returns the associated user.
+    If the API key is missing, invalid, or expired, it raises an HTTPException with status code 403.
+    """
     if not api_key_header_value or api_key_header_value is None:
         raise HTTPException(
             status_code=HTTP_403_FORBIDDEN,
