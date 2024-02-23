@@ -15,14 +15,27 @@ import NextLink from "next/link";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 
 type MetadataConfiguration = components["schemas"]["MetadataConfiguration"];
+
+/**
+ * MetadataProps is a type that represents the properties of the Metadata component.
+ * It includes the metadata, configurations, and other properties of the Table component.
+ */
 type MetadataProps = {
   metadata: Record<string, any>;
   configurations?: MetadataConfiguration[];
 } & TableProps;
 
+/**
+ * MetadataValue is a functional component that renders a metadata value.
+ * It supports different types of values, including units and links.
+ *
+ * @param {object} props - The properties passed to the component.
+ * @param {any} props.value - The value to be rendered.
+ * @returns {JSX.Element} The MetadataValue component.
+ */
 const MetadataValue = (
   props: Partial<MetadataConfiguration> & { value: any }
-) => {
+): JSX.Element => {
   if (props.units) {
     return (
       <HStack spacing={1}>
@@ -46,6 +59,15 @@ const MetadataValue = (
   return <Text>{props.value}</Text>;
 };
 
+/**
+ * Metadata is a functional component that renders a table of metadata.
+ * It supports different types of metadata values, including units and links.
+ *
+ * @param {object} props - The properties passed to the component.
+ * @param {Record<string, any>} props.metadata - The metadata to be rendered.
+ * @param {MetadataConfiguration[]} props.configurations - The configurations for the metadata.
+ * @returns {JSX.Element} The Metadata component.
+ */
 export const Metadata = React.forwardRef<HTMLElement, MetadataProps>(
   function MetadataRef({ metadata, configurations, ...rest }, ref) {
     const configurationMap = configurations?.reduce((acc, curr) => {
