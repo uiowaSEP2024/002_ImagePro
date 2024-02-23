@@ -35,10 +35,10 @@ class OrthancStudyLogger:
         # job_config = None
         # TODO: the steps are used to check if step is complete for the orthanc receiver
         self.steps = {
-            1: {"status": "In Progress"},
-            2: {"status": "Incomplete"},
-            3: {"status": "Incomplete"},
-            4: {"status": "Incomplete"},
+            1: {"status": "In progress"},
+            2: {"status": "Pending"},
+            3: {"status": "Pending"},
+            4: {"status": "Pending"},
         }
 
         # TODO: code below creates the initial events with initial status
@@ -92,7 +92,7 @@ class OrthancStudyLogger:
         previous_steps = self.steps[: step_id - 1]
         is_ready = True
         for step in previous_steps:
-            if step["status"] != "complete":
+            if step["status"] != "Complete":
                 is_ready = False
                 break
         return is_ready
@@ -101,7 +101,7 @@ class OrthancStudyLogger:
         """Checks if a given stage is complete."""
         # TODO: I had to update this. It is not tested and might be buggy
         status = self.steps[step_id]["status"]
-        return status == "complete"
+        return status == "Complete"
 
     def update_data_processing(self, log_file_path: str):
         """
@@ -117,11 +117,11 @@ class OrthancStudyLogger:
         """
         with open(log_file_path, "r") as log_file:
             self.internal_product_log = json.load(log_file)
-        if self.internal_product_log["status"] == "complete":
-            self.update_step_status(3, "complete")
+        if self.internal_product_log["status"] == "Complete":
+            self.update_step_status(3, "Complete")
         else:
             self.update_step_status(
-                3, "failed", reason=self.internal_product_log["reason"]
+                3, "Error", reason=self.internal_product_log["reason"]
             )
 
 
@@ -133,9 +133,9 @@ if __name__ == "__main__":
         tracker_api_key="vdqPPIMw8H2eW-ykGm4tR93VOWg",
         job_config_file="hospital_job_configuration.json",
     )
-    # logger.update_step_status(1, "complete")
-    # logger.update_step_status(2, "complete")
-    # logger.update_step_status(3, "complete")
-    # logger.update_step_status(4, "complete")
+    # logger.update_step_status(1, "Complete")
+    # logger.update_step_status(2, "Complete")
+    # logger.update_step_status(3, "Complete")
+    # logger.update_step_status(4, "Complete")
 # Note: the tracker_api_key needs to be replaced by creating a provider account on the app
 # and generating an api key for your account and pasting that in the OrthancStudyLogger above
