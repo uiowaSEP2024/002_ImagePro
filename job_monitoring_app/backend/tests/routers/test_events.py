@@ -60,7 +60,7 @@ def test_update_event(app_client, job_for_random_user_with_api_key, db):
     event_id = response.json()["id"]
 
     # Capture current time before update
-    current_time_before_update = datetime.datetime.utcnow()
+    current_time_before_update = datetime.datetime.now()
 
     # Prepare data for updating the event
     updated_event_data = {
@@ -90,7 +90,7 @@ def test_update_event(app_client, job_for_random_user_with_api_key, db):
     assert update_response.status_code == 200
 
     # Capture current time after update
-    current_time_after_update = datetime.datetime.utcnow()
+    current_time_after_update = datetime.datetime.now()
 
     # # Verify the updated event attributes
 
@@ -103,5 +103,9 @@ def test_update_event(app_client, job_for_random_user_with_api_key, db):
 
     assert update_response.json()["job_id"] == job.id
     assert update_response.json()["created_at"] == response.json()["created_at"]
+
+    print(current_time_before_update)
+    print(update_datetime)
+    print(current_time_after_update)
 
     assert current_time_before_update <= update_datetime <= current_time_after_update
