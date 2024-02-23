@@ -1,3 +1,11 @@
+/**
+ * This file contains the Dashboard component of the application.
+ * The Dashboard component is a React component that displays a dashboard with various features for the user.
+ * It fetches the current user's data and displays different features based on the user's role.
+ * It also wraps the component with the withAuthenticated higher-order component to ensure that only authenticated users can access this component.
+ */
+
+// Import necessary libraries, components, hooks, and types.
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { withAuthenticated } from "@/components/withAuthenticated";
 import {
@@ -23,6 +31,9 @@ import {
 import { ReactElement } from "react";
 import NextLink from "next/link";
 
+/**
+ * FeatureProps interface for the Feature component.
+ */
 interface FeatureProps {
   text: string;
   iconBg: string;
@@ -30,6 +41,11 @@ interface FeatureProps {
   description?: string;
   link: string;
 }
+
+/**
+ * The Feature component is a React component that displays a feature card on the dashboard.
+ * It takes in a FeatureProps object as props and renders a card with the provided information.
+ */
 const Feature = ({ text, icon, iconBg, description, link }: FeatureProps) => {
   return (
     <Card>
@@ -61,9 +77,15 @@ const Feature = ({ text, icon, iconBg, description, link }: FeatureProps) => {
   );
 };
 
+/**
+ * The Dashboard component is a React component that displays a dashboard with various features for the user.
+ * It fetches the current user's data and displays different features based on the user's role.
+ */
 function Dashboard() {
+  // Fetch the current user's data.
   const { currentUser } = useAuthContext();
 
+  // Define the features to be displayed on the dashboard.
   const features = [
     {
       text: "Jobs",
@@ -91,6 +113,7 @@ function Dashboard() {
     }
   ];
 
+  // Render the Dashboard component.
   return (
     <Container maxW={"5xl"} py={12}>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
@@ -150,4 +173,7 @@ function Dashboard() {
   );
 }
 
+/**
+ * Export the Dashboard component wrapped with the withAuthenticated higher-order component.
+ */
 export default withAuthenticated(Dashboard);
