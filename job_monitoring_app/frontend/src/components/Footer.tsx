@@ -12,9 +12,17 @@ import React from "react";
 import NextLink from "next/link";
 import { useAuthContext } from "@/hooks/useAuthContext";
 
-const Footer = () => {
+/**
+ * Footer is a functional component that renders a footer.
+ * The footer includes links to different pages of the application.
+ * The links displayed in the footer depend on whether the user is authenticated.
+ *
+ * @returns {JSX.Element} The Footer component.
+ */
+const Footer = (): JSX.Element => {
   const { currentUser } = useAuthContext();
 
+  // Define the links to be displayed in the footer.
   const links = [
     {
       to: "/",
@@ -48,6 +56,7 @@ const Footer = () => {
     }
   ];
 
+  // Render the Footer component.
   return (
     <Center mt={12} boxShadow={"xs"}>
       <Container py={4} maxW={"container.xl"} px={4}>
