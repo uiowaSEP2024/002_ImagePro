@@ -1,3 +1,12 @@
+/**
+ * This file contains the ApiKeys component of the application.
+ * The ApiKeys component is a React component that provides a feature for the user to manage API keys for their provider account.
+ * It fetches the existing API keys from the server, displays them in a list, and provides features for the user to create new API keys and expire existing ones.
+ * Each API key is displayed with its note, key, and an option to expire it.
+ * The component also provides a feature for the user to copy the newly created API key to the clipboard.
+ */
+
+// Import necessary libraries, components, hooks, and types.
 import { fetchAPIkeys, fetchExpireApiKey, fetchGenAPIKeys } from "@/data";
 import { ApiKey } from "@/data/types";
 import React, { useCallback, useMemo } from "react";
@@ -25,14 +34,20 @@ import {
   HStack,
   IconButton,
   Icon,
-  Badge,
   Tag
 } from "@chakra-ui/react";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { withAuthenticated } from "@/components/withAuthenticated";
 import { FiCopy } from "react-icons/fi/index.js";
 
+/**
+ * The ApiKeys component is a React component that provides a feature for the user to manage API keys for their provider account.
+ * It fetches the existing API keys from the server, displays them in a list, and provides features for the user to create new API keys and expire existing ones.
+ * Each API key is displayed with its note, key, and an option to expire it.
+ * The component also provides a feature for the user to copy the newly created API key to the clipboard.
+ */
 function ApiKeys() {
+  // Initialize state variables for the API keys data, the note input, and the newly created API key.
   const { currentUser } = useAuthContext();
   const [note, setNote] = useState("");
   const [keys, setKeys] = useState<ApiKey[]>([]);
@@ -94,6 +109,7 @@ function ApiKeys() {
     }, 5000);
   }, [key]);
 
+  // Render the ApiKeys component.
   return (
     <Container pt={12} maxW="container.lg">
       <Box mb={8}>
@@ -246,4 +262,7 @@ function ApiKeys() {
   );
 }
 
+/**
+ * Export the ApiKeys component wrapped with the withAuthenticated higher-order component.
+ */
 export default withAuthenticated(ApiKeys, ["provider"]);

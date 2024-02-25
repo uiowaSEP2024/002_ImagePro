@@ -1,9 +1,15 @@
 import { Job, JobEvent, ApiKey, User, UserCreate } from "./types";
 
+// The base URL for the backend API.
 export const backendUrl = (
   process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000"
 ).replace(/\/$/, "");
 
+/**
+ * Fetches all jobs from the backend API.
+ *
+ * @returns {Promise<Job[] | void>} A promise that resolves to an array of jobs or void.
+ */
 export const fetchJobs = async (): Promise<Job[] | void> => {
   return fetch(`${backendUrl}/jobs`, {
     credentials: "include",
@@ -20,6 +26,12 @@ export const fetchJobs = async (): Promise<Job[] | void> => {
 };
 
 // TODO: Replace with actual API call
+/**
+ * Fetches a job by its ID from the backend API.
+ *
+ * @param {number} id - The ID of the job to fetch.
+ * @returns {Promise<Job | void>} A promise that resolves to a job or void.
+ */
 export const fetchJobById = async (id: number): Promise<Job | void> => {
   return await fetch(`${backendUrl}/jobs/${id}`, {
     credentials: "include",
@@ -35,6 +47,9 @@ export const fetchJobById = async (id: number): Promise<Job | void> => {
     });
 };
 
+/**
+ * Generates API keys by making a POST request to the backend API.
+ */
 export const generateAPIKeys = async () => {
   await fetch(`${backendUrl}/api-keys`, {
     credentials: "include",
@@ -50,6 +65,11 @@ export const generateAPIKeys = async () => {
     });
 };
 
+/**
+ * Fetches all API keys from the backend API.
+ *
+ * @returns {Promise<ApiKey[] | void>} A promise that resolves to an array of API keys or void.
+ */
 export const fetchAPIkeys = async (): Promise<ApiKey[] | void> => {
   return await fetch(`${backendUrl}/api-keys`, {
     credentials: "include",
@@ -65,7 +85,14 @@ export const fetchAPIkeys = async (): Promise<ApiKey[] | void> => {
     });
 };
 
-export const fetchGenAPIKeys = async (data: { note: string }) => {
+/**
+ * Generates API keys by making a POST request to the backend API.
+ *
+ * @param {object} data - The data to send in the request body.
+ * @param {string} data.note - A note to associate with the API key.
+ * @returns {Promise<any>} A promise that resolves to the response data.
+ */
+export const fetchGenAPIKeys = async (data: { note: string }): Promise<any> => {
   const response = await fetch(`${backendUrl}/api-keys`, {
     method: "POST",
     credentials: "include",
@@ -78,6 +105,12 @@ export const fetchGenAPIKeys = async (data: { note: string }) => {
   return await response.json();
 };
 
+/**
+ * Fetches all events for a job from the backend API.
+ *
+ * @param {number} jobId - The ID of the job to fetch events for.
+ * @returns {Promise<JobEvent[] | void>} A promise that resolves to an array of job events or void.
+ */
 export const fetchEvents = async (
   jobId: number
 ): Promise<JobEvent[] | void> => {
@@ -95,21 +128,31 @@ export const fetchEvents = async (
     });
 };
 
-export async function fetchCheckUserLoggedIn() {
+/**
+ * Checks if the user is logged in by making a GET request to the backend API.
+ *
+ * @returns {Promise<{ user?: User; message: string }>} A promise that resolves to an object containing the user and a message.
+ */
+export async function fetchCheckUserLoggedIn(): Promise<{ user?: User; message: string; }> {
   try {
     const result = await fetch(`${backendUrl}/login`, {
       credentials: "include",
       method: "GET"
     });
 
-    return result.json() as unknown as { user?: User; message: string };
+    return await result.json() as unknown as { user?: User; message: string };
   } catch (error) {
     console.log(error);
     throw error;
   }
 }
 
-export const fetchLogout = async () => {
+/**
+ * Logs out the user by making a POST request to the backend API.
+ *
+ * @returns {Promise<any>} A promise that resolves to the response data.
+ */
+export const fetchLogout = async (): Promise<any> => {
   const response = await fetch(`${backendUrl}/logout`, {
     method: "POST",
     credentials: "include"
@@ -118,7 +161,15 @@ export const fetchLogout = async () => {
   return response.json();
 };
 
-export const fetchLogin = async (email: string, password: string) => {
+/**
+ * Logs in the user by making a POST request to the backend API.
+ *
+ * @param {string} email - The email of the user.
+ * @param {string} password - The password of the user.
+ * @returns {Promise<{ user: User }>} A promise that resolves to an object containing the user.
+ * @throws {Error} If the response status is not 200.
+ */
+export const fetchLogin = async (email: string, password: string): Promise<{ user: User; }> => {
   const response = await fetch(`${backendUrl}/login`, {
     credentials: "include",
     method: "POST",
@@ -139,7 +190,13 @@ export const fetchLogin = async (email: string, password: string) => {
   return (await response.json()) as { user: User };
 };
 
-export const fetchSignUp = async (data: UserCreate) => {
+/**
+ * Signs up a new user by making a POST request to the backend API.
+ *
+ * @param {UserCreate} data - The data to send in the request body.
+ * @returns {Promise<any>} A promise that resolves to the response data.
+ */
+export const fetchSignUp = async (data: UserCreate): Promise<any> => {
   const response = await fetch(`${backendUrl}/users`, {
     method: "POST",
     headers: {
@@ -151,7 +208,13 @@ export const fetchSignUp = async (data: UserCreate) => {
   return await response.json();
 };
 
-export const fetchExpireApiKey = async (id: number) => {
+/**
+ * Expires an API key by making a POST request to the backend API.
+ *
+ * @param {number} id - The ID of the API key to expire.
+ * @returns {Promise<any>} A promise that resolves to the response data.
+ */
+export const fetchExpireApiKey = async (id: number): Promise<any> => {
   const response = await fetch(`${backendUrl}/api-keys/${id}/expire`, {
     credentials: "include",
     method: "POST"
@@ -160,6 +223,12 @@ export const fetchExpireApiKey = async (id: number) => {
   return await response.json();
 };
 
+/**
+ * Downloads a report by making a GET request to the backend API.
+ *
+ * @param {string} startDateStr - The start date for the report in YYYY-MM-DD format.
+ * @param {string} endDateStr - The end date for the report in YYYY-MM-DD format.
+ */
 export const fetchDownloadReport = async (
   startDateStr: string,
   endDateStr: string

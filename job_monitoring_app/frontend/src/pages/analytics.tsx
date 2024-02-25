@@ -4,10 +4,23 @@ import JobsChart from "@/components/StackedChart";
 import { fetchJobs } from "@/data";
 import { Job } from "@/data/types";
 import { useState, useEffect, useMemo } from "react";
-
+/**
+ * The Analytics component is a React component that displays job analytics for a selected year.
+ * It fetches job data, calculates the available years from the job data, and allows the user to select a year to view the job analytics for that year.
+ * It also wraps the component with the withAuthenticated higher-order component to ensure that only authenticated users can access this component.
+ *
+ * @returns {JSX.Element} The rendered Analytics component.
+ */
 function Analytics() {
+  /**
+   * State variable for the jobs data.
+   * @type {Job[]}
+   */
   const [jobs, setJobs] = useState<Job[]>([]);
 
+  /**
+   * Effect hook for fetching the jobs data when the component mounts.
+   */
   useEffect(() => {
     const getJobs = async () => {
       const data = await fetchJobs();
@@ -18,6 +31,10 @@ function Analytics() {
     getJobs();
   }, []);
 
+  /**
+   * Memoized array of available years derived from the jobs data.
+   * @type {number[]}
+   */
   const availableYears = useMemo(() => {
     return Array.from(
       new Set(
@@ -32,14 +49,29 @@ function Analytics() {
     );
   }, [jobs]);
 
+  /**
+   * Memoized default year derived from the available years.
+   * @type {number}
+   */
   const defaultYear = useMemo(() => {
     return availableYears[0];
   }, [availableYears]);
 
+  /**
+   * State variable for the selected year.
+   * @type {number}
+   */
   const [year, setYear] = useState<number>();
 
+  /**
+   * Final year value, either the selected year or the default year.
+   * @type {number}
+   */
   const finalYear = year || defaultYear;
 
+  /**
+   * Render the Analytics component.
+   */
   return (
     <Container pt={8} maxW={"container.lg"} justifyContent={"center"}>
       <Heading lineHeight={1.5} textAlign={"center"}>
@@ -72,4 +104,7 @@ function Analytics() {
   );
 }
 
+/**
+ * Export the Analytics component wrapped with the withAuthenticated higher-order component.
+ */
 export default withAuthenticated(Analytics, ["provider"]);

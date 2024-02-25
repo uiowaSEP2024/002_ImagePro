@@ -3,6 +3,9 @@ import { FiCheck, FiX } from "react-icons/fi/index.js";
 import { Metadata } from "./Metadata";
 import { useEffect, useRef, useState } from "react";
 
+/**
+ * Define the kinds of events that can be displayed in the timeline.
+ */
 const KINDS = {
   step: "step",
   complete: "complete",
@@ -13,6 +16,9 @@ const KINDS = {
 
 type Kind = keyof typeof KINDS;
 
+/**
+ * Define the background colors for the different kinds of events.
+ */
 const bgColors: Record<Kind, string> = {
   step: "whatsapp.500",
   complete: "whatsapp.500",
@@ -26,6 +32,9 @@ const MINI_CIRCLE_SIZE = "2";
 const DEFAULT_TIMELINE_HEIGHT_PX = 40;
 const ICON_SIZE = "6";
 
+/**
+ * Define the icons for the different kinds of events.
+ */
 const IconComponents: Record<Kind, React.FC> = {
   complete: () => <Icon as={FiCheck} boxSize={ICON_SIZE} />,
   step: () => <Icon as={FiCheck} boxSize={ICON_SIZE} />,
@@ -42,13 +51,27 @@ type EventTimelineProps = {
   isStart?: boolean;
 };
 
+/**
+ * EventTimeline is a functional component that renders an event in a timeline.
+ * It supports different kinds of events, including steps, completions, successes, errors, and info.
+ * Each kind of event is displayed with a different icon and background color.
+ * The event can also include metadata, which is displayed in a table below the event title.
+ *
+ * @param {object} props - The properties passed to the component.
+ * @param {Kind} props.kind - The kind of the event.
+ * @param {string} props.title - The title of the event.
+ * @param {Record<string, any>} props.metadata - The metadata of the event.
+ * @param {boolean} props.isStart - Whether the event is the start of the timeline.
+ * @param {any[]} props.metadataConfigurations - The configurations for the metadata.
+ * @returns {JSX.Element} The EventTimeline component.
+ */
 export const EventTimeline: React.FC<EventTimelineProps> = ({
   kind: propKind = "info",
   title,
   metadata,
   isStart,
   metadataConfigurations
-}) => {
+}): JSX.Element => {
   const kind = KINDS[propKind] || "info";
   const circleBg = bgColors[kind];
   const circleSize = kind === "info" ? MINI_CIRCLE_SIZE : CIRCLE_SIZE;

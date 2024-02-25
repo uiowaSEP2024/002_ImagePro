@@ -1,3 +1,13 @@
+/**
+ * This file contains the JobPage component of the application.
+ * The JobPage component is a React component that displays the details of a specific job.
+ * It fetches the job data and the events associated with the job from the server, and displays them in a user-friendly format.
+ * The job details include the job's name, date, time, customer ID, and provider.
+ * The events are displayed in a timeline format, with each event represented by a timeline item.
+ * The component also provides a feature for the user to report an issue with the job by sending an email to the system administrator.
+ */
+
+// Import necessary libraries, components, hooks, and types.
 import { Metadata } from "@/components/Metadata";
 import { EventTimeline } from "@/components/EventTimeline";
 import { withAuthenticated } from "@/components/withAuthenticated";
@@ -20,12 +30,19 @@ import {
   Center,
   ThemingProps
 } from "@chakra-ui/react";
-//import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 
+// Define the type for the JobEventWithNumber interface.
 type JobEventWithNumber = JobEvent & { event_number: number };
 
+/**
+ * The JobPage component is a React component that displays the details of a specific job.
+ * It fetches the job data and the events associated with the job from the server, and displays them in a user-friendly format.
+ * The job details include the job's name, date, time, customer ID, and provider.
+ * The events are displayed in a timeline format, with each event represented by a timeline item.
+ * The component also provides a feature for the user to report an issue with the job by sending an email to the system administrator.
+ */
 function JobPage({ initialIsPageLoading = true }) {
   useEnsureAuthenticated();
   const router = useRouter();

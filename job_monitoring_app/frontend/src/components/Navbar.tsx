@@ -12,7 +12,15 @@ import React from "react";
 
 import NextLink from "next/link";
 
-const NavLink = ({ children, link }: { children: ReactNode; link: string }) => (
+/**
+ * NavLink is a functional component that renders a navigation link.
+ *
+ * @param {object} props - The properties passed to the component.
+ * @param {ReactNode} props.children - The child elements to be rendered within the link.
+ * @param {string} props.link - The URL that the link points to.
+ * @returns {JSX.Element} The NavLink component.
+ */
+const NavLink = ({ children, link }: { children: ReactNode; link: string }): JSX.Element => (
   <Link
     as={NextLink}
     px={4}
@@ -29,9 +37,17 @@ const NavLink = ({ children, link }: { children: ReactNode; link: string }) => (
   </Link>
 );
 
-const Navbar = () => {
+/**
+ * Navbar is a functional component that renders a navigation bar.
+ * The navigation bar includes links to different pages of the application.
+ * The links displayed in the navigation bar depend on whether the user is authenticated and their role.
+ *
+ * @returns {JSX.Element} The Navbar component.
+ */
+const Navbar = (): JSX.Element => {
   const { currentUser, logOut } = useAuthContext();
 
+  // Define the links to be displayed in the navigation bar when the user is not authenticated.
   const linksRightUnauthenticated = [
     {
       to: "/login",
@@ -56,6 +72,7 @@ const Navbar = () => {
     }
   ];
 
+  // Define the links to be displayed in the navigation bar when the user is authenticated.
   const linksLeftAuthenticated = [
     {
       to: "/",
@@ -110,6 +127,7 @@ const Navbar = () => {
     }
   ];
 
+  // Determine which set of links to use based on whether the user is authenticated.
   const linksRight = currentUser
     ? linksRightAuthenticated
     : linksRightUnauthenticated;
@@ -118,8 +136,10 @@ const Navbar = () => {
     ? linksLeftAuthenticated
     : linksLeftUnauthenticated;
 
+  // Determine the color of the navigation bar based on the user's role.
   const navBarColor = currentUser?.role == "provider" ? "gray.100" : undefined;
 
+  // Render the Navbar component.
   return (
     <Center bgColor={navBarColor} boxShadow={"xs"}>
       <Container py={2} maxW={"container.xl"} px={4}>

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -22,6 +22,7 @@ ChartJS.register(
   Legend
 );
 
+// Define the colors to be used for the different datasets in the chart.
 const COLORS_LIST = [
   "rgb(255, 99, 132)",
   "rgb(75, 192, 192)",
@@ -30,6 +31,7 @@ const COLORS_LIST = [
   "rgb(125, 69, 200)"
 ];
 
+// Define the months of the year.
 const MONTHS = [
   "January",
   "February",
@@ -45,21 +47,38 @@ const MONTHS = [
   "December"
 ];
 
+/**
+ * JobsChartProps is a type that represents the properties of the JobsChart component.
+ * It includes the year and the jobs to be displayed in the chart.
+ */
 type JobsChartProps = {
   year?: number;
   jobs?: Job[];
 };
 
+/**
+ * JobsChart is a functional component that renders a bar chart of jobs.
+ * The chart displays the number of jobs for each month of a specified year.
+ * Each job is represented by a bar in the chart, and the height of the bar corresponds to the number of jobs.
+ * The jobs are grouped by their configuration name, and each group is displayed with a different color.
+ *
+ * @param {object} props - The properties passed to the component.
+ * @param {number} props.year - The year to be displayed in the chart.
+ * @param {Job[]} props.jobs - The jobs to be displayed in the chart.
+ * @returns {JSX.Element} The JobsChart component.
+ */
 const JobsChart: React.FC<JobsChartProps> = ({
   year = new Date().getFullYear(),
   jobs = []
 }) => {
+  // Filter the jobs to include only those for the specified year.
   const jobsForYear = useMemo(() => {
     return jobs.filter((job) => {
       return new Date(job.created_at!).getFullYear() === Number(year);
     });
   }, [jobs, year]);
 
+  // Count the number of jobs for each month and configuration name.
   const counts = useMemo(() => {
     return jobsForYear.reduce((acc, curr) => {
       const { job_configuration, created_at } = curr;
@@ -76,6 +95,7 @@ const JobsChart: React.FC<JobsChartProps> = ({
     }, {} as Record<string, number[]>);
   }, [jobsForYear]);
 
+  // Find the latest month for which there are jobs.
   const latestMonth = useMemo(() => {
     return jobsForYear.reduce((acc, curr) => {
       const { created_at } = curr;
@@ -89,6 +109,7 @@ const JobsChart: React.FC<JobsChartProps> = ({
     }, 0);
   }, [jobsForYear]);
 
+  // Define the options for the chart.
   const options: ChartOptions<"bar"> = {
     plugins: {
       title: {
@@ -115,6 +136,7 @@ const JobsChart: React.FC<JobsChartProps> = ({
     }
   };
 
+  // Define the data for the chart.
   const data = useMemo(() => {
     return {
       labels: MONTHS.slice(0, latestMonth + 1),
@@ -128,6 +150,7 @@ const JobsChart: React.FC<JobsChartProps> = ({
     };
   }, [counts, latestMonth]);
 
+  // Render the JobsChart component.
   return <Bar data={data} options={options} />;
 };
 
