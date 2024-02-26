@@ -3,6 +3,7 @@ from pathlib import Path
 import pyorthanc
 import requests
 import time
+import zipfile
 from internal_servers.orthanc_data_logging import OrthancStudyLogger
 
 
@@ -24,10 +25,6 @@ def check_study_stable(study: pyorthanc.Study) -> bool:
         )
         print(msg)
     return is_stable
-
-
-import pyorthanc
-from pathlib import Path
 
 
 def download_study(study_id, download_dir: str, orthanc: pyorthanc.Orthanc):
@@ -60,8 +57,37 @@ def download_study(study_id, download_dir: str, orthanc: pyorthanc.Orthanc):
         with open(zip_path, 'wb') as f:
             f.write(study_archive)
         print(f"Downloaded and saved DICOM study ZIP to {zip_path}")
+        return zip_path
     except Exception as e:
         print(f"Failed to download DICOM study for study ID {study_id}. Error: {e}")
+
+
+def unzip_study(zip_path: str, extract_dir: str):
+    """
+    Extracts a ZIP file containing a DICOM study into a specified directory.
+
+    Args:
+    - zip_path (str): The path to the ZIP file to be extracted.
+    - extract_dir (str): The directory path where the contents of the ZIP file will be extracted.
+
+    This function attempts to extract all the contents of the ZIP file specified by zip_path
+    into the directory specified by extract_dir. If the directory does not exist, it is created.
+
+    The function prints a message indicating the success or failure of the extraction operation.
+    """
+
+    # Ensure the Path objects are used for path operations
+    zip_path = Path(zip_path)
+    extract_dir = Path(extract_dir)
+    extract_dir.mkdir(parents=True, exist_ok=True)  # Ensure the extraction directory exists
+
+    try:
+        # Open the ZIP file and extract its contents
+        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+            zip_ref.extractall(extract_dir)
+        print(f"Extracted DICOM study to {extract_dir}")
+    except Exception as e:
+        print(f"Failed to extract ZIP file {zip_path}. Error: {e}")
 
 
 def process_data(data_path):
