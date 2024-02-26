@@ -1,6 +1,7 @@
 from datetime import datetime
 from pathlib import Path
 import pyorthanc
+import requests
 import time
 from internal_servers.orthanc_data_logging import OrthancStudyLogger
 
@@ -25,13 +26,42 @@ def check_study_stable(study: pyorthanc.Study) -> bool:
     return is_stable
 
 
-def download_study(study_id, download_path):
+import pyorthanc
+from pathlib import Path
+
+
+def download_study(study_id, download_dir: str, orthanc: pyorthanc.Orthanc):
     """
-    Download the study data from Orthanc.
+    Downloads a DICOM study from an Orthanc server using pyorthanc and saves it to a specified directory as a ZIP file.
+
+    Args:
+    - study_id (str): The unique identifier of the DICOM study to be downloaded.
+    - download_dir (str): The directory path where the ZIP file will be saved.
+    - orthanc (pyorthanc.Orthanc): The Orthanc server object.
+
+    This function first attempts to download the entire DICOM study associated with the given
+    study_id from the Orthanc server in ZIP format using the pyorthanc client. If the download is successful,
+    the ZIP file is saved to the specified directory. If the directory does not exist, it is created.
+
+    The function prints a message indicating the success or failure of the download operation.
     """
-    # Implement study download logic
-    # This might involve using PyOrthanc methods to fetch and save DICOM files or other data
-    pass  # Placeholder for download logic
+    # Ensure the Path object is used for path operations
+    download_dir = Path(download_dir)
+    download_dir.mkdir(parents=True, exist_ok=True)  # Ensure the download directory exists
+
+    # Define the path for the ZIP file
+    zip_path = download_dir / f"{study_id}.zip"
+
+    try:
+        # Use pyorthanc to download the study as a ZIP archive
+        study_archive = orthanc.GetStudiesIdArchive(study_id)
+
+        # Save the ZIP file to the specified path
+        with open(zip_path, 'wb') as f:
+            f.write(study_archive)
+        print(f"Downloaded and saved DICOM study ZIP to {zip_path}")
+    except Exception as e:
+        print(f"Failed to download DICOM study for study ID {study_id}. Error: {e}")
 
 
 def process_data(data_path):
