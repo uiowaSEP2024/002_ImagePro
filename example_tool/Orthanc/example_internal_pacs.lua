@@ -10,7 +10,7 @@
 
 function ReceivedInstanceFilter(dicom, origin, info)
    -- Only allow incoming MR images
-   if (dicom.Modality == 'MR') then
+   if (dicom.Modality == 'MR' or dicom.Modality == 'DOC') then
       return true
    else
       print('Rejecting non-MR instance with modality ' .. dicom.Modality)
