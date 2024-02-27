@@ -137,6 +137,7 @@ except Exception as e:
 stage_name = "PDF to DICOM conversion"
 # This assumes that the template IMA file is in the session directory and that the first .dcm file is the valid
 template_dcm = sorted(session_path.rglob("*.dcm"))[0]
+print(f"template_dcm: {template_dcm}")
 try:
     converter = Pdf2EncapsDCM()
     converted_dcm = converter.run(
@@ -149,25 +150,21 @@ try:
     # Adding needed metadata to the report
     """"""
     pdf_dcm = dcmread(converted_dcm, stop_before_pixels=True)
+    template_dcm = dcmread(template_dcm, stop_before_pixels=True)
+    for tag in [0x00200010, 0x0020000d, 0x0020000e, 0x00080018, 0x00020000]:
+        print(tag)
+        data_elem = template_dcm.get(tag)
+        if tag == 0x00080018:
+            data_elem.value = "1.2.840.10008.1234567890"
+        print(data_elem)
+        pdf_dcm.add(data_elem)
 
-    extra_metadata = [
-        (
-            "SeriesDescription",
-            "0008,103e",
-            "This is a rough brainmask",
-        ),
-    ]
-    for info in extra_metadata:
-        title = info[0]
-        tag = info[1]
-        description = info[2]
-        # HACK this should be using the pydicom tag value but it's not working for some reason
-        elem = pydicom.DataElement(title, "LO", description)
-        pdf_dcm.DocumentTitle = f"BrainyBarrier PDF Results: for {im_path.stem}"
-        pdf_dcm.save_as(converted_dcm)
+    pdf_dcm.SeriesDescription = "This is a rough brainmask"
+    pdf_dcm.DocumentTitle = f"BrainyBarrier PDF Results"
+    pdf_dcm.save_as(converted_dcm, write_like_original=False)
 
     # move the report.dcm to the deliverables directory
-    run(["mv", converted_dcm, deliverables_dir])
+    run(["mv", converted_dcm, f"{deliverables_dir}/"])
 
 except Exception as e:
     reason = f"Error in stage: {stage_name}"
