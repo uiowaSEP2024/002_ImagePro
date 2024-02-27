@@ -1,7 +1,7 @@
 from datetime import datetime
 from pathlib import Path
 import pyorthanc
-import requests
+import subprocess
 import time
 import zipfile
 from internal_servers.orthanc_data_logging import OrthancStudyLogger
@@ -51,7 +51,7 @@ def download_study(study_id, download_dir: str, orthanc: pyorthanc.Orthanc):
 
     try:
         # Use pyorthanc to download the study as a ZIP archive
-        study_archive = orthanc.GetStudiesIdArchive(study_id)
+        study_archive = orthanc.get_studies_id_archive(study_id)
 
         # Save the ZIP file to the specified path
         with open(zip_path, 'wb') as f:
@@ -59,7 +59,7 @@ def download_study(study_id, download_dir: str, orthanc: pyorthanc.Orthanc):
         print(f"Downloaded and saved DICOM study ZIP to {zip_path}")
         return zip_path
     except Exception as e:
-        print(f"Failed to download DICOM study for study ID {study_id}. Error: {e}")
+        print(f"Error to download DICOM study for study ID {study_id}. Error: {e}")
 
 
 def unzip_study(zip_path: str, extract_dir: str):
@@ -87,15 +87,42 @@ def unzip_study(zip_path: str, extract_dir: str):
             zip_ref.extractall(extract_dir)
         print(f"Extracted DICOM study to {extract_dir}")
     except Exception as e:
-        print(f"Failed to extract ZIP file {zip_path}. Error: {e}")
+        print(f"Error to extract ZIP file {zip_path}. Error: {e}")
 
 
-def process_data(data_path):
+def process_data(brains_tool_path: str, study_id: str, input_data_path: str, output_path: str):
     """
-    Call another script to process the downloaded data.
+    Runs a Python script to process DICOM data using subprocess, with specified paths for the script, input data, and output.
+
+    Args:
+    - brains_tool_path (str): The full path to the brainmask_tool.py script.
+    - study_id (str): Study id for the study being processed.
+    - input_data_path (str): The directory path where the input DICOM data is located.
+    - output_path (str): The directory path where the processed data will be saved.
+
+    This function executes the brainmask_tool.py script with specified input and output directories
+    using subprocess.run. It checks for execution success and prints the script output or errors.
     """
-    pass
-    # subprocess.run(["python", "process_data_script.py", data_path], check=True)
+
+    # Ensure the output directory exists
+    Path(output_path).mkdir(parents=True, exist_ok=True)
+
+    # Command to run the script
+    command = [
+        "python3",
+        brains_tool_path,
+        "-i", study_id,
+        "-s", input_data_path,
+        "-o", output_path
+    ]
+
+    try:
+        # Execute the command
+        result = subprocess.run(command, check=True, text=True, capture_output=True)
+        print(f"Script output: {result.stdout}")
+        print("Script executed successfully.")
+    except Exception as e:
+        print(f"Error executing script: {e}")
 
 
 def send_data_to_hospital(data_path, hospital_id):
@@ -208,7 +235,7 @@ def make_list_of_studies_to_process(
     )
 
 
-def main():
+def main(internal_data_path: Path):
     with pyorthanc.Orthanc("http://localhost:8026") as internal_orthanc:
         while True:
             study_processed_dict = {}
@@ -222,41 +249,48 @@ def main():
                 current_logger = study_processed_dict[study.id_]
                 if check_study_stable(study):
                     current_logger.update_step_status(1, "Complete")
-                if current_logger.step_is_ready(2):
-                    current_logger.update_step_status(2, "In progress")
-                    try:
-                        download_study(study.id_, "download_path")
-                        current_logger.update_step_status(2, "Complete")
-                    except Exception as e:
-                        current_logger.update_step_status(2, "Error", str(e))
-                if current_logger.step_is_ready(3):
-                    current_logger.update_step_status(3, "In progress")
-                    try:
-                        process_data("download_path")
-                        # TODO Update this to have the processed data path
-                        current_logger.update_step_status(3, "Complete")
-                        # current_logger.update_data_processing("download_path")
-                    except Exception as e:
-                        current_logger.update_step_status(3, "Error", str(e))
-                if current_logger.step_is_ready(4):
-                    current_logger.update_step_status(4, "In progress")
-                    try:
-                        send_data_to_hospital(
-                            "processed_data_path", current_logger.hospital_id
-                        )
-                        current_logger.update_step_status(4, "Complete")
-                    except Exception as e:
-                        current_logger.update_step_status(4, "Error", str(e))
+                    if current_logger.step_is_ready(2):
+                        current_logger.update_step_status(2, "In progress")
+                        try:
+                            study_data_path = internal_data_path / study.id_
+                            zip_path = download_study(study.id_, f"{study_data_path}/archive", internal_orthanc)
+                            unzip_study(zip_path.as_posix(), f"{study_data_path}/data")
+                            current_logger.update_step_status(2, "Complete")
+                        except Exception as e:
+                            current_logger.update_step_status(2, "Error", str(e))
+                    if current_logger.step_is_ready(3):
+                        current_logger.update_step_status(3, "In progress")
+                        try:
+                            process_data(
+                                brains_tool_path="/home/mbrzus/programming/002_ImagePro/example_tool/brainmask_tool.py",
+                                study_id=study.id_,
+                                input_data_path=f"{study_data_path}/data",
+                                output_path=f"{study_data_path}/results",
+                            )
+                            # TODO Update this to have the processed data path
+                            current_logger.update_step_status(3, "Complete")
+                            # current_logger.update_data_processing("download_path")
+                        except Exception as e:
+                            current_logger.update_step_status(3, "Error", str(e))
+                    if current_logger.step_is_ready(4):
+                        current_logger.update_step_status(4, "In progress")
+                        try:
+                            send_data_to_hospital(
+                                "processed_data_path", current_logger.hospital_id
+                            )
+                            current_logger.update_step_status(4, "Complete")
+                        except Exception as e:
+                            current_logger.update_step_status(4, "Error", str(e))
 
-                if current_logger._stage_is_complete(4):
-                    print(f"Study {study.id_} has been processed and sent to hospital")
-                    print(f"Deleting study {study.id_}")
-                    internal_orthanc.delete_studies_id(study.id_)
-                    study_processed_dict.pop(study.id_)
+                    if current_logger._stage_is_Complete(4):
+                        print(f"Study {study.id_} has been processed and sent to hospital")
+                        print(f"Deleting study {study.id_}")
+                        internal_orthanc.delete_studies_id(study.id_)
+                        study_processed_dict.pop(study.id_)
 
             print("Sleeping for 10 seconds..")
             time.sleep(10)
 
 
 if __name__ == "__main__":
-    main()
+    main(Path("/home/mbrzus/programming/002_ImagePro/example_tool/example_output"))
