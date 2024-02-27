@@ -44,7 +44,9 @@ def download_study(study_id, download_dir: str, orthanc: pyorthanc.Orthanc):
     """
     # Ensure the Path object is used for path operations
     download_dir = Path(download_dir)
-    download_dir.mkdir(parents=True, exist_ok=True)  # Ensure the download directory exists
+    download_dir.mkdir(
+        parents=True, exist_ok=True
+    )  # Ensure the download directory exists
 
     # Define the path for the ZIP file
     zip_path = download_dir / f"{study_id}.zip"
@@ -54,7 +56,7 @@ def download_study(study_id, download_dir: str, orthanc: pyorthanc.Orthanc):
         study_archive = orthanc.get_studies_id_archive(study_id)
 
         # Save the ZIP file to the specified path
-        with open(zip_path, 'wb') as f:
+        with open(zip_path, "wb") as f:
             f.write(study_archive)
         print(f"Downloaded and saved DICOM study ZIP to {zip_path}")
         return zip_path
@@ -79,18 +81,22 @@ def unzip_study(zip_path: str, extract_dir: str):
     # Ensure the Path objects are used for path operations
     zip_path = Path(zip_path)
     extract_dir = Path(extract_dir)
-    extract_dir.mkdir(parents=True, exist_ok=True)  # Ensure the extraction directory exists
+    extract_dir.mkdir(
+        parents=True, exist_ok=True
+    )  # Ensure the extraction directory exists
 
     try:
         # Open the ZIP file and extract its contents
-        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+        with zipfile.ZipFile(zip_path, "r") as zip_ref:
             zip_ref.extractall(extract_dir)
         print(f"Extracted DICOM study to {extract_dir}")
     except Exception as e:
         print(f"Error to extract ZIP file {zip_path}. Error: {e}")
 
 
-def process_data(brains_tool_path: str, study_id: str, input_data_path: str, output_path: str):
+def process_data(
+    brains_tool_path: str, study_id: str, input_data_path: str, output_path: str
+):
     """
     Runs a Python script to process DICOM data using subprocess, with specified paths for the script, input data, and output.
 
@@ -111,9 +117,12 @@ def process_data(brains_tool_path: str, study_id: str, input_data_path: str, out
     command = [
         "python3",
         brains_tool_path,
-        "-i", study_id,
-        "-s", input_data_path,
-        "-o", output_path
+        "-i",
+        study_id,
+        "-s",
+        input_data_path,
+        "-o",
+        output_path,
     ]
 
     try:
@@ -125,11 +134,38 @@ def process_data(brains_tool_path: str, study_id: str, input_data_path: str, out
         print(f"Error executing script: {e}")
 
 
-def send_data_to_hospital(data_path, hospital_id):
+def upload_data_to_internal(directory_path: str, orthanc: pyorthanc.Orthanc):
     """
-    Send the processed data to the hospital.
+    Uploads DICOM files from a specified directory back to an Orthanc server.
+
+    Args:
+    - directory_path (str): The path to the directory containing DICOM files to be uploaded.
+    - orthanc (pyorthanc.Orthanc): The Orthanc server object.
     """
-    pass  # Placeholder for sending data to hospital logic
+    # Iterate over each file in the directory and upload it
+    directory = Path(directory_path)
+    for file_path in directory.rglob(
+        "*.dcm"
+    ):  # Assuming DICOM files have .dcm extension
+        try:
+            with open(file_path, "rb") as file:
+                result = orthanc.post_instances(file.read())
+                print(result.get("Status"))
+            print(f"Successfully uploaded {file_path.name} to Orthanc.")
+        except Exception as e:
+            print(f"Failed to upload {file_path.name}. Error: {e}")
+
+
+def return_to_original_PACS(orthanc: pyorthanc.Orthanc, study_id: str):
+    """
+    Return data to the original sender - Hospital PACS
+
+    Args:
+    - orthanc (pyorthanc.Orthanc): The Orthanc server object.
+    - study_id (str): Study id for the study being processed.
+    """
+    response = orthanc.post_modalities_id_store("EXAMPLE_HOSPITAL_NAME", data=study_id)
+    print(response)
 
 
 def map_aet_to_hospital_id(aet: str) -> str:
@@ -253,7 +289,11 @@ def main(internal_data_path: Path):
                         current_logger.update_step_status(2, "In progress")
                         try:
                             study_data_path = internal_data_path / study.id_
-                            zip_path = download_study(study.id_, f"{study_data_path}/archive", internal_orthanc)
+                            zip_path = download_study(
+                                study.id_,
+                                f"{study_data_path}/archive",
+                                internal_orthanc,
+                            )
                             unzip_study(zip_path.as_posix(), f"{study_data_path}/data")
                             current_logger.update_step_status(2, "Complete")
                         except Exception as e:
@@ -275,15 +315,20 @@ def main(internal_data_path: Path):
                     if current_logger.step_is_ready(4):
                         current_logger.update_step_status(4, "In progress")
                         try:
-                            send_data_to_hospital(
-                                "processed_data_path", current_logger.hospital_id
+                            upload_data_to_internal(
+                                directory_path=f"{study_data_path}/deliverables",
+                                orthanc=internal_orthanc,
                             )
+                            return_to_original_PACS(internal_orthanc, study.id_)
                             current_logger.update_step_status(4, "Complete")
                         except Exception as e:
                             current_logger.update_step_status(4, "Error", str(e))
 
                     if current_logger._stage_is_Complete(4):
-                        print(f"Study {study.id_} has been processed and sent to hospital")
+                        print(
+                            f"Study {study.id_} has been processed and sent to hospital"
+                        )
+
                         print(f"Deleting study {study.id_}")
                         internal_orthanc.delete_studies_id(study.id_)
                         study_processed_dict.pop(study.id_)
