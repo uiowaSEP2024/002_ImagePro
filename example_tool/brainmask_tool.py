@@ -48,6 +48,7 @@ study_id = args.study_id
 status = None
 reason = None
 log_file_path = output_path / f"{study_id}_log.json"
+current_dir = Path(__file__).parent
 
 stage_name = "Input Data Validation and Conversion"
 print(f"Running stage: {stage_name}")
@@ -63,7 +64,7 @@ try:
     nifti_path = dicom_inference_and_conversion(
         session_dir=session_path.as_posix(),
         output_dir=output_path.as_posix(),
-        model_path="./rf_dicom_modality_classifier.onnx",
+        model_path=f"{current_dir.as_posix()}/rf_dicom_modality_classifier.onnx",
     )
 except Exception as e:
     reason = f"Error in stage: {stage_name}"
@@ -93,7 +94,7 @@ if not Path(brainmask_output_dir).exists():
 # run inference
 try:
     print("Running brainmask inference")
-    brainmask_inference(data_dict, "brainmask_model.ckpt", brainmask_output_dir)
+    brainmask_inference(data_dict, f"{current_dir.as_posix()}/brainmask_model.ckpt", brainmask_output_dir)
 except Exception as e:
     reason = f"Error in stage: {stage_name}"
     status = "failed"
@@ -103,6 +104,12 @@ except Exception as e:
     sys.exit(1)
 # create output directory for report
 report_output_dir = Path(nifti_path).parent.as_posix() + "/report"
+if not Path(report_output_dir).exists():
+    print("Creating report output directory")
+    run(["mkdir", "-p", report_output_dir])
+
+# make deliverables directory
+deliverables_dir = Path(output_path).parent.as_posix() + "/deliverables"
 if not Path(report_output_dir).exists():
     print("Creating report output directory")
     run(["mkdir", "-p", report_output_dir])
@@ -128,8 +135,8 @@ except Exception as e:
 
 
 stage_name = "PDF to DICOM conversion"
-# This assumes that the template IMA file is in the session directory and that the first IAM file is the valid
-template_dcm = sorted(session_path.glob("*.IMA"))[0]
+# This assumes that the template IMA file is in the session directory and that the first .dcm file is the valid
+template_dcm = sorted(session_path.rglob("*.dcm"))[0]
 try:
     converter = Pdf2EncapsDCM()
     converted_dcm = converter.run(
@@ -158,6 +165,9 @@ try:
         elem = pydicom.DataElement(title, "LO", description)
         pdf_dcm.DocumentTitle = f"BrainyBarrier PDF Results: for {im_path.stem}"
         pdf_dcm.save_as(converted_dcm)
+
+    # move the report.dcm to the deliverables directory
+    run(["mv", converted_dcm, deliverables_dir])
 
 except Exception as e:
     reason = f"Error in stage: {stage_name}"
