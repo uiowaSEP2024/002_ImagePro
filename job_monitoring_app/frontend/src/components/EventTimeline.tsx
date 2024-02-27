@@ -1,6 +1,8 @@
 import { Flex, Circle, Heading, Icon, Center } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
-import { MdPending } from "react-icons/md";
+import { MdOutlinePendingActions } from "react-icons/md/index.js";
+import { GrInProgress } from "react-icons/gr/index.js";
+
 import { FiCheck, FiX } from "react-icons/fi/index.js";
 import { Metadata } from "./Metadata";
 import { useEffect, useRef, useState } from "react";
@@ -11,7 +13,6 @@ import { useEffect, useRef, useState } from "react";
 const KINDS = {
   pending: "Pending",
   complete: "Complete",
-  success: "Success",
   in_progress: "In progress",
   error: "Error",
   info: "Info"
@@ -24,9 +25,8 @@ type Kind = keyof typeof KINDS;
  */
 const bgColors: Record<Kind, string> = {
   complete: "whatsapp.500",
-  in_progress: "whatsapp.500",
-  pending: "gray.500",
-  success: "whatsapp.500",
+  in_progress: "blue.500",
+  pending: "yellow.500",
   error: "red.500",
   info: "gray.500"
 };
@@ -41,11 +41,10 @@ const ICON_SIZE = "6";
  */
 const IconComponents: Record<Kind, React.FC> = {
   complete: () => <Icon as={FiCheck} boxSize={ICON_SIZE} />,
-  in_progress: () => <Icon as={FiCheck} boxSize={ICON_SIZE} />,
-  success: () => <Icon as={FiCheck} boxSize={ICON_SIZE} />,
+  in_progress: () => <Icon as={GrInProgress} boxSize={ICON_SIZE} />,
   error: () => <Icon as={FiX} boxSize={ICON_SIZE} />,
   info: () => <Circle bg={"gray"} size={"2"} />,
-  pending: () => <Icon as={FiCheck} boxSize={ICON_SIZE} />
+  pending: () => <Icon as={MdOutlinePendingActions} boxSize={ICON_SIZE} />
 };
 
 type EventTimelineProps = {
@@ -58,7 +57,7 @@ type EventTimelineProps = {
 
 /**
  * EventTimeline is a functional component that renders an event in a timeline.
- * It supports different kinds of events, including steps, completions, successes, errors, and info.
+ * It supports different kinds of events, including completions, pendings, errors, info, in progresses.
  * Each kind of event is displayed with a different icon and background color.
  * The event can also include metadata, which is displayed in a table below the event title.
  *
@@ -71,16 +70,16 @@ type EventTimelineProps = {
  * @returns {JSX.Element} The EventTimeline component.
  */
 export const EventTimeline: React.FC<EventTimelineProps> = ({
-  kind: propKind = "info",
+  kind,
   title,
   metadata,
   isLast,
   metadataConfigurations
 }) => {
-  const kind = KINDS[propKind] || "info";
-  const circleBg = bgColors[kind];
-  const circleSize = kind === "info" ? MINI_CIRCLE_SIZE : CIRCLE_SIZE;
-  const IconComponent = IconComponents[kind] || IconComponents["info"];
+  const propKind = kind === "In progress" ? "in_progress" : KINDS[kind.toLowerCase()].toLowerCase();
+  const circleBg = bgColors[propKind];
+  const circleSize = propKind === "info" ? MINI_CIRCLE_SIZE : CIRCLE_SIZE;
+  const IconComponent = IconComponents[propKind];
   const metadataRef = useRef<HTMLElement>(null);
   const [timelineHeight, setTimelineHeight] = useState(
     DEFAULT_TIMELINE_HEIGHT_PX

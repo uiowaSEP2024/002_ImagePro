@@ -52,7 +52,7 @@ function JobPage({ initialIsPageLoading = true }) {
   const [isPageLoading, setIsPageLoading] = useState(initialIsPageLoading);
 
   const allEvents = useMemo(() => {
-    return events.slice().sort();
+    return events.slice().sort((a, b) => a.id - b.id);
   }, [events]);
 
   const numSteps = useMemo(
@@ -72,13 +72,12 @@ function JobPage({ initialIsPageLoading = true }) {
   }, [jobId]);
 
   // Derive the jobStatus based on the last event
-  // If the last event is an error, the job is in an error state
-  // If the job has num_steps, check if the number of step events matches the number of steps
+  // If any event is an error, the job is in an error state
   // Otherwise, check if the job has a complete event
   const jobStatus = useMemo(() => {
-    const lastEvent = events.at(-1);
 
-    if (lastEvent?.kind === "Error") {
+    const hasErrorEvent = events.some((event) => event.kind === "Error");
+    if (hasErrorEvent) {
       return "error";
     }
 
@@ -115,11 +114,11 @@ function JobPage({ initialIsPageLoading = true }) {
     return () => clearInterval(interval);
   }, [job, jobId, jobStatus, events]);
 
-  // Derive the progress percentage based on either numSteps
+  // Derive the progress percentage based on numSteps and event kind
   // if it is available, or do 0 -> 1 -> 50 -> 100 based on the presence of any events
   const progressAmount = useMemo(() => {
     if (numSteps) {
-      const stepEvents = events.filter((event) => !!event.step_configuration);
+      const stepEvents = events.filter((event) => !!event.step_configuration && (event.kind === "Complete" || event.kind === "Error"));
       return ((stepEvents.length / numSteps) * 100).toFixed(0);
     }
 
@@ -221,7 +220,7 @@ function JobPage({ initialIsPageLoading = true }) {
                   metadataConfigurations={
                     event.step_configuration?.metadata_configurations
                   }
-                  kind={event.kind as any}
+                  kind={event.kind}
                   metadata={event.event_metadata}
                 />
               );
