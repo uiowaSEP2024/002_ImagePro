@@ -110,9 +110,9 @@ if not Path(report_output_dir).exists():
 
 # make deliverables directory
 deliverables_dir = Path(output_path).parent.as_posix() + "/deliverables"
-if not Path(report_output_dir).exists():
+if not Path(deliverables_dir).exists():
     print("Creating report output directory")
-    run(["mkdir", "-p", report_output_dir])
+    run(["mkdir", "-p", deliverables_dir])
 
 
 # generate report
