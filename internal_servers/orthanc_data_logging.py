@@ -1,8 +1,19 @@
 import json
+import time
 from typing import Optional
 from pathlib import Path
 from typing import Union
 from job_monitoring_app.trackerapi.trackerapi import TrackerApi, JobConfigManager
+import os
+
+from dotenv import load_dotenv
+
+base_project_dir = Path(__file__).parent.parent
+relative_env_path = base_project_dir / "job_monitoring_app/backend/.env.local"
+assert relative_env_path.exists(), f"Expected to find .env file at {relative_env_path}"
+load_dotenv(relative_env_path)
+
+API_KEY = os.environ.get("API_KEY")
 
 
 class OrthancStudyLogger:
@@ -130,13 +141,15 @@ class OrthancStudyLogger:
 if __name__ == "__main__":
     logger = OrthancStudyLogger(
         hospital_id=1,
-        study_id=998,
-        tracker_api_key="8CpeW-bUv9uzYUU1K15IKFXfuQ4",
+        study_id=431,
+        tracker_api_key=API_KEY,
         job_config_file="hospital_job_configuration.json",
     )
     logger.update_step_status(1, "Complete")
     logger.update_step_status(2, "Complete")
     logger.update_step_status(3, "Complete")
+    logger.update_step_status(4, "In progress")
+    time.sleep(40)
     logger.update_step_status(4, "Complete")
 # Note: the tracker_api_key needs to be replaced by creating a provider account on the app
 # and generating an api key for your account and pasting that in the OrthancStudyLogger above
