@@ -35,6 +35,9 @@ import { useEffect, useMemo, useState } from "react";
 
 // Define the type for the JobEventWithNumber interface.
 type JobEventWithNumber = JobEvent & { event_number: number };
+// Define the type for event kinds
+type Kind = "error" | "pending" | "complete" | "in_progress" | "info";
+
 
 /**
  * The JobPage component is a React component that displays the details of a specific job.
@@ -220,7 +223,7 @@ function JobPage({ initialIsPageLoading = true }) {
                   metadataConfigurations={
                     event.step_configuration?.metadata_configurations
                   }
-                  kind={event.kind}
+                  kind={event.kind as Kind}
                   metadata={event.event_metadata}
                 />
               );
