@@ -76,24 +76,11 @@ export const EventTimeline: React.FC<EventTimelineProps> = ({
   isLast,
   metadataConfigurations
 }) => {
-  const propKind = kind === "In progress" ? "in_progress" : KINDS[kind.toLowerCase()].toLowerCase();
+  const propKind = kind.toLowerCase() === "in progress" ? "in_progress" : kind.toLowerCase() as Kind;
   const circleBg = bgColors[propKind];
   const circleSize = propKind === "info" ? MINI_CIRCLE_SIZE : CIRCLE_SIZE;
   const IconComponent = IconComponents[propKind];
   const metadataRef = useRef<HTMLElement>(null);
-  const [timelineHeight, setTimelineHeight] = useState(
-    DEFAULT_TIMELINE_HEIGHT_PX
-  );
-
-  useEffect(() => {
-    if (metadataRef.current) {
-      if (metadataRef.current.clientHeight > DEFAULT_TIMELINE_HEIGHT_PX) {
-        setTimelineHeight(metadataRef.current.clientHeight);
-      } else {
-        setTimelineHeight(DEFAULT_TIMELINE_HEIGHT_PX);
-      }
-    }
-  }, [metadata]);
 
   return (
     <Flex width={"100%"} alignItems={"center"} flex={1} gap={3}>
