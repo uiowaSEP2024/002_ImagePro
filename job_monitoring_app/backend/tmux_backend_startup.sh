@@ -40,7 +40,7 @@ tmux new-window -d -t backend_session -n run_backend
 # Also start the virtual environment in the second pane
 tmux send-keys -t backend_session:run_backend.0 "source $VENV_PATH/bin/activate" C-m
 tmux send-keys -t backend_session:run_backend.0 "cd $SCRIPT_DIR" C-m
-#tmux send-keys -t backend_session:run_database.0 "/bin/bash alembic upgrade head" C-m # TODO: add this line in the future
+tmux send-keys -t backend_session:run_database.0 "/bin/bash alembic upgrade head" C-m
 tmux send-keys -t backend_session:run_backend.0 "/bin/bash run-dev.sh" C-m
 
 # Attach to the tmux session
