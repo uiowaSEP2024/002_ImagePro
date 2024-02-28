@@ -14,11 +14,13 @@ if [ ! -d "$VENV_PATH" ]; then
     # Create a virtual environment at the specified path
     run "python3 -m venv $VENV_PATH"
     # Activate the virtual environment
+    # shellcheck disable=SC1091
     source "$VENV_PATH"/bin/activate
     # Install the required packages
     pip install -r requirements.txt
 else
     # Activate the virtual environment
+    # shellcheck disable=SC1091
     source "$VENV_PATH"/bin/activate
     # Update the required packages to the latest version
     pip install -r requirements.txt
