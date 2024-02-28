@@ -46,7 +46,7 @@ class OrthancStudyLogger:
         # job_config = None
         # TODO: the steps are used to check if step is complete for the orthanc receiver
         self.steps = {
-            1: {"status": "In progress"},
+            1: {"status": "Pending"},
             2: {"status": "Pending"},
             3: {"status": "Pending"},
             4: {"status": "Pending"},
@@ -77,6 +77,13 @@ class OrthancStudyLogger:
             )
             # Log the ID of each event
             self.step_PKs[idx + 1] = new_event.event_id
+
+        # mock pipeline
+        for step in self.step_PKs:
+            time.sleep(5)
+            self.update_step_status(step, "In progress")
+            time.sleep(5)
+            self.update_step_status(step, "Complete")
 
     def update_step_status(
         self, step_id: int, status: str, reason: Optional[str] = None
@@ -141,15 +148,10 @@ class OrthancStudyLogger:
 if __name__ == "__main__":
     logger = OrthancStudyLogger(
         hospital_id=1,
-        study_id=431,
+        study_id=433,
         tracker_api_key=API_KEY,
         job_config_file="hospital_job_configuration.json",
     )
-    logger.update_step_status(1, "Complete")
-    logger.update_step_status(2, "Complete")
-    logger.update_step_status(3, "Complete")
-    logger.update_step_status(4, "In progress")
-    time.sleep(40)
-    logger.update_step_status(4, "Complete")
+
 # Note: the tracker_api_key needs to be replaced by creating a provider account on the app
 # and generating an api key for your account and pasting that in the OrthancStudyLogger above
