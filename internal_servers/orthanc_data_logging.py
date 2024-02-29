@@ -24,7 +24,7 @@ class OrthancStudyLogger:
             hospital_id  # hospital_id corresponds to the customer_id in the backend
         )
         self.study_id = (
-            study_id  # study_id corresponds to the provider_job_id in the backend
+            study_id  # study_id corresponds to the provider_study_id in the backend
         )
         self.internal_product_log = None
 
@@ -35,13 +35,13 @@ class OrthancStudyLogger:
         job_config_manager = JobConfigManager(
             configurations_file=job_configurations_file
         )
-        job_config = job_config_manager.get_job_config("hospital_job")
+        job_config = job_config_manager.get_job_config("hospital_study")
 
-        # Create TrackerAPI object and job session
+        # Create TrackerAPI object and study session
         tracker = TrackerApi(tracker_api_key)
         tracker.register_job_config(job_config)
 
-        # Signal the start of a new job
+        # Signal the start of a new study
         self.tracker_job = tracker.create_job(study_id, hospital_id, job_config.tag)
         # job_config = None
         # TODO: the steps are used to check if step is complete for the orthanc receiver
@@ -101,8 +101,8 @@ class OrthancStudyLogger:
 
         # TODO: Update step
         # TODO: this needs to be implemented to allow for updating step in the api and backend
-        # event_id becomes the primary key of the event corresponding to this event for this job, which is saved in self.step_PKs
-        self.tracker_job.update_event(
+        # event_id becomes the primary key of the event corresponding to this event for this study, which is saved in self.step_PKs
+        self.tracker_study.update_event(
             kind=status, event_id=self.step_PKs[step_id], metadata=metadata
         )
 

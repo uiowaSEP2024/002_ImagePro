@@ -26,8 +26,8 @@ def get_reporting_events(
     This is done to facilitate the subsequent database query.
 
     A SQL query is then constructed using SQLAlchemy's ORM. The query is designed to select from the Event model
-    and join with the Job, JobConfiguration, and StepConfiguration models. The join is based on the relationships
-    defined in the models. The query also includes filters to only select events where the Job's provider_id matches
+    and join with the Study, JobConfiguration, and StepConfiguration models. The join is based on the relationships
+    defined in the models. The query also includes filters to only select events where the Study's provider_id matches
     the provided provider_id and the Event's created_at date is within the range of start_date and end_date.
 
     The query is then executed using the all() method, which returns all results that match the query. The results
@@ -40,13 +40,16 @@ def get_reporting_events(
 
     query = (
         db.query(
-            models.Event, models.Job, models.JobConfiguration, models.StepConfiguration
+            models.Event,
+            models.Study,
+            models.JobConfiguration,
+            models.StepConfiguration,
         )
         .select_from(models.Event)
-        .join(models.Job, models.Event.job)
-        .join(models.JobConfiguration, models.Job.job_configuration)
+        .join(models.Study, models.Event.study)
+        .join(models.JobConfiguration, models.Study.job_configuration)
         .join(models.StepConfiguration, models.Event.step_configuration)
-        .filter(models.Job.provider_id == provider_id)
+        .filter(models.Study.provider_id == provider_id)
         .filter(models.Event.created_at >= start_date)
         .filter(models.Event.created_at <= end_date)
     )
@@ -82,10 +85,10 @@ def get_reporting_events(
                     schemas.JobConfiguration.from_orm(job_configuration),
                 ).items()
             },
-            # Do the same for the Job object, but prefix the keys with "job."
+            # Do the same for the Study object, but prefix the keys with "study."
             **{
-                k + ".job": v
-                for k, v in serialized(schemas.JobPure.from_orm(job)).items()
+                k + ".study": v
+                for k, v in serialized(schemas.StudyPure.from_orm(study)).items()
             },
             # Do the same for the StepConfiguration object, but prefix the keys with "step_configuration."
             **{
@@ -96,7 +99,7 @@ def get_reporting_events(
             },
         }
         # Do this for each tuple in the results list.
-        for event, job, job_configuration, step_configuration in results
+        for event, study, job_configuration, step_configuration in results
     ]
 
     return final

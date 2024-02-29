@@ -8,20 +8,20 @@ from .users import get_user
 from .job_configuration import get_job_configuration_by_tag
 
 
-def create_job(
-    db: Session, job: schemas.JobCreate, provider: models.User
-) -> models.Job:
+def create_study(
+    db: Session, study: schemas.StudyCreate, provider: models.User
+) -> models.Study:
     """
-    Create a new job for a provider, add it to the database, and return the job.
+    Create a new study for a provider, add it to the database, and return the study.
 
     Args:
         db (Session): Database session
-        job (schemas.JobCreate): Job information
+        study (schemas.StudyCreate): Study information
         provider (models.User): Provider information
     Returns:
-        models.Job: The newly created job
+        models.Study: The newly created study
     """
-    job_configuration = get_job_configuration_by_tag(db, job.tag, provider.id)
+    job_configuration = get_job_configuration_by_tag(db, study.tag, provider.id)
 
     if job_configuration is None:
         raise HTTPException(
@@ -29,77 +29,77 @@ def create_job(
             detail="Invalid job configuration tag",
         )
 
-    db_job = models.Job(
+    db_study = models.Study(
         provider_id=provider.id,
-        provider_job_id=job.provider_job_id,
-        customer_id=job.customer_id,
+        provider_study_id=study.provider_study_id,
+        hospital_id=study.hospital_id,
         job_configuration=job_configuration,
     )
 
-    db.add(db_job)
+    db.add(db_study)
     db.commit()
-    db.refresh(db_job)
-    return db_job
+    db.refresh(db_study)
+    return db_study
 
 
-def get_job_by_provider_job_id(
-    db: Session, provider_job_id: str, provider_id: int
-) -> models.Job:
+def get_study_by_provider_study_id(
+    db: Session, provider_study_id: str, provider_id: int
+) -> models.Study:
     """
-    Get a job by its provider_job_id and provider_id
+    Get a study by its provider_study_id and provider_id
 
     Args:
         db (Session): Database session
-        provider_job_id (str): The provider's job id
+        provider_study_id (str): The provider's study id
         provider_id (int): The provider's user id
     Returns:
-        models.Job: The job
+        models.Study: The study
     """
     return (
-        db.query(models.Job)
+        db.query(models.Study)
         .filter(
-            models.Job.provider_job_id == provider_job_id,
-            models.Job.provider_id == provider_id,
+            models.Study.provider_study_id == provider_study_id,
+            models.Study.provider_id == provider_id,
         )
         .first()
     )
 
 
-def get_jobs_for_customer(db: Session, user_id: int) -> list[models.Job]:
+def get_studies_for_customer(db: Session, user_id: int) -> list[models.Study]:
     """
-    Get all jobs associated with the customer with the given user_id
+    Get all studies associated with the customer with the given user_id
 
     Args:
         db (Session): Database session
         user_id (int): The user id
     Returns:
-        list[models.Job]: List of jobs
+        list[models.Study]: List of studies
     """
 
-    return get_user(db, user_id).jobs
+    return get_user(db, user_id).studies
 
 
-def get_jobs_for_provider(db: Session, user_id: int) -> list[models.Job]:
+def get_studies_for_provider(db: Session, user_id: int) -> list[models.Study]:
     """
-    Get all jobs associated with the provider with the given user_id
+    Get all studies associated with the provider with the given user_id
 
     Args:
         db (Session): Database session
         user_id (int): The user id
     Returns:
-        list[models.Job]: List of jobs
+        list[models.Study]: List of studies
     """
-    return get_user(db, user_id).provider_jobs
+    return get_user(db, user_id).provider_studies
 
 
-def get_job_by_id(db: Session, job_id: int) -> models.Job:
+def get_study_by_id(db: Session, study_id: int) -> models.Study:
     """
-    Get a job by its id
+    Get a study by its id
 
     Args:
         db (Session): Database session
-        job_id (int): The job id
+        study_id (int): The study id
     Returns:
-        models.Job: The job with the given id
+        models.Study: The study with the given id
     """
-    return db.query(models.Job).get(job_id)
+    return db.query(models.Study).get(study_id)

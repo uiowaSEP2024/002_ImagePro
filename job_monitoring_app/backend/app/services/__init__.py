@@ -1,5 +1,5 @@
 from .api_keys import *
-from .jobs import *
+from .studies import *
 from .users import *
 from .events import *
 from .job_configuration import *

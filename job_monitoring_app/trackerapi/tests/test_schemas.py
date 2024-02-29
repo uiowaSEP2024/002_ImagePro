@@ -7,8 +7,8 @@ from ..trackerapi import JobConfig, StepConfig, JobConfigs
 def test_no_duplicate_steps():
     with pytest.raises(ValidationError) as exc:
         _ = JobConfig(
-            name="Test Job",
-            tag="test_job",
+            name="Test Study",
+            tag="test_study",
             step_configurations=[
                 StepConfig(tag="step_1", name="Step 1", points=1),
                 StepConfig(tag="step_1", name="Step 2", points=1),
@@ -26,14 +26,14 @@ def test_no_duplicate_studies():
         JobConfigs(
             job_configs=[
                 JobConfig(
-                    name="Test Job",
-                    tag="test_job",
+                    name="Test Study",
+                    tag="test_study",
                     step_configurations=[],
                     version="1.0.0",
                 ),
                 JobConfig(
-                    name="Test Job",
-                    tag="test_job",
+                    name="Test study",
+                    tag="test_study",
                     step_configurations=[],
                     version="1.0.0",
                 ),

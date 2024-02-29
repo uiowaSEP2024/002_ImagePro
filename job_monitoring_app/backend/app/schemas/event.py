@@ -27,7 +27,7 @@ class EventCreate(EventBase):
 
 class EventPure(EventCreate):
     id: int
-    job_id: int
+    study_id: int
     created_at: datetime = None
     updated_at: datetime = None
 
@@ -40,7 +40,7 @@ class Event(EventPure):
 
 
 class EventCreatePublic(EventCreate):
-    provider_job_id: str
+    provider_study_id: str
     tag: Optional[str]
 
 

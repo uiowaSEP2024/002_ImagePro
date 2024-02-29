@@ -8,16 +8,16 @@ from .job_configuration import JobConfiguration
 from .user import User
 
 
-class JobBase(BaseModel):
-    provider_job_id: str
-    customer_id: int
+class StudyBase(BaseModel):
+    provider_study_id: str
+    hospital_id: int
 
 
-class JobCreate(JobBase):
+class StudyCreate(StudyBase):
     tag: str
 
 
-class JobPure(JobBase):
+class StudyPure(StudyBase):
     id: int
     provider_id: int
     job_configuration_id: int
@@ -29,7 +29,7 @@ class JobPure(JobBase):
         orm_mode = True
 
 
-class Job(JobPure):
+class Study(StudyPure):
     provider: User
     job_configuration: JobConfiguration
     events: List[Event] = []
