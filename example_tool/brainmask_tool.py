@@ -5,7 +5,7 @@ import argparse
 import pydicom
 from pdf2dcm import Pdf2EncapsDCM
 from subprocess import run
-from pipeline_functions import dicom_inference_and_conversion, brainmask_inference, write_json_log, generate_sop_instance_uid
+from pipeline_functions import dicom_inference_and_conversion, brainmask_inference, write_json_log, generate_uid
 from pdf_report import generate_report
 from pydicom import dcmread
 from pathlib import Path
@@ -151,12 +151,16 @@ try:
     """"""
     pdf_dcm = dcmread(converted_dcm_path, stop_before_pixels=True)
     template_dcm = dcmread(template_dcm_path, stop_before_pixels=True)
-    for tag in [0x00200010, 0x0020000d, 0x0020000e, 0x00080018]:  # , 0x00020000]:
+    # propagate fields from original data
+    for tag in [0x00200010, 0x0020000d, 0x0020000e]:
         data_elem = template_dcm.get(tag)
-        # print(data_elem)
-        if tag == 0x00080018:
-            data_elem.value = generate_sop_instance_uid()
         pdf_dcm.add(data_elem)
+
+    # generate new UID fields
+    pdf_dcm.SOPInstanceUID = generate_uid()
+    pdf_dcm.SeriesInstanceUID = generate_uid()
+
+    pdf_dcm.SeriesNumber = 100
 
     pdf_dcm.SeriesDescription = "Brainmask"
     pdf_dcm.DocumentTitle = f"BrainyBarrier PDF Results"

@@ -151,6 +151,7 @@ def upload_data_to_internal(directory_path: str, orthanc: pyorthanc.Orthanc):
             with open(file_path, "rb") as file:
                 result = orthanc.post_instances(file.read())
                 print(result.get("Status"))
+                print(result)
             print(f"Successfully uploaded {file_path.name} to Orthanc.")
         except Exception as e:
             print(f"Failed to upload {file_path.name}. Error: {e}")

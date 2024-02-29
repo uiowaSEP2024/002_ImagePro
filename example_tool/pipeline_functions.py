@@ -37,7 +37,7 @@ import datetime
 import random
 
 
-def generate_sop_instance_uid():
+def generate_uid():
     """
     Generates a bogus but unique SOP Instance UID for educational or testing purposes.
 
