@@ -68,16 +68,17 @@ class Study(Base, DateMixin):
         foreign_keys="Event.study_id",
         cascade="all, delete-orphan",
     )
-    study_configuration_id: Column = Column(
+
+    job_configuration_id: Column = Column(
         Integer,
-        ForeignKey("study_configurations.id", ondelete="SET NULL"),
+        ForeignKey("job_configurations.id", ondelete="SET NULL"),
         index=True,
         nullable=True,
     )
 
-    study_configuration = relationship(
-        "StudyConfiguration",
+    job_configuration = relationship(
+        "JobConfiguration",
         back_populates="studies",
         # backref=backref('jobs', passive_deletes=True),
-        foreign_keys=[study_configuration_id],
+        foreign_keys=[job_configuration_id],
     )
