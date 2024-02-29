@@ -13,8 +13,8 @@ Feature: Dashboard
     Then user should be on "/dashboard" page
 
   Scenario: Jobs route
-    When user clicks "/jobs" href button
-    Then user should be on "/jobs" page
+    When user clicks "/studies" href button
+    Then user should be on "/studies" page
 
   Scenario: Analytics route
     When user clicks "/analytics" href button
