@@ -106,7 +106,7 @@ class OrthancStudyLogger:
         #         break
         # return is_ready
         return True
-    
+
     def _stage_is_complete(self, step_id: int) -> bool:
         """Checks if a given stage is complete."""
         # TODO: I had to update this. It is not tested and might be buggy
