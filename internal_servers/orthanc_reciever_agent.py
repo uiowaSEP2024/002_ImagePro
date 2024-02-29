@@ -324,7 +324,7 @@ def main(internal_data_path: Path):
                         except Exception as e:
                             current_logger.update_step_status(4, "Error", str(e))
 
-                    if current_logger._stage_is_Complete(4):
+                    if current_logger._stage_is_complete(4):
                         print(
                             f"Study {study.id_} has been processed and sent to hospital"
                         )
