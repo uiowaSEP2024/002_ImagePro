@@ -14,18 +14,19 @@ class Study(Base, DateMixin):
     -----------
     id: int
         Auto-generated internal job id
-    provider: int
+    provider_id: int
         ForeignKey to User id of the provider
-    provider_job_id: str
+    provider_study_id: str
         The job_id as provided by the provider
         The provider_job_id and provider combo must be unique in the system
-    provider_job_name: str
+    provider_study_name: str
         The job_name as specified by the provider e.g. ProstateV1, KidneyV2
         # May be used to set up billing or simply display information later??
 
-    hospital: int
+    hospital_id: int
         ForeignKey to User id of the customer
-    events: list
+    job_configuration_id: int
+        ForeignKey to JobConfiguration id
 
 
     """
