@@ -40,19 +40,19 @@ export interface paths {
     /** Logout */
     post: operations["logout_logout_post"];
   };
-  "/jobs": {
-    /** Get Customer Jobs */
-    get: operations["get_customer_jobs_jobs_get"];
+  "/studies": {
+    /** Get Customer studies */
+    get: operations["get_customer_studies_studies_get"];
     /** Create Job */
-    post: operations["create_job_jobs_post"];
+    post: operations["create_studies_studies_post"];
   };
-  "/jobs/{job_id}": {
+  "/studies/{study_id}": {
     /** Get Job */
-    get: operations["get_job_jobs__job_id__get"];
+    get: operations["get_study_studies__study_id__get"];
   };
-  "/jobs/{job_id}/events": {
+  "/studies/{study_id}/events": {
     /** Get Job Events */
-    get: operations["get_job_events_jobs__job_id__events_get"];
+    get: operations["get_study_events_studies__study_id__events_get"];
   };
   "/events": {
     /** Create Event */
@@ -594,8 +594,8 @@ export interface operations {
       };
     };
   };
-  /** Get Customer Jobs */
-  get_customer_jobs_jobs_get: {
+  /** Get Customer Studies */
+  get_customer_studies_studies_get: {
     responses: {
       /** @description Successful Response */
       200: {
@@ -606,7 +606,7 @@ export interface operations {
     };
   };
   /** Create Job */
-  create_job_jobs_post: {
+  create_study_studies_post: {
     requestBody: {
       content: {
         "application/json": components["schemas"]["JobCreate"];
@@ -628,7 +628,7 @@ export interface operations {
     };
   };
   /** Get Job */
-  get_job_jobs__job_id__get: {
+  get_study_studies__study_id__get: {
     parameters: {
       path: {
         job_id: number;
@@ -650,7 +650,7 @@ export interface operations {
     };
   };
   /** Get Job Events */
-  get_job_events_jobs__job_id__events_get: {
+  get_study_events_studies__study_id__events_get: {
     parameters: {
       path: {
         job_id: number;

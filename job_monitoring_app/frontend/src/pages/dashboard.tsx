@@ -88,12 +88,12 @@ function Dashboard() {
   // Define the features to be displayed on the dashboard.
   const features = [
     {
-      text: "Jobs",
+      text: "Studies",
       icon: <Icon as={IoSearchSharp} color={"purple.500"} w={5} h={5} />,
       iconBg: "purple.100",
       show: true,
-      link: "/jobs",
-      description: "View past and currently active jobs"
+      link: "/studies",
+      description: "View past and currently active studies"
     },
     {
       text: "Analytics",
@@ -133,10 +133,10 @@ function Dashboard() {
           <Heading>Explore our tools</Heading>
           <Text color={"gray"} fontSize={"lg"}>
             Your home base for all business operations you may need help with!
-            From here, access all client jobs, individual progress, analytics,
+            From here, access all client studies, individual progress, analytics,
             and more. Generate API keys to introduce our software to your
             existing workflow! With BotImage, we hope you find tracking progress
-            on jobs easier than ever. Our motto: never let a client slip through
+            on studies easier than ever. Our motto: never let a client slip through
             the cracks.
           </Text>
           <Stack

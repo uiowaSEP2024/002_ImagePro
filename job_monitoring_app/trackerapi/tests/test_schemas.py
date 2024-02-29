@@ -21,7 +21,7 @@ def test_no_duplicate_steps():
     assert "value_error.list.unique_items" == exception.errors()[0]["type"]
 
 
-def test_no_duplicate_jobs():
+def test_no_duplicate_studies():
     with pytest.raises(ValidationError) as exc:
         JobConfigs(
             job_configs=[

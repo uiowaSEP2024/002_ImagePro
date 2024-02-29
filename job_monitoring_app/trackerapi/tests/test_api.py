@@ -21,7 +21,7 @@ def test_requests_made_with_api_key():
         tracker = TrackerApi(api_key="abc123", skip_verify=True)
 
         m.post(
-            tracker.urls.jobs_url,
+            tracker.urls.studies_url,
             json={
                 "provider_job_id": "1",
                 "customer_id": 1,
@@ -52,7 +52,9 @@ def test_job():
     # TODO: make meaningful assertion about the job config once implemented
 
     responses.add(
-        url=tracker.urls.jobs_url, method=responses.POST, json={"provider_job_id": "1"}
+        url=tracker.urls.studies_url,
+        method=responses.POST,
+        json={"provider_study_id": "1"},
     )
 
     tracker_jobapi = tracker.create_job("1", 1, "test_job")

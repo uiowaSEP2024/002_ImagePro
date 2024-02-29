@@ -6,12 +6,12 @@ export const backendUrl = (
 ).replace(/\/$/, "");
 
 /**
- * Fetches all jobs from the backend API.
+ * Fetches all studies from the backend API.
  *
- * @returns {Promise<Job[] | void>} A promise that resolves to an array of jobs or void.
+ * @returns {Promise<Study[] | void>} A promise that resolves to an array of jobs or void.
  */
-export const fetchJobs = async (): Promise<Job[] | void> => {
-  return fetch(`${backendUrl}/jobs`, {
+export const fetchStudies = async (): Promise<Job[] | void> => {
+  return fetch(`${backendUrl}/studies`, {
     credentials: "include",
     method: "GET"
   })
@@ -33,7 +33,7 @@ export const fetchJobs = async (): Promise<Job[] | void> => {
  * @returns {Promise<Job | void>} A promise that resolves to a job or void.
  */
 export const fetchJobById = async (id: number): Promise<Job | void> => {
-  return await fetch(`${backendUrl}/jobs/${id}`, {
+  return await fetch(`${backendUrl}/studies/${id}`, {
     credentials: "include",
     method: "GET"
   })
@@ -114,7 +114,7 @@ export const fetchGenAPIKeys = async (data: { note: string }): Promise<any> => {
 export const fetchEvents = async (
   jobId: number
 ): Promise<JobEvent[] | void> => {
-  return await fetch(`${backendUrl}/jobs/${jobId}/events`, {
+  return await fetch(`${backendUrl}/studies/${studyId}/events`, {
     credentials: "include",
     method: "GET"
   })

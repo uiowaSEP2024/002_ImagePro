@@ -1,6 +1,6 @@
 /**
  * This file contains the Reporting component of the application.
- * The Reporting component is a React component that provides a feature for the user to download a report of all jobs that have been completed by their provider.
+ * The Reporting component is a React component that provides a feature for the user to download a report of all studies that have been completed by their provider.
  * It fetches the user's input for the start and end dates, validates it, and attempts to fetch the report.
  */
 
@@ -23,7 +23,7 @@ import { useState } from "react";
 import { fetchDownloadReport } from "@/data";
 
 /**
- * The Reporting component is a React component that provides a feature for the user to download a report of all jobs that have been completed by their provider.
+ * The Reporting component is a React component that provides a feature for the user to download a report of all studies that have been completed by their provider.
  * It fetches the user's input for the start and end dates, validates it, and attempts to fetch the report.
  */
 function Reporting() {
@@ -49,9 +49,9 @@ function Reporting() {
         </Badge>
 
         <Box>
-          <Heading size={"lg"}>Download Historical Jobs</Heading>
+          <Heading size={"lg"}>Download Historical Studies</Heading>
           <Text>
-            Download a CSV of all jobs that have been completed by your provider
+            Download a CSV of all studies that have been completed by your provider
           </Text>
 
           <VStack align={"flex-start"}>

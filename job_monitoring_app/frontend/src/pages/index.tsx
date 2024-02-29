@@ -27,11 +27,11 @@ export default function Home() {
   const router = useRouter();
   const { currentUser } = useAuthContext();
 
-  // Define the routes for the jobs and analytics pages based on the user's authentication status.
-  var jobs = "jobs";
+  // Define the routes for the studies and analytics pages based on the user's authentication status.
+  var studies = "studies";
   var analytics = "analytics";
   if (!currentUser) {
-    jobs = "login";
+    studies = "login";
     analytics = "login";
   }
 
@@ -61,7 +61,7 @@ export default function Home() {
           <Text color={"gray.500"}>
             Our solution to your job tracking problems! Our web app provides an
             interface for you to track the progress, analytics, and errors for
-            all your jobs and customers, no matter how many steps. Our app
+            all your studies and customers, no matter how many steps. Our app
             provides an easy API to add to your job scripts, which catalogues
             all your data and steps in a relational database stored securely by
             our AWS partners. From there, your data becomes easy to query and
@@ -72,7 +72,7 @@ export default function Home() {
             direction={{ base: "column", sm: "row" }}
           >
             <Button
-              onClick={() => router.push(jobs)}
+              onClick={() => router.push(studies)}
               size={"lg"}
               fontWeight={"normal"}
               px={6}
@@ -80,7 +80,7 @@ export default function Home() {
               bg={"red.400"}
               _hover={{ bg: "red.500" }}
             >
-              Learn More About Jobs
+              Learn More About Studies
             </Button>
             <Button
               onClick={() => router.push(analytics)}
@@ -112,10 +112,10 @@ export default function Home() {
             borderColor={"gray.50"}
           >
             <Image
-              alt={"Jobs Progress Page"}
+              alt={"Studies Progress Page"}
               fit={"cover"}
               align={"center"}
-              src={"/assets/jobs.png"}
+              src={"/assets/studies.png"}
             />
           </Card>
         </Flex>

@@ -24,8 +24,8 @@ class ApiUrls:
         return self.url("/update_event")
 
     @property
-    def jobs_url(self):
-        return self.url("/jobs")
+    def studies_url(self):
+        return self.url("/studies")
 
     @property
     def jobs_config_url(self):
@@ -39,7 +39,7 @@ class ApiUrls:
 class TrackerApi:
     """
     TrackerAPI wrapper around the backend service to make requests
-    to create jobs, and send events.
+    to create studies, and send events.
     """
 
     DEFAULT_BASE_URL = "http://localhost:8000"
@@ -101,7 +101,7 @@ class TrackerApi:
         """
         data = self.__to_json(
             self.__post(
-                self.urls.jobs_url,
+                self.urls.studies_url,
                 {
                     "provider_job_id": provider_job_id,
                     "customer_id": customer_id,

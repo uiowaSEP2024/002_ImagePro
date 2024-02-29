@@ -1,7 +1,7 @@
 import { Container, Heading, Select, Spacer, VStack } from "@chakra-ui/react";
 import { withAuthenticated } from "@/components/withAuthenticated";
-import JobsChart from "@/components/StackedChart";
-import { fetchJobs } from "@/data";
+import StudiesChart from "@/components/StackedChart";
+import { fetchStudies } from "@/data";
 import { Job } from "@/data/types";
 import { useState, useEffect, useMemo } from "react";
 /**
@@ -13,32 +13,32 @@ import { useState, useEffect, useMemo } from "react";
  */
 function Analytics() {
   /**
-   * State variable for the jobs data.
-   * @type {Job[]}
+   * State variable for the studies data.
+   * @type {Study[]}
    */
-  const [jobs, setJobs] = useState<Job[]>([]);
+  const [studies, setStudies] = useState<Study[]>([]);
 
   /**
-   * Effect hook for fetching the jobs data when the component mounts.
+   * Effect hook for fetching the studyies data when the component mounts.
    */
   useEffect(() => {
-    const getJobs = async () => {
-      const data = await fetchJobs();
+    const getStudies = async () => {
+      const data = await fetchStudies();
       if (data) {
-        setJobs(data);
+        setStudies(data);
       }
     };
-    getJobs();
+    getStudies();
   }, []);
 
   /**
-   * Memoized array of available years derived from the jobs data.
+   * Memoized array of available years derived from the studies data.
    * @type {number[]}
    */
   const availableYears = useMemo(() => {
     return Array.from(
       new Set(
-        jobs.reduce((acc, curr) => {
+        studies.reduce((acc, curr) => {
           const year = new Date(curr.created_at!).getFullYear();
           if (!acc.includes(year)) {
             acc.push(year);
@@ -47,7 +47,7 @@ function Analytics() {
         }, [] as number[])
       )
     );
-  }, [jobs]);
+  }, [studies]);
 
   /**
    * Memoized default year derived from the available years.
@@ -81,7 +81,7 @@ function Analytics() {
 
       <VStack spacing={4} alignItems={"flex-start"}>
         <Heading>
-          Jobs for {finalYear} ({jobs.length})
+          Studies for {finalYear} ({studies.length})
         </Heading>
 
         <Select
@@ -98,7 +98,7 @@ function Analytics() {
             );
           })}
         </Select>
-        <JobsChart year={finalYear} jobs={jobs} />
+        <StudiesChart year={finalYear} studies={studies} />
       </VStack>
     </Container>
   );

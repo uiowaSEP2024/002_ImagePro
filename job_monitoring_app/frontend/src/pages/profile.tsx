@@ -1,7 +1,7 @@
 /**
  * This file contains the Profile component of the application.
  * The Profile component is a React component that displays the profile page of the current user.
- * It fetches the current user's data and the jobs associated with the user, and displays them in a user-friendly format.
+ * It fetches the current user's data and the studies associated with the user, and displays them in a user-friendly format.
  * It also provides a feature for the user to copy their unique ID to the clipboard.
  */
 
@@ -23,7 +23,7 @@ import {
   Icon,
   IconButton
 } from "@chakra-ui/react";
-import { fetchJobs } from "@/data";
+import { fetchStudies } from "@/data";
 import { Job } from "@/data/types";
 import { useState, useEffect, useMemo, useCallback } from "react";
 
@@ -32,27 +32,27 @@ import { FiCopy } from "react-icons/fi/index.js";
 
 /**
  * The Profile component is a React component that displays the profile page of the current user.
- * It fetches the current user's data and the jobs associated with the user, and displays them in a user-friendly format.
+ * It fetches the current user's data and the studies associated with the user, and displays them in a user-friendly format.
  * It also provides a feature for the user to copy their unique ID to the clipboard.
  */
 function Profile() {
-  // Fetch the current user's data and the jobs associated with the user.
+  // Fetch the current user's data and the studies associated with the user.
   const { currentUser } = useAuthContext();
-  const [jobs, setJobs] = useState<Job[]>([]);
+  const [studies, setStudies] = useState<Study[]>([]);
   const [copied, setCopied] = useState(false);
 
-  // Reverse the jobs array for display purposes.
-  const reversedJobs = useMemo(() => jobs.slice().reverse(), [jobs]);
+  // Reverse the Study array for display purposes.
+  const reversedStudies = useMemo(() => studies.slice().reverse(), [studies]);
 
-  // Fetch the jobs data when the component mounts.
+  // Fetch the studies data when the component mounts.
   useEffect(() => {
-    async function loadJobs() {
-      const data = await fetchJobs();
+    async function loadStudies() {
+      const data = await fetchStudies();
       if (data) {
-        setJobs(data);
+        setStudies(data);
       }
     }
-    loadJobs();
+    loadStudies();
   }, []);
 
   // Determine if the current user is a customer.
@@ -146,7 +146,7 @@ function Profile() {
               <VStack alignItems="center" spacing="10px">
                 <Heading fontSize="xl">
                   At BotImage, we strive to provide a fully extensible and
-                  scalable solution to even the most complex jobs. As a valued
+                  scalable solution to even the most complex studies. As a valued
                   customer, you have used our site to track
                 </Heading>
                 <Heading
