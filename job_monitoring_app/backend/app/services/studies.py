@@ -65,9 +65,9 @@ def get_study_by_provider_study_id(
     )
 
 
-def get_studies_for_customer(db: Session, user_id: int) -> list[models.Study]:
+def get_studies_for_hospital(db: Session, user_id: int) -> list[models.Study]:
     """
-    Get all studies associated with the customer with the given user_id
+    Get all studies associated with the hospital with the given user_id
 
     Args:
         db (Session): Database session

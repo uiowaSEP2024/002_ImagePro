@@ -4,7 +4,7 @@ from app.routers import (
     apikeys_router,
     auth_router,
     events_router,
-    jobs_router,
+    studies_router,
     users_router,
     job_configurations_router,
     reporting_router,
@@ -41,7 +41,7 @@ async def startup_event():
 app.include_router(users_router)
 app.include_router(apikeys_router)
 app.include_router(auth_router)
-app.include_router(jobs_router)
+app.include_router(studies_router)
 app.include_router(events_router)
 app.include_router(job_configurations_router)
 app.include_router(reporting_router)
