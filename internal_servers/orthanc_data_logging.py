@@ -98,14 +98,13 @@ class OrthancStudyLogger:
 
     def step_is_ready(self, step_id: int) -> bool:
         """Checks if a given step is ready to begin."""
-        # previous_steps = self.steps[: step_id - 1]
-        # is_ready = True
-        # for step in previous_steps:
-        #     if step["status"] != "Complete":
-        #         is_ready = False
-        #         break
-        # return is_ready
-        return True
+        previous_steps = self.steps[: step_id - 1]
+        is_ready = True
+        for step in previous_steps:
+            if step["status"] != "Complete":
+                is_ready = False
+                break
+        return is_ready
 
     def _stage_is_complete(self, step_id: int) -> bool:
         """Checks if a given stage is complete."""
