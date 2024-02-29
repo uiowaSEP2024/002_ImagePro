@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 import sys
 import argparse
-
-import pydicom
+import datetime
 from pdf2dcm import Pdf2EncapsDCM
 from subprocess import run
 from pipeline_functions import dicom_inference_and_conversion, brainmask_inference, write_json_log, generate_uid
@@ -161,6 +160,15 @@ try:
     pdf_dcm.SeriesInstanceUID = generate_uid()
 
     pdf_dcm.SeriesNumber = 100
+    # TODO: our pdf has only 1 page and only 1 dicom file. This might cause issues in the future
+    pdf_dcm.InstanceNumber = 1
+
+    # set the date and time
+    # get current data in YYYYMMDD format
+    current_date = datetime.datetime.now().strftime("%Y%m%d")
+    pdf_dcm.ContentDate = current_date
+    pdf_dcm.InstanceCreationDate = current_date
+    pdf_dcm.SeriesDate = current_date
 
     pdf_dcm.SeriesDescription = "Brainmask"
     pdf_dcm.DocumentTitle = f"BrainyBarrier PDF Results"
