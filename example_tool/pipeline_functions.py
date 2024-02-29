@@ -33,6 +33,37 @@ from pathlib import Path
 
 itk.MultiThreaderBase.SetGlobalDefaultNumberOfThreads(1)
 
+import datetime
+import random
+
+
+def generate_sop_instance_uid():
+    """
+    Generates a bogus but unique SOP Instance UID for educational or testing purposes.
+
+    Format: [root].[date][time].[random]
+        - root: A unique identifier for the organization or project
+        - date: Current date in YYYYMMDD format
+        - time: Current time in HHMMSS format
+        - random: A random number for added uniqueness
+    """
+
+    # Define the root UID for your project or organization
+    root_uid = "1.2.826.0.1.3680000.9.7411"  # Example root UID
+
+    # Get current date and time
+    now = datetime.datetime.now()
+    date_str = now.strftime("%Y%m%d")
+    time_str = now.strftime("%H%M%S")
+
+    # Generate a random number (in this case, up to 99999 for example)
+    random_number = random.randint(1, 99999)
+
+    # Combine elements to form the SOP Instance UID
+    sop_instance_uid = f"{root_uid}.{date_str}{time_str}.{random_number}"
+
+    return sop_instance_uid
+
 
 def write_json_log(log_file_path: Path, study_id: str, status: str, reason: Optional[str]) -> None:
     """

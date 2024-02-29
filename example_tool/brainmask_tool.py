@@ -5,7 +5,7 @@ import argparse
 import pydicom
 from pdf2dcm import Pdf2EncapsDCM
 from subprocess import run
-from pipeline_functions import dicom_inference_and_conversion, brainmask_inference, write_json_log
+from pipeline_functions import dicom_inference_and_conversion, brainmask_inference, write_json_log, generate_sop_instance_uid
 from pdf_report import generate_report
 from pydicom import dcmread
 from pathlib import Path
@@ -136,35 +136,34 @@ except Exception as e:
 
 stage_name = "PDF to DICOM conversion"
 # This assumes that the template IMA file is in the session directory and that the first .dcm file is the valid
-template_dcm = sorted(session_path.rglob("*.dcm"))[0]
-print(f"template_dcm: {template_dcm}")
+template_dcm_path = sorted(session_path.rglob("*.dcm"))[0]
+print(f"template_dcm: {template_dcm_path}")
 try:
     converter = Pdf2EncapsDCM()
-    converted_dcm = converter.run(
-        path_pdf=pdf_fn, path_template_dcm=template_dcm.as_posix(), suffix=".dcm"
+    converted_dcm_path = converter.run(
+        path_pdf=pdf_fn, path_template_dcm=template_dcm_path.as_posix(), suffix=".dcm"
     )[0]
     del report_output_dir, brainmask_output_dir, nifti_path
 
-    print(f"Report created: {converted_dcm}")
+    print(f"Report created: {converted_dcm_path}")
 
     # Adding needed metadata to the report
     """"""
-    pdf_dcm = dcmread(converted_dcm, stop_before_pixels=True)
-    template_dcm = dcmread(template_dcm, stop_before_pixels=True)
-    for tag in [0x00200010, 0x0020000d, 0x0020000e, 0x00080018, 0x00020000]:
-        print(tag)
+    pdf_dcm = dcmread(converted_dcm_path, stop_before_pixels=True)
+    template_dcm = dcmread(template_dcm_path, stop_before_pixels=True)
+    for tag in [0x00200010, 0x0020000d, 0x0020000e, 0x00080018]:  # , 0x00020000]:
         data_elem = template_dcm.get(tag)
+        # print(data_elem)
         if tag == 0x00080018:
-            data_elem.value = "1.2.840.10008.1234567890"
-        print(data_elem)
+            data_elem.value = generate_sop_instance_uid()
         pdf_dcm.add(data_elem)
 
-    pdf_dcm.SeriesDescription = "This is a rough brainmask"
+    pdf_dcm.SeriesDescription = "Brainmask"
     pdf_dcm.DocumentTitle = f"BrainyBarrier PDF Results"
-    pdf_dcm.save_as(converted_dcm, write_like_original=False)
+    pdf_dcm.save_as(converted_dcm_path, write_like_original=False)
 
     # move the report.dcm to the deliverables directory
-    run(["mv", converted_dcm, f"{deliverables_dir}/"])
+    run(["mv", converted_dcm_path, f"{deliverables_dir}/"])
 
 except Exception as e:
     reason = f"Error in stage: {stage_name}"
