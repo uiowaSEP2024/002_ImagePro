@@ -39,7 +39,7 @@ class Study(Base, DateMixin):
     provider_id: Column = Column(
         Integer, ForeignKey("users.id"), index=True, nullable=False
     )
-    # The person sending the jobs
+    # The person sending the studies
     provider = relationship(
         "User", back_populates="studies", foreign_keys=[provider_id]
     )
@@ -80,6 +80,6 @@ class Study(Base, DateMixin):
     job_configuration = relationship(
         "JobConfiguration",
         back_populates="studies",
-        # backref=backref('jobs', passive_deletes=True),
+        # backref=backref('studies', passive_deletes=True),
         foreign_keys=[job_configuration_id],
     )

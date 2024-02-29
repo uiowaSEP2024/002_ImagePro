@@ -10,7 +10,7 @@ class JobConfiguration(Base, DateMixin):
     JobConfiguration model
 
     A JobConfiguration represents a specific configuration for a job. It is created by a provider and
-    can be associated with multiple jobs. Each JobConfiguration is uniquely identified by a combination
+    can be associated with multiple studies. Each JobConfiguration is uniquely identified by a combination
     of provider_id, tag, and version.
 
     Attributes:
@@ -30,8 +30,8 @@ class JobConfiguration(Base, DateMixin):
         Relationship to the User model representing the provider
     step_configurations : relationship
         Relationship to the StepConfiguration model. Represents all step configurations associated with this job configuration
-    jobs : relationship
-        Relationship to the Job model. Represents all jobs associated with this job configuration
+    studies : relationship
+        Relationship to the Job model. Represents all studies associated with this job configuration
     """
 
     __tablename__ = "job_configurations"

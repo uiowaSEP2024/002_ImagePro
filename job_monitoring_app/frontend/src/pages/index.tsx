@@ -59,10 +59,10 @@ export default function Home() {
             </Text>
           </Heading>
           <Text color={"gray.500"}>
-            Our solution to your job tracking problems! Our web app provides an
+            Our solution to your study tracking problems! Our web app provides an
             interface for you to track the progress, analytics, and errors for
             all your studies and customers, no matter how many steps. Our app
-            provides an easy API to add to your job scripts, which catalogues
+            provides an easy API to add to your study scripts, which catalogues
             all your data and steps in a relational database stored securely by
             our AWS partners. From there, your data becomes easy to query and
             analyze. Never let a client slip through the cracks again!

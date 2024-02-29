@@ -24,7 +24,7 @@ import {
   IconButton
 } from "@chakra-ui/react";
 import { fetchStudies } from "@/data";
-import { Job } from "@/data/types";
+import { Study } from "@/data/types";
 import { useState, useEffect, useMemo, useCallback } from "react";
 
 import NextLink from "next/link";
@@ -157,7 +157,7 @@ function Profile() {
                   fontStyle="bold"
                   color="purple.500"
                 >
-                  {jobs.length} jobs
+                  {studies.length} studies
                 </Heading>
               </VStack>
             </Box>
@@ -166,20 +166,20 @@ function Profile() {
       </Grid>
       <Divider mt={12} mb={12} />
       <Heading fontSize={"3xl"} py="5">
-        Recent Jobs
+        Recent Studies
       </Heading>
       <Flex
         direction={{ base: "column", md: "row" }}
         gap={{ base: "2", sm: "4", md: "8" }}
       >
-        {reversedJobs.length === 0 && (
+        {reversedStudies.length === 0 && (
           <Text fontSize={"1xl"} textAlign={"center"}>
-            No jobs found.
+            No studies found.
           </Text>
         )}
-        {reversedJobs.slice(0, 4).map((job) => (
+        {reversedStudies.slice(0, 4).map((study) => (
           <Box
-            key={job.id}
+            key={study.id}
             p="10"
             w="100%"
             height="100%"
@@ -187,11 +187,11 @@ function Profile() {
             borderRadius="lg"
             overflow="hidden"
           >
-            <Heading>{job.job_configuration.name} </Heading>
-            <Text>#{job.id}</Text>
+            <Heading>{study.job_configuration.name} </Heading>
+            <Text>#{study.id}</Text>
             <chakra.p>
-              See this job{" "}
-              <Link as={NextLink} href={`/jobs/${job.id}`} color="blue.500">
+              See this study{" "}
+              <Link as={NextLink} href={`/studies/${study.id}`} color="blue.500">
                 here
               </Link>
             </chakra.p>

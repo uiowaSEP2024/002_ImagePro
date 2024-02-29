@@ -37,10 +37,10 @@ describe("Home", () => {
     expect(heading).toBeInTheDocument();
   });
 
-  it("renders a button to jobs", async () => {
+  it("renders a button to studies", async () => {
     render(<Home />);
 
-    const button = await waitFor(() => screen.getByText("Learn More About Jobs"));
+    const button = await waitFor(() => screen.getByText("Learn More About Studies"));
 
     expect(button).toBeInTheDocument();
 

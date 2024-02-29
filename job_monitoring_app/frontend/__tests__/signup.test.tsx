@@ -55,7 +55,7 @@ jest.mock("@/data", () => ({
     });
   },
 
-  fetchJobs() {
+  fetchStudies() {
     return new Promise((resolve) => resolve([]));
   }
 }));

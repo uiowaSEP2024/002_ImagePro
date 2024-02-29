@@ -43,15 +43,15 @@ export interface paths {
   "/studies": {
     /** Get Customer studies */
     get: operations["get_customer_studies_studies_get"];
-    /** Create Job */
-    post: operations["create_studies_studies_post"];
+    /** Create Study */
+    post: operations["create_study_studies_post"];
   };
   "/studies/{study_id}": {
-    /** Get Job */
+    /** Get study */
     get: operations["get_study_studies__study_id__get"];
   };
   "/studies/{study_id}/events": {
-    /** Get Job Events */
+    /** Get study Events */
     get: operations["get_study_events_studies__study_id__events_get"];
   };
   "/events": {
@@ -169,8 +169,8 @@ export interface components {
       };
       /** Id */
       id: number;
-      /** Job Id */
-      job_id: number;
+      /** Study Id */
+      study_id: number;
       /**
        * Created At
        * Format: date-time
@@ -192,8 +192,8 @@ export interface components {
       event_metadata?: {
         [key: string]: (string | number | boolean) | undefined;
       };
-      /** Provider Job Id */
-      provider_job_id: string;
+      /** Provider study Id */
+      provider_study_id: string;
       /** Tag */
       tag?: string;
     };
@@ -208,12 +208,12 @@ export interface components {
       /** Detail */
       detail?: components["schemas"]["ValidationError"][];
     };
-    /** Job */
-    Job: {
-      /** Provider Job Id */
-      provider_job_id: string;
+    /** study */
+    Study: {
+      /** Provider study Id */
+      provider_study_id: string;
       /** Customer Id */
-      customer_id: number;
+      hospital_id: number;
       /** Id */
       id: number;
       /** Provider Id */
@@ -274,12 +274,12 @@ export interface components {
       /** Step Configurations */
       step_configurations: components["schemas"]["StepConfigurationCreate"][];
     };
-    /** JobCreate */
-    JobCreate: {
-      /** Provider Job Id */
-      provider_job_id: string;
+    /** studyCreate */
+    StudyCreate: {
+      /** Provider study Id */
+      provider_study_id: string;
       /** Customer Id */
-      customer_id: number;
+      hospital_id: number;
       /** Tag */
       tag: string;
     };
@@ -600,23 +600,23 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["Job"][];
+          "application/json": components["schemas"]["Study"][];
         };
       };
     };
   };
-  /** Create Job */
+  /** Create study */
   create_study_studies_post: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["JobCreate"];
+        "application/json": components["schemas"]["StudyCreate"];
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["Job"];
+          "application/json": components["schemas"]["Study"];
         };
       };
       /** @description Validation Error */
@@ -627,18 +627,18 @@ export interface operations {
       };
     };
   };
-  /** Get Job */
+  /** Get Study */
   get_study_studies__study_id__get: {
     parameters: {
       path: {
-        job_id: number;
+        study_id: number;
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["Job"];
+          "application/json": components["schemas"]["Study"];
         };
       };
       /** @description Validation Error */
@@ -649,11 +649,11 @@ export interface operations {
       };
     };
   };
-  /** Get Job Events */
+  /** Get Study Events */
   get_study_events_studies__study_id__events_get: {
     parameters: {
       path: {
-        job_id: number;
+        study_id: number;
       };
     };
     responses: {
@@ -693,7 +693,7 @@ export interface operations {
       };
     };
   };
-  /** Create Job */
+  /** Create Study */
   create_job_job_configurations_post: {
     requestBody: {
       content: {

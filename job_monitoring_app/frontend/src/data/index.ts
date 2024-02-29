@@ -1,4 +1,4 @@
-import { Job, JobEvent, ApiKey, User, UserCreate } from "./types";
+import { Study, StudyEvent, ApiKey, User, UserCreate } from "./types";
 
 // The base URL for the backend API.
 export const backendUrl = (
@@ -8,16 +8,16 @@ export const backendUrl = (
 /**
  * Fetches all studies from the backend API.
  *
- * @returns {Promise<Study[] | void>} A promise that resolves to an array of jobs or void.
+ * @returns {Promise<Study[] | void>} A promise that resolves to an array of studies or void.
  */
-export const fetchStudies = async (): Promise<Job[] | void> => {
+export const fetchStudies = async (): Promise<Study[] | void> => {
   return fetch(`${backendUrl}/studies`, {
     credentials: "include",
     method: "GET"
   })
     .then(async (response) => {
       if (response.status == 200) {
-        return (await response.json()) as Job[];
+        return (await response.json()) as Study[];
       }
     })
     .catch((e) => {
@@ -27,19 +27,19 @@ export const fetchStudies = async (): Promise<Job[] | void> => {
 
 // TODO: Replace with actual API call
 /**
- * Fetches a job by its ID from the backend API.
+ * Fetches a study by its ID from the backend API.
  *
- * @param {number} id - The ID of the job to fetch.
- * @returns {Promise<Job | void>} A promise that resolves to a job or void.
+ * @param {number} id - The ID of the study to fetch.
+ * @returns {Promise<Study | void>} A promise that resolves to a study or void.
  */
-export const fetchJobById = async (id: number): Promise<Job | void> => {
+export const fetchStudyById = async (id: number): Promise<Study | void> => {
   return await fetch(`${backendUrl}/studies/${id}`, {
     credentials: "include",
     method: "GET"
   })
     .then(async (response) => {
       if (response.status == 200) {
-        return (await response.json()) as Job;
+        return (await response.json()) as Study;
       }
     })
     .catch((e) => {
@@ -106,21 +106,21 @@ export const fetchGenAPIKeys = async (data: { note: string }): Promise<any> => {
 };
 
 /**
- * Fetches all events for a job from the backend API.
+ * Fetches all events for a study from the backend API.
  *
- * @param {number} jobId - The ID of the job to fetch events for.
- * @returns {Promise<JobEvent[] | void>} A promise that resolves to an array of job events or void.
+ * @param {number} studyId - The ID of the study to fetch events for.
+ * @returns {Promise<StudyEvent[] | void>} A promise that resolves to an array of study events or void.
  */
 export const fetchEvents = async (
-  jobId: number
-): Promise<JobEvent[] | void> => {
+  studyId: number
+): Promise<StudyEvent[] | void> => {
   return await fetch(`${backendUrl}/studies/${studyId}/events`, {
     credentials: "include",
     method: "GET"
   })
     .then(async (response) => {
       if (response.status == 200) {
-        return (await response.json()) as JobEvent[];
+        return (await response.json()) as StudyEvent[];
       }
     })
     .catch((e) => {

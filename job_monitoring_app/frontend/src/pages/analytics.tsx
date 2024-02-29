@@ -2,11 +2,11 @@ import { Container, Heading, Select, Spacer, VStack } from "@chakra-ui/react";
 import { withAuthenticated } from "@/components/withAuthenticated";
 import StudiesChart from "@/components/StackedChart";
 import { fetchStudies } from "@/data";
-import { Job } from "@/data/types";
+import { Study } from "@/data/types";
 import { useState, useEffect, useMemo } from "react";
 /**
- * The Analytics component is a React component that displays job analytics for a selected year.
- * It fetches job data, calculates the available years from the job data, and allows the user to select a year to view the job analytics for that year.
+ * The Analytics component is a React component that displays study analytics for a selected year.
+ * It fetches study data, calculates the available years from the study data, and allows the user to select a year to view the study analytics for that year.
  * It also wraps the component with the withAuthenticated higher-order component to ensure that only authenticated users can access this component.
  *
  * @returns {JSX.Element} The rendered Analytics component.

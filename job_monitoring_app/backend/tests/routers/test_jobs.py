@@ -14,7 +14,7 @@ def test_create_job(
     }
 
     response = app_client.post(
-        "/jobs",
+        "/studies",
         json=data,
         headers={
             API_KEY_HEADER_NAME: random_provider_user_with_api_key.api_keys[0].key
@@ -59,7 +59,9 @@ def test_get_job_as_customer(
     access_token = response.json()["access_token"]
 
     # Use access token in the request to get a job
-    response = app_client.get(f"/jobs/{job.id}", cookies={"access_token": access_token})
+    response = app_client.get(
+        f"/studies/{job.id}", cookies={"access_token": access_token}
+    )
 
     assert response.status_code == 200
     assert response.json()["id"] == job.id
@@ -111,7 +113,7 @@ def test_get_jobs_as_customer(
     access_token = response.json()["access_token"]
 
     # Use access token in the request to get a job
-    response = app_client.get("/jobs", cookies={"access_token": access_token})
+    response = app_client.get("/studies", cookies={"access_token": access_token})
 
     assert response.status_code == 200
     assert len(response.json()) == 2
@@ -162,7 +164,9 @@ def test_get_job_as_different_customer(
     access_token = response.json()["access_token"]
 
     # Use access token in the request to get a job
-    response = app_client.get(f"/jobs/{job.id}", cookies={"access_token": access_token})
+    response = app_client.get(
+        f"/studies/{job.id}", cookies={"access_token": access_token}
+    )
 
     # Response should be rejected
     assert response.status_code == 403
@@ -177,7 +181,7 @@ def test_create_job_with_missing_tag(
     }
 
     response = app_client.post(
-        "/jobs",
+        "/studies",
         json=data,
         headers={
             API_KEY_HEADER_NAME: random_provider_user_with_api_key.api_keys[0].key

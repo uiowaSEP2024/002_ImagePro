@@ -41,13 +41,13 @@ jest.spyOn(data, "fetchCheckUserLoggedIn").mockImplementation(() =>
   })
 );
 
-jest.spyOn(data, "fetchJobs").mockImplementation(() =>
+jest.spyOn(data, "fetchStudies").mockImplementation(() =>
   Promise.resolve([
     {
       id: 1,
-      provider_job_name: "Kidney Cancer Detection",
+      provider_study_name: "Kidney Cancer Detection",
       customer_id: 1,
-      provider_job_id: "236",
+      provider_study_id: "236",
       provider_id: 2,
       created_at: "2021-03-01T00:00:00.000Z",
       job_configuration_id: 1,
@@ -69,12 +69,12 @@ jest.spyOn(data, "fetchJobs").mockImplementation(() =>
   ])
 );
 jest.spyOn(data, "fetchEvents").mockImplementation(() => Promise.resolve([]));
-jest.spyOn(data, "fetchJobById").mockImplementation(() =>
+jest.spyOn(data, "fetchStudyById").mockImplementation(() =>
   Promise.resolve({
     id: 1,
-    provider_job_name: "Kidney Cancer Detection",
+    provider_study_name: "Kidney Cancer Detection",
     customer_id: 1,
-    provider_job_id: "236",
+    provider_study_id: "236",
     provider_id: 2,
     created_at: "2021-03-01T00:00:00.000Z",
     job_configuration_id: 1,
@@ -120,26 +120,26 @@ describe("Profile", () => {
     expect(email).toBeInTheDocument();
   });
 
-  it("renders job", async () => {
+  it("renders study", async () => {
     await act(async () =>
       render(<Profile />, { wrapper: AuthContextProvider })
     );
 
-    const job = await waitFor(() =>
+    const study = await waitFor(() =>
       screen.getByText("Kidney Cancer Detection")
     );
 
-    expect(job).toBeInTheDocument();
+    expect(study).toBeInTheDocument();
   });
 
-  it("renders number of jobs", async () => {
+  it("renders number of studies", async () => {
     await act(async () =>
       render(<Profile />, { wrapper: AuthContextProvider })
     );
 
-    const job = await waitFor(() => screen.getByText("1 jobs"));
+    const study = await waitFor(() => screen.getByText("1 studies"));
 
-    expect(job).toBeInTheDocument();
+    expect(study).toBeInTheDocument();
   });
 
   it("renders copy id section for customer", async () => {
