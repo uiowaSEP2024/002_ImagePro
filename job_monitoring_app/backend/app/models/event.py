@@ -14,7 +14,7 @@ class Event(Base, DateMixin):
     -----------
     id : int
         The primary key of the event
-    job : int
+    job_id : int
         The foreign key of the job
     event_name : str
         The name of the event
@@ -37,6 +37,17 @@ class Event(Base, DateMixin):
         back_populates="events",
         foreign_keys=[
             job_id,
+        ],
+    )
+
+    study_id: Column = Column(
+        Integer, ForeignKey("studies.id"), index=True, nullable=True
+    )
+    study = relationship(
+        "Study",
+        back_populates="events",
+        foreign_keys=[
+            study_id,
         ],
     )
 
