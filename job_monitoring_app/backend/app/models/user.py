@@ -28,8 +28,12 @@ class User(Base, DateMixin):
             The api keys associated with the user (one to many)
         jobs : relationship
             The jobs associated with the user (one to many)
+        studies : relationship
+            The studies associated with the user (one to many)
         provider_jobs : relationship
             The provider jobs associated with the user (one to many)
+        provider_studies : relationship
+            The provider studies associated with the user (one to many)
         job_configurations : relationship
             The job configurations associated with the user (one to many)
         Note:
@@ -81,10 +85,24 @@ class User(Base, DateMixin):
         cascade="all, delete-orphan",
     )
 
+    studies = relationship(
+        "Study",
+        back_populates="hospital",
+        foreign_keys="Study.hospital_id",
+        cascade="all, delete-orphan",
+    )
+
     provider_jobs = relationship(
         "Job",
         back_populates="provider",
         foreign_keys="Job.provider_id",
+        cascade="all, delete-orphan",
+    )
+
+    provider_studies = relationship(
+        "Study",
+        back_populates="provider",
+        foreign_keys="Study.provider_id",
         cascade="all, delete-orphan",
     )
 
