@@ -2,19 +2,19 @@ from app import models, schemas  # TODO: Fix imports
 from sqlalchemy.orm import Session
 
 from .job_configuration import get_step_configuration_by_composite_key
-from .jobs import get_job_by_provider_job_id
+from .studies import get_study_by_provider_study_id
 
 # TODO: @Zach - Can you help me understand the differnce is between Provider and User?
 # A provider is a user, but a user is not necessarily a provider. A provider is a user that has a role of "provider"
 # users can be providers or customers, customers being patients. This will be later removed since we are doing providers
-# and hospitals. It is assumed that providers are the only ones creating events since they are running the jobs
+# and hospitals. It is assumed that providers are the only ones creating events since they are running the studies
 
 
 def create_event(
     db: Session, event: schemas.EventCreatePublic, provider: models.User
 ) -> models.Event:
     """
-    Create an event for a job
+    Create an event for a study
 
 
     Args:
@@ -24,19 +24,21 @@ def create_event(
     Returns:
         models.Event: Created event
     """
-    job: models.job = get_job_by_provider_job_id(db, event.provider_job_id, provider.id)
+    study: models.study = get_study_by_provider_study_id(
+        db, event.provider_study_id, provider.id
+    )
 
     params = dict(
         kind=event.kind,
         name=event.name,
-        job_id=job.id,
+        study_id=study.id,
         event_metadata=event.event_metadata,
     )
     # If the event has a tag, we need to find the step_configuration_id???
     # What is the purpose of the tag??
     if event.tag:
         step_configuration = get_step_configuration_by_composite_key(
-            db, job.job_configuration_id, event.tag
+            db, study.job_configuration_id, event.tag
         )
         # TODO: Make note of how this is actually working and add it to the documentation
         # This seems like a weird way to do this? Does it just update the dictionary?
@@ -70,7 +72,7 @@ def update_event(db: Session, event: schemas.EventUpdate) -> models.Event:
     Update an event in the database
     This function takes an eventUpdate schema consisting of the event id, new status, and new metadata
     and updates the corresponding event in the database. This is called when an orthanc_data_logging agent
-    updates an event that is part of an ongoing job
+    updates an event that is part of an ongoing study
 
     Args:
         db (Session): SQLAlchemy session
