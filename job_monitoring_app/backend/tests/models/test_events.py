@@ -6,18 +6,7 @@ from app import models
 
 
 def test_create_event(db, random_test_user, random_provider_user):
-    job = models.Job(
-        provider_job_id="abc123",
-        provider_job_name="kidneyV1",
-        customer_id=random_test_user.id,
-        provider_id=random_provider_user.id,
-    )
 
-    db.add(job)
-    db.commit()
-    db.refresh(job)
-
-    # TODO take out job stuff above after job code is removed
     study = models.Study(
         provider_study_id="abc123",
         provider_study_name="kidneyV1",
@@ -31,7 +20,6 @@ def test_create_event(db, random_test_user, random_provider_user):
     # Create events for the job
 
     event = models.Event(
-        job_id=job.id,  # TODO take out after job code is removed
         study_id=study.id,
         name="Scanning Kidney",
         kind="Pending",
@@ -41,32 +29,16 @@ def test_create_event(db, random_test_user, random_provider_user):
     db.add(event)
     db.commit()
     db.refresh(event)
-    db.refresh(job)  # TODO take out after job code is removed
     db.refresh(study)
 
-    assert event.job_id == job.id  # TODO take out after job code is removed
     assert event.study_id == study.id
     assert event.kind == "Pending"
     assert event.name == "Scanning Kidney"
     assert event.event_metadata == {"unofficial": "Yes"}
     assert event.created_at is not None
 
-    assert len(job.events) == 1  # TODO take out after job code is removed
     assert len(study.events) == 1
-    assert event.job.id == job.id  # TODO take out after job code is removed
     assert event.study.id == study.id
-
-
-def test_create_event_missing_job_id(db):  # TODO take out after job code is removed
-    event = models.Event(name="Scanning Kidney", kind="Pending")
-
-    db.add(event)
-
-    with pytest.raises(sqlalchemy.exc.IntegrityError) as exc:
-        db.commit()
-
-    assert isinstance(exc.value.orig, psycopg2.errors.NotNullViolation)
-    assert "job_id" in str(exc.value.orig)
 
 
 def test_create_event_missing_study_id(db):
@@ -79,25 +51,6 @@ def test_create_event_missing_study_id(db):
 
     assert isinstance(exc.value.orig, psycopg2.errors.NotNullViolation)
     assert "study_id" in str(exc.value.orig)
-
-
-def test_create_job_missing_kind(
-    db, random_test_user, random_provider_user
-):  # TODO take out after job code is removed
-    job = models.Job(
-        provider_job_name="kidneyV1",
-        customer_id=random_test_user.id,
-        provider_id=random_provider_user.id,
-    )
-
-    db.add(job)
-
-    with pytest.raises(sqlalchemy.exc.IntegrityError) as exc:
-        db.commit()
-
-    # Check for null violation and that column is part of the error message in the error
-    assert isinstance(exc.value.orig, psycopg2.errors.NotNullViolation)
-    assert "provider_job_id" in str(exc.value.orig)
 
 
 def test_create_study_missing_kind(db, random_test_user, random_provider_user):
@@ -115,33 +68,6 @@ def test_create_study_missing_kind(db, random_test_user, random_provider_user):
     # Check for null violation and that column is part of the error message in the error
     assert isinstance(exc.value.orig, psycopg2.errors.NotNullViolation)
     assert "provider_study_id" in str(exc.value.orig)
-
-
-def test_create_job_missing_provider_job_name(  # TODO take out after job code is removed
-    db, random_test_user, random_provider_user
-):
-    job = models.Job(
-        provider_job_id="abc123",
-        provider_job_name="kidneyV1",
-        customer_id=random_test_user.id,
-        provider_id=random_provider_user.id,
-    )
-
-    db.add(job)
-    db.commit()
-    db.refresh(job)
-
-    # Create events for the job
-
-    event = models.Event(job_id=job.id, name="Scanning Kidney")
-
-    db.add(event)
-
-    with pytest.raises(sqlalchemy.exc.IntegrityError) as exc:
-        db.commit()
-
-    assert isinstance(exc.value.orig, psycopg2.errors.NotNullViolation)
-    assert "kind" in str(exc.value.orig)
 
 
 def test_create_study_missing_provider_study_name(
