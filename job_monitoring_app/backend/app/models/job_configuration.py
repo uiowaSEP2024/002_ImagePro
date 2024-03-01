@@ -70,3 +70,9 @@ class JobConfiguration(Base, DateMixin):
         back_populates="job_configuration",
         foreign_keys="Job.job_configuration_id",
     )
+
+    studies = relationship(
+        "Study",
+        back_populates="job_configuration",
+        foreign_keys="Study.job_configuration_id",
+    )
