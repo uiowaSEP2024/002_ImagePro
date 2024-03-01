@@ -65,12 +65,12 @@ class Study(Base, DateMixin):
         ],
     )
 
-    # events = relationship(
-    #     "Event",
-    #     back_populates="job",
-    #     foreign_keys="Event.job_id",
-    #     cascade="all, delete-orphan",
-    # )
+    events = relationship(
+        "Event",
+        back_populates="study",
+        foreign_keys="Event.study_id",
+        cascade="all, delete-orphan",
+    )
 
     job_configuration_id: Column = Column(
         Integer,
