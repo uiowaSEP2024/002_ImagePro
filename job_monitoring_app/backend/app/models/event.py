@@ -41,7 +41,7 @@ class Event(Base, DateMixin):
     )
 
     study_id: Column = Column(
-        Integer, ForeignKey("studies.id"), index=True, nullable=True
+        Integer, ForeignKey("studies.id"), index=True, nullable=False
     )
     study = relationship(
         "Study",
