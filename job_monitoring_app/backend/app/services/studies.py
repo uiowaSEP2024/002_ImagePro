@@ -32,7 +32,7 @@ def create_study(
     db_study = models.Study(
         provider_id=provider.id,
         provider_study_id=study.provider_study_id,
-        customer_id=study.customer_id,
+        hospital_id=study.hospital_id,
         job_configuration=job_configuration,
     )
 
@@ -65,9 +65,9 @@ def get_study_by_provider_study_id(
     )
 
 
-def get_studies_for_customer(db: Session, user_id: int) -> list[models.Study]:
+def get_studies_for_hospital(db: Session, user_id: int) -> list[models.Study]:
     """
-    Get all studies associated with the customer with the given user_id
+    Get all studies associated with the hospital with the given user_id
 
     Args:
         db (Session): Database session
