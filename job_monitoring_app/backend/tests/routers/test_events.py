@@ -4,19 +4,20 @@ from app import services
 from app.dependencies import API_KEY_HEADER_NAME
 
 
-def test_create_event(app_client, job_for_random_user_with_api_key, db):
-    job = job_for_random_user_with_api_key
+def test_create_event(app_client, study_for_random_user_with_api_key, db):
+    # job = job_for_random_user_with_api_key # This is in conftest, which will have to be changed
+    study = study_for_random_user_with_api_key
     data = {
         "kind": "Pending",
         "name": "Scanning",
-        "provider_job_id": job.provider_job_id,
+        "provider_study_id": study.provider_study_id,
         "event_metadata": {"official": "Yes"},
     }
     response = app_client.post(
         "/events",
         json=data,
         headers={
-            API_KEY_HEADER_NAME: job_for_random_user_with_api_key.provider.api_keys[
+            API_KEY_HEADER_NAME: study_for_random_user_with_api_key.provider.api_keys[
                 0
             ].key
         },
@@ -25,31 +26,33 @@ def test_create_event(app_client, job_for_random_user_with_api_key, db):
     assert response.json()["kind"] == "Pending"
     assert response.json()["name"] == "Scanning"
     assert response.json()["event_metadata"] == {"official": "Yes"}
-    db.refresh(job)
-    assert response.json()["id"] == job.events[0].id
+    db.refresh(study)
+    assert response.json()["id"] == study.events[0].id
     assert (
-        response.json()["job_id"]
-        == services.get_job_by_provider_job_id(
-            db=db, provider_job_id=job.provider_job_id, provider_id=job.provider_id
+        response.json()["study_id"]
+        == services.get_study_by_provider_study_id(
+            db=db,
+            provider_study_id=study.provider_study_id,
+            provider_id=study.provider_id,
         ).id
     )
     assert response.json()["created_at"] is not None
 
 
-def test_update_event(app_client, job_for_random_user_with_api_key, db):
+def test_update_event(app_client, study_for_random_user_with_api_key, db):
     # Create an event
-    job = job_for_random_user_with_api_key
+    study = study_for_random_user_with_api_key
     event_data = {
         "kind": "Pending",
         "name": "Scanning",
-        "provider_job_id": job.provider_job_id,
+        "provider_study_id": study.provider_study_id,
         "event_metadata": {"official": "Yes"},
     }
     response = app_client.post(
         "/events",
         json=event_data,
         headers={
-            API_KEY_HEADER_NAME: job_for_random_user_with_api_key.provider.api_keys[
+            API_KEY_HEADER_NAME: study_for_random_user_with_api_key.provider.api_keys[
                 0
             ].key
         },
@@ -74,7 +77,7 @@ def test_update_event(app_client, job_for_random_user_with_api_key, db):
         "/update_event",
         json=updated_event_data,
         headers={
-            API_KEY_HEADER_NAME: job_for_random_user_with_api_key.provider.api_keys[
+            API_KEY_HEADER_NAME: study_for_random_user_with_api_key.provider.api_keys[
                 0
             ].key
         },
@@ -101,7 +104,7 @@ def test_update_event(app_client, job_for_random_user_with_api_key, db):
     )
     assert update_response.json()["name"] == event_data["name"]
 
-    assert update_response.json()["job_id"] == job.id
+    assert update_response.json()["study_id"] == study.id
     assert update_response.json()["created_at"] == response.json()["created_at"]
 
     print(current_time_before_update)
