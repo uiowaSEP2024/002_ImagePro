@@ -8,6 +8,7 @@ from app.routers import (
     users_router,
     job_configurations_router,
     reporting_router,
+    studies_router,
 )
 from config import config
 from fastapi import FastAPI
@@ -45,6 +46,7 @@ app.include_router(jobs_router)
 app.include_router(events_router)
 app.include_router(job_configurations_router)
 app.include_router(reporting_router)
+app.include_router(studies_router)
 
 # Create handler for AWS lambda
 handler = Mangum(app, lifespan="on")
