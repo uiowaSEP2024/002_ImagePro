@@ -1,0 +1,80 @@
+FROM ubuntu:latest
+LABEL authors="iejohnson"
+
+# Set environment variables
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
+ENV PATH /opt/venv/bin:$PATH
+
+# Disable Prompt During Packages Installation
+ARG DEBIAN_FRONTEND=noninteractive
+
+LABEL maintainer="iejohnson"
+LABEL version="0.1"
+LABEL description="This is the Dockerfile for the brainmask_tool"
+LABEL toolname="brainmask_tool"
+LABEL toolversion="0.1"
+LABEL tooltype="medical"
+LABEL input="Directory containing dicom files for a single study"
+LABEL output="Directory with brain masks and PDF report as well as dicom Encapsulated PDFs"
+
+
+RUN apt update
+
+# Install necessary libraries
+RUN apt-get install -y \
+    python3.10 \
+    python3-pip \
+    python3.10-venv \
+    libpango-1.0-0 \
+    libharfbuzz0b \
+    libpangoft2-1.0-0
+
+RUN rm -rf /var/lib/apt/lists/* && \
+    apt clean
+
+# Create needed directories
+RUN mkdir /app
+RUN mkdir /input
+RUN mkdir /output
+
+# Set the working directory
+WORKDIR /app
+
+
+# Upgrade pip
+RUN python3.10 -m pip install --upgrade pip
+
+# Create a virtual environment and activate it
+RUN python3.10 -m pip install --user virtualenv
+RUN python3.10 -m venv /opt/venv
+RUN . /opt/venv/bin/activate
+
+# Copy requirements file
+COPY requirements_medical_tool.txt .
+
+# Install Python dependencies
+RUN pip install -r requirements_medical_tool.txt
+
+
+
+
+
+# Copy the rest of the code
+COPY example_tool/brainmask_tool.py /app/brainmask_tool.py
+COPY example_tool/cnn_transforms.py /app/cnn_transforms.py
+COPY example_tool/pipeline_functions.py /app/pipeline_functions.py
+COPY example_tool/pdf_report.py /app/pdf_report.py
+COPY example_tool/rf_dicom_modality_classifier.onnx /app/rf_dicom_modality_classifier.onnx
+COPY example_tool/brainmask_model.ckpt /app/brainmask_model.ckpt
+
+# TODO Check the code below. Im not sure if this is what we actually want
+# The desired functionality is to have a mounted directory for input and output files
+# I want to be able to run the container with the input and output directories as arguments
+# Then I want to be able to trigger the tool to run with an extra parameter that is the study_id
+# The tool should then read the input files, process them and write the output files to the output directory
+# Add an environment variable for the input directory
+
+ENV PYTHONPATH $PYTHONPATH:/app
+
+ENTRYPOINT ["python", "brainmask_tool.py"]
