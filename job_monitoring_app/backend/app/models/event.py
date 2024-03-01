@@ -30,16 +30,6 @@ class Event(Base, DateMixin):
     # Auto-generated internal event id
     id = Column(Integer, primary_key=True, index=True)
 
-    # The job id the events correspond to
-    job_id: Column = Column(Integer, ForeignKey("jobs.id"), index=True, nullable=False)
-    job = relationship(
-        "Job",
-        back_populates="events",
-        foreign_keys=[
-            job_id,
-        ],
-    )
-
     study_id: Column = Column(
         Integer, ForeignKey("studies.id"), index=True, nullable=False
     )
