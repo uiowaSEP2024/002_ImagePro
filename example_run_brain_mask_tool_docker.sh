@@ -22,9 +22,9 @@ fi
 
 
 docker run --rm \
--v $INPUT_DIR:/input \
--v $OUTPUT_DIR:/output \
+-v "$INPUT_DIR":/input \
+-v "$OUTPUT_DIR":/output \
 brainmasktool:v0.1\
  -s /input \
  -o /output\
- -i "$DEFAULT_STUDY_ID"
+ -i "$STUDY_ID"
