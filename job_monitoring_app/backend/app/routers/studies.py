@@ -25,7 +25,7 @@ def get_customer_studies(
     user=Depends(get_current_user_from_token),
 ):
     if user.role == "customer":
-        return services.get_studies_for_customer(db=db, user_id=user.id)
+        return services.get_studies_for_hospital(db=db, user_id=user.id)
 
     return services.get_studies_for_provider(db=db, user_id=user.id)
 
@@ -42,7 +42,7 @@ def get_study(
     if study is None:
         raise HTTPException(status_code=404, detail="Study not found")
 
-    if user.id not in [study.customer_id, study.provider_id]:
+    if user.id not in [study.hospital_id, study.provider_id]:
         # TODO: add job.provider_id to the list of allowed users that can
         #  access this once we have api key based access? See above comment
         raise HTTPException(status_code=403, detail="Not allowed")
@@ -57,12 +57,12 @@ def get_study_events(
     user=Depends(get_current_user_from_token),
 ):
     # TODO: see comments from /jobs/{job_id}
-    study = services.get_job_by_id(db, study_id=study_id)
+    study = services.get_study_by_id(db, study_id=study_id)
 
     if study is None:
         raise HTTPException(status_code=404, detail="Study not found")
 
-    if user.id not in [study.customer_id, study.provider_id]:
+    if user.id not in [study.hospital_id, study.provider_id]:
         raise HTTPException(status_code=403, detail="Not allowed")
 
     return study.events

@@ -65,13 +65,13 @@ def test_get_study_as_customer(
 
     assert response.status_code == 200
     assert response.json()["id"] == study.id
-    assert response.json()["customer_id"] == study.hospital_id
+    assert response.json()["hospital_id"] == study.hospital_id
     assert response.json()["provider_id"] == study.provider_id
     assert response.json()["created_at"] is not None
     assert response.json()["job_configuration_id"] == job_configuration.id
 
 
-def test_get_studies_as_customer(
+def test_get_studies_as_hospital(
     app_client,
     db,
     random_provider_user_with_api_key,
