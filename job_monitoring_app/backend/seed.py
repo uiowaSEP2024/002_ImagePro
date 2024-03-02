@@ -20,7 +20,7 @@ def create_nested(target, args, kwargs):
 
 # Cache for Created Entities
 users = {}
-jobs = {}
+studies = {}
 events = {}
 api_keys = {}
 job_configs = {}
@@ -203,33 +203,33 @@ JOBS_CONFIGURATIONS = [
 ]
 
 
-JOBS_DATA = [
-    # Job 1 John
+STUDIES_DATA = [
+    # study 1 John
     dict(
         customer_email="johndoe@gmail.com",
         provider_email="botimage@gmail.com",
-        provider_job_id="botimage-123",
+        provider_study_id="botimage-123",
         job_configuration_tag="lung_cancer",
     ),
-    # Job 2 John
+    # study 2 John
     dict(
         customer_email="johndoe@gmail.com",
         provider_email="botimage@gmail.com",
-        provider_job_id="botimage-456",
+        provider_study_id="botimage-456",
         job_configuration_tag="heart_cancer",
     ),
-    # Job 3 John
+    # study 3 John
     dict(
         customer_email="johndoe@gmail.com",
         provider_email="botimage@gmail.com",
-        provider_job_id="botimage-789",
+        provider_study_id="botimage-789",
         job_configuration_tag="pancreas_cancer",
     ),
-    # Job 1 Jane
+    # study 1 Jane
     dict(
         customer_email="janeblack@gmail.com",
         provider_email="noodlesco@gmail.com",
-        provider_job_id="noodlesco-123",
+        provider_study_id="noodlesco-123",
         job_configuration_tag="lung_cancer",
     ),
 ]
@@ -237,7 +237,7 @@ JOBS_DATA = [
 EVENTS_DATA = [
     #  Job 1 John, Event 1
     dict(
-        provider_job_id="botimage-123",
+        provider_study_id="botimage-123",
         kind="Pending",
         job_configuration_tag="kidney_cancer",
         step_configuration_tag="kidney_left",
@@ -250,7 +250,7 @@ EVENTS_DATA = [
     ),
     #  Job 1 John, Event 2
     dict(
-        provider_job_id="botimage-123",
+        provider_study_id="botimage-123",
         kind="Pending",
         job_configuration_tag="kidney_cancer",
         step_configuration_tag="kidney_right",
@@ -263,7 +263,7 @@ EVENTS_DATA = [
     ),
     #  Job 1 John, Event 3
     dict(
-        provider_job_id="botimage-123",
+        provider_study_id="botimage-123",
         kind="Complete",
         job_configuration_tag="kidney_cancer",
         step_configuration_tag="kidney_results",
@@ -273,7 +273,7 @@ EVENTS_DATA = [
     ),
     #  Job 2 John, Event 1
     dict(
-        provider_job_id="botimage-456",
+        provider_study_id="botimage-456",
         kind="Pending",
         job_configuration_tag="heart_cancer",
         step_configuration_tag="heart_left",
@@ -286,7 +286,7 @@ EVENTS_DATA = [
     ),
     #  Job 2 John, Event 2
     dict(
-        provider_job_id="botimage-456",
+        provider_study_id="botimage-456",
         kind="Pending",
         job_configuration_tag="heart_cancer",
         step_configuration_tag="heart_right",
@@ -299,7 +299,7 @@ EVENTS_DATA = [
     ),
     #  Job 2 John, Event 3
     dict(
-        provider_job_id="botimage-456",
+        provider_study_id="botimage-456",
         kind="Complete",
         job_configuration_tag="heart_cancer",
         step_configuration_tag="heart_results",
@@ -309,7 +309,7 @@ EVENTS_DATA = [
     ),
     #  Job 3 John, Event 1
     dict(
-        provider_job_id="botimage-789",
+        provider_study_id="botimage-789",
         kind="Complete",
         job_configuration_tag="pancreas_cancer",
         step_configuration_tag="pancreas_results",
@@ -319,7 +319,7 @@ EVENTS_DATA = [
     ),
     #  Job 1 Jane, Event 1
     dict(
-        provider_job_id="noodlesco-123",
+        provider_study_id="noodlesco-123",
         kind="Pending",
         job_configuration_tag="lung_cancer",
         step_configuration_tag="left_lung",
@@ -332,7 +332,7 @@ EVENTS_DATA = [
     ),
     #  Job 1 Jane, Event 2
     dict(
-        provider_job_id="noodlesco-123",
+        provider_study_id="noodlesco-123",
         kind="Pending",
         job_configuration_tag="lung_cancer",
         step_configuration_tag="right_lung",
@@ -345,7 +345,7 @@ EVENTS_DATA = [
     ),
     #  Job 1 Jane, Event 3
     dict(
-        provider_job_id="noodlesco-123",
+        provider_study_id="noodlesco-123",
         kind="Complete",
         job_configuration_tag="lung_cancer",
         step_configuration_tag="lung_results",
@@ -392,28 +392,28 @@ def seed_api_keys(db):
         api_keys[api_key.id] = api_key
 
 
-def seed_jobs(db):
-    print("Seeding Jobs")
+def seed_studies(db):
+    print("Seeding Studies")
     from app import models
 
-    for job_data in JOBS_DATA:
-        print(f"  Seeding job {str(job_data)}")
-        customer = users[job_data["customer_email"]]
-        provider = users[job_data["provider_email"]]
-        job_config = job_configs[job_data["job_configuration_tag"]]
+    for study_data in STUDIES_DATA:
+        print(f"  Seeding study {str(study_data)}")
+        customer = users[study_data["customer_email"]]
+        provider = users[study_data["provider_email"]]
+        job_config = job_configs[study_data["job_configuration_tag"]]
 
-        job = models.Job(
-            customer_id=customer.id,
+        study = models.Study(
+            hospital_id=customer.id,
             provider_id=provider.id,
             job_configuration_id=job_config.id,
-            provider_job_id=job_data["provider_job_id"],
+            provider_study_id=study_data["provider_study_id"],
         )
 
-        db.add(job)
+        db.add(study)
         db.commit()
-        db.refresh(job)
+        db.refresh(study)
 
-        jobs[job.provider_job_id] = job
+        studies[study.provider_study_id] = study
 
 
 def seed_events(db):
@@ -423,7 +423,7 @@ def seed_events(db):
     for event_data in EVENTS_DATA:
         print(f"  Seeding event: {str(event_data)}")
 
-        job = jobs[event_data["provider_job_id"]]
+        study = studies[event_data["provider_study_id"]]
         job_config = job_configs[event_data["job_configuration_tag"]]
         step_config = [
             x
@@ -432,7 +432,7 @@ def seed_events(db):
         ][0]
 
         event = models.Event(
-            job_id=job.id,
+            study_id=study.id,
             kind=event_data["kind"],
             step_configuration_id=step_config.id,
             event_metadata=event_data.get("event_metadata", None),
@@ -467,5 +467,5 @@ def seed_db():
     seed_users(db)
     seed_api_keys(db)
     seed_job_configurations(db)
-    seed_jobs(db)
+    seed_studies(db)
     seed_events(db)
