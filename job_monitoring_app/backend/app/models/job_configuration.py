@@ -65,12 +65,6 @@ class JobConfiguration(Base, DateMixin):
         cascade="all, delete-orphan",
     )
 
-    jobs = relationship(
-        "Job",
-        back_populates="job_configuration",
-        foreign_keys="Job.job_configuration_id",
-    )
-
     studies = relationship(
         "Study",
         back_populates="job_configuration",
