@@ -85,13 +85,6 @@ class User(Base, DateMixin):
         cascade="all, delete-orphan",
     )
 
-    provider_jobs = relationship(
-        "Job",
-        back_populates="provider",
-        foreign_keys="Job.provider_id",
-        cascade="all, delete-orphan",
-    )
-
     provider_studies = relationship(
         "Study",
         back_populates="provider",
