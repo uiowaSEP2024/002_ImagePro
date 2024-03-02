@@ -78,13 +78,6 @@ class User(Base, DateMixin):
         "Apikey", back_populates="user", cascade="all, delete-orphan"
     )
 
-    jobs = relationship(
-        "Job",
-        back_populates="customer",
-        foreign_keys="Job.customer_id",
-        cascade="all, delete-orphan",
-    )
-
     studies = relationship(
         "Study",
         back_populates="hospital",
