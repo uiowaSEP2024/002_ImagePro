@@ -24,8 +24,8 @@ class ApiUrls:
         return self.url("/update_event")
 
     @property
-    def jobs_url(self):
-        return self.url("/jobs")
+    def studies_url(self):
+        return self.url("/studies")
 
     @property
     def jobs_config_url(self):
@@ -94,25 +94,25 @@ class TrackerApi:
     def register_job_config(self, config: JobConfig):
         self.__post(self.urls.jobs_config_url, config.dict())
 
-    def create_job(self, provider_job_id: str, customer_id: int, tag: str):
+    def create_study(self, provider_study_id: str, hospital_id: int, tag: str):
         """
-        Creates a job with the given provider_job_id, customer_id, and tag
-        Returns a TrackerJobApi object
+        Creates a study with the given provider_study_id, hospital_id, and tag
+        Returns a TrackerStudyApi object
         """
         data = self.__to_json(
             self.__post(
-                self.urls.jobs_url,
+                self.urls.studies_url,
                 {
-                    "provider_job_id": provider_job_id,
-                    "customer_id": customer_id,
+                    "provider_study_id": provider_study_id,
+                    "hospital_id": hospital_id,
                     "tag": tag,
                 },
             )
         )
 
-        return TrackerJobApi(provider_job_id=data["provider_job_id"], api=self)
+        return TrackerStudyApi(provider_study_id=data["provider_study_id"], api=self)
 
-    def send_event(self, kind, tag, provider_job_id, metadata):
+    def send_event(self, kind, tag, provider_study_id, metadata):
         """
         Sends an event with the given kind, tag, provider_job_id, and metadata
         Returns a TrackerEventApi object
@@ -123,7 +123,7 @@ class TrackerApi:
                 {
                     "kind": kind,
                     "tag": tag,
-                    "provider_job_id": provider_job_id,
+                    "provider_study_id": provider_study_id,
                     "event_metadata": metadata,
                 },
             )
@@ -152,9 +152,9 @@ class TrackerApi:
         return TrackerEventApi(event_id=data["id"], api=self)
 
 
-class TrackerJobApi:
-    def __init__(self, api: TrackerApi, provider_job_id):
-        self.provider_job_id = provider_job_id
+class TrackerStudyApi:
+    def __init__(self, api: TrackerApi, provider_study_id):
+        self.provider_study_id = provider_study_id
         self.api = api
 
     def send_event(self, kind, tag, metadata=None):
@@ -162,7 +162,7 @@ class TrackerJobApi:
         return self.api.send_event(
             kind=kind,
             tag=tag,
-            provider_job_id=self.provider_job_id,
+            provider_study_id=self.provider_study_id,
             metadata=metadata,
         )
 
