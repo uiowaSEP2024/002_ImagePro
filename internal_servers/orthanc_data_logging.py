@@ -42,9 +42,8 @@ class OrthancStudyLogger:
         tracker.register_job_config(job_config)
 
         # Signal the start of a new job
-        self.tracker_job = tracker.create_job(study_id, hospital_id, job_config.tag)
-        # job_config = None
-        # TODO: the steps are used to check if step is complete for the orthanc receiver
+        self.tracker_study = tracker.create_study(study_id, hospital_id, job_config.tag)
+
         self.steps = {
             1: {"status": "Pending"},
             2: {"status": "Pending"},
@@ -55,22 +54,14 @@ class OrthancStudyLogger:
         # TODO: code below creates the initial events with initial status
         # TODO: we need to change instead of using "kind" to "step" or "complete" to use the status in event metadata
         # TODO: look in the mockscript to see how they use kind
-        # for i in range(1, 5):
-        #     self.tracker_job.send_event(
-        #         kind="step",
-        #         tag=i,
-        #         provider_job_id=self.hospital_id,
-        #         metadata=self.steps[i], # this will take the initial metadata from self.steps
-        #     )
 
         # These are the primary keys for each event logged in the back end
         self.step_PKs = {}
 
         for idx, step in enumerate(job_config.step_configurations):
-            new_event = self.tracker_job.send_event(
+            new_event = self.tracker_study.send_event(
                 kind="Pending",
                 tag=step.tag,
-                # provider_job_id=self.hospital_id,
                 metadata=self.steps[
                     idx + 1
                 ],  # this will take the initial metadata from self.steps
@@ -99,10 +90,8 @@ class OrthancStudyLogger:
         if reason:
             metadata["Reason"] = reason
 
-        # TODO: Update step
-        # TODO: this needs to be implemented to allow for updating step in the api and backend
         # event_id becomes the primary key of the event corresponding to this event for this job, which is saved in self.step_PKs
-        self.tracker_job.update_event(
+        self.tracker_study.update_event(
             kind=status, event_id=self.step_PKs[step_id], metadata=metadata
         )
 
