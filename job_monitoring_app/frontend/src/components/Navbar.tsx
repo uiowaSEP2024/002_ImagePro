@@ -87,9 +87,9 @@ const Navbar = (): JSX.Element => {
       show: !!currentUser
     },
     {
-      to: "/jobs",
-      name: "Jobs",
-      id: "jobs",
+      to: "/studies",
+      name: "Studies",
+      id: "studies",
       show: !!currentUser
     },
     {
