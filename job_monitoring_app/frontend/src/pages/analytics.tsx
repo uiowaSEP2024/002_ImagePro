@@ -23,7 +23,7 @@ function Analytics() {
    */
   useEffect(() => {
     const getStudies = async () => {
-      const data = await fetch();
+      const data = await fetchStudies();
       if (data) {
         setStudies(data);
       }
