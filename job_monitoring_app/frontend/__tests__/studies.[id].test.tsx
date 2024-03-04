@@ -5,12 +5,12 @@ import {
   screen,
   waitFor
 } from "@testing-library/react";
-import JobPage from "@/pages/jobs/[id]";
+import StudyPage from "@/pages/studies/[id]";
 import "@testing-library/jest-dom";
 import { AuthContextProvider } from "@/contexts/authContext";
 import * as data from "@/data";
 
-const jobId = "1";
+const studyId = "1";
 
 // Mock the router to return information needed for the page to render
 const mockRouterPush = jest.fn();
@@ -19,7 +19,7 @@ jest.mock("next/router", () => ({
     return {
       route: "/",
       pathname: "",
-      query: { id: jobId },
+      query: { id: studyId },
       push: mockRouterPush
     };
   }
@@ -43,13 +43,13 @@ jest.spyOn(data, "fetchCheckUserLoggedIn").mockImplementation(() =>
   })
 );
 
-jest.spyOn(data, "fetchJobs").mockImplementation(() =>
+jest.spyOn(data, "fetchStudies").mockImplementation(() =>
   Promise.resolve([
     {
       id: 1,
-      provider_job_name: "Kidney Cancer Detection",
-      customer_id: 1,
-      provider_job_id: "236",
+      provider_study_name: "Kidney Cancer Detection",
+      hospital_id: 1,
+      provider_study_id: "236",
       provider_id: 2,
       created_at: "2021-03-01T00:00:00.000Z",
       job_configuration_id: 1,
@@ -76,19 +76,19 @@ jest.spyOn(data, "fetchEvents").mockImplementation(() =>
     {
       kind: "step",
       name: "Scanning Left Kidney",
-      job_id: 1,
+      study_id: 1,
       id: 1,
       created_at: "2021-03-01T00:00:00.000Z"
     }
   ])
 );
 
-jest.spyOn(data, "fetchJobById").mockImplementation(() =>
+jest.spyOn(data, "fetchStudyById").mockImplementation(() =>
   Promise.resolve({
     id: 1,
-    provider_job_name: "Kidney Cancer Detection",
-    customer_id: 1,
-    provider_job_id: "236",
+    provider_study_name: "Kidney Cancer Detection",
+    hospital_id: 1,
+    provider_study_id: "236",
     provider_id: 2,
     created_at: "2021-03-01T00:00:00.000Z",
     job_configuration_id: 1,
@@ -109,26 +109,26 @@ jest.spyOn(data, "fetchJobById").mockImplementation(() =>
   })
 );
 
-describe("Job Page", () => {
+describe("Study Page", () => {
   it("renders a heading", async () => {
     await act(async () => {
-      render(<JobPage initialIsPageLoading={false} />, {
+      render(<StudyPage initialIsPageLoading={false} />, {
         wrapper: AuthContextProvider
       });
     });
 
     const heading = await waitFor(() =>
       screen.getByRole("heading", {
-        name: new RegExp(`Job #${jobId}`, "i")
+        name: new RegExp(`Study #${studyId}`, "i")
       })
     );
 
     expect(heading).toBeInTheDocument();
   });
 
-  it("renders a list of job events", async () => {
+  it("renders a list of study events", async () => {
     await act(async () => {
-      render(<JobPage initialIsPageLoading={false} />, {
+      render(<StudyPage initialIsPageLoading={false} />, {
         wrapper: AuthContextProvider
       });
     });
@@ -140,7 +140,7 @@ describe("Job Page", () => {
 
   it("renders a progress bar", async () => {
     await act(async () => {
-      render(<JobPage initialIsPageLoading={false} />, {
+      render(<StudyPage initialIsPageLoading={false} />, {
         wrapper: AuthContextProvider
       });
     });
@@ -153,7 +153,7 @@ describe("Job Page", () => {
 
   it("has back button", async () => {
     await act(async () => {
-      render(<JobPage initialIsPageLoading={false} />, {
+      render(<StudyPage initialIsPageLoading={false} />, {
         wrapper: AuthContextProvider
       });
     });
@@ -166,18 +166,18 @@ describe("Job Page", () => {
 
     const link = await waitFor(() => screen.getByTestId("backlink"));
 
-    expect(link).toHaveAttribute("href", "/jobs");
+    expect(link).toHaveAttribute("href", "/studies");
   });
 
   it("renders an admin link at bottom", async () => {
     await act(async () => {
-      render(<JobPage initialIsPageLoading={false} />, {
+      render(<StudyPage initialIsPageLoading={false} />, {
         wrapper: AuthContextProvider
       });
     });
 
     const adminLink = await waitFor(() =>
-      screen.getByText("Issue with this job? Contact system administrator at")
+      screen.getByText("Issue with this study? Contact system administrator at")
     );
 
     expect(adminLink).toBeInTheDocument();
