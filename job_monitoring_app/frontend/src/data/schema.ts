@@ -40,19 +40,19 @@ export interface paths {
     /** Logout */
     post: operations["logout_logout_post"];
   };
-  "/jobs": {
-    /** Get Customer Jobs */
-    get: operations["get_customer_jobs_jobs_get"];
-    /** Create Job */
-    post: operations["create_job_jobs_post"];
+  "/studies": {
+    /** Get Customer Studies */
+    get: operations["get_customer_studies_studies_get"];
+    /** Create Study */
+    post: operations["create_study_studies_post"];
   };
-  "/jobs/{job_id}": {
-    /** Get Job */
-    get: operations["get_job_jobs__job_id__get"];
+  "/studies/{study_id}": {
+    /** Get Study */
+    get: operations["get_study_studies__study_id__get"];
   };
-  "/jobs/{job_id}/events": {
-    /** Get Job Events */
-    get: operations["get_job_events_jobs__job_id__events_get"];
+  "/studies/{study_id}/events": {
+    /** Get Study Events */
+    get: operations["get_study_events_studies__study_id__events_get"];
   };
   "/events": {
     /** Create Event */
@@ -169,8 +169,8 @@ export interface components {
       };
       /** Id */
       id: number;
-      /** Job Id */
-      job_id: number;
+      /** Study Id */
+      study_id: number;
       /**
        * Created At
        * Format: date-time
@@ -192,8 +192,8 @@ export interface components {
       event_metadata?: {
         [key: string]: (string | number | boolean) | undefined;
       };
-      /** Provider Job Id */
-      provider_job_id: string;
+      /** Provider Study Id */
+      provider_study_id: string;
       /** Tag */
       tag?: string;
     };
@@ -208,12 +208,12 @@ export interface components {
       /** Detail */
       detail?: components["schemas"]["ValidationError"][];
     };
-    /** Job */
-    Job: {
-      /** Provider Job Id */
-      provider_job_id: string;
-      /** Customer Id */
-      customer_id: number;
+    /** Study */
+    Study: {
+      /** Provider Study Id */
+      provider_study_id: string;
+      /** Hospital Id */
+      hospital_id: number;
       /** Id */
       id: number;
       /** Provider Id */
@@ -274,12 +274,12 @@ export interface components {
       /** Step Configurations */
       step_configurations: components["schemas"]["StepConfigurationCreate"][];
     };
-    /** JobCreate */
-    JobCreate: {
-      /** Provider Job Id */
-      provider_job_id: string;
-      /** Customer Id */
-      customer_id: number;
+    /** StudyCreate */
+    StudyCreate: {
+      /** Provider Study Id */
+      provider_study_id: string;
+      /** Hospital Id */
+      hospital_id: number;
       /** Tag */
       tag: string;
     };
@@ -594,29 +594,29 @@ export interface operations {
       };
     };
   };
-  /** Get Customer Jobs */
-  get_customer_jobs_jobs_get: {
+  /** Get Customer Studies */
+  get_customer_studies_studies_get: {
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["Job"][];
+          "application/json": components["schemas"]["Study"][];
         };
       };
     };
   };
-  /** Create Job */
-  create_job_jobs_post: {
+  /** Create Study */
+  create_study_studies_post: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["JobCreate"];
+        "application/json": components["schemas"]["StudyCreate"];
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["Job"];
+          "application/json": components["schemas"]["Study"];
         };
       };
       /** @description Validation Error */
@@ -627,18 +627,18 @@ export interface operations {
       };
     };
   };
-  /** Get Job */
-  get_job_jobs__job_id__get: {
+  /** Get Study */
+  get_study_studies__study_id__get: {
     parameters: {
       path: {
-        job_id: number;
+        study_id: number;
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["Job"];
+          "application/json": components["schemas"]["Study"];
         };
       };
       /** @description Validation Error */
@@ -649,11 +649,11 @@ export interface operations {
       };
     };
   };
-  /** Get Job Events */
-  get_job_events_jobs__job_id__events_get: {
+  /** Get Study Events */
+  get_study_events_studies__study_id__events_get: {
     parameters: {
       path: {
-        job_id: number;
+        study_id: number;
       };
     };
     responses: {
