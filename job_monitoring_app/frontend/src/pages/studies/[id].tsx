@@ -11,7 +11,7 @@
 import { Metadata } from "@/components/Metadata";
 import { EventTimeline } from "@/components/EventTimeline";
 import { withAuthenticated } from "@/components/withAuthenticated";
-import { fetchEvents, fetchJobById } from "@/data";
+import { fetchEvents, fetchStudyById } from "@/data";
 import { Study, StudyEvent } from "@/data/types";
 import { useEnsureAuthenticated } from "@/hooks/useAuthContext";
 import { ArrowBackIcon } from "@chakra-ui/icons";
@@ -33,7 +33,7 @@ import {
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 
-// Define the type for the JobEventWithNumber interface.
+// Define the type for the StudyEventWithNumber interface.
 type StusyEventWithNumber = StudyEvent & { event_number: number };
 // Define the type for event kinds
 type Kind = "error" | "pending" | "complete" | "in_progress" | "info";
@@ -170,7 +170,7 @@ function StudyPage({ initialIsPageLoading = true }) {
     <>
       <Container maxW="container.lg" py={"6"}>
         <VStack gap={"4"} w={"full"} align="left">
-          <Link data-testid="backlink" href={"/jobs"}>
+          <Link data-testid="backlink" href={"/studies"}>
             <Button
               size={"md"}
               fontWeight={"semibold"}
