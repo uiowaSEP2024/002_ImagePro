@@ -1,10 +1,10 @@
 /**
- * This file contains the JobPage component of the application.
- * The JobPage component is a React component that displays the details of a specific job.
- * It fetches the job data and the events associated with the job from the server, and displays them in a user-friendly format.
- * The job details include the job's name, date, time, customer ID, and provider.
+ * This file contains the StudyPage component of the application.
+ * The StudyPage component is a React component that displays the details of a specific study.
+ * It fetches the study data and the events associated with the study from the server, and displays them in a user-friendly format.
+ * The study details include the study's name, date, time, customer ID, and provider.
  * The events are displayed in a timeline format, with each event represented by a timeline item.
- * The component also provides a feature for the user to report an issue with the job by sending an email to the system administrator.
+ * The component also provides a feature for the user to report an issue with the study by sending an email to the system administrator.
  */
 
 // Import necessary libraries, components, hooks, and types.
@@ -12,7 +12,7 @@ import { Metadata } from "@/components/Metadata";
 import { EventTimeline } from "@/components/EventTimeline";
 import { withAuthenticated } from "@/components/withAuthenticated";
 import { fetchEvents, fetchJobById } from "@/data";
-import { Job, JobEvent } from "@/data/types";
+import { Study, StudyEvent } from "@/data/types";
 import { useEnsureAuthenticated } from "@/hooks/useAuthContext";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import {
@@ -34,24 +34,24 @@ import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 
 // Define the type for the JobEventWithNumber interface.
-type JobEventWithNumber = JobEvent & { event_number: number };
+type StusyEventWithNumber = StudyEvent & { event_number: number };
 // Define the type for event kinds
 type Kind = "error" | "pending" | "complete" | "in_progress" | "info";
 
 
 /**
- * The JobPage component is a React component that displays the details of a specific job.
- * It fetches the job data and the events associated with the job from the server, and displays them in a user-friendly format.
- * The job details include the job's name, date, time, customer ID, and provider.
+ * The StudyPage component is a React component that displays the details of a specific study.
+ * It fetches the study data and the events associated with the study from the server, and displays them in a user-friendly format.
+ * The study details include the study's name, date, time, customer ID, and provider.
  * The events are displayed in a timeline format, with each event represented by a timeline item.
- * The component also provides a feature for the user to report an issue with the job by sending an email to the system administrator.
+ * The component also provides a feature for the user to report an issue with the study by sending an email to the system administrator.
  */
-function JobPage({ initialIsPageLoading = true }) {
+function StudyPage({ initialIsPageLoading = true }) {
   useEnsureAuthenticated();
   const router = useRouter();
-  const { id: jobId } = router.query;
-  const [events, setEvents] = useState<JobEventWithNumber[]>([]);
-  const [job, setJob] = useState<Job | null>(null);
+  const { id: studyId } = router.query;
+  const [events, setEvents] = useState<StudyEventWithNumber[]>([]);
+  const [study, setStudy] = useState<Study | null>(null);
   const [isPageLoading, setIsPageLoading] = useState(initialIsPageLoading);
 
   const allEvents = useMemo(() => {
@@ -59,25 +59,25 @@ function JobPage({ initialIsPageLoading = true }) {
   }, [events]);
 
   const numSteps = useMemo(
-    () => job?.job_configuration?.step_configurations.length,
-    [job]
+    () => study?.job_configuration?.step_configurations.length,
+    [study]
   );
 
   useEffect(() => {
-    async function loadJob() {
-      const data = await fetchJobById(jobId as unknown as number);
-      if (data) setJob(data);
+    async function loadStudy() {
+      const data = await fetchStudyById(studyId as unknown as number);
+      if (data) setStudy(data);
     }
 
-    if (jobId) {
-      loadJob();
+    if (studyId) {
+      loadStudy();
     }
-  }, [jobId]);
+  }, [studyId]);
 
-  // Derive the jobStatus based on the last event
-  // If any event is an error, the job is in an error state
-  // Otherwise, check if the job has a complete event
-  const jobStatus = useMemo(() => {
+  // Derive the studyStatus based on the last event
+  // If any event is an error, the study is in an error state
+  // Otherwise, check if the study has a complete event
+  const studyStatus = useMemo(() => {
 
     const hasErrorEvent = events.some((event) => event.kind === "Error");
     if (hasErrorEvent) {
@@ -89,9 +89,9 @@ function JobPage({ initialIsPageLoading = true }) {
   }, [events]);
 
   useEffect(() => {
-    const loadJobEvents = async () => {
+    const loadStudyEvents = async () => {
       try {
-        const data = await fetchEvents(jobId as unknown as number);
+        const data = await fetchEvents(studyId as unknown as number);
         if (!data) {
           return true;
         }
@@ -108,14 +108,14 @@ function JobPage({ initialIsPageLoading = true }) {
     };
 
     const interval = setInterval(async () => {
-      await loadJobEvents();
-      if (jobStatus === "success") {
+      await loadStudyEvents();
+      if (studyStatus === "success") {
         clearInterval(interval);
       }
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [job, jobId, jobStatus, events]);
+  }, [study, studyId, studyStatus, events]);
 
   // Derive the progress percentage based on numSteps and event kind
   // if it is available, or do 0 -> 1 -> 50 -> 100 based on the presence of any events
@@ -125,7 +125,7 @@ function JobPage({ initialIsPageLoading = true }) {
       return ((stepEvents.length / numSteps) * 100).toFixed(0);
     }
 
-    if (jobStatus === "success") {
+    if (studyStatus === "success") {
       return 100;
     }
 
@@ -134,16 +134,16 @@ function JobPage({ initialIsPageLoading = true }) {
     }
 
     return 1;
-  }, [numSteps, jobStatus, events]);
+  }, [numSteps, studyStatus, events]);
 
-  // Derive the color of the progress bar based on computed job status
+  // Derive the color of the progress bar based on computed study status
   const progressColorScheme = useMemo((): ThemingProps["colorScheme"] => {
-    if (jobStatus === "error") {
+    if (studyStatus === "error") {
       return "red";
     }
 
     return "whatsapp";
-  }, [jobStatus]);
+  }, [studyStatus]);
 
   // Don't show page until we have attempted to load some events
   if (isPageLoading) {
@@ -156,14 +156,14 @@ function JobPage({ initialIsPageLoading = true }) {
     );
   }
 
-  const jobDate = job?.created_at ? new Date(job?.created_at) : null;
+  const studyDate = study?.created_at ? new Date(study?.created_at) : null;
 
-  const jobDetails = {
-    "Job Name": job?.job_configuration.name,
-    Date: jobDate ? jobDate.toLocaleDateString() : "-",
-    Time: jobDate ? jobDate.toLocaleTimeString() : "-",
-    "Customer ID": job?.customer_id,
-    Provider: job?.provider.first_name
+  const studyDetails = {
+    "Study Name": study?.job_configuration.name,
+    Date: studyDate ? studyDate.toLocaleDateString() : "-",
+    Time: studyDate ? studyDate.toLocaleTimeString() : "-",
+    "Customer ID": study?.customer_id,
+    Provider: study?.provider.first_name
   };
 
   return (
@@ -179,7 +179,7 @@ function JobPage({ initialIsPageLoading = true }) {
               data-testid="backarrow"
               leftIcon={<ArrowBackIcon />}
             >
-              Back to Jobs
+              Back to Studies
             </Button>
           </Link>
 
@@ -202,9 +202,9 @@ function JobPage({ initialIsPageLoading = true }) {
 
           <Box>
             <Heading fontWeight={"semibold"} size={"lg"} alignItems="center">
-              Job #{jobId}
+              Study #{studyId}
             </Heading>
-            <Metadata metadata={jobDetails} />
+            <Metadata metadata={studyDetails} />
           </Box>
           <Divider />
 
@@ -234,9 +234,9 @@ function JobPage({ initialIsPageLoading = true }) {
 
       <Box align-self={"center"} m={10}>
         <Text align={"center"}>
-          Issue with this job? Contact system administrator at{" "}
+          Issue with this study? Contact system administrator at{" "}
           <Link
-            href={`mailto:admin@botimage.com?subject=Job #${jobId} Report`}
+            href={`mailto:admin@botimage.com?subject=Study #${studyId} Report`}
             color={"#0072f5"}
           >
             admin@botimage.com
@@ -247,4 +247,4 @@ function JobPage({ initialIsPageLoading = true }) {
   );
 }
 
-export default withAuthenticated(JobPage);
+export default withAuthenticated(StudyPage);
