@@ -5,7 +5,7 @@ import {
   waitFor,
   fireEvent
 } from "@testing-library/react";
-import Jobs from "@/pages/jobs";
+import Studies from "@/pages/studies";
 
 import * as data from "@/data/index";
 
@@ -42,13 +42,13 @@ jest.spyOn(data, "fetchCheckUserLoggedIn").mockImplementation(() =>
   })
 );
 
-jest.spyOn(data, "fetchJobs").mockImplementation(() =>
+jest.spyOn(data, "fetchStudies").mockImplementation(() =>
   Promise.resolve([
     {
       id: 1,
-      provider_job_name: "Kidney Cancer Detection",
-      customer_id: 1,
-      provider_job_id: "236",
+      provider_study_name: "Kidney Cancer Detection",
+      hospital_id: 1,
+      provider_study_id: "236",
       provider_id: 2,
       created_at: "2021-03-01T00:00:00.000Z",
       job_configuration_id: 1,
@@ -70,12 +70,12 @@ jest.spyOn(data, "fetchJobs").mockImplementation(() =>
   ])
 );
 jest.spyOn(data, "fetchEvents").mockImplementation(() => Promise.resolve([]));
-jest.spyOn(data, "fetchJobById").mockImplementation(() =>
+jest.spyOn(data, "fetchStudyById").mockImplementation(() =>
   Promise.resolve({
     id: 1,
-    provider_job_name: "Kidney Cancer Detection",
-    customer_id: 1,
-    provider_job_id: "236",
+    provider_study_name: "Kidney Cancer Detection",
+    hospital_id: 1,
+    provider_study_id: "236",
     provider_id: 2,
     created_at: "2021-03-01T00:00:00.000Z",
     job_configuration_id: 1,
@@ -96,42 +96,42 @@ jest.spyOn(data, "fetchJobById").mockImplementation(() =>
   })
 );
 
-describe("Jobs List Page", () => {
+describe("Studies List Page", () => {
   it("renders a heading", async () => {
-    await act(async () => render(<Jobs />, { wrapper: AuthContextProvider }));
+    await act(async () => render(<Studies />, { wrapper: AuthContextProvider }));
 
     const heading = await waitFor(() =>
       screen.getByRole("heading", {
-        name: /Jobs/i
+        name: /Studies/i
       })
     );
 
     expect(heading).toBeInTheDocument();
   });
 
-  it("renders a list of jobs", async () => {
-    await act(async () => render(<Jobs />, { wrapper: AuthContextProvider }));
+  it("renders a list of studies", async () => {
+    await act(async () => render(<Studies />, { wrapper: AuthContextProvider }));
     const table = await waitFor(() =>
       screen.getByRole("grid", {
-        name: /Jobs/i
+        name: /Studies/i
       })
     );
 
     expect(table).toBeInTheDocument();
   });
 
-  it("renders jobs in list", async () => {
-    await act(async () => render(<Jobs />, { wrapper: AuthContextProvider }));
+  it("renders studies in list", async () => {
+    await act(async () => render(<Studies />, { wrapper: AuthContextProvider }));
 
-    const job = await waitFor(() =>
+    const study = await waitFor(() =>
       screen.getByText("Kidney Cancer Detection")
     );
 
-    expect(job).toBeInTheDocument();
+    expect(study).toBeInTheDocument();
   });
 
   it("renders a search bar", async () => {
-    await act(async () => render(<Jobs />, { wrapper: AuthContextProvider }));
+    await act(async () => render(<Studies />, { wrapper: AuthContextProvider }));
 
     const bar = await waitFor(() => screen.getByTestId("search"));
 
@@ -145,13 +145,13 @@ describe("Jobs List Page", () => {
       <input
         id="search"
         type="text"
-        placeholder="Search jobs..."
+        placeholder="Search studies..."
         onChange={handleSearch}
       />
     );
 
     const searchInput = queryByPlaceholderText(
-      "Search jobs..."
+      "Search studies..."
     ) as HTMLInputElement;
 
     fireEvent.input(searchInput, { target: { value: "test" } });

@@ -25,13 +25,13 @@ jest.mock("@/data", () => ({
   ...jest.requireActual("@/data")
 }));
 
-jest.spyOn(data, "fetchJobs").mockImplementation(() =>
+jest.spyOn(data, "fetchStudies").mockImplementation(() =>
   Promise.resolve([
     {
       id: 1,
-      provider_job_name: "Kidney Cancer Detection",
-      customer_id: 1,
-      provider_job_id: "236",
+      provider_study_name: "Kidney Cancer Detection",
+      hospital_id: 1,
+      provider_study_id: "236",
       provider_id: 2,
       created_at: "2021-03-01T00:00:00.000Z",
       job_configuration_id: 1,
