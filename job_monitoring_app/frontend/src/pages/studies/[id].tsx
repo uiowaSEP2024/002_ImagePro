@@ -34,7 +34,7 @@ import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 
 // Define the type for the StudyEventWithNumber interface.
-type StusyEventWithNumber = StudyEvent & { event_number: number };
+type StudyEventWithNumber = StudyEvent & { event_number: number };
 // Define the type for event kinds
 type Kind = "error" | "pending" | "complete" | "in_progress" | "info";
 
@@ -162,7 +162,7 @@ function StudyPage({ initialIsPageLoading = true }) {
     "Study Name": study?.job_configuration.name,
     Date: studyDate ? studyDate.toLocaleDateString() : "-",
     Time: studyDate ? studyDate.toLocaleTimeString() : "-",
-    "Customer ID": study?.customer_id,
+    "Customer ID": study?.hospital_id,
     Provider: study?.provider.first_name
   };
 

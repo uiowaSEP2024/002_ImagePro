@@ -3,8 +3,8 @@
   "job_configs": [
     {
       "version": "0.0.1",
-      "name": "Hospital Job",
-      "tag": "hospital_job",
+      "name": "Hospital Study",
+      "tag": "hospital_study",
       "step_configurations": [
         {
           "name": "Data Receiving",

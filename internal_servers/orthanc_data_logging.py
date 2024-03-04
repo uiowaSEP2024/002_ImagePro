@@ -35,7 +35,7 @@ class OrthancStudyLogger:
         job_config_manager = JobConfigManager(
             configurations_file=job_configurations_file
         )
-        job_config = job_config_manager.get_job_config("hospital_job")
+        job_config = job_config_manager.get_job_config("hospital_study")
 
         # Create TrackerAPI object and job session
         tracker = TrackerApi(tracker_api_key)
