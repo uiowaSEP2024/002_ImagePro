@@ -4,7 +4,7 @@ from dcm_classifier.namic_dicom_typing import itk_read_from_dicomfn_list
 import re
 from pydicom import dcmread
 from subprocess import run
-from typing import Optional, Union
+from typing import Optional
 import itk
 import json
 from pathlib import Path
