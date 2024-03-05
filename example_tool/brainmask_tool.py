@@ -160,7 +160,7 @@ try:
     pdf_dcm.SeriesInstanceUID = generate_uid()
 
     pdf_dcm.SeriesNumber = 100
-    # TODO: our pdf has only 1 page and only 1 dicom file. This might cause issues in the future
+    # our pdf has only 1 page and only 1 dicom file. This might cause issues in the future
     pdf_dcm.InstanceNumber = 1
 
     # set the date and time
@@ -171,7 +171,7 @@ try:
     pdf_dcm.SeriesDate = current_date
 
     pdf_dcm.SeriesDescription = "Brainmask"
-    pdf_dcm.DocumentTitle = f"BrainyBarrier PDF Results"
+    pdf_dcm.DocumentTitle = "BrainyBarrier PDF Results"
     pdf_dcm.save_as(converted_dcm_path, write_like_original=False)
 
     # move the report.dcm to the deliverables directory
