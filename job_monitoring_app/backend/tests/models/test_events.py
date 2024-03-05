@@ -17,7 +17,7 @@ def test_create_event(db, random_test_user, random_provider_user):
     db.commit()
     db.refresh(study)
 
-    # Create events for the job
+    # Create events for the study
 
     event = models.Event(
         study_id=study.id,
@@ -84,7 +84,7 @@ def test_create_study_missing_provider_study_name(
     db.commit()
     db.refresh(study)
 
-    # Create events for the job
+    # Create events for the study
 
     event = models.Event(study_id=study.id, name="Scanning Kidney")
 
@@ -98,16 +98,16 @@ def test_create_study_missing_provider_study_name(
 
 
 def test_create_event_for_step(
-    db, random_test_user, random_provider_user, random_job_configuration_factory
+    db, random_test_user, random_provider_user, random_study_configuration_factory
 ):
-    job_configuration = random_job_configuration_factory.get(num_steps=1)
+    study_configuration = random_study_configuration_factory.get(num_steps=1)
 
     study = models.Study(
         provider_study_id="abc123",
         provider_study_name="kidneyV1",
         hospital_id=random_test_user.id,
         provider_id=random_provider_user.id,
-        job_configuration_id=job_configuration.id,
+        study_configuration_id=study_configuration.id,
     )
 
     db.add(study)
@@ -120,7 +120,7 @@ def test_create_event_for_step(
         study_id=study.id,
         name="Scanning Kidney",
         kind="Pending",
-        step_configuration_id=job_configuration.step_configurations[0].id,
+        step_configuration_id=study_configuration.step_configurations[0].id,
     )
 
     db.add(event)
@@ -128,4 +128,4 @@ def test_create_event_for_step(
     db.refresh(event)
     db.refresh(study)
 
-    assert event.step_configuration_id == job_configuration.step_configurations[0].id
+    assert event.step_configuration_id == study_configuration.step_configurations[0].id

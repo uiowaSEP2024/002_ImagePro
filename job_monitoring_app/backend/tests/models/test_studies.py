@@ -5,17 +5,17 @@ import sqlalchemy
 from app import models
 
 
-def test_delete_job_configuration_after_creating_study(
+def test_delete_study_configuration_after_creating_study(
     db, random_provider_user, random_test_user
 ):
-    job_configuration = models.JobConfiguration(
-        tag="prostate_v1_job",
-        name="Prostate Job",
+    study_configuration = models.StudyConfiguration(
+        tag="prostate_v1_study",
+        name="Prostate Study",
         provider_id=random_provider_user.id,
         version="1.1",
     )
 
-    db.add(job_configuration)
+    db.add(study_configuration)
     db.commit()
 
     study = models.Study(
@@ -23,7 +23,7 @@ def test_delete_job_configuration_after_creating_study(
         provider_study_name="kidneyV1",
         hospital_id=random_test_user.id,
         provider_id=random_provider_user.id,
-        job_configuration_id=job_configuration.id,
+        study_configuration_id=study_configuration.id,
     )
 
     db.add(study)
@@ -31,25 +31,25 @@ def test_delete_job_configuration_after_creating_study(
 
     db.refresh(study)
 
-    db.delete(job_configuration)
+    db.delete(study_configuration)
     db.commit()
 
     db.refresh(study)
     assert study is not None
 
     assert db.query(models.Study).get(study.id) is not None
-    assert study.job_configuration_id is None
+    assert study.study_configuration_id is None
 
 
 def test_create_study_with_configuration(db, random_test_user, random_provider_user):
-    job_configuration = models.JobConfiguration(
-        tag="prostate_v1_job",
-        name="Prostate Job",
+    study_configuration = models.StudyConfiguration(
+        tag="prostate_v1_study",
+        name="Prostate Study",
         provider_id=random_provider_user.id,
         version="1.1",
     )
 
-    db.add(job_configuration)
+    db.add(study_configuration)
     db.commit()
 
     study = models.Study(
@@ -57,7 +57,7 @@ def test_create_study_with_configuration(db, random_test_user, random_provider_u
         provider_study_name="kidneyV1",
         hospital_id=random_test_user.id,
         provider_id=random_provider_user.id,
-        job_configuration_id=job_configuration.id,
+        study_configuration_id=study_configuration.id,
     )
 
     db.add(study)
@@ -69,61 +69,62 @@ def test_create_study_with_configuration(db, random_test_user, random_provider_u
     assert study.hospital_id == random_test_user.id
     assert study.provider_study_id == "abc123"
     assert study.provider_study_name == "kidneyV1"
-    assert study.job_configuration == job_configuration
+    assert study.study_configuration == study_configuration
     assert study.created_at is not None
 
     db.refresh(random_test_user)
-    # Check that the customer user now has the correct jobs associated with them
+    # Check that the customer user now has the correct studies associated with them
     assert len(random_test_user.studies) == 1
     assert random_test_user.studies[0].provider_study_id == "abc123"
     assert random_test_user.studies[0].hospital_id == random_test_user.id
 
     db.refresh(random_provider_user)
-    # Check that the provider user now has the correct jobs associated with them
+    # Check that the provider user now has the correct studies associated with them
     assert len(random_provider_user.provider_studies) == 1
     assert random_provider_user.provider_studies[0].provider_study_id == "abc123"
     assert (
         random_provider_user.provider_studies[0].provider_id == random_provider_user.id
     )
     assert (
-        random_provider_user.provider_studies[0].job_configuration == job_configuration
+        random_provider_user.provider_studies[0].study_configuration
+        == study_configuration
     )
 
-    assert random_provider_user.job_configurations[0] == job_configuration
+    assert random_provider_user.study_configurations[0] == study_configuration
 
 
 def test_create_study_duplicate_provider_study_ids(
     db, random_test_user, random_provider_user
 ):
-    job_configuration = models.JobConfiguration(
-        tag="prostate_v1_job",
-        name="Prostate Job",
+    study_configuration = models.StudyConfiguration(
+        tag="prostate_v1_study",
+        name="Prostate Study",
         provider_id=random_provider_user.id,
         version="1.1",
     )
 
-    db.add(job_configuration)
+    db.add(study_configuration)
     db.commit()
 
-    duplicate_job_id = "abc123"
+    duplicate_study_id = "abc123"
 
     study1 = models.Study(
-        provider_study_id=duplicate_job_id,
+        provider_study_id=duplicate_study_id,
         provider_study_name="kidneyV1",
         hospital_id=random_test_user.id,
         provider_id=random_provider_user.id,
-        job_configuration=job_configuration,
+        study_configuration=study_configuration,
     )
 
     db.add(study1)
     db.commit()
 
     study2 = models.Study(
-        provider_study_id=duplicate_job_id,
+        provider_study_id=duplicate_study_id,
         provider_study_name="kidneyV1",
         hospital_id=random_test_user.id,
         provider_id=random_provider_user.id,
-        job_configuration=job_configuration,
+        study_configuration=study_configuration,
     )
 
     db.add(study2)
@@ -140,21 +141,21 @@ def test_create_study_duplicate_provider_study_ids(
 
 
 def test_create_study_missing_hospital_id(db, random_test_user, random_provider_user):
-    job_configuration = models.JobConfiguration(
-        tag="prostate_v1_job",
-        name="Prostate Job",
+    study_configuration = models.StudyConfiguration(
+        tag="prostate_v1_study",
+        name="Prostate Study",
         provider_id=random_provider_user.id,
         version="1.1",
     )
 
-    db.add(job_configuration)
+    db.add(study_configuration)
     db.commit()
 
     study = models.Study(
         provider_study_id="abc123",
         provider_study_name="kidneyV1",
         provider_id=random_provider_user.id,
-        job_configuration=job_configuration,
+        study_configuration=study_configuration,
     )
 
     db.add(study)
@@ -170,20 +171,20 @@ def test_create_study_missing_hospital_id(db, random_test_user, random_provider_
 def test_create_study_missing_provider_study_id(
     db, random_test_user, random_provider_user
 ):
-    job_configuration = models.JobConfiguration(
-        tag="prostate_v1_job",
-        name="Prostate Job",
+    study_configuration = models.StudyConfiguration(
+        tag="prostate_v1_study",
+        name="Prostate Study",
         provider_id=random_provider_user.id,
         version="1.1",
     )
 
-    db.add(job_configuration)
+    db.add(study_configuration)
     db.commit()
     study = models.Study(
         provider_study_name="kidneyV1",
         hospital_id=random_test_user.id,
         provider_id=random_provider_user.id,
-        job_configuration=job_configuration,
+        study_configuration=study_configuration,
     )
 
     db.add(study)
