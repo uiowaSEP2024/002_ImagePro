@@ -28,10 +28,7 @@ class OrthancStudyLogger:
         )
         self.internal_product_log = None
 
-        # TODO: This is sudo code how to initiate the connection to the tracker api
-        # TODO: this will allow us to store data in the database without log files
         # Get job config, use the initial hospital_job.json file
-
         job_configurations_file = Path(job_config_file)
         job_config_manager = JobConfigManager(
             configurations_file=job_configurations_file
@@ -51,10 +48,6 @@ class OrthancStudyLogger:
             3: {"status": "Pending"},
             4: {"status": "Pending"},
         }
-
-        # TODO: code below creates the initial events with initial status
-        # TODO: we need to change instead of using "kind" to "step" or "complete" to use the status in event metadata
-        # TODO: look in the mockscript to see how they use kind
 
         # These are the primary keys for each event logged in the back end
         self.step_PKs = {}
@@ -82,8 +75,6 @@ class OrthancStudyLogger:
     ):
         """
         Updates the status of a given step and re-writes the log file.
-        TODO: Currently status must be one of the following: In progress, Error, Pending, Info, Complete.
-        This can be changed to be more flexible
         """
         print(f"Updating step {step_id} to {status}")
         metadata = {"status": status}
@@ -91,7 +82,8 @@ class OrthancStudyLogger:
         if reason:
             metadata["Reason"] = reason
 
-        # event_id becomes the primary key of the event corresponding to this event for this job, which is saved in self.step_PKs
+        # event_id becomes the primary key of the event corresponding to this event for this job
+        # it is saved in self.step_PKs
         self.tracker_study.update_event(
             kind=status, event_id=self.step_PKs[step_id], metadata=metadata
         )
@@ -108,7 +100,6 @@ class OrthancStudyLogger:
 
     def _stage_is_complete(self, step_id: int) -> bool:
         """Checks if a given stage is complete."""
-        # TODO: I had to update this. It is not tested and might be buggy
         status = self.steps[step_id]["status"]
         return status == "Complete"
 
