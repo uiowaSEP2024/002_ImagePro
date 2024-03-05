@@ -3,11 +3,11 @@ services:
   app :
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile_Backend
       args:
         APP_ENV: development
     ports:
-      - "9000:8080"
+      - "8000:8000"
     networks:
       - application-network
     depends_on:
