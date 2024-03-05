@@ -169,7 +169,7 @@ def return_to_original_hospital(orthanc: pyorthanc.Orthanc, study_id: str):
     - orthanc (pyorthanc.Orthanc): The Orthanc server object.
     - study_id (str): Study id for the study being processed.
     """
-    response = orthanc.post_modalities_id_store("EXAMPLE_HOSPITAL_NAME", data=study_id)
+    response = orthanc.post_modalities_id_store("EXAMPLE_HOSPITAL_NAME", data={"study_id": study_id})
     print(response)
 
 
