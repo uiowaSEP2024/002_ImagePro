@@ -161,7 +161,7 @@ def upload_data_to_internal(directory_path: str, orthanc: pyorthanc.Orthanc):
             print(f"Failed to upload {file_path.name}. Error: {e}")
 
 
-def return_to_original_PACS(orthanc: pyorthanc.Orthanc, study_id: str):
+def return_to_original_hospital(orthanc: pyorthanc.Orthanc, study_id: str):
     """
     Return data to the original sender - Hospital PACS
 
@@ -324,7 +324,7 @@ def main(internal_data_path: Path):
                                 directory_path=f"{study_data_path}/deliverables",
                                 orthanc=internal_orthanc,
                             )
-                            return_to_original_PACS(internal_orthanc, study.id_)
+                            return_to_original_hospital(internal_orthanc, study.id_)
                             current_logger.update_step_status(4, "Complete")
                         except Exception as e:
                             current_logger.update_step_status(4, "Error", str(e))
