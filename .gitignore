@@ -560,3 +560,4 @@ dmypy.json
 /pytest.xml
 /job_monitoring_app/backend/pytest.xml
 /example_tool/Orthanc/OrthancStorage/
+/pg_data/
