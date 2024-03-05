@@ -5,7 +5,7 @@ CURRENT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 # Default values
 DEFAULT_INPUT_DIR="${CURRENT_DIR}/example_data/CAIPIRINHA_SPACE_Neuro_Head_Examples"
-DEFAULT_OUTPUT_DIR="${CURRENT_DIR}/example_tool/example_output"
+DEFAULT_OUTPUT_DIR="${CURRENT_DIR}/example_tool_light/example_output"
 DEFAULT_STUDY_ID="12345"
 
 # Use provided arguments if they exist, otherwise use default values
