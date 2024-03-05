@@ -21,7 +21,7 @@ def do_main():
     client_orthanc = Orthanc("http://127.0.0.1:8030")
     file_path = Path(__file__)
     example_tool_path = file_path.parent.parent
-    data_path = example_tool_path / "example_data/CAIPIRINHA_SPACE_Neuro_Head_Examples"
+    data_path = example_tool_path.parent / "example_data/CAIPIRINHA_SPACE_Neuro_Head_Examples"
     upload_single_study_dir(client_orthanc, data_path)
 
 
