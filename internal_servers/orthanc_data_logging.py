@@ -18,7 +18,7 @@ API_KEY = os.environ.get("API_KEY")
 
 class OrthancStudyLogger:
     def __init__(
-        self, hospital_id, study_id, tracker_api_key, job_config_file: Union[Path, str]
+        self, hospital_id, study_id, tracker_api_key, study_config_file: Union[Path, str]
     ):
         self.hospital_id = (
             hospital_id  # hospital_id corresponds to the customer_id in the backend
@@ -28,19 +28,19 @@ class OrthancStudyLogger:
         )
         self.internal_product_log = None
 
-        # Get job config, use the initial hospital_job.json file
-        job_configurations_file = Path(job_config_file)
-        job_config_manager = JobConfigManager(
-            configurations_file=job_configurations_file
+        # Get job config, use the initial hospital_study.json file
+        study_configurations_file = Path(study_config_file)
+        study_config_manager = JobConfigManager(
+            configurations_file=study_configurations_file
         )
-        job_config = job_config_manager.get_job_config("hospital_study")
+        study_config = study_config_manager.get_job_config("hospital_study")
 
         # Create TrackerAPI object and job session
         tracker = TrackerApi(tracker_api_key)
-        tracker.register_job_config(job_config)
+        tracker.register_job_config(study_config)
 
         # Signal the start of a new job
-        self.tracker_study = tracker.create_study(study_id, hospital_id, job_config.tag)
+        self.tracker_study = tracker.create_study(study_id, hospital_id, study_config.tag)
 
         self.steps = {
             1: {"status": "Pending"},
@@ -52,7 +52,7 @@ class OrthancStudyLogger:
         # These are the primary keys for each event logged in the back end
         self.step_PKs = {}
 
-        for idx, step in enumerate(job_config.step_configurations):
+        for idx, step in enumerate(study_config.step_configurations):
             new_event = self.tracker_study.send_event(
                 kind="Pending",
                 tag=step.tag,
@@ -82,7 +82,7 @@ class OrthancStudyLogger:
         if reason:
             metadata["Reason"] = reason
 
-        # event_id becomes the primary key of the event corresponding to this event for this job
+        # event_id becomes the primary key of the event corresponding to this event for this study
         # it is saved in self.step_PKs
         self.tracker_study.update_event(
             kind=status, event_id=self.step_PKs[step_id], metadata=metadata
@@ -131,7 +131,7 @@ if __name__ == "__main__":
         hospital_id=1,
         study_id=433,
         tracker_api_key=API_KEY,
-        job_config_file="hospital_job_configuration.json",
+        study_config_file="hospital_job_configuration.json",
     )
 
 # Note: the tracker_api_key needs to be replaced by creating a provider account on the app

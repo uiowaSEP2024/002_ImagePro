@@ -247,7 +247,7 @@ def make_list_of_studies_to_process(
                     hospital_id=1,
                     study_id=1,
                     tracker_api_key="34faWJnoajfaxrpIDqwasxAW_KU",
-                    job_config_file="hospital_job_configuration.json",
+                    study_config_file="hospital_job_configuration.json",
                 )
             else:
                 print(f"Study {study_id} does not have properties. Skipping..")
