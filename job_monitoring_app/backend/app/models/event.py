@@ -14,8 +14,8 @@ class Event(Base, DateMixin):
     -----------
     id : int
         The primary key of the event
-    job_id : int
-        The foreign key of the job
+    study_id : int
+        The foreign key of the study
     event_name : str
         The name of the event
     kind : str

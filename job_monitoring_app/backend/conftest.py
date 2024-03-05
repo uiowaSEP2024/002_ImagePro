@@ -72,25 +72,6 @@ def random_provider_user_with_api_key(db, random_provider_user):
     return random_provider_user
 
 
-# TODO - remove this fixture
-@pytest.fixture
-def job_for_random_user_with_api_key(
-    db, random_provider_user_with_api_key, random_job_configuration_factory
-):
-    job_configuration = random_job_configuration_factory.get()
-
-    job = services.create_job(
-        db,
-        schemas.JobCreate(
-            provider_job_id="145254",
-            customer_id=random_provider_user_with_api_key.id,
-            tag=job_configuration.tag,
-        ),
-        provider=random_provider_user_with_api_key,
-    )
-    return job
-
-
 @pytest.fixture
 def study_for_random_user_with_api_key(
     db, random_provider_user_with_api_key, random_job_configuration_factory

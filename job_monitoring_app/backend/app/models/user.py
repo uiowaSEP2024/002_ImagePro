@@ -26,12 +26,8 @@ class User(Base, DateMixin):
             # TODO: Rename these to be more descriptive ? Hospital and TechCompany ?
         api_keys : relationship
             The api keys associated with the user (one to many)
-        jobs : relationship
-            The jobs associated with the user (one to many)
         studies : relationship
             The studies associated with the user (one to many)
-        provider_jobs : relationship
-            The provider jobs associated with the user (one to many)
         provider_studies : relationship
             The provider studies associated with the user (one to many)
         job_configurations : relationship
