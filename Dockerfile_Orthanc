@@ -8,7 +8,7 @@ LABEL maintainer="iejohnson"
 ARG DEBIAN_FRONTEND="noninteractive"
 
 # Argument to determine the Orthanc instance type
-ARG ORTHANC_INSTANCE="default"
+ARG ORTHANC_INSTANCE="internal_pacs"
 
 # Timezone can be overridden during build if needed
 ARG TZ="America/Chicago"
@@ -27,10 +27,10 @@ RUN groupadd nonroot \
 WORKDIR /usr/src/app
 
 # Copy files as root user
-COPY Linux /usr/src/app/Linux
-COPY example_${ORTHANC_INSTANCE}.json.in /usr/src/app/example_${ORTHANC_INSTANCE}.json.in
-COPY example_internal_pacs.lua /usr/src/app/example_internal_pacs.lua
-COPY run_${ORTHANC_INSTANCE}.sh /usr/src/app/run_orthanc.sh
+COPY example_tool/Orthanc/Linux /usr/src/app/Linux
+COPY example_tool/Orthanc/example_${ORTHANC_INSTANCE}.json.in /usr/src/app/example_${ORTHANC_INSTANCE}.json.in
+COPY example_tool/Orthanc/example_internal_pacs.lua /usr/src/app/example_internal_pacs.lua
+COPY example_tool/Orthanc/run_${ORTHANC_INSTANCE}.sh /usr/src/app/run_orthanc.sh
 
 # Make the script executable
 RUN chmod +x /usr/src/app/run_orthanc.sh
