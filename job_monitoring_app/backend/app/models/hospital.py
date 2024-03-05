@@ -4,7 +4,7 @@ from sqlalchemy.sql.sqltypes import String, Integer
 from .base import Base, DateMixin
 
 
-class Study(Base, DateMixin):
+class Hospital(Base, DateMixin):
     """
     A hospital is an entity that requests studies to be done by providers
     Users are either hospital users or provider users and each hospital user is connected to a hospital
