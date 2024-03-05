@@ -1,11 +1,4 @@
-import itk
-from scipy.ndimage import label, center_of_mass
-from skimage.measure import find_contours
 from weasyprint import HTML, CSS
-import matplotlib.pyplot as plt
-import numpy as np
-from io import BytesIO
-import base64
 
 
 # CSS Content
