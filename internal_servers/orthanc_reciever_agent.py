@@ -7,6 +7,9 @@ import zipfile
 from internal_servers.orthanc_data_logging import OrthancStudyLogger
 
 
+product_path = Path(__file__).parent / "example_tool" / "brainmask_tool.py"
+
+
 def check_study_stable(study: pyorthanc.Study) -> bool:
     """
     Check if the study is stable.
@@ -303,7 +306,7 @@ def main(internal_data_path: Path):
                         current_logger.update_step_status(3, "In progress")
                         try:
                             process_data(
-                                brains_tool_path="/home/mbrzus/programming/002_ImagePro/example_tool/brainmask_tool.py",
+                                brains_tool_path=product_path.as_posix(),
                                 study_id=study.id_,
                                 input_data_path=f"{study_data_path}/data",
                                 output_path=f"{study_data_path}/results",
