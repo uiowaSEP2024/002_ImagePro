@@ -131,7 +131,7 @@ try:
         description = info[2]
         # HACK this should be using the pydicom tag value but it's not working for some reason
         elem = pydicom.DataElement(title, "LO", description)
-        pdf_dcm.DocumentTitle = f"BrainyBarrier PDF Results"
+        pdf_dcm.DocumentTitle = "BrainyBarrier PDF Results"
         pdf_dcm.save_as(converted_dcm)
 
 except Exception as e:
