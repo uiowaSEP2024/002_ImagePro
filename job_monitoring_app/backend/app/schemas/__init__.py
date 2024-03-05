@@ -5,3 +5,4 @@ from app.schemas.metadata_configuration import *
 from app.schemas.step_configuration import *
 from app.schemas.user import *
 from app.schemas.study import *
+from app.schemas.hospital import *
