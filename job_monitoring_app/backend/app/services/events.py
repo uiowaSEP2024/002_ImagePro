@@ -4,10 +4,9 @@ from sqlalchemy.orm import Session
 from .job_configuration import get_step_configuration_by_composite_key
 from .studies import get_study_by_provider_study_id
 
-# TODO: @Zach - Can you help me understand the differnce is between Provider and User?
+
 # A provider is a user, but a user is not necessarily a provider. A provider is a user that has a role of "provider"
-# users can be providers or customers, customers being patients. This will be later removed since we are doing providers
-# and hospitals. It is assumed that providers are the only ones creating events since they are running the studies
+# users can be providers or hospitals.  It is assumed that providers are the only ones creating events since they are running the studies
 
 
 def create_event(
