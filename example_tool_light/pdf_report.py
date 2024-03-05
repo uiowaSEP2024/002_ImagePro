@@ -53,7 +53,7 @@ css_string = """
 
 def generate_pdf(file_path):
     # HTML Content
-    html_string = f"""
+    html_string = """
     <!DOCTYPE html>
     <html lang="en">
 
