@@ -31,6 +31,7 @@ class OrthancStudyLogger:
         # TODO: This is sudo code how to initiate the connection to the tracker api
         # TODO: this will allow us to store data in the database without log files
         # Get job config, use the initial hospital_job.json file
+
         job_configurations_file = Path(job_config_file)
         job_config_manager = JobConfigManager(
             configurations_file=job_configurations_file
@@ -97,14 +98,15 @@ class OrthancStudyLogger:
 
     def step_is_ready(self, step_id: int) -> bool:
         """Checks if a given step is ready to begin."""
-        previous_steps = self.steps[: step_id - 1]
-        is_ready = True
-        for step in previous_steps:
-            if step["status"] != "Complete":
-                is_ready = False
-                break
-        return is_ready
-
+        # previous_steps = self.steps[: step_id - 1]
+        # is_ready = True
+        # for step in previous_steps:
+        #     if step["status"] != "Complete":
+        #         is_ready = False
+        #         break
+        # return is_ready
+        return True
+    
     def _stage_is_complete(self, step_id: int) -> bool:
         """Checks if a given stage is complete."""
         # TODO: I had to update this. It is not tested and might be buggy
