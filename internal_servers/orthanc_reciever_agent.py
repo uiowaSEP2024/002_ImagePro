@@ -1,3 +1,4 @@
+import shutil
 from datetime import datetime
 from pathlib import Path
 import pyorthanc
@@ -334,8 +335,11 @@ def main(internal_data_path: Path):
                         )
 
                         print(f"Deleting study {study.id_}")
+                        # delete the study from the internal orthanc
                         internal_orthanc.delete_studies_id(study.id_)
                         study_processed_dict.pop(study.id_)
+                        # delete study from local system
+                        shutil.rmtree(study_data_path)
 
             print("Sleeping for 10 seconds..")
             time.sleep(10)
