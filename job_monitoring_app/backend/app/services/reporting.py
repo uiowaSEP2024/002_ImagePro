@@ -26,7 +26,7 @@ def get_reporting_events(
     This is done to facilitate the subsequent database query.
 
     A SQL query is then constructed using SQLAlchemy's ORM. The query is designed to select from the Event model
-    and join with the Study, JobConfiguration, and StepConfiguration models. The join is based on the relationships
+    and join with the Study, StudyConfiguration, and StepConfiguration models. The join is based on the relationships
     defined in the models. The query also includes filters to only select events where the Study's provider_id matches
     the provided provider_id and the Event's created_at date is within the range of start_date and end_date.
 
@@ -42,12 +42,12 @@ def get_reporting_events(
         db.query(
             models.Event,
             models.Study,
-            models.JobConfiguration,
+            models.StudyConfiguration,
             models.StepConfiguration,
         )
         .select_from(models.Event)
         .join(models.Study, models.Event.study)
-        .join(models.JobConfiguration, models.Study.job_configuration)
+        .join(models.StudyConfiguration, models.Study.study_configuration)
         .join(models.StepConfiguration, models.Event.step_configuration)
         .filter(models.Study.provider_id == provider_id)
         .filter(models.Event.created_at >= start_date)
@@ -78,11 +78,11 @@ def get_reporting_events(
                 k + ".event": v
                 for k, v in serialized(schemas.EventPure.from_orm(event)).items()
             },
-            # Do the same for the JobConfiguration object, but prefix the keys with "job_configuration."
+            # Do the same for the StudyConfiguration object, but prefix the keys with "study_configuration."
             **{
-                k + ".job_configuration": v
+                k + ".study_configuration": v
                 for k, v in serialized(
-                    schemas.JobConfiguration.from_orm(job_configuration),
+                    schemas.StudyConfiguration.from_orm(study_configuration),
                 ).items()
             },
             # Do the same for the Study object, but prefix the keys with "study."
@@ -99,7 +99,7 @@ def get_reporting_events(
             },
         }
         # Do this for each tuple in the results list.
-        for event, study, job_configuration, step_configuration in results
+        for event, study, study_configuration, step_configuration in results
     ]
 
     return final
