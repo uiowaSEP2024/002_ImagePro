@@ -7,3 +7,4 @@ from .step_configuration import StepConfiguration
 from .user import User
 from .study import Study
 from .hospital import Hospital
+from .provider import Provider

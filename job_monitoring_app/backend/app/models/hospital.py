@@ -12,7 +12,7 @@ class Hospital(Base, DateMixin):
     Attributes:
     -----------
     id: int
-        Auto-generated internal study id
+        Auto-generated internal hospital id
     hospital_name: str
         The name of the hospital
 
@@ -23,7 +23,7 @@ class Hospital(Base, DateMixin):
 
     __tablename__ = "hospitals"
 
-    # Auto-generated internal study id
+    # Auto-generated internal hospital id
     id: Column = Column(Integer, primary_key=True, index=True)
 
     # The name of the hospital
