@@ -10,3 +10,4 @@ from .hospital import Hospital
 from .provider import Provider
 from .pacs import Pacs
 from .product import Product
+from .study_configuration import StudyConfiguration
