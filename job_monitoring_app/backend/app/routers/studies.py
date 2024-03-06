@@ -18,7 +18,7 @@ def create_study(
     return services.create_study(db=db, study=study, provider=provider)
 
 
-# TODO: another route for get_provider_jobs
+# TODO: another route for get_provider_studies
 @router.get("/studies", response_model=List[schemas.Study])
 def get_customer_studies(
     db: Session = Depends(get_db),
@@ -35,7 +35,7 @@ def get_study(
     study_id: int,
     db: Session = Depends(get_db),
     user=Depends(get_current_user_from_token),
-    # TODO: support getting job with api_key OR maybe new route so they can use provider_job_id?
+    # TODO: support getting study with api_key OR maybe new route so they can use provider_study_id?
 ):
     study = services.get_study_by_id(db, study_id=study_id)
 
@@ -43,7 +43,7 @@ def get_study(
         raise HTTPException(status_code=404, detail="Study not found")
 
     if user.id not in [study.hospital_id, study.provider_id]:
-        # TODO: add job.provider_id to the list of allowed users that can
+        # TODO: add study.provider_id to the list of allowed users that can
         #  access this once we have api key based access? See above comment
         raise HTTPException(status_code=403, detail="Not allowed")
 
@@ -56,7 +56,7 @@ def get_study_events(
     db: Session = Depends(get_db),
     user=Depends(get_current_user_from_token),
 ):
-    # TODO: see comments from /jobs/{job_id}
+    # TODO: see comments from /studies/{study_id}
     study = services.get_study_by_id(db, study_id=study_id)
 
     if study is None:
