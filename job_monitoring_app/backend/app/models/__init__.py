@@ -6,3 +6,4 @@ from .metadata_configuration import MetadataConfiguration
 from .step_configuration import StepConfiguration
 from .user import User
 from .study import Study
+from .hospital import Hospital

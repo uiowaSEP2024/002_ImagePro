@@ -4,3 +4,4 @@ from .users import *
 from .events import *
 from .job_configuration import *
 from .reporting import *
+from .hospitals import *
