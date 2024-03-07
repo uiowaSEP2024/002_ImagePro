@@ -8,3 +8,4 @@ from app.schemas.study import *
 from app.schemas.hospital import *
 from app.schemas.provider import *
 from app.schemas.pacs import *
+from app.schemas.product import *
