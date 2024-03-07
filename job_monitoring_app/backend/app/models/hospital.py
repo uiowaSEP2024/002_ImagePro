@@ -1,5 +1,6 @@
 from sqlalchemy import Column
 from sqlalchemy.sql.sqltypes import String, Integer
+from sqlalchemy.orm import relationship
 
 from .base import Base, DateMixin
 
@@ -16,6 +17,12 @@ class Hospital(Base, DateMixin):
     hospital_name: str
         The name of the hospital
 
+
+    relationships:
+    --------------
+    pacs: list
+        A list of PACS that the hospital is connected to
+
     # TODO Add connection to users, this should be done after users are updated
     # TODO Add connection to PACS when that table is created
 
@@ -28,3 +35,10 @@ class Hospital(Base, DateMixin):
 
     # The name of the hospital
     hospital_name: Column = Column(String, index=True, nullable=False)
+
+    pacs = relationship(
+        "PACS",
+        back_populates="hospital",
+        foreign_keys="PACS.hospital_id",
+        cascade="all, delete-orphan",
+    )
