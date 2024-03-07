@@ -3,8 +3,6 @@ from sqlalchemy.orm import relationship
 
 from .base import Base, DateMixin
 
-# TODO: remove job references
-
 
 class User(Base, DateMixin):
     """
@@ -32,8 +30,6 @@ class User(Base, DateMixin):
             The studies associated with the user (one to many)
         provider_studies : relationship
             The provider studies associated with the user (one to many)
-        job_configurations : relationship
-            The job configurations associated with the user (one to many)
         study_configurations : relationship
             The study configurations associated with the user (one to many)
         Note:
@@ -98,13 +94,6 @@ class User(Base, DateMixin):
     # Parent class -> Provider
     # Parent-child relationship (has many to one) -> provider_study_configurations
     # Child-parent relationship (one to many) -> provider (see study_configuration.py)
-    job_configurations = relationship(
-        "JobConfiguration",
-        back_populates="provider",
-        foreign_keys="JobConfiguration.provider_id",
-        cascade="all, delete-orphan",
-    )
-
     study_configurations = relationship(
         "StudyConfiguration",
         back_populates="provider",
