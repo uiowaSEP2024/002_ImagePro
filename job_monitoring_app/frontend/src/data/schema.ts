@@ -58,17 +58,17 @@ export interface paths {
     /** Create Event */
     post: operations["create_event_events_post"];
   };
-  "/job_configurations": {
-    /** Create Job */
-    post: operations["create_job_job_configurations_post"];
+  "/study_configurations": {
+    /** Create Study */
+    post: operations["create_study_study_configurations_post"];
   };
-  "/job_configurations/{job_configuration_id}": {
-    /** Get Job Configuration By Id */
-    get: operations["get_job_configuration_by_id_job_configurations__job_configuration_id__get"];
+  "/study_configurations/{study_configuration_id}": {
+    /** Get Study Configuration By Id */
+    get: operations["get_study_configuration_by_id_study_configurations__study_configuration_id__get"];
   };
-  "/job_configurations/": {
-    /** Get Job Configurations By Tag And Version */
-    get: operations["get_job_configurations_by_tag_and_version_job_configurations__get"];
+  "/study_configurations/": {
+    /** Get Study Configurations By Tag And Version */
+    get: operations["get_study_configurations_by_tag_and_version_study_configurations__get"];
   };
   "/reporting": {
     /** Get Reporting */
@@ -218,8 +218,8 @@ export interface components {
       id: number;
       /** Provider Id */
       provider_id: number;
-      /** Job Configuration Id */
-      job_configuration_id: number;
+      /** Study Configuration Id */
+      study_configuration_id: number;
       /**
        * Created At
        * Format: date-time
@@ -231,15 +231,15 @@ export interface components {
        */
       updated_at?: string;
       provider: components["schemas"]["User"];
-      job_configuration: components["schemas"]["JobConfiguration"];
+      study_configuration: components["schemas"]["StudyConfiguration"];
       /**
        * Events
        * @default []
        */
       events?: components["schemas"]["Event"][];
     };
-    /** JobConfiguration */
-    JobConfiguration: {
+    /** StudyConfiguration */
+    StudyConfiguration: {
       /** Tag */
       tag: string;
       /** Name */
@@ -263,8 +263,8 @@ export interface components {
        */
       updated_at?: string;
     };
-    /** JobConfigurationCreate */
-    JobConfigurationCreate: {
+    /** StudyConfigurationCreate */
+    StudyConfigurationCreate: {
       /** Tag */
       tag: string;
       /** Name */
@@ -331,8 +331,8 @@ export interface components {
       points: number;
       /** Id */
       id: number;
-      /** Job Configuration Id */
-      job_configuration_id: number;
+      /** Study Configuration Id */
+      study_configuration_id: number;
       /** Metadata Configurations */
       metadata_configurations?: components["schemas"]["MetadataConfiguration"][];
       /**
@@ -693,18 +693,18 @@ export interface operations {
       };
     };
   };
-  /** Create Job */
-  create_job_job_configurations_post: {
+  /** Create Study */
+  create_study_study_configurations_post: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["JobConfigurationCreate"];
+        "application/json": components["schemas"]["StudyConfigurationCreate"];
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["JobConfiguration"];
+          "application/json": components["schemas"]["StudyConfiguration"];
         };
       };
       /** @description Validation Error */
@@ -715,18 +715,18 @@ export interface operations {
       };
     };
   };
-  /** Get Job Configuration By Id */
-  get_job_configuration_by_id_job_configurations__job_configuration_id__get: {
+  /** Get Study Configuration By Id */
+  get_study_configuration_by_id_study_configurations__study_configuration_id__get: {
     parameters: {
       path: {
-        job_configuration_id: number;
+        study_configuration_id: number;
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["JobConfiguration"];
+          "application/json": components["schemas"]["StudyConfiguration"];
         };
       };
       /** @description Validation Error */
@@ -737,8 +737,8 @@ export interface operations {
       };
     };
   };
-  /** Get Job Configurations By Tag And Version */
-  get_job_configurations_by_tag_and_version_job_configurations__get: {
+  /** Get Study Configurations By Tag And Version */
+  get_study_configurations_by_tag_and_version_study_configurations__get: {
     parameters: {
       query: {
         tag?: string;
@@ -749,7 +749,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["JobConfiguration"][];
+          "application/json": components["schemas"]["StudyConfiguration"][];
         };
       };
       /** @description Validation Error */
