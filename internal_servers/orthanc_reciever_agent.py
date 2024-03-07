@@ -169,7 +169,9 @@ def return_to_original_hospital(orthanc: pyorthanc.Orthanc, study_id: str):
     - orthanc (pyorthanc.Orthanc): The Orthanc server object.
     - study_id (str): Study id for the study being processed.
     """
-    response = orthanc.post_modalities_id_store("EXAMPLE_HOSPITAL_NAME", data={"study_id": study_id})
+    response = orthanc.post_modalities_id_store(
+        "EXAMPLE_HOSPITAL_NAME", data={"study_id": study_id}
+    )
     print(response)
 
 
@@ -243,10 +245,12 @@ def make_list_of_studies_to_process(
             if has_properties and hospital_id is not None:
                 # output_path = get_default_output_path()
                 # log_file_path = output_path / f"{hospital_id}_{study_id}_log.json"
+                # TODO: Ensure that in the future we can just send the study_id without worrying about previous processing
+                unique_study_id = f"{hospital_id}_{study_id}_{datetime.now().strftime('%Y%m%dT%H%M%S')}"
                 study_processed_dict[study_id] = OrthancStudyLogger(
                     hospital_id=1,
-                    study_id=1,
-                    tracker_api_key="34faWJnoajfaxrpIDqwasxAW_KU",
+                    study_id=unique_study_id,
+                    tracker_api_key="PnhJv0pPb_T7LRZktqpgDQDpMRI",
                     study_config_file="hospital_job_configuration.json",
                 )
             else:
