@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from app import models, schemas
 
 
-def create_hospital(db: Session, pacs: schemas.PacsCreate) -> models.Pacs:
+def create_pacs(db: Session, pacs: schemas.PacsCreate) -> models.Pacs:
     """
     Creates a new PACS in the database.
 
