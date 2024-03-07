@@ -38,9 +38,13 @@ def upgrade() -> None:
         ["study_configuration_id"],
         unique=False,
     )
-    sa.ForeignKeyConstraint(
+    op.create_foreign_key(
+        "fk_studies_study_configuration_id",
+        "studies",
+        "study_configurations",
         ["study_configuration_id"],
-        ["study_configurations.id"],
+        ["id"],
+        ondelete="SET NULL",
     )
     # ### end Alembic commands ###
 
