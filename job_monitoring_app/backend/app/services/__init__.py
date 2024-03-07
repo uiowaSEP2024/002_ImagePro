@@ -6,3 +6,4 @@ from .job_configuration import *
 from .reporting import *
 from .hospitals import *
 from .providers import *
+from .pacs import *
