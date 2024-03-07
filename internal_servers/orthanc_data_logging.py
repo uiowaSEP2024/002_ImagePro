@@ -1,5 +1,4 @@
 import json
-import time
 from typing import Optional
 from pathlib import Path
 from typing import Union
@@ -18,7 +17,11 @@ API_KEY = os.environ.get("API_KEY")
 
 class OrthancStudyLogger:
     def __init__(
-        self, hospital_id, study_id, tracker_api_key, study_config_file: Union[Path, str]
+        self,
+        hospital_id,
+        study_id,
+        tracker_api_key,
+        study_config_file: Union[Path, str],
     ):
         self.hospital_id = (
             hospital_id  # hospital_id corresponds to the customer_id in the backend
@@ -40,7 +43,9 @@ class OrthancStudyLogger:
         tracker.register_job_config(study_config)
 
         # Signal the start of a new job
-        self.tracker_study = tracker.create_study(study_id, hospital_id, study_config.tag)
+        self.tracker_study = tracker.create_study(
+            study_id, hospital_id, study_config.tag
+        )
 
         self.steps = {
             1: {"status": "Pending"},
@@ -63,12 +68,12 @@ class OrthancStudyLogger:
             # Log the ID of each event
             self.step_PKs[idx + 1] = new_event.event_id
 
-        # mock pipeline
-        for step in self.step_PKs:
-            time.sleep(5)
-            self.update_step_status(step, "In progress")
-            time.sleep(5)
-            self.update_step_status(step, "Complete")
+        # # mock pipeline
+        # for step in self.step_PKs:
+        #     time.sleep(5)
+        #     self.update_step_status(step, "In progress")
+        #     time.sleep(5)
+        #     self.update_step_status(step, "Complete")
 
     def update_step_status(
         self, step_id: int, status: str, reason: Optional[str] = None
@@ -90,7 +95,9 @@ class OrthancStudyLogger:
 
     def step_is_ready(self, step_id: int) -> bool:
         """Checks if a given step is ready to begin."""
-        previous_steps = self.steps[: step_id - 1]
+        previous_steps = []
+        for i in range(1, step_id):
+            previous_steps.append(self.steps[i])
         is_ready = True
         for step in previous_steps:
             if step["status"] != "Complete":
