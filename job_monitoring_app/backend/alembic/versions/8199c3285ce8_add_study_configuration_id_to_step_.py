@@ -36,11 +36,21 @@ def upgrade() -> None:
     )
     op.execute(update_stmt)
 
-    sa.ForeignKeyConstraint(
+    op.create_foreign_key(
+        "fk_step_configuration_study_configuration_id",
+        "step_configurations",
+        "study_configurations",
         ["study_configuration_id"],
-        ["study_configurations.id"],
+        ["id"],
+        ondelete="CASCADE",
     )
-    sa.UniqueConstraint("study_configuration_id", "tag")
+
+    # Add the unique constraint
+    op.create_unique_constraint(
+        "step_configurations_study_configuration_id_tag_key",
+        "step_configurations",
+        ["study_configuration_id", "tag"],
+    )
 
     op.create_index(
         op.f("ix_step_configurations_study_configuration_id"),
