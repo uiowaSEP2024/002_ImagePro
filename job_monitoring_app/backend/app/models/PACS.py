@@ -21,6 +21,10 @@ class PACS(Base, DateMixin):
         The hospital id that the PACS is connected to
 
 
+    relationships:
+    --------------
+    hospital: list
+        A list of hospitals that the PACS is connected to
     """
 
     __tablename__ = "pacs"
