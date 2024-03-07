@@ -1,18 +1,18 @@
 {
-  "title": "JobConfigs",
+  "title": "StudyConfigs",
   "type": "object",
   "properties": {
-    "job_configs": {
-      "title": "Job Configs",
+    "study_configs": {
+      "title": "Study Configs",
       "uniqueItems": true,
       "type": "array",
       "items": {
-        "$ref": "#/definitions/JobConfig"
+        "$ref": "#/definitions/StudyConfig"
       }
     }
   },
   "required": [
-    "job_configs"
+    "study_configs"
   ],
   "definitions": {
     "StepConfig": {
@@ -38,8 +38,8 @@
         "name"
       ]
     },
-    "JobConfig": {
-      "title": "JobConfig",
+    "StudyConfig": {
+      "title": "StudyConfig",
       "type": "object",
       "properties": {
         "tag": {

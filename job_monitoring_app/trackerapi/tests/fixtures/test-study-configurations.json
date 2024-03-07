@@ -1,9 +1,9 @@
 {
-  "$schema": "test-job-configurations-schema.generated.json",
-  "job_configs": [
+  "$schema": "test-study-configurations-schema.generated.json",
+  "study_configs": [
     {
-      "name": "Test Schema Job",
-      "tag": "test_schema_job",
+      "name": "Test Schema Study",
+      "tag": "test_schema_study",
       "step_configurations": [
         {
           "name": "Step 1",
@@ -14,8 +14,8 @@
       "version": "1.0.0"
     },
     {
-      "name": "Test Schema Job B",
-      "tag": "test_schema_job_b",
+      "name": "Test Schema Study B",
+      "tag": "test_schema_study_b",
       "step_configurations": [
         {
           "name": "Step 1",
