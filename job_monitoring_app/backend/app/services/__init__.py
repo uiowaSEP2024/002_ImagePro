@@ -7,3 +7,4 @@ from .reporting import *
 from .hospitals import *
 from .providers import *
 from .pacs import *
+from .products import *
