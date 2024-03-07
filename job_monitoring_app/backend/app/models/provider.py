@@ -1,5 +1,6 @@
 from sqlalchemy import Column
 from sqlalchemy.sql.sqltypes import String, Integer
+from sqlalchemy.orm import relationship
 
 from .base import Base, DateMixin
 
@@ -16,6 +17,11 @@ class Provider(Base, DateMixin):
     provider_name: str
         The name of the provider
 
+    relationships:
+    --------------
+    products: list
+        A list of products that the provider owns
+
     # TODO Add connection to users, this should be done after users are updated
     # TODO Add connection to products when that table is created
 
@@ -28,3 +34,10 @@ class Provider(Base, DateMixin):
 
     # The name of the provider
     provider_name: Column = Column(String, index=True, nullable=False)
+
+    products = relationship(
+        "Product",
+        back_populates="provider",
+        foreign_keys="Product.provider_id",
+        cascade="all, delete-orphan",
+    )
