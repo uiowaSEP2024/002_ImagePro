@@ -18,6 +18,18 @@ services:
       - POSTGRES_PASSWORD=dev_password
       - POSTGRES_USER=postgres
       - POSTGRES_SERVER=database
+  example_tool_light:
+    build:
+      context: .
+      dockerfile: Dockerfile_BrainMaskTool_light
+    networks:
+      - application-network
+    depends_on:
+      - app
+    environment:
+      - POSTGRES_PASSWORD=dev_password
+      - POSTGRES_USER=postgres
+      - POSTGRES_SERVER=database
 
   orthanc:
     build:
