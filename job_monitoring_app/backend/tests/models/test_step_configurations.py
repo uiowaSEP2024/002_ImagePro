@@ -38,7 +38,9 @@ def test_create_step_configuration(db, random_provider_user):
     assert study_configuration.step_configurations[0].tag == "kidney_scan"
 
 
-def test_create_step_configuration_missing_study_configuration_id(db):
+def test_create_step_configuration_missing_study_configuration_id(
+    db, random_provider_user
+):
     step_configuration = models.StepConfiguration(
         tag="kidney_scan",
         name="Kidney Scan",

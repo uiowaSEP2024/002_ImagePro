@@ -20,7 +20,7 @@ def test_create_study_configurtaion(db, random_provider_user):
     assert isinstance(study_configuration, models.StudyConfiguration)
     assert study_configuration.provider_id == random_provider_user.id
     assert study_configuration.tag == "prostate_v1_study"
-    assert study_configuration.name == "Prostate Stusy"
+    assert study_configuration.name == "Prostate Study"
 
     db.refresh(random_provider_user)
     assert len(random_provider_user.study_configurations) == 1
