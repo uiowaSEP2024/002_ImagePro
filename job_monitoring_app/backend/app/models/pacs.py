@@ -5,7 +5,7 @@ from sqlalchemy.orm import relationship
 from .base import Base, DateMixin
 
 
-class PACS(Base, DateMixin):
+class Pacs(Base, DateMixin):
     """
     A PACS is a server used by hospitals to send and receive studies
     PACS communicate with products???
