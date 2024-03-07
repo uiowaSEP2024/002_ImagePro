@@ -52,7 +52,7 @@ class StepConfig(UniqueTagModel):
         )
 
 
-class JobConfig(UniqueTagModel):
+class StudyConfig(UniqueTagModel):
     name: StrictStr
     step_configurations: conlist(StepConfig, unique_items=True)
     version: str
@@ -74,8 +74,8 @@ class JobConfig(UniqueTagModel):
         )
 
 
-class JobConfigs(BaseModel):
-    job_configs: conlist(JobConfig, unique_items=True)
+class StudyConfigs(BaseModel):
+    study_configs: conlist(StudyConfig, unique_items=True)
 
-    def __init__(self, job_configs: List[JobConfig], **kwargs):
-        super().__init__(job_configs=job_configs, **kwargs)
+    def __init__(self, study_configs: List[StudyConfig], **kwargs):
+        super().__init__(study_configs=study_configs, **kwargs)

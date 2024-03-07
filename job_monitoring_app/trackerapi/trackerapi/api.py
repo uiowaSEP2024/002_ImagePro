@@ -1,6 +1,6 @@
 import requests
 
-from .schemas import JobConfig
+from .schemas import StudyConfig
 
 
 class ApiUrls:
@@ -28,8 +28,8 @@ class ApiUrls:
         return self.url("/studies")
 
     @property
-    def jobs_config_url(self):
-        return self.url("/job_configurations")
+    def studies_config_url(self):
+        return self.url("/study_configurations")
 
     @property
     def api_key_verify_url(self):
@@ -39,7 +39,7 @@ class ApiUrls:
 class TrackerApi:
     """
     TrackerAPI wrapper around the backend service to make requests
-    to create jobs, and send events.
+    to create studies, and send events.
     """
 
     DEFAULT_BASE_URL = "http://localhost:8000"
@@ -91,8 +91,8 @@ class TrackerApi:
         """
         self.__get(self.urls.api_key_verify_url)
 
-    def register_job_config(self, config: JobConfig):
-        self.__post(self.urls.jobs_config_url, config.dict())
+    def register_study_config(self, config: StudyConfig):
+        self.__post(self.urls.studies_config_url, config.dict())
 
     def create_study(self, provider_study_id: str, hospital_id: int, tag: str):
         """
@@ -114,7 +114,7 @@ class TrackerApi:
 
     def send_event(self, kind, tag, provider_study_id, metadata):
         """
-        Sends an event with the given kind, tag, provider_job_id, and metadata
+        Sends an event with the given kind, tag, provider_study_id, and metadata
         Returns a TrackerEventApi object
         """
         data = self.__to_json(
