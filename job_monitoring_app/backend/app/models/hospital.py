@@ -37,8 +37,8 @@ class Hospital(Base, DateMixin):
     hospital_name: Column = Column(String, index=True, nullable=False)
 
     pacs = relationship(
-        "PACS",
+        "Pacs",
         back_populates="hospital",
-        foreign_keys="PACS.hospital_id",
+        foreign_keys="Pacs.hospital_id",
         cascade="all, delete-orphan",
     )
