@@ -8,7 +8,8 @@ import zipfile
 from internal_servers.orthanc_data_logging import OrthancStudyLogger
 
 
-product_path = Path(__file__).parent / "example_tool" / "brainmask_tool.py"
+product_path = Path(__file__).parent.parent / "example_tool_light" / "brainmask_tool.py"
+assert product_path.exists()
 
 
 def check_study_stable(study: pyorthanc.Study) -> bool:
