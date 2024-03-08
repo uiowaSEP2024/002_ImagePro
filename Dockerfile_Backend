@@ -24,12 +24,15 @@ COPY job_monitoring_app/backend/requirements.txt .
 RUN pip3 install --no-cache-dir -r requirements.txt
 
 # Copy the project code into the container
-COPY job_monitoring_app/backend/root.py /app/root.py
-COPY job_monitoring_app/backend/config /app/config
-COPY job_monitoring_app/backend/app /app/app
+COPY job_monitoring_app/backend/root.py ./root.py
+COPY job_monitoring_app/backend/config ./config
+COPY job_monitoring_app/backend/app ./app
+#COPY job_monitoring_app/trackerapi /app/trackerapi
 
 
 EXPOSE 8000
 
 # Set the default command for the container
-CMD ["uvicorn", "app.main:app", "--port", "8000"]
+#CMD ["uvicorn", "app.main:app"]
+#ENTRYPOINT ["uvicorn", "app.main:app"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0"]
