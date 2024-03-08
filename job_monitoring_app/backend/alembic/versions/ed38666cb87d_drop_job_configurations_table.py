@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = "ed38666cb87d"
-down_revision = "f6e8ae66a187"
+down_revision = "b4a81b0429b4"
 branch_labels = None
 depends_on = None
 
@@ -26,14 +26,6 @@ def upgrade() -> None:
         op.f("ix_job_configurations_provider_id"), table_name="job_configurations"
     )
     op.drop_index(op.f("ix_job_configurations_id"), table_name="job_configurations")
-    op.drop_constraint(
-        "studies_job_configuration_id_fkey", "studies", type_="foreignkey"
-    )
-    op.drop_constraint(
-        "step_configurations_job_configuration_id_fkey",
-        "step_configurations",
-        type_="foreignkey",
-    )
     op.drop_table("job_configurations")
     # ### end Alembic commands ###
 
