@@ -27,9 +27,7 @@ def downgrade() -> None:
     op.add_column(
         "step_configurations",
         sa.Column(
-            "job_configuration_id",
-            sa.INTEGER(),
-            nullable=False,
+            "job_configuration_id", sa.INTEGER(), nullable=False, server_default="0"
         ),
     )
 
