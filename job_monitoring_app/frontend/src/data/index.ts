@@ -1,6 +1,8 @@
 import { Study, StudyEvent, ApiKey, User, UserCreate } from "./types";
 
+
 // The base URL for the backend API.
+//TODO: change to the actual backend URL for docker deployment
 export const backendUrl = (
   process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000"
 ).replace(/\/$/, "");
