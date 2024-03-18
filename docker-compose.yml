@@ -20,8 +20,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile_Frontend
-      args:
-        APP_ENV: development
     ports:
       - "3000:3000"
     networks:
@@ -29,7 +27,7 @@ services:
     depends_on:
       - backend
     environment:
-      - NEXT_PUBLIC_BACKEND_URL=backend:8000
+      - NEXT_PUBLIC_BACKEND_URL=http://backend:8000
 
 
   example_tool_light:
@@ -73,7 +71,7 @@ services:
       - ./pg_data:/var/lib/postgresql/data
 
 networks:
-  application-network: {}
-
+  application-network:
+    driver: bridge
 volumes:
   pg_data:
