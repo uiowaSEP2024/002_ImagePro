@@ -7,6 +7,7 @@ export const backendUrl = (
   process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000"
 ).replace(/\/$/, "");
 
+
 /**
  * Fetches all studies from the backend API.
  *
@@ -275,3 +276,25 @@ export const fetchDownloadReport = async (
   a.remove();
   window.URL.revokeObjectURL(url);
 };
+
+/**
+ * Checks if the backend is up and running.
+ *
+ * @returns {Promise<boolean>} A promise that resolves to a boolean indicating whether the backend is up.
+ */
+export const isBackendUp = async (): Promise<void> => {
+  try {
+    const response = await fetch(backendUrl, {
+      method: "GET"
+    });
+
+    // If the response status is 200, the backend is up
+    console.log("*** Backend is up ***");
+    console.log(response.status);
+  } catch (error) {
+    // If there's an error (like a network error), assume the backend is down
+    console.log(error);
+  }
+};
+
+isBackendUp();
