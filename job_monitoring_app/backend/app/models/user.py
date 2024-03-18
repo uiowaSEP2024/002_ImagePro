@@ -30,30 +30,30 @@ class User(Base, DateMixin):
             The studies associated with the user (one to many)
         provider_studies : relationship
             The provider studies associated with the user (one to many)
-        job_configurations : relationship
-            The job configurations associated with the user (one to many)
+        study_configurations : relationship
+            The study configurations associated with the user (one to many)
         Note:
-    Provider has many job configurations:
+    Provider has many study configurations:
         This indicates that a single User instance, when acting as a Provider,
-         can be associated with multiple JobConfiguration instances.
+         can be associated with multiple StudyConfiguration instances.
          This is a one-to-many relationship from the Provider's perspective.
     Bidirectional:
         This means that the relationship is set up in such a way that it can be navigated in both directions.
-        From a JobConfiguration instance, you can access the associated Provider (User), and from a Provider (User),
-        you can access all associated JobConfigurations.
-    Child class -> JobConfiguration:
-        This indicates that JobConfiguration is the child class in this relationship.
-        In other words, JobConfiguration instances are the ones being "owned" or referenced by the Provider (User).
+        From a StudyConfiguration instance, you can access the associated Provider (User), and from a Provider (User),
+        you can access all associated StudyConfigurations.
+    Child class -> StudyConfiguration:
+        This indicates that StudyConfiguration is the child class in this relationship.
+        In other words, StudyConfiguration instances are the ones being "owned" or referenced by the Provider (User).
     Parent class -> Provider:
         This indicates that User (referred to as Provider in this context) is the parent class in this relationship.
-        In other words, a Provider can "own" or reference multiple JobConfiguration instances.
-    Parent-child relationship (has many to one) -> provider_job_configurations:
-    This is another way of saying that a Provider can have many JobConfigurations.
-    The provider_job_configurations seems to be the name given to this relationship,
+        In other words, a Provider can "own" or reference multiple StudyConfiguration instances.
+    Parent-child relationship (has many to one) -> provider_study_configurations:
+    This is another way of saying that a Provider can have many StudyConfigurations.
+    The provider_study_configurations seems to be the name given to this relationship,
      but it's not directly visible in the provided code.
-    Child-parent relationship (one to many) -> provider (see job_configuration.py):
-    This is referring to the ability of a JobConfiguration instance to reference its associated Provider (User).
-    The provider attribute in the JobConfiguration class is the SQLAlchemy relationship that enables this.
+    Child-parent relationship (one to many) -> provider (see study_configuration.py):
+    This is referring to the ability of a StudyConfiguration instance to reference its associated Provider (User).
+    The provider attribute in the StudyConfiguration class is the SQLAlchemy relationship that enables this.
     """
 
     __tablename__ = "users"
@@ -88,15 +88,15 @@ class User(Base, DateMixin):
         cascade="all, delete-orphan",
     )
 
-    # provider has many job configurations
+    # provider has many study configurations
     # bidirectional
-    # Child class -> JobConfiguration
+    # Child class -> StuduyConfiguration
     # Parent class -> Provider
-    # Parent-child relationship (has many to one) -> provider_job_configurations
-    # Child-parent relationship (one to many) -> provider (see job_configuration.py)
-    job_configurations = relationship(
-        "JobConfiguration",
+    # Parent-child relationship (has many to one) -> provider_study_configurations
+    # Child-parent relationship (one to many) -> provider (see study_configuration.py)
+    study_configurations = relationship(
+        "StudyConfiguration",
         back_populates="provider",
-        foreign_keys="JobConfiguration.provider_id",
+        foreign_keys="StudyConfiguration.provider_id",
         cascade="all, delete-orphan",
     )

@@ -1,6 +1,6 @@
 {
-  "$schema": "job-configurations-schema.generated.json",
-  "job_configs": [
+  "$schema": "study-configurations-schema.generated.json",
+  "study_configs": [
     {
       "version": "0.0.1",
       "name": "Hospital Study",

@@ -1,6 +1,6 @@
 import pytest
 
-from ..trackerapi import TrackerApi, JobConfig
+from ..trackerapi import TrackerApi, StudyConfig
 import responses
 import requests_mock
 
@@ -43,13 +43,12 @@ def test_study():
         api_key="abc123", base_url=TrackerApi.DEFAULT_BASE_URL, skip_verify=True
     )
 
-    responses.add(url=tracker.urls.jobs_config_url, method=responses.POST, json={})
-    tracker.register_job_config(
-        JobConfig(
-            name="Test Job", tag="test_job", step_configurations=[], version="1.0.0"
+    responses.add(url=tracker.urls.studies_config_url, method=responses.POST, json={})
+    tracker.register_study_config(
+        StudyConfig(
+            name="Test Study", tag="test_study", step_configurations=[], version="1.0.0"
         )
     )
-    # TODO: make meaningful assertion about the job config once implemented
 
     responses.add(
         url=tracker.urls.studies_url,

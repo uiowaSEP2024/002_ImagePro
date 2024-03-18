@@ -14,28 +14,24 @@ class StepConfiguration(Base, DateMixin):
     Attributes:
     -----------
     id : int
-        Auto-generated internal job configuration id
+        Auto-generated internal study configuration id
     tag : str
         Tag used to identify a step
     name : str
         The step name as specified by the provider
     points : int
         Number of points for the step
-        ?? What does this mean exactly??
-        ?? What are points used for??
-        ?? Why do they matter ??
-        ?? Seems to be unneeded complexity ??
-    job_configuration_id : int
-        ForeignKey to JobConfiguration id
-    job_configuration : relationship
-        Relationship to the JobConfiguration model.
-        Represents the job configuration associated with this step configuration
+    study_configuration_id : int
+        ForeignKey to StudyConfiguration id
+    study_configuration : relationship
+        Relationship to the StudyConfiguration model.
+        Represents the study configuration associated with this step configuration
     """
 
     __tablename__ = "step_configurations"
-    __table_args__ = (UniqueConstraint("job_configuration_id", "tag"),)
+    __table_args__ = (UniqueConstraint("study_configuration_id", "tag"),)
 
-    # Auto-generated internal job configuration id
+    # Auto-generated internal study configuration id
     id = Column(Integer, primary_key=True, index=True)
 
     # Tag used to identify a step
@@ -47,14 +43,14 @@ class StepConfiguration(Base, DateMixin):
     # Number of points for the step
     points = Column(Integer, index=True, nullable=False)
 
-    job_configuration_id: Column = Column(
-        Integer, ForeignKey("job_configurations.id"), index=True, nullable=False
+    study_configuration_id: Column = Column(
+        Integer, ForeignKey("study_configurations.id"), index=True, nullable=False
     )
 
-    job_configuration = relationship(
-        "JobConfiguration",
+    study_configuration = relationship(
+        "StudyConfiguration",
         back_populates="step_configurations",
-        foreign_keys=[job_configuration_id],
+        foreign_keys=[study_configuration_id],
     )
 
     events = relationship(

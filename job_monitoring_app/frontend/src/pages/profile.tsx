@@ -187,7 +187,7 @@ function Profile() {
             borderRadius="lg"
             overflow="hidden"
           >
-            <Heading>{study.job_configuration.name} </Heading>
+            <Heading>{study.study_configuration.name} </Heading>
             <Text>#{study.id}</Text>
             <chakra.p>
               See this study{" "}

@@ -2,7 +2,7 @@ import json
 from typing import Optional
 from pathlib import Path
 from typing import Union
-from job_monitoring_app.trackerapi.trackerapi import TrackerApi, JobConfigManager
+from job_monitoring_app.trackerapi.trackerapi import TrackerApi, StudyConfigManager
 import os
 
 from dotenv import load_dotenv
@@ -27,22 +27,22 @@ class OrthancStudyLogger:
             hospital_id  # hospital_id corresponds to the customer_id in the backend
         )
         self.study_id = (
-            study_id  # study_id corresponds to the provider_job_id in the backend
+            study_id  # study_id corresponds to the provider_study_id in the backend
         )
         self.internal_product_log = None
 
-        # Get job config, use the initial hospital_study.json file
+        # Get study config, use the initial hospital_study.json file
         study_configurations_file = Path(study_config_file)
-        study_config_manager = JobConfigManager(
+        study_config_manager = StudyConfigManager(
             configurations_file=study_configurations_file
         )
-        study_config = study_config_manager.get_job_config("hospital_study")
+        study_config = study_config_manager.get_study_config("hospital_study")
 
-        # Create TrackerAPI object and job session
+        # Create TrackerAPI object and study session
         tracker = TrackerApi(tracker_api_key)
-        tracker.register_job_config(study_config)
+        tracker.register_study_config(study_config)
 
-        # Signal the start of a new job
+        # Signal the start of a new study
         self.tracker_study = tracker.create_study(
             study_id, hospital_id, study_config.tag
         )
@@ -138,7 +138,7 @@ if __name__ == "__main__":
         hospital_id=1,
         study_id=433,
         tracker_api_key=API_KEY,
-        study_config_file="hospital_job_configuration.json",
+        study_config_file="hospital_study_configuration.json",
     )
 
 # Note: the tracker_api_key needs to be replaced by creating a provider account on the app

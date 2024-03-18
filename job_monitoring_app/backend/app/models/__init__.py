@@ -1,7 +1,6 @@
 from .api_key import Apikey
 from .base import Base
 from .event import Event
-from .job_configuration import JobConfiguration
 from .metadata_configuration import MetadataConfiguration
 from .step_configuration import StepConfiguration
 from .user import User
@@ -10,3 +9,5 @@ from .hospital import Hospital
 from .provider import Provider
 from .pacs import Pacs
 from .product import Product
+from .study_configuration import StudyConfiguration
+from .pacs import Pacs

@@ -8,7 +8,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-from trackerapi import JobConfigManager, TrackerApi
+from trackerapi import StudyConfigManager, TrackerApi
 
 load_dotenv()
 
@@ -27,36 +27,38 @@ def printf(file, data):
     file.write(data)
 
 
-# Send request to create the JOB
+# Send request to create the Study
 # Replace with send_event(....)
 
 
-def run_mock_job(customer_id=None):
+def run_mock_study(customer_id=None):
     steps = 10
-    job_id = generate_uuid()
+    study_id = generate_uuid()
 
-    # Get job config
-    job_configurations_file = Path(SCRIPT_DIR, "./job-configurations.json")
-    job_config_manager = JobConfigManager(configurations_file=job_configurations_file)
-    job_config = job_config_manager.get_job_config("mockscript_job")
+    # Get study config
+    study_configurations_file = Path(SCRIPT_DIR, "study-configurations.json")
+    study_config_manager = StudyConfigManager(
+        configurations_file=study_configurations_file
+    )
+    study_config = study_config_manager.get_study_config("mockscript_study")
 
-    # Create TrackerAPI object and job session
+    # Create TrackerAPI object and study session
     tracker = TrackerApi(TRACKER_API_KEY)
-    tracker.register_job_config(job_config)
+    tracker.register_study_config(study_config)
 
-    # Signal the start of a new job TODO: change to use 'tag' instead of name
-    tracker_job = tracker.create_job(job_id, customer_id, job_config.tag)
+    # Signal the start of a new study
+    tracker_study = tracker.create_study(study_id, customer_id, study_config.tag)
 
     with open(f"{SCRIPT_DIR}/{LOG_FILE_PATH}", "a+") as outfile:
-        # Do a dummy job for N steps
-        for idx, step in enumerate(job_config.step_configurations):
+        # Do a dummy study for N steps
+        for idx, step in enumerate(study_config.step_configurations):
             # Do some work lasting anywhere between 1-2 seconds
             time.sleep(step.points / 10)
 
             step_time = str(datetime.now())
             # Prepare log data
             log_data = {
-                "job_id": job_id,
+                "study_id": study_id,
                 "customer_id": customer_id,
                 "step": step.name,
                 "time": step_time,
@@ -77,7 +79,7 @@ def run_mock_job(customer_id=None):
             is_last_step = idx == steps - 1
             kind = "complete" if is_last_step else "step"
 
-            tracker_job.send_event(kind, step.tag, metadata)
+            tracker_study.send_event(kind, step.tag, metadata)
 
 
 if __name__ == "__main__":
@@ -91,5 +93,5 @@ if __name__ == "__main__":
         random.randrange(0, len(sample_customer_ids))
     ]
 
-    # Run job for the chosen customer
-    run_mock_job(customer_id=1)
+    # Run study for the chosen customer
+    run_mock_study(customer_id=1)

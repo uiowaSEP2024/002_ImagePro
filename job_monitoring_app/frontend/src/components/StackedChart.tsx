@@ -81,8 +81,8 @@ const StudiesChart: React.FC<StudiesChartProps> = ({
   // Count the number of studies for each month and configuration name.
   const counts = useMemo(() => {
     return studiesForYear.reduce((acc, curr) => {
-      const { job_configuration, created_at } = curr;
-      const name = job_configuration.name || "Other";
+      const { study_configuration, created_at } = curr;
+      const name = study_configuration.name || "Other";
       const month = new Date(created_at!).getMonth();
 
       if (!acc[name]) {

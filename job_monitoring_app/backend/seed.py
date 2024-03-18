@@ -5,7 +5,7 @@ from config import config
 from sqlalchemy import event, inspect
 
 
-@event.listens_for(models.JobConfiguration, "init")
+@event.listens_for(models.StudyConfiguration, "init")
 @event.listens_for(models.StepConfiguration, "init")
 def create_nested(target, args, kwargs):
     """
@@ -23,7 +23,7 @@ users = {}
 studies = {}
 events = {}
 api_keys = {}
-job_configs = {}
+study_configs = {}
 
 # Data to be seeded for each entity
 USERS_DATA = [
@@ -72,7 +72,7 @@ API_KEYS_DATA = [
 ]
 
 
-JOBS_CONFIGURATIONS = [
+STUDIES_CONFIGURATIONS = [
     dict(
         name="Kidney Cancer",
         version="1.0.0",
@@ -209,37 +209,37 @@ STUDIES_DATA = [
         customer_email="johndoe@gmail.com",
         provider_email="botimage@gmail.com",
         provider_study_id="botimage-123",
-        job_configuration_tag="lung_cancer",
+        study_configuration_tag="lung_cancer",
     ),
     # study 2 John
     dict(
         customer_email="johndoe@gmail.com",
         provider_email="botimage@gmail.com",
         provider_study_id="botimage-456",
-        job_configuration_tag="heart_cancer",
+        study_configuration_tag="heart_cancer",
     ),
     # study 3 John
     dict(
         customer_email="johndoe@gmail.com",
         provider_email="botimage@gmail.com",
         provider_study_id="botimage-789",
-        job_configuration_tag="pancreas_cancer",
+        study_configuration_tag="pancreas_cancer",
     ),
     # study 1 Jane
     dict(
         customer_email="janeblack@gmail.com",
         provider_email="noodlesco@gmail.com",
         provider_study_id="noodlesco-123",
-        job_configuration_tag="lung_cancer",
+        study_configuration_tag="lung_cancer",
     ),
 ]
 
 EVENTS_DATA = [
-    #  Job 1 John, Event 1
+    #  Study 1 John, Event 1
     dict(
         provider_study_id="botimage-123",
         kind="Pending",
-        job_configuration_tag="kidney_cancer",
+        study_configuration_tag="kidney_cancer",
         step_configuration_tag="kidney_left",
         event_metadata={
             "Protein Density": 50,
@@ -248,11 +248,11 @@ EVENTS_DATA = [
             "Color": "Lime Pink",
         },
     ),
-    #  Job 1 John, Event 2
+    #  Study 1 John, Event 2
     dict(
         provider_study_id="botimage-123",
         kind="Pending",
-        job_configuration_tag="kidney_cancer",
+        study_configuration_tag="kidney_cancer",
         step_configuration_tag="kidney_right",
         event_metadata={
             "Protein Density": 50,
@@ -261,21 +261,21 @@ EVENTS_DATA = [
             "Color": "Lime Pink",
         },
     ),
-    #  Job 1 John, Event 3
+    #  Study 1 John, Event 3
     dict(
         provider_study_id="botimage-123",
         kind="Complete",
-        job_configuration_tag="kidney_cancer",
+        study_configuration_tag="kidney_cancer",
         step_configuration_tag="kidney_results",
         event_metadata={
             "Verdict": "Negative",
         },
     ),
-    #  Job 2 John, Event 1
+    #  Study 2 John, Event 1
     dict(
         provider_study_id="botimage-456",
         kind="Pending",
-        job_configuration_tag="heart_cancer",
+        study_configuration_tag="heart_cancer",
         step_configuration_tag="heart_left",
         event_metadata={
             "Protein Density": 50,
@@ -284,11 +284,11 @@ EVENTS_DATA = [
             "Color": "Lime Pink",
         },
     ),
-    #  Job 2 John, Event 2
+    #  Study 2 John, Event 2
     dict(
         provider_study_id="botimage-456",
         kind="Pending",
-        job_configuration_tag="heart_cancer",
+        study_configuration_tag="heart_cancer",
         step_configuration_tag="heart_right",
         event_metadata={
             "Protein Density": 50,
@@ -297,31 +297,31 @@ EVENTS_DATA = [
             "Color": "Lime Pink",
         },
     ),
-    #  Job 2 John, Event 3
+    #  Study 2 John, Event 3
     dict(
         provider_study_id="botimage-456",
         kind="Complete",
-        job_configuration_tag="heart_cancer",
+        study_configuration_tag="heart_cancer",
         step_configuration_tag="heart_results",
         event_metadata={
             "Verdict": "Negative",
         },
     ),
-    #  Job 3 John, Event 1
+    #  Study 3 John, Event 1
     dict(
         provider_study_id="botimage-789",
         kind="Complete",
-        job_configuration_tag="pancreas_cancer",
+        study_configuration_tag="pancreas_cancer",
         step_configuration_tag="pancreas_results",
         event_metadata={
             "Verdict": "Negative",
         },
     ),
-    #  Job 1 Jane, Event 1
+    #  Study 1 Jane, Event 1
     dict(
         provider_study_id="noodlesco-123",
         kind="Pending",
-        job_configuration_tag="lung_cancer",
+        study_configuration_tag="lung_cancer",
         step_configuration_tag="left_lung",
         event_metadata={
             "Protein Density": 50,
@@ -330,11 +330,11 @@ EVENTS_DATA = [
             "Color": "Lime Pink",
         },
     ),
-    #  Job 1 Jane, Event 2
+    #  Study 1 Jane, Event 2
     dict(
         provider_study_id="noodlesco-123",
         kind="Pending",
-        job_configuration_tag="lung_cancer",
+        study_configuration_tag="lung_cancer",
         step_configuration_tag="right_lung",
         event_metadata={
             "Protein Density": 50,
@@ -343,11 +343,11 @@ EVENTS_DATA = [
             "Color": "Lime Pink",
         },
     ),
-    #  Job 1 Jane, Event 3
+    #  Study 1 Jane, Event 3
     dict(
         provider_study_id="noodlesco-123",
         kind="Complete",
-        job_configuration_tag="lung_cancer",
+        study_configuration_tag="lung_cancer",
         step_configuration_tag="lung_results",
         event_metadata={
             "Verdict": "Negative",
@@ -400,12 +400,12 @@ def seed_studies(db):
         print(f"  Seeding study {str(study_data)}")
         customer = users[study_data["customer_email"]]
         provider = users[study_data["provider_email"]]
-        job_config = job_configs[study_data["job_configuration_tag"]]
+        study_config = study_configs[study_data["study_configuration_tag"]]
 
         study = models.Study(
             hospital_id=customer.id,
             provider_id=provider.id,
-            job_configuration_id=job_config.id,
+            study_configuration_id=study_config.id,
             provider_study_id=study_data["provider_study_id"],
         )
 
@@ -424,10 +424,10 @@ def seed_events(db):
         print(f"  Seeding event: {str(event_data)}")
 
         study = studies[event_data["provider_study_id"]]
-        job_config = job_configs[event_data["job_configuration_tag"]]
+        study_config = study_configs[event_data["study_configuration_tag"]]
         step_config = [
             x
-            for x in job_config.step_configurations
+            for x in study_config.step_configurations
             if x.tag == event_data["step_configuration_tag"]
         ][0]
 
@@ -445,27 +445,29 @@ def seed_events(db):
         events[event.id] = event
 
 
-def seed_job_configurations(db):
-    print("Seeding Job Configurations")
+def seed_study_configurations(db):
+    print("Seeding Study Configurations")
     from app import models
 
-    for job_config_data in JOBS_CONFIGURATIONS:
-        print(f"  Seeding job configuration: {str(job_config_data)}")
-        user = users[job_config_data.pop("provider_email")]
+    for study_config_data in STUDIES_CONFIGURATIONS:
+        print(f"  Seeding study configuration: {str(study_config_data)}")
+        user = users[study_config_data.pop("provider_email")]
 
-        job_config = models.JobConfiguration(**job_config_data, provider_id=user.id)
+        study_config = models.StudyConfiguration(
+            **study_config_data, provider_id=user.id
+        )
 
-        db.add(job_config)
+        db.add(study_config)
         db.commit()
-        db.refresh(job_config)
+        db.refresh(study_config)
 
-        job_configs[job_config.tag] = job_config
+        study_configs[study_config.tag] = study_config
 
 
 def seed_db():
     db = config.db.SessionLocal()
     seed_users(db)
     seed_api_keys(db)
-    seed_job_configurations(db)
+    seed_study_configurations(db)
     seed_studies(db)
     seed_events(db)

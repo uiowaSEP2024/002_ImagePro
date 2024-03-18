@@ -24,8 +24,8 @@ class Study(Base, DateMixin):
         # May be used to set up billing or simply display information later??
     hospital_id: int
         ForeignKey to User id of the hospital
-    job_configuration_id: int
-        ForeignKey to JobConfiguration id
+    study_configuration_id: int
+        ForeignKey to StudyConfiguration id
     events: list # TODO @Zach - Events relationship not implemented yet
 
 
@@ -72,16 +72,16 @@ class Study(Base, DateMixin):
         cascade="all, delete-orphan",
     )
 
-    job_configuration_id: Column = Column(
+    study_configuration_id: Column = Column(
         Integer,
-        ForeignKey("job_configurations.id", ondelete="SET NULL"),
+        ForeignKey("study_configurations.id", ondelete="SET NULL"),
         index=True,
         nullable=True,
     )
 
-    job_configuration = relationship(
-        "JobConfiguration",
+    study_configuration = relationship(
+        "StudyConfiguration",
         back_populates="studies",
-        # backref=backref('jobs', passive_deletes=True),
-        foreign_keys=[job_configuration_id],
+        # backref=backref('studies', passive_deletes=True),
+        foreign_keys=[study_configuration_id],
     )

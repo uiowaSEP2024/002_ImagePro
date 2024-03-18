@@ -49,7 +49,7 @@ const StudyTableCell: React.FC<StudyTableCellProps> = ({ study, colId }) => {
   if (!study) return null;
 
   if (colId === "name") {
-    return <Text>{study.job_configuration.name} </Text>;
+    return <Text>{study.study_configuration.name} </Text>;
   }
 
   if (colId === "reference_number") {
@@ -68,7 +68,7 @@ const StudyTableCell: React.FC<StudyTableCellProps> = ({ study, colId }) => {
     const numCompletedSteps = study.events?.filter(
       (event) => event.kind === "Complete"
     ).length;
-    const numSteps = study.job_configuration.step_configurations.length;
+    const numSteps = study.study_configuration.step_configurations.length;
     const status = numCompletedSteps === numSteps ? "Done" : "Waiting";
     return (
       <Tag colorScheme={status === "Done" ? "green" : "yellow"}>{status}</Tag>
@@ -112,7 +112,7 @@ function Studies() {
       .slice()
       .filter(
         (item) =>
-          item.job_configuration.name
+          item.study_configuration.name
             .toLowerCase()
             .includes(search.toLowerCase()) || String(item.id).includes(search)
       );

@@ -2,92 +2,92 @@ import json
 from pathlib import Path
 from typing import Dict, List, Union
 
-from .schemas import JobConfig, JobConfigs
+from .schemas import StudyConfig, StudyConfigs
 
 
-def load_job_configurations_from_json(filepath: str):
+def load_study_configurations_from_json(filepath: str):
     with open(filepath, "r") as f:
         data = json.load(f)
-        return JobConfigs(**data)
+        return StudyConfigs(**data)
 
 
-def load_job_configuration_from_json(filepath: str):
+def load_study_configuration_from_json(filepath: str):
     with open(filepath, "r") as f:
         data = json.load(f)
-        return JobConfig(**data)
+        return StudyConfig(**data)
 
 
-class DuplicateJobConfigException(Exception):
+class DuplicateStudyConfigException(Exception):
     pass
 
 
-class MissingJobConfigException(Exception):
+class MissingStudyConfigException(Exception):
     pass
 
 
-class JobConfigManager:
+class StudyConfigManager:
     """
-    Helper class for managing job configurations.
+    Helper class for managing study configurations.
     """
 
     def __init__(
         self,
-        configs: List[JobConfig] = None,
+        configs: List[StudyConfig] = None,
         configurations_file: Union[Path, str] = None,
     ):
-        self.config_dict: Dict[str, JobConfig] = {}
-        self.init_from_job_configs(configs) if configs else None
-        self.init_from_bulk_job_config_json(
+        self.config_dict: Dict[str, StudyConfig] = {}
+        self.init_from_study_configs(configs) if configs else None
+        self.init_from_bulk_study_config_json(
             configurations_file
         ) if configurations_file else None
 
-    def add_job_config(self, config: JobConfig, allow_override=False):
+    def add_study_config(self, config: StudyConfig, allow_override=False):
         """
-        Adds a job config to the job config dictionary.
-        :param config: The job configuration to add to the dictionary
-        :param allow_override: Allow replacing an existing job config with same tag as config
+        Adds a study config to the study config dictionary.
+        :param config: The study configuration to add to the dictionary
+        :param allow_override: Allow replacing an existing study config with same tag as config
         """
         has_existing = self.config_dict.get(config.tag, None)
         if has_existing and not allow_override:
-            raise DuplicateJobConfigException(
+            raise DuplicateStudyConfigException(
                 f"Attempting to add config with already existing tag: {config.tag}"
             )
         self.config_dict[config.tag] = config
 
-    def init_from_bulk_job_config_json(self, filepath: Union[Path, str]):
+    def init_from_bulk_study_config_json(self, filepath: Union[Path, str]):
         """
-        Initializes the job config dictionary from the filepath to a json configuration
+        Initializes the study config dictionary from the filepath to a json configuration
         :param filepath:
         """
-        bulk_config = load_job_configurations_from_json(filepath)
-        self.init_from_job_configs(bulk_config.job_configs)
+        bulk_config = load_study_configurations_from_json(filepath)
+        self.init_from_study_configs(bulk_config.study_configs)
 
-    def init_from_job_configs(self, configs: List[JobConfig]):
+    def init_from_study_configs(self, configs: List[StudyConfig]):
         """
-        Adds all job configurations from the list of provided JobConfig's to the dictionary
+        Adds all study configurations from the list of provided StudyConfig's to the dictionary
         :param configs:
         """
         for config in configs:
-            self.add_job_config(config)
+            self.add_study_config(config)
 
     @property
     def tags(self):
         """
-        :return: List of tags for job configuration dictionary
+        :return: List of tags for study configuration dictionary
         """
         return list(self.config_dict.keys())
 
-    def get_job_config(self, tag: str):
+    def get_study_config(self, tag: str):
         """
-        Gets a single job config given its tag
-        :param tag: The tag for a job that has been added to the dictionary
-        :raise Exception: if no job configuration exists for the given tag
+        Gets a single study config given its tag
+        :param tag: The tag for a study that has been added to the dictionary
+        :raise Exception: if no study configuration exists for the given tag
         """
         result = self.config_dict.get(tag, None)
         if result:
             return result
 
-        raise MissingJobConfigException(
+        raise MissingStudyConfigException(
             f"No config with tag: '{tag}'. "
-            f"Available job configs are: {', '.join(self.tags)}"
+            f"Available study configs are: {', '.join(self.tags)}"
         )
