@@ -13,7 +13,7 @@ from app.main import app
 config.setup("test")
 
 user_counter = 0
-job_configuration_counter = 0
+study_configuration_counter = 0
 
 
 def get_next_user_count():
@@ -22,10 +22,10 @@ def get_next_user_count():
     return user_counter
 
 
-def get_next_job_configuration_count():
-    global job_configuration_counter
-    job_configuration_counter = job_configuration_counter + 1
-    return job_configuration_counter
+def get_next_study_configuration_count():
+    global study_configuration_counter
+    study_configuration_counter = study_configuration_counter + 1
+    return study_configuration_counter
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -74,16 +74,16 @@ def random_provider_user_with_api_key(db, random_provider_user):
 
 @pytest.fixture
 def study_for_random_user_with_api_key(
-    db, random_provider_user_with_api_key, random_job_configuration_factory
+    db, random_provider_user_with_api_key, random_study_configuration_factory
 ):
-    job_configuration = random_job_configuration_factory.get()
+    study_configuration = random_study_configuration_factory.get()
 
     study = services.create_study(
         db,
         schemas.StudyCreate(
             provider_study_id="145254",
             hospital_id=random_provider_user_with_api_key.id,
-            tag=job_configuration.tag,
+            tag=study_configuration.tag,
         ),
         provider=random_provider_user_with_api_key,
     )
@@ -130,31 +130,31 @@ def random_test_user_factory(db):
 
 
 @pytest.fixture
-def random_job_configuration_factory(db, random_provider_user):
+def random_study_configuration_factory(db, random_provider_user):
     class Factory(object):
         @staticmethod
         def get(num_steps=0):
-            count = get_next_job_configuration_count()
-            test_job_configuration = models.JobConfiguration(
-                tag=f"test_job_{count}",
-                name="Test Job",
+            count = get_next_study_configuration_count()
+            test_study_configuration = models.StudyConfiguration(
+                tag=f"test_study_{count}",
+                name="Test Study",
                 provider_id=random_provider_user.id,
                 version="0.0." + str(get_next_user_count()),
             )
 
             for i in range(num_steps):
-                test_job_configuration.step_configurations.append(
+                test_study_configuration.step_configurations.append(
                     models.StepConfiguration(
                         name=f"Step {i}",
                         tag=f"step_{i}",
                         points=10,
-                        job_configuration=test_job_configuration,
+                        study_configuration=test_study_configuration,
                     )
                 )
 
-            db.add(test_job_configuration)
+            db.add(test_study_configuration)
             db.commit()
-            db.refresh(test_job_configuration)
-            return test_job_configuration
+            db.refresh(test_study_configuration)
+            return test_study_configuration
 
     return Factory()

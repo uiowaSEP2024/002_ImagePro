@@ -5,7 +5,7 @@ from app.routers import (
     auth_router,
     events_router,
     users_router,
-    job_configurations_router,
+    study_configurations_router,
     reporting_router,
     studies_router,
 )
@@ -42,7 +42,7 @@ app.include_router(users_router)
 app.include_router(apikeys_router)
 app.include_router(auth_router)
 app.include_router(events_router)
-app.include_router(job_configurations_router)
+app.include_router(study_configurations_router)
 app.include_router(reporting_router)
 app.include_router(studies_router)
 

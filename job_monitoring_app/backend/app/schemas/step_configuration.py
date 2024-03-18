@@ -18,7 +18,7 @@ class StepConfigurationCreate(StepConfigurationBase):
 
 class StepConfiguration(StepConfigurationBase):
     id: StrictInt
-    job_configuration_id: StrictInt
+    study_configuration_id: StrictInt
 
     metadata_configurations: Optional[List[MetadataConfiguration]]
 

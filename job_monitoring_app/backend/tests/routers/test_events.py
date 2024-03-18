@@ -5,7 +5,6 @@ from app.dependencies import API_KEY_HEADER_NAME
 
 
 def test_create_event(app_client, study_for_random_user_with_api_key, db):
-    # job = job_for_random_user_with_api_key # This is in conftest, which will have to be changed
     study = study_for_random_user_with_api_key
     data = {
         "kind": "Pending",

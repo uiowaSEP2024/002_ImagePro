@@ -5,7 +5,7 @@ from app import models, schemas
 from sqlalchemy.orm import Session
 from .users import get_user
 
-from .job_configuration import get_job_configuration_by_tag
+from .study_configuration import get_study_configuration_by_tag
 
 
 def create_study(
@@ -21,9 +21,9 @@ def create_study(
     Returns:
         models.Study: The newly created Study
     """
-    job_configuration = get_job_configuration_by_tag(db, study.tag, provider.id)
+    study_configuration = get_study_configuration_by_tag(db, study.tag, provider.id)
 
-    if job_configuration is None:
+    if study_configuration is None:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Invalid study configuration tag",
@@ -33,7 +33,7 @@ def create_study(
         provider_id=provider.id,
         provider_study_id=study.provider_study_id,
         hospital_id=study.hospital_id,
-        job_configuration=job_configuration,
+        study_configuration=study_configuration,
     )
 
     db.add(db_study)

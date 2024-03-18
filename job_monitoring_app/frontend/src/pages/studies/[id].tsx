@@ -59,7 +59,7 @@ function StudyPage({ initialIsPageLoading = true }) {
   }, [events]);
 
   const numSteps = useMemo(
-    () => study?.job_configuration?.step_configurations.length,
+    () => study?.study_configuration?.step_configurations.length,
     [study]
   );
 
@@ -159,7 +159,7 @@ function StudyPage({ initialIsPageLoading = true }) {
   const studyDate = study?.created_at ? new Date(study?.created_at) : null;
 
   const studyDetails = {
-    "Study Name": study?.job_configuration.name,
+    "Study Name": study?.study_configuration.name,
     Date: studyDate ? studyDate.toLocaleDateString() : "-",
     Time: studyDate ? studyDate.toLocaleTimeString() : "-",
     "Customer ID": study?.hospital_id,

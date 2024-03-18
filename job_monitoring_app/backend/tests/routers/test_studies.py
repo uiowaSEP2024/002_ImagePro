@@ -3,14 +3,14 @@ from app.dependencies import API_KEY_HEADER_NAME
 
 
 def test_create_study(
-    app_client, random_provider_user_with_api_key, random_job_configuration_factory
+    app_client, random_provider_user_with_api_key, random_study_configuration_factory
 ):
-    job_configuration = random_job_configuration_factory.get()
+    study_configuration = random_study_configuration_factory.get()
 
     data = {
         "provider_study_id": "2432424",
         "hospital_id": random_provider_user_with_api_key.id,
-        "tag": job_configuration.tag,
+        "tag": study_configuration.tag,
     }
 
     response = app_client.post(
@@ -25,7 +25,7 @@ def test_create_study(
     assert response.json()["provider_study_id"] == "2432424"
     assert response.json()["hospital_id"] == random_provider_user_with_api_key.id
     assert response.json()["created_at"] is not None
-    assert response.json()["job_configuration_id"] == job_configuration.id
+    assert response.json()["study_configuration_id"] == study_configuration.id
 
 
 def test_get_study_as_customer(
@@ -33,16 +33,16 @@ def test_get_study_as_customer(
     db,
     random_provider_user_with_api_key,
     random_test_user,
-    random_job_configuration_factory,
+    random_study_configuration_factory,
 ):
-    job_configuration = random_job_configuration_factory.get()
+    study_configuration = random_study_configuration_factory.get()
 
     study = services.create_study(
         db,
         schemas.StudyCreate(
             provider_study_id="145254",
             hospital_id=random_test_user.id,
-            tag=job_configuration.tag,
+            tag=study_configuration.tag,
         ),
         provider=random_provider_user_with_api_key,
     )
@@ -58,7 +58,7 @@ def test_get_study_as_customer(
     # Grab access token for user
     access_token = response.json()["access_token"]
 
-    # Use access token in the request to get a job
+    # Use access token in the request to get a study
     response = app_client.get(
         f"/studies/{study.id}", cookies={"access_token": access_token}
     )
@@ -68,7 +68,7 @@ def test_get_study_as_customer(
     assert response.json()["hospital_id"] == study.hospital_id
     assert response.json()["provider_id"] == study.provider_id
     assert response.json()["created_at"] is not None
-    assert response.json()["job_configuration_id"] == job_configuration.id
+    assert response.json()["study_configuration_id"] == study_configuration.id
 
 
 def test_get_studies_as_hospital(
@@ -76,16 +76,16 @@ def test_get_studies_as_hospital(
     db,
     random_provider_user_with_api_key,
     random_test_user,
-    random_job_configuration_factory,
+    random_study_configuration_factory,
 ):
-    job_configuration = random_job_configuration_factory.get()
+    study_configuration = random_study_configuration_factory.get()
 
     study1 = services.create_study(
         db,
         schemas.StudyCreate(
             provider_study_id="145254",
             hospital_id=random_test_user.id,
-            tag=job_configuration.tag,
+            tag=study_configuration.tag,
         ),
         provider=random_provider_user_with_api_key,
     )
@@ -95,7 +95,7 @@ def test_get_studies_as_hospital(
         schemas.StudyCreate(
             provider_study_id="145255",
             hospital_id=random_test_user.id,
-            tag=job_configuration.tag,
+            tag=study_configuration.tag,
         ),
         provider=random_provider_user_with_api_key,
     )
@@ -112,7 +112,7 @@ def test_get_studies_as_hospital(
     # Grab access token for user
     access_token = response.json()["access_token"]
 
-    # Use access token in the request to get a job
+    # Use access token in the request to get a study
     response = app_client.get("/studies", cookies={"access_token": access_token})
 
     assert response.status_code == 200
@@ -134,19 +134,19 @@ def test_get_study_as_different_customer(
     db,
     random_provider_user_with_api_key,
     random_test_user_factory,
-    random_job_configuration_factory,
+    random_study_configuration_factory,
 ):
     customer_a = random_test_user_factory.get()
     customer_b = random_test_user_factory.get()
 
-    job_configuration = random_job_configuration_factory.get()
+    study_configuration = random_study_configuration_factory.get()
 
     study = services.create_study(
         db,
         schemas.StudyCreate(
             provider_study_id="145254",
             hospital_id=customer_a.id,
-            tag=job_configuration.tag,
+            tag=study_configuration.tag,
         ),
         provider=random_provider_user_with_api_key,
     )
@@ -155,7 +155,7 @@ def test_get_study_as_different_customer(
     db.refresh(study)
 
     # Simulate user log in as customer b (different customer from the
-    # one who the job was made for)
+    # one who the study was made for)
     response = app_client.post(
         "/login", data={"username": customer_b.email, "password": "abc"}
     )
@@ -163,7 +163,7 @@ def test_get_study_as_different_customer(
     # Grab access token for the different customer
     access_token = response.json()["access_token"]
 
-    # Use access token in the request to get a job
+    # Use access token in the request to get a study
     response = app_client.get(
         f"/studies/{study.id}", cookies={"access_token": access_token}
     )
@@ -173,7 +173,7 @@ def test_get_study_as_different_customer(
 
 
 def test_create_study_with_missing_tag(
-    app_client, random_provider_user_with_api_key, random_job_configuration_factory
+    app_client, random_provider_user_with_api_key, random_study_configuration_factory
 ):
     data = {
         "provider_study_id": "2432424",

@@ -6,7 +6,7 @@ from typing import List, Type, Union
 
 from pydantic import BaseModel
 
-from .schemas import JobConfigs
+from .schemas import StudyConfigs
 
 
 def generate_model_json_schema(
@@ -20,12 +20,12 @@ def generate_model_json_schema(
         print(f"Generated JSON Schema for {model.__name__} at {filepath.absolute()}")
 
 
-def generate_job_configs_json_schema(
+def generate_study_configs_json_schema(
     location: Union[Path, str] = None, filename: str = None
 ):
     location = location if location else "./"
-    filename = filename if filename else "job-configurations-schema"
-    generate_model_json_schema(JobConfigs, filename, location)
+    filename = filename if filename else "study-configurations-schema"
+    generate_model_json_schema(StudyConfigs, filename, location)
 
 
 def parse_args(args: List[str]):
@@ -41,7 +41,7 @@ def parse_args(args: List[str]):
 
 def main():
     parsed_args = parse_args(sys.argv[1:])
-    generate_job_configs_json_schema(
+    generate_study_configs_json_schema(
         location=parsed_args.location, filename=parsed_args.name
     )
 

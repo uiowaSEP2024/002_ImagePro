@@ -1,10 +1,10 @@
 {
-  "$schema": "job-configurations-schema.generated.json",
-  "job_configs": [
+  "$schema": "study-configurations-schema.generated.json",
+  "study_configs": [
     {
       "version": "1.0.1",
-      "name": "Mockscript Job",
-      "tag": "mockscript_job",
+      "name": "Mockscript Study",
+      "tag": "mockscript_study",
       "step_configurations": [
         {
           "name": "Step 1",
@@ -60,8 +60,8 @@
     },
     {
       "version": "1.0.1",
-      "name": "Demo Job",
-      "tag": "demo_job",
+      "name": "Demo Study",
+      "tag": "demo_study",
       "step_configurations": [
         {
           "name": "Start Demo",

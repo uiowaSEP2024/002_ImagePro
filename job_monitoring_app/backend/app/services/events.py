@@ -1,7 +1,7 @@
 from app import models, schemas  # TODO: Fix imports
 from sqlalchemy.orm import Session
 
-from .job_configuration import get_step_configuration_by_composite_key
+from .study_configuration import get_step_configuration_by_composite_key
 from .studies import get_study_by_provider_study_id
 
 
@@ -37,7 +37,7 @@ def create_event(
     # What is the purpose of the tag??
     if event.tag:
         step_configuration = get_step_configuration_by_composite_key(
-            db, study.job_configuration_id, event.tag
+            db, study.study_configuration_id, event.tag
         )
         # TODO: Make note of how this is actually working and add it to the documentation
         # This seems like a weird way to do this? Does it just update the dictionary?

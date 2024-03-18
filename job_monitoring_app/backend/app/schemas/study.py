@@ -4,7 +4,7 @@ from typing import List
 from pydantic import BaseModel
 
 from . import Event
-from .job_configuration import JobConfiguration
+from .study_configuration import StudyConfiguration
 from .user import User
 
 
@@ -20,7 +20,7 @@ class StudyCreate(StudyBase):
 class StudyPure(StudyBase):
     id: int
     provider_id: int
-    job_configuration_id: int
+    study_configuration_id: int
 
     created_at: datetime = None
     updated_at: datetime = None
@@ -31,7 +31,7 @@ class StudyPure(StudyBase):
 
 class Study(StudyPure):
     provider: User
-    job_configuration: JobConfiguration
+    study_configuration: StudyConfiguration
     events: List[Event] = []
 
     class Config:

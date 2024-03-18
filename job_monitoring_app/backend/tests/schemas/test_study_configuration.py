@@ -4,11 +4,11 @@ from pydantic import ValidationError
 from app import schemas
 
 
-def test_valid_job_configuration():
-    result = schemas.JobConfigurationCreate.parse_obj(
+def test_valid_study_configuration():
+    result = schemas.StudyConfigurationCreate.parse_obj(
         {
-            "name": "Test Job Configuration",
-            "tag": "test_job_configuration",
+            "name": "Test Study Configuration",
+            "tag": "test_study_configuration",
             "version": "1.0.0",
             "step_configurations": [],
         }
@@ -17,12 +17,12 @@ def test_valid_job_configuration():
     assert result is not None
 
 
-def test_job_configuration_with_invalid_version():
+def test_study_configuration_with_invalid_version():
     with pytest.raises(ValidationError) as exc:
-        schemas.JobConfigurationCreate.parse_obj(
+        schemas.StudyConfigurationCreate.parse_obj(
             {
-                "name": "Test Job Configuration",
-                "tag": "test_job_configuration",
+                "name": "Test Study Configuration",
+                "tag": "test_study_configuration",
                 "version": "1",
                 "step_configurations": [],
             }
@@ -35,11 +35,11 @@ def test_job_configuration_with_invalid_version():
     assert exception.errors()[0]["type"] == "value_error"
 
 
-def test_job_configuration_with_missing_tag():
+def test_study_configuration_with_missing_tag():
     with pytest.raises(ValidationError) as exc:
-        schemas.JobConfigurationCreate.parse_obj(
+        schemas.StudyConfigurationCreate.parse_obj(
             {
-                "name": "Test Job Configuration",
+                "name": "Test Study Configuration",
                 "version": "1.0.0",
                 "step_configurations": [],
             }
@@ -52,11 +52,11 @@ def test_job_configuration_with_missing_tag():
     assert "field required" in exception.errors()[0]["msg"]
 
 
-def test_job_configuration_with_missing_name():
+def test_study_configuration_with_missing_name():
     with pytest.raises(ValidationError) as exc:
-        schemas.JobConfigurationCreate.parse_obj(
+        schemas.StudyConfigurationCreate.parse_obj(
             {
-                "tag": "test_job_configuration",
+                "tag": "test_study_configuration",
                 "version": "1.0.0",
                 "step_configurations": [],
             }

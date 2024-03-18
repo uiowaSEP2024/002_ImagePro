@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 
 from ..trackerapi.generate_json_schemas import (
-    generate_job_configs_json_schema,
+    generate_study_configs_json_schema,
     parse_args,
 )
 
@@ -15,7 +15,7 @@ def test_parse_args():
     assert parsed_args.name == "my-config-schema"
 
 
-def test_generate_job_configs_json_schema():
+def test_generate_study_configs_json_schema():
     file_dir = os.path.dirname(os.path.realpath(__file__))
     out_dir = Path(file_dir, ".testout")
 
@@ -24,7 +24,7 @@ def test_generate_job_configs_json_schema():
     # Ensure file is not already present
     os.remove(expected_schema_path) if Path.exists(expected_schema_path) else None
 
-    generate_job_configs_json_schema(location=out_dir, filename="test-schema")
+    generate_study_configs_json_schema(location=out_dir, filename="test-schema")
 
     assert Path.exists(
         expected_schema_path

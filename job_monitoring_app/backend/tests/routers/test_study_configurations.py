@@ -27,7 +27,7 @@ def create_data_dict(
     }
 
 
-def test_create_job_configurations(app_client, random_provider_user_with_api_key):
+def test_create_study_configurations(app_client, random_provider_user_with_api_key):
     data = {
         "tag": "lung_cancer",
         "name": "Lung Cancer",
@@ -36,7 +36,7 @@ def test_create_job_configurations(app_client, random_provider_user_with_api_key
     }
 
     response = app_client.post(
-        "/job_configurations",
+        "/study_configurations",
         json=data,
         headers={
             API_KEY_HEADER_NAME: random_provider_user_with_api_key.api_keys[0].key
@@ -49,13 +49,13 @@ def test_create_job_configurations(app_client, random_provider_user_with_api_key
     assert len(response.json()["step_configurations"]) == 0
 
 
-def test_create_job_configurations_with_new_version(
+def test_create_study_configurations_with_new_version(
     db, app_client, random_provider_user_with_api_key
 ):
-    _ = services.create_job_configuration(
+    _ = services.create_study_configuration(
         db,
         provider_id=random_provider_user_with_api_key.id,
-        job_configuration=schemas.JobConfigurationCreate(
+        study_configuration=schemas.StudyConfigurationCreate(
             tag="lung_cancer",
             name="Lung Cancer",
             version="1.0.0",
@@ -87,7 +87,7 @@ def test_create_job_configurations_with_new_version(
     )
 
     response = app_client.post(
-        "/job_configurations",
+        "/study_configurations",
         json=data,
         headers={
             API_KEY_HEADER_NAME: random_provider_user_with_api_key.api_keys[0].key
@@ -104,13 +104,13 @@ def test_create_job_configurations_with_new_version(
     )
 
 
-def test_create_job_configuration_with_conflicting_version(
+def test_create_study_configuration_with_conflicting_version(
     db, app_client, random_provider_user_with_api_key
 ):
-    _ = services.create_job_configuration(
+    _ = services.create_study_configuration(
         db,
         provider_id=random_provider_user_with_api_key.id,
-        job_configuration=schemas.JobConfigurationCreate(
+        study_configuration=schemas.StudyConfigurationCreate(
             tag="lung_cancer",
             name="Lung Cancer",
             version="1.0.0",
@@ -126,7 +126,7 @@ def test_create_job_configuration_with_conflicting_version(
     }
 
     response = app_client.post(
-        "/job_configurations",
+        "/study_configurations",
         json=data,
         headers={
             API_KEY_HEADER_NAME: random_provider_user_with_api_key.api_keys[0].key
@@ -136,13 +136,13 @@ def test_create_job_configuration_with_conflicting_version(
     assert response.status_code == status.HTTP_400_BAD_REQUEST
 
 
-def test_create_job_configuration_with_conflicting_version_on_metadata(
+def test_create_study_configuration_with_conflicting_version_on_metadata(
     db, app_client, random_provider_user_with_api_key
 ):
-    _ = services.create_job_configuration(
+    _ = services.create_study_configuration(
         db,
         provider_id=random_provider_user_with_api_key.id,
-        job_configuration=schemas.JobConfigurationCreate(
+        study_configuration=schemas.StudyConfigurationCreate(
             tag="lung_cancer",
             name="Lung Cancer",
             version="1.0.0",
@@ -174,7 +174,7 @@ def test_create_job_configuration_with_conflicting_version_on_metadata(
     )
 
     response = app_client.post(
-        "/job_configurations",
+        "/study_configurations",
         json=data,
         headers={
             API_KEY_HEADER_NAME: random_provider_user_with_api_key.api_keys[0].key
@@ -184,13 +184,13 @@ def test_create_job_configuration_with_conflicting_version_on_metadata(
     assert response.status_code == status.HTTP_400_BAD_REQUEST
 
 
-def test_create_job_configuration_with_same_information(
+def test_create_study_configuration_with_same_information(
     db, app_client, random_provider_user_with_api_key
 ):
-    original_configuration = services.create_job_configuration(
+    original_configuration = services.create_study_configuration(
         db,
         provider_id=random_provider_user_with_api_key.id,
-        job_configuration=schemas.JobConfigurationCreate(
+        study_configuration=schemas.StudyConfigurationCreate(
             tag="lung_cancer",
             name="Lung Cancer",
             version="1.0.0",
@@ -206,7 +206,7 @@ def test_create_job_configuration_with_same_information(
     }
 
     response = app_client.post(
-        "/job_configurations",
+        "/study_configurations",
         json=data,
         headers={
             API_KEY_HEADER_NAME: random_provider_user_with_api_key.api_keys[0].key
@@ -223,13 +223,13 @@ def test_create_job_configuration_with_same_information(
     )
 
 
-def test_get_job_configuration(
+def test_get_study_configuration(
     app_client,
     db,
     random_provider_user_with_api_key,
-    random_job_configuration_factory,
+    random_study_configuration_factory,
 ):
-    job_configuration = random_job_configuration_factory.get()
+    study_configuration = random_study_configuration_factory.get()
 
     # Simulate user log in
     response = app_client.post(
@@ -240,28 +240,28 @@ def test_get_job_configuration(
     # Grab access token for user
     access_token = response.json()["access_token"]
 
-    # Use access token in the request to get a job
+    # Use access token in the request to get a study
     response = app_client.get(
-        f"/job_configurations/{job_configuration.id}",
+        f"/study_configurations/{study_configuration.id}",
         cookies={"access_token": access_token},
     )
 
     assert response.status_code == 200
-    assert response.json()["id"] == job_configuration.id
-    assert response.json()["provider_id"] == job_configuration.provider_id
+    assert response.json()["id"] == study_configuration.id
+    assert response.json()["provider_id"] == study_configuration.provider_id
     assert response.json()["created_at"] is not None
-    assert response.json()["tag"] == job_configuration.tag
-    assert response.json()["version"] == job_configuration.version
-    assert response.json()["name"] == job_configuration.name
+    assert response.json()["tag"] == study_configuration.tag
+    assert response.json()["version"] == study_configuration.version
+    assert response.json()["name"] == study_configuration.name
 
 
-def test_get_job_configurations_with_specific_tag_and_version(
+def test_get_study_configurations_with_specific_tag_and_version(
     app_client, db, random_provider_user_with_api_key
 ):
-    job_configuration = services.create_job_configuration(
+    study_configuration = services.create_study_configuration(
         db,
         provider_id=random_provider_user_with_api_key.id,
-        job_configuration=schemas.JobConfigurationCreate(
+        study_configuration=schemas.StudyConfigurationCreate(
             tag="lung_cancer",
             name="Lung Cancer",
             version="1.0.0",
@@ -279,27 +279,27 @@ def test_get_job_configurations_with_specific_tag_and_version(
     access_token = response.json()["access_token"]
 
     response = app_client.get(
-        f"/job_configurations/?tag={job_configuration.tag}&version={job_configuration.version}",
+        f"/study_configurations/?tag={study_configuration.tag}&version={study_configuration.version}",
         cookies={"access_token": access_token},
     )
 
     assert response.status_code == 200
-    assert response.json()[0]["id"] == job_configuration.id
-    assert response.json()[0]["provider_id"] == job_configuration.provider_id
+    assert response.json()[0]["id"] == study_configuration.id
+    assert response.json()[0]["provider_id"] == study_configuration.provider_id
     assert response.json()[0]["created_at"] is not None
-    assert response.json()[0]["tag"] == job_configuration.tag
-    assert response.json()[0]["version"] == job_configuration.version
-    assert response.json()[0]["name"] == job_configuration.name
+    assert response.json()[0]["tag"] == study_configuration.tag
+    assert response.json()[0]["version"] == study_configuration.version
+    assert response.json()[0]["name"] == study_configuration.name
 
 
-def test_job_configuration_with_tag_and_latest_version(
+def test_study_configuration_with_tag_and_latest_version(
     app_client, db, random_provider_user_with_api_key
 ):
     _ = (
-        services.create_job_configuration(
+        services.create_study_configuration(
             db,
             provider_id=random_provider_user_with_api_key.id,
-            job_configuration=schemas.JobConfigurationCreate(
+            study_configuration=schemas.StudyConfigurationCreate(
                 tag="lung_cancer",
                 name="Lung Cancer",
                 version="1.0.0",
@@ -308,10 +308,10 @@ def test_job_configuration_with_tag_and_latest_version(
         ),
     )
 
-    job_configuration2 = services.create_job_configuration(
+    study_configuration2 = services.create_study_configuration(
         db,
         provider_id=random_provider_user_with_api_key.id,
-        job_configuration=schemas.JobConfigurationCreate(
+        study_configuration=schemas.StudyConfigurationCreate(
             tag="lung_cancer",
             name="Lung Cancer",
             version="1.0.1",
@@ -329,26 +329,26 @@ def test_job_configuration_with_tag_and_latest_version(
     access_token = response.json()["access_token"]
 
     response = app_client.get(
-        f"/job_configurations/?tag={job_configuration2.tag}&version={'latest'}",
+        f"/study_configurations/?tag={study_configuration2.tag}&version={'latest'}",
         cookies={"access_token": access_token},
     )
 
     assert response.status_code == 200
-    assert response.json()[0]["id"] == job_configuration2.id
-    assert response.json()[0]["provider_id"] == job_configuration2.provider_id
+    assert response.json()[0]["id"] == study_configuration2.id
+    assert response.json()[0]["provider_id"] == study_configuration2.provider_id
     assert response.json()[0]["created_at"] is not None
-    assert response.json()[0]["tag"] == job_configuration2.tag
-    assert response.json()[0]["version"] == job_configuration2.version
-    assert response.json()[0]["name"] == job_configuration2.name
+    assert response.json()[0]["tag"] == study_configuration2.tag
+    assert response.json()[0]["version"] == study_configuration2.version
+    assert response.json()[0]["name"] == study_configuration2.name
 
 
 def test_get_all_configurations_for_tag_with_missing_version(
     app_client, db, random_provider_user_with_api_key
 ):
-    job_configuration1 = services.create_job_configuration(
+    study_configuration1 = services.create_study_configuration(
         db,
         provider_id=random_provider_user_with_api_key.id,
-        job_configuration=schemas.JobConfigurationCreate(
+        study_configuration=schemas.StudyConfigurationCreate(
             tag="lung_cancer",
             name="Lung Cancer",
             version="1.0.0",
@@ -356,10 +356,10 @@ def test_get_all_configurations_for_tag_with_missing_version(
         ),
     )
 
-    job_configuration2 = services.create_job_configuration(
+    study_configuration2 = services.create_study_configuration(
         db,
         provider_id=random_provider_user_with_api_key.id,
-        job_configuration=schemas.JobConfigurationCreate(
+        study_configuration=schemas.StudyConfigurationCreate(
             tag="lung_cancer",
             name="Lung Cancer",
             version="1.0.1",
@@ -367,10 +367,10 @@ def test_get_all_configurations_for_tag_with_missing_version(
         ),
     )
 
-    job_configuration3 = services.create_job_configuration(
+    study_configuration3 = services.create_study_configuration(
         db,
         provider_id=random_provider_user_with_api_key.id,
-        job_configuration=schemas.JobConfigurationCreate(
+        study_configuration=schemas.StudyConfigurationCreate(
             tag="lung_cancer",
             name="Lung Cancer",
             version="1.1.1",
@@ -388,42 +388,42 @@ def test_get_all_configurations_for_tag_with_missing_version(
     access_token = response.json()["access_token"]
 
     response = app_client.get(
-        f"/job_configurations/?tag={job_configuration1.tag}",
+        f"/study_configurations/?tag={study_configuration1.tag}",
         cookies={"access_token": access_token},
     )
 
     assert response.status_code == 200
     assert len(response.json()) == 3
 
-    assert response.json()[2]["id"] == job_configuration1.id
-    assert response.json()[2]["provider_id"] == job_configuration1.provider_id
+    assert response.json()[2]["id"] == study_configuration1.id
+    assert response.json()[2]["provider_id"] == study_configuration1.provider_id
     assert response.json()[2]["created_at"] is not None
-    assert response.json()[2]["tag"] == job_configuration1.tag
-    assert response.json()[2]["version"] == job_configuration1.version
-    assert response.json()[2]["name"] == job_configuration1.name
+    assert response.json()[2]["tag"] == study_configuration1.tag
+    assert response.json()[2]["version"] == study_configuration1.version
+    assert response.json()[2]["name"] == study_configuration1.name
 
-    assert response.json()[1]["id"] == job_configuration2.id
-    assert response.json()[1]["provider_id"] == job_configuration2.provider_id
+    assert response.json()[1]["id"] == study_configuration2.id
+    assert response.json()[1]["provider_id"] == study_configuration2.provider_id
     assert response.json()[1]["created_at"] is not None
-    assert response.json()[1]["tag"] == job_configuration2.tag
-    assert response.json()[1]["version"] == job_configuration2.version
-    assert response.json()[1]["name"] == job_configuration2.name
+    assert response.json()[1]["tag"] == study_configuration2.tag
+    assert response.json()[1]["version"] == study_configuration2.version
+    assert response.json()[1]["name"] == study_configuration2.name
 
-    assert response.json()[0]["id"] == job_configuration3.id
-    assert response.json()[0]["provider_id"] == job_configuration3.provider_id
+    assert response.json()[0]["id"] == study_configuration3.id
+    assert response.json()[0]["provider_id"] == study_configuration3.provider_id
     assert response.json()[0]["created_at"] is not None
-    assert response.json()[0]["tag"] == job_configuration3.tag
-    assert response.json()[0]["version"] == job_configuration3.version
-    assert response.json()[0]["name"] == job_configuration3.name
+    assert response.json()[0]["tag"] == study_configuration3.tag
+    assert response.json()[0]["version"] == study_configuration3.version
+    assert response.json()[0]["name"] == study_configuration3.name
 
 
-def test_get_list_of_latest_versions_for_all_job_configurations_with_version_latest(
+def test_get_list_of_latest_versions_for_all_study_configurations_with_version_latest(
     app_client, db, random_provider_user_with_api_key
 ):
-    _ = services.create_job_configuration(
+    _ = services.create_study_configuration(
         db,
         provider_id=random_provider_user_with_api_key.id,
-        job_configuration=schemas.JobConfigurationCreate(
+        study_configuration=schemas.StudyConfigurationCreate(
             tag="lung_cancer",
             name="Lung Cancer",
             version="1.0.0",
@@ -431,10 +431,10 @@ def test_get_list_of_latest_versions_for_all_job_configurations_with_version_lat
         ),
     )
 
-    _ = services.create_job_configuration(
+    _ = services.create_study_configuration(
         db,
         provider_id=random_provider_user_with_api_key.id,
-        job_configuration=schemas.JobConfigurationCreate(
+        study_configuration=schemas.StudyConfigurationCreate(
             tag="kidney_cancer",
             name="Kidney Cancer",
             version="1.0.0",
@@ -442,10 +442,10 @@ def test_get_list_of_latest_versions_for_all_job_configurations_with_version_lat
         ),
     )
 
-    job_configuration3 = services.create_job_configuration(
+    study_configuration3 = services.create_study_configuration(
         db,
         provider_id=random_provider_user_with_api_key.id,
-        job_configuration=schemas.JobConfigurationCreate(
+        study_configuration=schemas.StudyConfigurationCreate(
             tag="lung_cancer",
             name="Lung Cancer",
             version="1.0.1",
@@ -453,10 +453,10 @@ def test_get_list_of_latest_versions_for_all_job_configurations_with_version_lat
         ),
     )
 
-    job_configuration4 = services.create_job_configuration(
+    study_configuration4 = services.create_study_configuration(
         db,
         provider_id=random_provider_user_with_api_key.id,
-        job_configuration=schemas.JobConfigurationCreate(
+        study_configuration=schemas.StudyConfigurationCreate(
             tag="kidney_cancer",
             name="Kidney Cancer",
             version="1.0.2",
@@ -474,35 +474,35 @@ def test_get_list_of_latest_versions_for_all_job_configurations_with_version_lat
     access_token = response.json()["access_token"]
 
     response = app_client.get(
-        f"/job_configurations/?version={'latest'}",
+        f"/study_configurations/?version={'latest'}",
         cookies={"access_token": access_token},
     )
 
     assert response.status_code == 200
     assert len(response.json()) == 2
 
-    assert response.json()[0]["id"] == job_configuration3.id
-    assert response.json()[0]["provider_id"] == job_configuration3.provider_id
+    assert response.json()[0]["id"] == study_configuration3.id
+    assert response.json()[0]["provider_id"] == study_configuration3.provider_id
     assert response.json()[0]["created_at"] is not None
-    assert response.json()[0]["tag"] == job_configuration3.tag
-    assert response.json()[0]["version"] == job_configuration3.version
-    assert response.json()[0]["name"] == job_configuration3.name
+    assert response.json()[0]["tag"] == study_configuration3.tag
+    assert response.json()[0]["version"] == study_configuration3.version
+    assert response.json()[0]["name"] == study_configuration3.name
 
-    assert response.json()[1]["id"] == job_configuration4.id
-    assert response.json()[1]["provider_id"] == job_configuration4.provider_id
+    assert response.json()[1]["id"] == study_configuration4.id
+    assert response.json()[1]["provider_id"] == study_configuration4.provider_id
     assert response.json()[1]["created_at"] is not None
-    assert response.json()[1]["tag"] == job_configuration4.tag
-    assert response.json()[1]["version"] == job_configuration4.version
-    assert response.json()[1]["name"] == job_configuration4.name
+    assert response.json()[1]["tag"] == study_configuration4.tag
+    assert response.json()[1]["version"] == study_configuration4.version
+    assert response.json()[1]["name"] == study_configuration4.name
 
 
-def test_get_list_of_latest_versions_for_all_job_configurations_with_empty_query_params(
+def test_get_list_of_latest_versions_for_all_study_configurations_with_empty_query_params(
     app_client, db, random_provider_user_with_api_key
 ):
-    _ = services.create_job_configuration(
+    _ = services.create_study_configuration(
         db,
         provider_id=random_provider_user_with_api_key.id,
-        job_configuration=schemas.JobConfigurationCreate(
+        study_configuration=schemas.StudyConfigurationCreate(
             tag="lung_cancer",
             name="Lung Cancer",
             version="1.0.0",
@@ -510,10 +510,10 @@ def test_get_list_of_latest_versions_for_all_job_configurations_with_empty_query
         ),
     )
 
-    _ = services.create_job_configuration(
+    _ = services.create_study_configuration(
         db,
         provider_id=random_provider_user_with_api_key.id,
-        job_configuration=schemas.JobConfigurationCreate(
+        study_configuration=schemas.StudyConfigurationCreate(
             tag="kidney_cancer",
             name="Kidney Cancer",
             version="1.0.0",
@@ -521,10 +521,10 @@ def test_get_list_of_latest_versions_for_all_job_configurations_with_empty_query
         ),
     )
 
-    job_configuration3 = services.create_job_configuration(
+    study_configuration3 = services.create_study_configuration(
         db,
         provider_id=random_provider_user_with_api_key.id,
-        job_configuration=schemas.JobConfigurationCreate(
+        study_configuration=schemas.StudyConfigurationCreate(
             tag="lung_cancer",
             name="Lung Cancer",
             version="1.0.1",
@@ -532,10 +532,10 @@ def test_get_list_of_latest_versions_for_all_job_configurations_with_empty_query
         ),
     )
 
-    job_configuration4 = services.create_job_configuration(
+    study_configuration4 = services.create_study_configuration(
         db,
         provider_id=random_provider_user_with_api_key.id,
-        job_configuration=schemas.JobConfigurationCreate(
+        study_configuration=schemas.StudyConfigurationCreate(
             tag="kidney_cancer",
             name="Kidney Cancer",
             version="1.0.2",
@@ -553,23 +553,23 @@ def test_get_list_of_latest_versions_for_all_job_configurations_with_empty_query
     access_token = response.json()["access_token"]
 
     response = app_client.get(
-        "/job_configurations/",
+        "/study_configurations/",
         cookies={"access_token": access_token},
     )
 
     assert response.status_code == 200
     assert len(response.json()) == 2
 
-    assert response.json()[0]["id"] == job_configuration3.id
-    assert response.json()[0]["provider_id"] == job_configuration3.provider_id
+    assert response.json()[0]["id"] == study_configuration3.id
+    assert response.json()[0]["provider_id"] == study_configuration3.provider_id
     assert response.json()[0]["created_at"] is not None
-    assert response.json()[0]["tag"] == job_configuration3.tag
-    assert response.json()[0]["version"] == job_configuration3.version
-    assert response.json()[0]["name"] == job_configuration3.name
+    assert response.json()[0]["tag"] == study_configuration3.tag
+    assert response.json()[0]["version"] == study_configuration3.version
+    assert response.json()[0]["name"] == study_configuration3.name
 
-    assert response.json()[1]["id"] == job_configuration4.id
-    assert response.json()[1]["provider_id"] == job_configuration4.provider_id
+    assert response.json()[1]["id"] == study_configuration4.id
+    assert response.json()[1]["provider_id"] == study_configuration4.provider_id
     assert response.json()[1]["created_at"] is not None
-    assert response.json()[1]["tag"] == job_configuration4.tag
-    assert response.json()[1]["version"] == job_configuration4.version
-    assert response.json()[1]["name"] == job_configuration4.name
+    assert response.json()[1]["tag"] == study_configuration4.tag
+    assert response.json()[1]["version"] == study_configuration4.version
+    assert response.json()[1]["name"] == study_configuration4.name

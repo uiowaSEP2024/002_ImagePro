@@ -8,16 +8,16 @@ from .step_configuration import StepConfigurationCreate, StepConfiguration
 from .unique_tag import UniqueTagModel
 
 
-class JobConfigurationBase(UniqueTagModel):
+class StudyConfigurationBase(UniqueTagModel):
     name: StrictStr
 
 
-class JobConfigurationCreate(JobConfigurationBase):
+class StudyConfigurationCreate(StudyConfigurationBase):
     version: PydanticVersion
     step_configurations: conlist(StepConfigurationCreate, unique_items=True)
 
 
-class JobConfiguration(JobConfigurationCreate):
+class StudyConfiguration(StudyConfigurationCreate):
     id: StrictInt
     provider_id: StrictInt
 

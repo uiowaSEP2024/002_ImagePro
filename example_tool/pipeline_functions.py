@@ -25,16 +25,14 @@ from dcm_classifier.namic_dicom_typing import itk_read_from_dicomfn_list
 import re
 from pydicom import dcmread
 from subprocess import run
-from typing import Optional, Union
+from typing import Optional
 import itk
 import json
-from pathlib import Path
+import datetime
+import random
 
 
 itk.MultiThreaderBase.SetGlobalDefaultNumberOfThreads(1)
-
-import datetime
-import random
 
 
 def generate_uid():
@@ -65,12 +63,14 @@ def generate_uid():
     return sop_instance_uid
 
 
-def write_json_log(log_file_path: Path, study_id: str, status: str, reason: Optional[str]) -> None:
+def write_json_log(
+    log_file_path: Path, study_id: str, status: str, reason: Optional[str]
+) -> None:
     """
     Writes the current log to the file.
     :param log_file_path: path to the log file
     :param study_id: unique identifier for the study
-    :param status: status of the job
+    :param status: status of the  job
     :param reason: reason for the status
     :return: None
     """
