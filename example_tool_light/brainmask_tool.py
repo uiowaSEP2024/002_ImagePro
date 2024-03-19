@@ -106,37 +106,51 @@ except Exception as e:
 stage_name = "PDF to DICOM conversion"
 # This assumes that the template IMA file is in the session directory and that the first IAM file is the valid
 try:
-    template_dcm = sorted(session_path.glob("*.IMA"))[0]
-except IndexError as e:
-    template_dcm = sorted(session_path.glob("*.dcm"))[0]
+    template_dcm_path = sorted(session_path.rglob("*.dcm"))[0]
+except IndexError:
+    template_dcm_path = sorted(session_path.rglob("*.IMA"))[0]
+print(f"template_dcm: {template_dcm_path}")
 try:
     converter = Pdf2EncapsDCM()
-    converted_dcm = converter.run(
-        path_pdf=pdf_fn, path_template_dcm=template_dcm.as_posix(), suffix=".dcm"
+    converted_dcm_path = converter.run(
+        path_pdf=pdf_fn, path_template_dcm=template_dcm_path.as_posix(), suffix=".dcm"
     )[0]
     del report_output_dir, nifti_path
 
-    print(f"Report created: {converted_dcm}")
+    print(f"Report created: {converted_dcm_path}")
 
     # Adding needed metadata to the report
     """"""
-    pdf_dcm = dcmread(converted_dcm, stop_before_pixels=True)
+    pdf_dcm = dcmread(converted_dcm_path, stop_before_pixels=True)
+    template_dcm = dcmread(template_dcm_path, stop_before_pixels=True)
+    # propagate fields from original data
+    for tag in [0x00200010, 0x0020000d, 0x0020000e]:
+        data_elem = template_dcm.get(tag)
+        pdf_dcm.add(data_elem)
 
-    extra_metadata = [
-        (
-            "SeriesDescription",
-            "0008,103e",
-            "This is a rough brainmask",
-        ),
-    ]
-    for info in extra_metadata:
-        title = info[0]
-        tag = info[1]
-        description = info[2]
-        # HACK this should be using the pydicom tag value but it's not working for some reason
-        elem = pydicom.DataElement(title, "LO", description)
-        pdf_dcm.DocumentTitle = "BrainyBarrier PDF Results"
-        pdf_dcm.save_as(converted_dcm)
+    # generate new UID fields
+    pdf_dcm.SOPInstanceUID = generate_uid()
+    pdf_dcm.SeriesInstanceUID = generate_uid()
+
+    pdf_dcm.SeriesNumber = 100
+    # our pdf has only 1 page and only 1 dicom file. This might cause issues in the future
+    pdf_dcm.InstanceNumber = 1
+
+    # set the date and time
+    # get current data in YYYYMMDD format
+    current_date = datetime.datetime.now().strftime("%Y%m%d")
+    pdf_dcm.ContentDate = current_date
+    pdf_dcm.InstanceCreationDate = current_date
+    pdf_dcm.SeriesDate = current_date
+
+    pdf_dcm.SeriesDescription = "Brainmask"
+    pdf_dcm.DocumentTitle = "BrainyBarrier PDF Results"
+    pdf_dcm.save_as(converted_dcm_path, write_like_original=False)
+
+    print(f"Report created: {converted_dcm_path} and saved")
+    print(f"Moving report to deliverables directory: {deliverables_dir.as_posix()}")
+    # move the report.dcm to the deliverables directory
+    run(["mv", converted_dcm_path, f"{deliverables_dir.as_posix()}/"])
 
 except Exception as e:
     reason = f"Error in stage: {stage_name}"
