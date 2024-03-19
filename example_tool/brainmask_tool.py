@@ -108,10 +108,8 @@ if not Path(report_output_dir).exists():
     run(["mkdir", "-p", report_output_dir])
 
 # make deliverables directory
-deliverables_dir = Path(output_path).parent.as_posix() + "/deliverables"
-if not Path(deliverables_dir).exists():
-    print("Creating report output directory")
-    run(["mkdir", "-p", deliverables_dir])
+deliverables_dir = Path(output_path).parent / "deliverables"
+deliverables_dir.mkdir(parents=True, exist_ok=True)
 
 
 # generate report
@@ -135,7 +133,10 @@ except Exception as e:
 
 stage_name = "PDF to DICOM conversion"
 # This assumes that the template IMA file is in the session directory and that the first .dcm file is the valid
-template_dcm_path = sorted(session_path.rglob("*.dcm"))[0]
+try:
+    template_dcm_path = sorted(session_path.rglob("*.dcm"))[0]
+except IndexError:
+    template_dcm_path = sorted(session_path.rglob("*.IMA"))[0]
 print(f"template_dcm: {template_dcm_path}")
 try:
     converter = Pdf2EncapsDCM()
@@ -174,8 +175,10 @@ try:
     pdf_dcm.DocumentTitle = "BrainyBarrier PDF Results"
     pdf_dcm.save_as(converted_dcm_path, write_like_original=False)
 
+    print(f"Report created: {converted_dcm_path} and saved")
+    print(f"Moving report to deliverables directory: {deliverables_dir.as_posix()}")
     # move the report.dcm to the deliverables directory
-    run(["mv", converted_dcm_path, f"{deliverables_dir}/"])
+    run(["mv", converted_dcm_path, f"{deliverables_dir.as_posix()}/"])
 
 except Exception as e:
     reason = f"Error in stage: {stage_name}"
