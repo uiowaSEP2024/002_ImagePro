@@ -1,6 +1,7 @@
 version: "3.8"
 services:
   backend :
+    container_name: backend
     build:
       context: .
       dockerfile: Dockerfile_Backend
@@ -17,6 +18,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_SERVER=database
   frontend:
+    container_name: frontend
     build:
       context: .
       dockerfile: Dockerfile_Frontend
@@ -28,7 +30,7 @@ services:
       - backend
       - database
     environment:
-      - NEXT_PUBLIC_BACKEND_URL=http://0.0.0.0:8000
+      - NEXT_PUBLIC_BACKEND_URL=http://backend:8000
 
 
   example_tool_light:
@@ -62,6 +64,7 @@ services:
       - ./orthanc:/etc/orthanc
 
   database:
+    container_name: database
     image: postgres:14
     restart: always
     ports:
