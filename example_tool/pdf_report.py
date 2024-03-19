@@ -79,6 +79,10 @@ def generate_image(im_path, mask_path):
     im_slice = np.flipud(im_arr[slice_index, :, :])
     mask_slice = np.flipud(mask_arr[slice_index, :, :])
 
+    # 4.5 Flip the images vertically
+    im_slice = np.flipud(im_slice)
+    mask_slice = np.flipud(mask_slice)
+
     # 5. Draw red boundary
     fig, ax = plt.subplots(figsize=(5, 5))
     ax.imshow(im_slice, cmap="gray")
