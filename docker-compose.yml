@@ -26,6 +26,7 @@ services:
       - application-network
     depends_on:
       - backend
+      - database
     environment:
       - NEXT_PUBLIC_BACKEND_URL=http://0.0.0.0:8000
 
@@ -38,6 +39,9 @@ services:
       - application-network
     depends_on:
       - backend
+      - database
+      - frontend
+      - orthanc
     environment:
       - POSTGRES_PASSWORD=dev_password
       - POSTGRES_USER=postgres
@@ -75,3 +79,4 @@ networks:
     driver: bridge
 volumes:
   pg_data:
+  orthanc:
