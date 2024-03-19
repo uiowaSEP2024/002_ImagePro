@@ -32,6 +32,7 @@ COPY job_monitoring_app/backend/alembic.ini ./alembic.ini
 COPY job_monitoring_app/backend/app ./app
 #COPY job_monitoring_app/trackerapi /app/trackerapi
 
+RUN alembic upgrade head
 #RUN APP_ENV=development alembic upgrade head
 
 EXPOSE 8000
