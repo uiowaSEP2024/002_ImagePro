@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 import sys
 import argparse
-
-import pydicom
+import datetime
 from pdf2dcm import Pdf2EncapsDCM
 from subprocess import run
-from pipeline_functions import dicom_inference_and_conversion, write_json_log
+from pipeline_functions import dicom_inference_and_conversion, write_json_log, generate_uid
 from pdf_report import generate_report
 from pydicom import dcmread
 from pathlib import Path
@@ -48,6 +47,7 @@ study_id = args.study_id
 status = None
 reason = None
 log_file_path = output_path / f"{study_id}_log.json"
+current_dir = Path(__file__).parent
 
 stage_name = "Input Data Validation and Conversion"
 print(f"Running stage: {stage_name}")
@@ -63,7 +63,7 @@ try:
     nifti_path = dicom_inference_and_conversion(
         session_dir=session_path.as_posix(),
         output_dir=output_path.as_posix(),
-        model_path="./rf_dicom_modality_classifier.onnx",
+        model_path=f"{current_dir.as_posix()}/rf_dicom_modality_classifier.onnx",
     )
 except Exception as e:
     reason = f"Error in stage: {stage_name}"
@@ -145,5 +145,3 @@ except Exception as e:
 status = "Completed"
 write_json_log(log_file_path, study_id, status, reason)
 print(f"Successfully finished stage: {stage_name}")
-
-# [ 'tests/test_data/test_file.dcm' ]
