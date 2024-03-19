@@ -20,6 +20,7 @@
 # directories
 **/.idea
 **/__pycache__
+**/example_output
 
 **/pytest.xml/**
 ### C ###
