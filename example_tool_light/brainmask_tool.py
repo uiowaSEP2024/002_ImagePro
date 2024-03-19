@@ -82,6 +82,10 @@ if not Path(report_output_dir).exists():
     print("Creating report output directory")
     run(["mkdir", "-p", report_output_dir])
 
+# make deliverables directory
+deliverables_dir = Path(output_path).parent / "deliverables"
+deliverables_dir.mkdir(parents=True, exist_ok=True)
+
 # generate report
 stage_name = "Report Generation"
 print(f"Running stage: {stage_name}")
