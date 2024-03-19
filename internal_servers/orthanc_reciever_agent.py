@@ -8,7 +8,7 @@ import zipfile
 from internal_servers.orthanc_data_logging import OrthancStudyLogger
 
 
-product_path = Path(__file__).parent.parent / "example_tool_light" / "brainmask_tool.py"
+product_path = Path(__file__).parent.parent / "example_tool" / "brainmask_tool.py"
 assert product_path.exists()
 
 
@@ -183,7 +183,7 @@ def return_to_original_hospital(orthanc: pyorthanc.Orthanc, study_id: str):
     - study_id (str): Study id for the study being processed.
     """
     response = orthanc.post_modalities_id_store(
-        "EXAMPLE_HOSPITAL_NAME", data={"study_id": study_id}
+        "EXAMPLE_HOSPITAL_NAME", study_id
     )
     print(response)
 
