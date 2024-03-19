@@ -32,6 +32,18 @@ def check_study_stable(study: pyorthanc.Study) -> bool:
     return is_stable
 
 
+def check_study_has_properties(study: pyorthanc.Study) -> bool:
+    for series in study.series:
+        # This is ensures that the study has a series with the description "PROPERTIES" as we will
+        # need this in the future to process the study
+        if (
+                series.get_main_information()["MainDicomTags"]["SeriesDescription"]
+                == "PROPERTIES"
+        ):
+            return True
+    return False
+
+
 def download_study(study_id, download_dir: str, orthanc: pyorthanc.Orthanc):
     """
     Downloads a DICOM study from an Orthanc server using pyorthanc and saves it to a specified directory as a ZIP file.
@@ -222,23 +234,14 @@ def make_list_of_studies_to_process(
         study_id = study.id_
         has_properties = False
         if study_id not in study_processed_dict:
-            hospital_id = None
-            for series in study.series:
-                # This is ensures that the study has a series with the description "PROPERTIES" as we will
-                # need this in the future to process the study
-                if (
-                    series.get_main_information()["MainDicomTags"]["SeriesDescription"]
-                    == "PROPERTIES"
-                ):
-                    has_properties = True
-                    # TODO Update this to have the hospital_id
-                    # TODO Look into Orthanc Logic to see if we can get the hospital_id from the study
-                    # https://orthanc.uclouvain.be/book/plugins/python.html
-                    # aet = series.get_main_information()["MainDicomTags"]["2100-0140"]
-                    aet = "ExampleAET"
-                    hospital_id = map_aet_to_hospital_id(aet)
+            has_properties = check_study_has_properties(study)
+            # TODO Update this to have the hospital_id
+            # TODO Look into Orthanc Logic to see if we can get the hospital_id from the study
+            # https://orthanc.uclouvain.be/book/plugins/python.html
+            # aet = series.get_main_information()["MainDicomTags"]["2100-0140"]
+            aet = "ExampleAET"
+            hospital_id = map_aet_to_hospital_id(aet)
 
-                    break
             # This logic is redundant currently but may be useful in the future
             # The properties files should be created on the first reception of the studies Dicom files
             # The only way to not have properties is if the study was not received correctly
@@ -247,31 +250,28 @@ def make_list_of_studies_to_process(
                 # output_path = get_default_output_path()
                 # log_file_path = output_path / f"{hospital_id}_{study_id}_log.json"
                 # TODO: Ensure that in the future we can just send the study_id without worrying about previous processing
-                unique_study_id = f"{hospital_id}_{study_id}_{datetime.now().strftime('%Y%m%dT%H%M%S')}"
-                study_processed_dict[study_id] = OrthancStudyLogger(
-                    hospital_id=1,
-                    study_id=unique_study_id,
-                    tracker_api_key="PnhJv0pPb_T7LRZktqpgDQDpMRI",
-                    study_config_file="hospital_job_configuration.json",
-                )
+                unique_study_id = f"{hospital_id}_{study_id}_{datetime.now().strftime('%Y%m%dT%H%M')}"
+                if study_id not in study_processed_dict.keys():
+                    study_processed_dict[study_id] = OrthancStudyLogger(
+                        hospital_id=1,
+                        study_id=unique_study_id,
+                        tracker_api_key="epysCnrob7qQG4m8vdrYspDR66U",
+                        study_config_file="hospital_job_configuration.json",
+                    )
             else:
                 print(f"Study {study_id} does not have properties. Skipping..")
                 # TODO: Check if we want to delete the study if it does not have properties
                 continue
-            is_stable = check_study_stable(study)
-            if not is_stable:
-                # TODO Check if this logic is desired here or if it should be moved to the main loop as its own stage
-                print(
-                    f"Study {study_id} is not stable yet. Waiting for it to become stable.."
-                )
-                continue
-        else:
-            print(f"Study {study_id} has already been processed. Skipping..")
-        if not has_properties:
-            print(f"Study {study_id} does not have properties. Skipping..")
-            continue
-        else:
+
+        has_properties = check_study_has_properties(study)
+        if has_properties:
             studies_to_process.append(study)
+        else:
+            # TODO: ensure that if at this point in the program the properties file was not created, it won't be
+            print(f"Study {study_id} does not have properties. Deleting..")
+            orthanc_client.delete_studies_id(study_id)
+            study_processed_dict.pop(study_id)
+            continue
     return sorted(
         studies_to_process,
         reverse=True,
@@ -283,8 +283,8 @@ def make_list_of_studies_to_process(
 
 def main(internal_data_path: Path):
     with pyorthanc.Orthanc("http://localhost:8026") as internal_orthanc:
+        study_processed_dict = {}
         while True:
-            study_processed_dict = {}
             # Fetch list of studies
             studies = make_list_of_studies_to_process(
                 study_processed_dict, internal_orthanc
@@ -333,6 +333,7 @@ def main(internal_data_path: Path):
                             current_logger.update_step_status(4, "Complete")
                         except Exception as e:
                             current_logger.update_step_status(4, "Error", str(e))
+                            break
 
                     if current_logger._stage_is_complete(4):
                         print(
