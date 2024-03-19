@@ -164,6 +164,9 @@ def compute_brain_volume(mask_path: str) -> float:
     # Calculate the total volume in mm³ and convert to cm³
     total_volume = num_positive_voxels * voxel_volume_mm3 / 1000.0
 
+    # round to 2 decimal places
+    total_volume = round(total_volume, 2)
+
     return total_volume
 
 
