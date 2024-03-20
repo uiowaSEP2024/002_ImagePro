@@ -17,8 +17,9 @@ from mangum import Mangum
 app = FastAPI()
 
 allow_origins = os.environ.get("ALLOW_ORIGINS", "http://localhost:3000").split(",")
-allow_origins.append("0.0.0.0:8000")
-allow_origins.append("frontend:3000")
+allow_origins.append("http://0.0.0.0:8000")
+allow_origins.append("http://localhost:8000")
+allow_origins.append("http://frontend:3000")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allow_origins,

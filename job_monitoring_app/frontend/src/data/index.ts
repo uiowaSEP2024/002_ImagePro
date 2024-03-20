@@ -172,24 +172,31 @@ export const fetchLogout = async (): Promise<any> => {
  * @throws {Error} If the response status is not 200.
  */
 export const fetchLogin = async (email: string, password: string): Promise<{ user: User; }> => {
-  const response = await fetch(`${backendUrl}/login`, {
-    credentials: "include",
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
-    },
-    body: new URLSearchParams({
-      username: email,
-      password: password
-    })
-  });
+  try {
+    console.log(`Attepting to ping ${backendUrl}/login`);
+    const response = await fetch(`${backendUrl}/login`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+      },
+      body: new URLSearchParams({
+        username: email,
+        password: password
+      })
+    });
 
-  // TODO: check for wider range of error codes
-  if (response.status !== 200) {
-    throw new Error(await response.text());
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`Fetch failed with status ${response.status}: ${errorText}`);
+      throw new Error(errorText);
+    }
+
+    return (await response.json()) as { user: User };
+  } catch (error) {
+    console.error('Fetch failed:', error);
+    throw error;
   }
-
-  return (await response.json()) as { user: User };
 };
 
 /**
@@ -285,7 +292,8 @@ export const fetchDownloadReport = async (
 export const isBackendUp = async (): Promise<void> => {
   try {
     const response = await fetch(backendUrl, {
-      method: "GET"
+      method: "GET",
+      credentials: "include"
     });
 
     // If the response status is 200, the backend is up
