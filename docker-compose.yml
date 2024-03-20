@@ -64,6 +64,18 @@ services:
     volumes:
       - ./orthanc:/etc/orthanc
 
+  orthanc_receiver:
+    build:
+      context: .
+      dockerfile: Dockerfile_OrthancReciever
+    depends_on:
+      - orthanc
+    networks:
+        - application-network
+    volumes:
+      - ./internal_data:/app/internal_data
+
+
   database:
     container_name: database
     image: postgres:14

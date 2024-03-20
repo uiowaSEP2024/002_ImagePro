@@ -375,7 +375,10 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
+
     base_output_dir = Path(args.base_output_dir)
     product_path = Path(args.product_path)
     orthanc_url = args.orthanc_url
+    print(f"Starting orthanc agent with base_output_dir: {base_output_dir}")
+
     main(base_output_dir, product_path, orthanc_url)
