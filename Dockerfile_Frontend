@@ -24,9 +24,12 @@ COPY /job_monitoring_app/frontend/tsconfig.json ./
 # Install the application dependencies
 RUN npm install
 
+# Build the application
+RUN npm run build
+
 
 # Expose port 3000 for the application
 EXPOSE 3000
 
 # Start the application
-CMD [ "npm", "run", "dev" ]
+CMD [ "npm", "run", "start" ]
