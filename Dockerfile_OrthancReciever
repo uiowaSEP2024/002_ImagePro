@@ -30,4 +30,4 @@ COPY internal_servers/orthanc_data_logging.py .
 ENV PYTHONPATH $PYTHONPATH:/app:
 #CMD ["ls", "-l" , "/app"]
 
-CMD ["python3", "orthanc_reciever_agent.py", "--base_output_dir", "/internal_data", "--product_path", "runner.sh", "--orthanc_url", "http://172.25.0.2:8026"]
+CMD ["python3", "orthanc_reciever_agent.py", "--base_output_dir", "/internal_data", "--product_path", "runner.sh", "--orthanc_url", "http://orthanc:8026"]
