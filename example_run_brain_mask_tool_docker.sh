@@ -30,7 +30,7 @@ fi
 docker run --rm \
 -v "${INPUT_DIR}":/input \
 -v "${OUTPUT_DIR}":/output \
-brainmasktool:v0.1 \
+brainmasktool \
  -s /input \
  -o /output \
  -i "${STUDY_ID}"
