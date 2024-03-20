@@ -7,17 +7,27 @@ WORKDIR /app
 # TODO: Seperate requirements for OrthancReciever and TrackerAPI from the generic backend requirements file
 # Copy the Python requirements file into the container
 COPY job_monitoring_app/trackerapi/requirements.txt requirements_tracker.txt
-COPY internal_serverst/requirements.txt requirements_receiver.txt
+COPY internal_servers/requirements.txt requirements_receiver.txt
 
 # Install the Python dependencies
 RUN pip3 install --no-cache-dir -r requirements_tracker.txt -r requirements_receiver.txt
 
-
 # Explicitly create and copy the files so that the imports work correctly
-MKDIR /app/job_monitoring_app/trackerapi/
+RUN mkdir -p ./internal_data
 # Copy the trackerapi code into the container
-COPY job_monitoring_app/trackerapi/trackerapi /app/job_monitoring_app/trackerapi/.
+COPY job_monitoring_app/trackerapi /app/job_monitoring_app/trackerapi
 
 # Copy the receiver code into the container
-COPY internal_serverst/*.json .
-COPY internal_serverst/*.py .
+
+# Copy the executable script into the container
+COPY example_run_brain_mask_tool_light_docker.sh runner.sh
+
+COPY internal_servers/hospital_job_configuration.json .
+COPY internal_servers/job-configurations-schema.generated.json .
+COPY internal_servers/orthanc_reciever_agent.py .
+COPY internal_servers/orthanc_data_logging.py .
+
+ENV PYTHONPATH $PYTHONPATH:/app:
+#CMD ["ls", "-l" , "/app"]
+
+CMD ["python3", "orthanc_reciever_agent.py", "--base_output_dir", "/internal_data", "--product_path", "runner.sh", "--orthanc_url", "http://172.25.0.2:8026"]
