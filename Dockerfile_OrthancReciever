@@ -1,0 +1,23 @@
+# Use a Python 3.10 image based on Debian slim as the base
+FROM python:3.10-slim
+LABEL authors="iejohnson"
+
+WORKDIR /app
+
+# TODO: Seperate requirements for OrthancReciever and TrackerAPI from the generic backend requirements file
+# Copy the Python requirements file into the container
+COPY job_monitoring_app/trackerapi/requirements.txt requirements_tracker.txt
+COPY internal_serverst/requirements.txt requirements_receiver.txt
+
+# Install the Python dependencies
+RUN pip3 install --no-cache-dir -r requirements_tracker.txt -r requirements_receiver.txt
+
+
+# Explicitly create and copy the files so that the imports work correctly
+MKDIR /app/job_monitoring_app/trackerapi/
+# Copy the trackerapi code into the container
+COPY job_monitoring_app/trackerapi/trackerapi /app/job_monitoring_app/trackerapi/.
+
+# Copy the receiver code into the container
+COPY internal_serverst/*.json .
+COPY internal_serverst/*.py .

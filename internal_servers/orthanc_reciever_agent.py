@@ -5,11 +5,8 @@ import pyorthanc
 import subprocess
 import time
 import zipfile
-from internal_servers.orthanc_data_logging import OrthancStudyLogger
-
-
-product_path = Path(__file__).parent.parent / "example_tool" / "brainmask_tool.py"
-assert product_path.exists()
+from orthanc_data_logging import OrthancStudyLogger
+import argparse
 
 
 def check_study_stable(study: pyorthanc.Study) -> bool:
@@ -37,8 +34,8 @@ def check_study_has_properties(study: pyorthanc.Study) -> bool:
         # This is ensures that the study has a series with the description "PROPERTIES" as we will
         # need this in the future to process the study
         if (
-                series.get_main_information()["MainDicomTags"]["SeriesDescription"]
-                == "PROPERTIES"
+            series.get_main_information()["MainDicomTags"]["SeriesDescription"]
+            == "PROPERTIES"
         ):
             return True
     return False
@@ -182,9 +179,7 @@ def return_to_original_hospital(orthanc: pyorthanc.Orthanc, study_id: str):
     - orthanc (pyorthanc.Orthanc): The Orthanc server object.
     - study_id (str): Study id for the study being processed.
     """
-    response = orthanc.post_modalities_id_store(
-        "EXAMPLE_HOSPITAL_NAME", study_id
-    )
+    response = orthanc.post_modalities_id_store("EXAMPLE_HOSPITAL_NAME", study_id)
     print(response)
 
 
@@ -250,7 +245,9 @@ def make_list_of_studies_to_process(
                 # output_path = get_default_output_path()
                 # log_file_path = output_path / f"{hospital_id}_{study_id}_log.json"
                 # TODO: Ensure that in the future we can just send the study_id without worrying about previous processing
-                unique_study_id = f"{hospital_id}_{study_id}_{datetime.now().strftime('%Y%m%dT%H%M')}"
+                unique_study_id = (
+                    f"{hospital_id}_{study_id}_{datetime.now().strftime('%Y%m%dT%H%M')}"
+                )
                 if study_id not in study_processed_dict.keys():
                     study_processed_dict[study_id] = OrthancStudyLogger(
                         hospital_id=1,
@@ -281,8 +278,8 @@ def make_list_of_studies_to_process(
     )
 
 
-def main(internal_data_path: Path):
-    with pyorthanc.Orthanc("http://localhost:8026") as internal_orthanc:
+def main(internal_data_output_path: Path, product_path: Path, orthanc_url: str):
+    with pyorthanc.Orthanc(orthanc_url) as internal_orthanc:
         study_processed_dict = {}
         while True:
             # Fetch list of studies
@@ -298,7 +295,7 @@ def main(internal_data_path: Path):
                     if current_logger.step_is_ready(2):
                         current_logger.update_step_status(2, "In progress")
                         try:
-                            study_data_path = internal_data_path / study.id_
+                            study_data_path = internal_data_output_path / study.id_
                             zip_path = download_study(
                                 study.id_,
                                 f"{study_data_path}/archive",
@@ -352,4 +349,33 @@ def main(internal_data_path: Path):
 
 
 if __name__ == "__main__":
-    main(Path("/home/mbrzus/programming/002_ImagePro/example_tool/example_output"))
+    parser = argparse.ArgumentParser(
+        description="Arguments for starting the orthanc agent"
+    )
+    parser.add_argument(
+        "-o",
+        "--base_output_dir",
+        type=str,
+        help="The path to the internal data",
+        default="../example_tool/example_output",
+    )
+    parser.add_argument(
+        "-p",
+        "--product_path",
+        type=str,
+        help="The path to the product executable to run",
+        default="../example_tool/brainmask_tool.py",
+    )
+    parser.add_argument(
+        "-u",
+        "--orthanc_url",
+        type=str,
+        help="The url to the orthanc server",
+        default="http://localhost:8026",
+    )
+
+    args = parser.parse_args()
+    base_output_dir = Path(args.base_output_dir)
+    product_path = Path(args.product_path)
+    orthanc_url = args.orthanc_url
+    main(base_output_dir, product_path, orthanc_url)
