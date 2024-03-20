@@ -3,6 +3,7 @@ FROM ubuntu:jammy-20240125
 
 # Metadata as key/value label
 LABEL maintainer="iejohnson"
+LABEL authors="iejohnson"
 
 # Avoid user interaction with tzdata when installing
 ARG DEBIAN_FRONTEND="noninteractive"

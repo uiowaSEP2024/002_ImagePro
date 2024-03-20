@@ -1,5 +1,7 @@
 # Use a Python 3.10 image based on Debian slim as the base
 FROM python:3.10-slim
+LABEL authors="iejohnson"
+
 
 ARG APP_ENV
 ENV APP_ENV=${APP_ENV}
