@@ -34,6 +34,7 @@ services:
 
 
   example_tool_light:
+    container_name: brainmasktool:v0.1
     build:
       context: .
       dockerfile: Dockerfile_BrainMaskTool_light
