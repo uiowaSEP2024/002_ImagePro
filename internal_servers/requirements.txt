@@ -1,3 +1,2 @@
 pydicom==2.4.4
-pyorthanc==1.16.1
 typing_extensions==4.9.0
