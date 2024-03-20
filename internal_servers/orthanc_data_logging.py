@@ -5,15 +5,6 @@ from typing import Union
 from job_monitoring_app.trackerapi.trackerapi import TrackerApi, StudyConfigManager
 import os
 
-from dotenv import load_dotenv
-
-base_project_dir = Path(__file__).parent.parent
-relative_env_path = base_project_dir / "job_monitoring_app/backend/.env.local"
-assert relative_env_path.exists(), f"Expected to find .env file at {relative_env_path}"
-load_dotenv(relative_env_path)
-
-API_KEY = os.environ.get("API_KEY")
-
 
 class OrthancStudyLogger:
     def __init__(
@@ -143,6 +134,17 @@ class OrthancStudyLogger:
 
 # Example of using the MedicalImageLogger
 if __name__ == "__main__":
+    from dotenv import load_dotenv
+
+    base_project_dir = Path(__file__).parent.parent
+    relative_env_path = base_project_dir / "job_monitoring_app/backend/.env.local"
+    assert (
+        relative_env_path.exists()
+    ), f"Expected to find .env file at {relative_env_path}"
+    load_dotenv(relative_env_path)
+
+    API_KEY = os.environ.get("API_KEY")
+
     logger = OrthancStudyLogger(
         hospital_id=1,
         study_id=433,
