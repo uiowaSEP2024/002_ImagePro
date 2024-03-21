@@ -2,8 +2,8 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath("../backend"))
-sys.path.insert(0, os.path.abspath("../trackerapi"))
+sys.path.insert(0, os.path.abspath("../../backend"))
+sys.path.insert(0, os.path.abspath("../../trackerapi"))
 
 
 # Configuration file for the Sphinx documentation builder.
