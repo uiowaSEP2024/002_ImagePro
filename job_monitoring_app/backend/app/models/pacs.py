@@ -7,24 +7,24 @@ from .base import Base, DateMixin
 
 class Pacs(Base, DateMixin):
     """
-    A PACS is a server used by hospitals to send and receive studies
-    PACS communicate with products???
 
-    #TODO @Ivan is this correct?
-    Attributes:
-    -----------
-    id: int
-        Auto-generated internal hospital id
-    pacs_name: str
-        A name identifier given to the PACS
-    hospital_id: int
-        The hospital id that the PACS is connected to
+    Represents a PACS (Picture Archiving and Communication System) server used by hospitals to send and receive studies. PACS communicate with various medical imaging products.
 
 
-    relationships:
-    --------------
-    hospital: list
-        A list of hospitals that the PACS is connected to
+    Attributes
+    ----------
+    id : int
+        Auto-generated internal ID for the PACS.
+    pacs_name : str
+        A name identifier given to the PACS.
+    hospital_id : int
+        The ID of the hospital that the PACS is connected to.
+
+    Relationships
+    -------------
+    hospital : list
+        A list of hospital instances that the PACS is connected to.
+
     """
 
     __tablename__ = "pacs"

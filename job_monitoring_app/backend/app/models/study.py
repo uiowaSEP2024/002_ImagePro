@@ -7,27 +7,28 @@ from .base import Base, DateMixin
 
 class Study(Base, DateMixin):
     """
-    A study is a request for a computation to be performed by the system. Has steps attached to it
-    A study is created by a provider and is assigned to a hospital
 
-    Attributes:
-    -----------
-    id: int
-        Auto-generated internal study id
-    provider_id: int
-        ForeignKey to User id of the provider
-    provider_study_id: str
-        The study_id as provided by the provider
-        This is the id as given by provider. The provider_id and provider_study_id together are unique
-    provider_study_name: str
-        The study_name as specified by the provider e.g. ProstateV1, KidneyV2
-        # May be used to set up billing or simply display information later??
-    hospital_id: int
-        ForeignKey to User id of the hospital
-    study_configuration_id: int
-        ForeignKey to StudyConfiguration id
-    events: list # TODO @Zach - Events relationship not implemented yet
+    Represents a study, which is a request for a computation to be performed by the system.
+    Each study has steps attached to it and is created by a provider, then assigned to a hospital.
 
+    Attributes
+    ----------
+    id : int
+        Auto-generated internal study ID.
+    provider_id : int
+        ForeignKey to the User ID of the provider.
+    provider_study_id : str
+        The study ID as provided by the provider. This is the ID given by the provider.
+        The combination of `provider_id` and `provider_study_id` is unique.
+    provider_study_name : str
+        The study name as specified by the provider, e.g., "ProstateV1", "KidneyV2".
+        May be used to set up billing or display information later.
+    hospital_id : int
+        ForeignKey to the User ID of the hospital.
+    study_configuration_id : int
+        ForeignKey to the StudyConfiguration ID.
+    events : list of Events
+        A list of events associated with the study.
 
     """
 
