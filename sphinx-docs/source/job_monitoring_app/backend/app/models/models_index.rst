@@ -8,3 +8,14 @@ Model Modules
    :caption: Contents:
 
    api_key
+   base
+   event
+   hospital
+   metadata_configuration
+   pacs
+   product
+   provider
+   step_configuration
+   study
+   study_configuration
+   user
