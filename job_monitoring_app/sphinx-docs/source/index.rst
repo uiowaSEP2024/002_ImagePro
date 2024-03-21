@@ -7,8 +7,11 @@ Welcome to job_monitoring_app's documentation!
 ==============================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
+
+   backend/backend_index
+
 
 
 
