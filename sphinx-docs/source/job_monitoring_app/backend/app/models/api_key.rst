@@ -1,7 +1,7 @@
 api_key.py
 =============
 
-.. automodule:: backend.app.models.api_key
+.. automodule:: job_monitoring_app.backend.app.models.api_key
     :members:
     :undoc-members:
     :show-inheritance:

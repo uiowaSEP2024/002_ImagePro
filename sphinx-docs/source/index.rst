@@ -3,14 +3,14 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to job_monitoring_app's documentation!
+Welcome to 002_Image_Pro's documentation!
 ==============================================
 
 .. toctree::
    :maxdepth: 1
    :caption: Contents:
 
-   backend/backend_index
+   job_monitoring_app/job_mon_app_index
 
 
 
