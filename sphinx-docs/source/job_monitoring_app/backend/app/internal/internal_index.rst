@@ -8,3 +8,4 @@ Internal Modules
    :caption: Contents:
 
    crypto
+   security

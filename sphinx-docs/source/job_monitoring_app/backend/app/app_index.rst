@@ -9,4 +9,7 @@ App Modules
 
    internal/internal_index
    models/models_index
+   routers/routers_index
+   schemas/schemas_index
+   services/services_index
    dependencies
