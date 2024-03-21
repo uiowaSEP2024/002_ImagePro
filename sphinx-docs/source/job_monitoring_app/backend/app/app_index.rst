@@ -9,3 +9,4 @@ App Modules
 
    internal/internal_index
    models/models_index
+   dependencies
