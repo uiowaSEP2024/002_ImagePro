@@ -1,3 +1,11 @@
+# Paths to the backend and trackerapi directories are added to the system path
+import os
+import sys
+
+sys.path.insert(0, os.path.abspath("../backend"))
+sys.path.insert(0, os.path.abspath("../trackerapi"))
+
+
 # Configuration file for the Sphinx documentation builder.
 #
 # For the full list of built-in configuration values, see the documentation:
