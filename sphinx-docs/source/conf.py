@@ -7,9 +7,23 @@ docs_dir = os.path.dirname(os.path.abspath(__file__))
 # Calculate the path to the root of the project, assuming conf.py is two levels down from the project root
 project_root = os.path.dirname(os.path.dirname(docs_dir))
 
-# Add the 'backend' and 'trackerapi' directories to sys.path
-sys.path.insert(0, os.path.join(project_root, "job_monitoring_app/backend"))
-sys.path.insert(0, os.path.join(project_root, "job_monitoring_app/trackerapi"))
+# Add directories to sys path
+sys.path.insert(0, project_root)  # Add the project root to the system path
+sys.path.insert(
+    0, os.path.join(project_root, "job_monitoring_app/backend")
+)  # Add the backend directory to the system path
+sys.path.insert(
+    0, os.path.join(project_root, "job_monitoring_app/trackerapi")
+)  # Add the trackerapi directory to the system path
+sys.path.insert(
+    0, os.path.join(project_root, "internal_servers")
+)  # Add the internal_servers directory to the system path
+sys.path.insert(
+    0, os.path.join(project_root, "example_tool_light")
+)  # Add the example_tool_light directory to the system path
+sys.path.insert(
+    0, os.path.join(project_root, "example_tool")
+)  # Add the example_tool directory to the system path
 
 
 # Configuration file for the Sphinx documentation builder.
