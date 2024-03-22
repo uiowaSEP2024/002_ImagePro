@@ -8,3 +8,4 @@ Job_Mon_App Modules
    :caption: Contents:
 
    backend/backend_index
+   trackerapi/trackerapi_index
