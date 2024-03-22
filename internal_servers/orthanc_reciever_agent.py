@@ -37,8 +37,8 @@ def check_study_has_properties(study: pyorthanc.Study) -> bool:
         # This is ensures that the study has a series with the description "PROPERTIES" as we will
         # need this in the future to process the study
         if (
-                series.get_main_information()["MainDicomTags"]["SeriesDescription"]
-                == "PROPERTIES"
+            series.get_main_information()["MainDicomTags"]["SeriesDescription"]
+            == "PROPERTIES"
         ):
             return True
     return False
@@ -182,9 +182,7 @@ def return_to_original_hospital(orthanc: pyorthanc.Orthanc, study_id: str):
     - orthanc (pyorthanc.Orthanc): The Orthanc server object.
     - study_id (str): Study id for the study being processed.
     """
-    response = orthanc.post_modalities_id_store(
-        "EXAMPLE_HOSPITAL_NAME", study_id
-    )
+    response = orthanc.post_modalities_id_store("EXAMPLE_HOSPITAL_NAME", study_id)
     print(response)
 
 
@@ -218,15 +216,24 @@ def make_list_of_studies_to_process(
     study_processed_dict: dict[str, any], orthanc_client: pyorthanc.Orthanc
 ) -> list[pyorthanc.Study]:
     """
-    Fetch the list of studies to process from Orthanc.
-    This function uses PyOrthanc to fetch the list of studies from Orthanc and then filters out invalid studies for a
-    variety of reasons.
 
-    param study_processed_dict: A dictionary of studies that have already been processed.
-        The keys are the study IDs and the values are the time the study was processed.
-    param orthanc_client: The PyOrthanc client to use to fetch the list of studies.
-    return: A list of studies to process.
+    Fetches the list of studies to process from Orthanc.
+
+    This function utilizes PyOrthanc to retrieve the list of studies from Orthanc. It then filters out invalid studies for various reasons, such as data inconsistencies or incomplete information.
+
+    Parameters
+    ----------
+    study_processed_dict : dict
+        A dictionary of studies that have already been processed. The keys are the study IDs, and the values are the timestamps when each study was processed.
+    orthanc_client : PyOrthanc client
+        The PyOrthanc client instance used to fetch the list of studies.
+
+    Returns
+    -------
+    list
+        A list of studies that need to be processed. Each item in the list represents a study that has not been processed yet or needs reprocessing.
     """
+
     studies: list[pyorthanc.Study] = pyorthanc.find_studies(client=orthanc_client)
     # Filter out studies that have already been processed
     studies_to_process = []
@@ -250,7 +257,9 @@ def make_list_of_studies_to_process(
                 # output_path = get_default_output_path()
                 # log_file_path = output_path / f"{hospital_id}_{study_id}_log.json"
                 # TODO: Ensure that in the future we can just send the study_id without worrying about previous processing
-                unique_study_id = f"{hospital_id}_{study_id}_{datetime.now().strftime('%Y%m%dT%H%M')}"
+                unique_study_id = (
+                    f"{hospital_id}_{study_id}_{datetime.now().strftime('%Y%m%dT%H%M')}"
+                )
                 if study_id not in study_processed_dict.keys():
                     study_processed_dict[study_id] = OrthancStudyLogger(
                         hospital_id=1,
