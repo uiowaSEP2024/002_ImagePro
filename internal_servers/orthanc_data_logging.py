@@ -112,16 +112,25 @@ class OrthancStudyLogger:
 
     def update_data_processing(self, log_file_path: str):
         """
-        Updates the status of data processing based on product produced log file.
-        The log file should be a json file with the following format:
-        {
-            "status": "complete/failed"
-            "reason": "optional message"
-        }
-        If the status is failed, the reason should be included.
 
-        If the status is complete, the data processing step is marked as complete.
+        Updates the status of data processing based on a product-produced log file.
+
+        The log file is expected to be in JSON format with the following structure:
+
+        .. code-block:: json
+
+            {
+                "status": "complete" or "failed",
+                "reason": "optional message if status is failed"
+            }
+
+        - If the status is "failed", including a reason for the failure is expected.
+        - If the status is "complete", the data processing step is marked as complete.
+
+        **Note:**
+        The "reason" field is mandatory when the status is "failed" and should provide insight into why the processing did not succeed.
         """
+
         with open(log_file_path, "r") as log_file:
             self.internal_product_log = json.load(log_file)
         if self.internal_product_log["status"] == "Complete":
