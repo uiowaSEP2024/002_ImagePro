@@ -12,6 +12,7 @@ class OrthancStudyLogger:
         hospital_id,
         study_id,
         tracker_api_key,
+        backend_url,
         study_config_file: Union[Path, str],
     ):
         self.hospital_id = (
@@ -30,7 +31,9 @@ class OrthancStudyLogger:
         study_config = study_config_manager.get_study_config("hospital_study")
 
         # Create TrackerAPI object and study session
-        tracker = TrackerApi(tracker_api_key)
+        tracker = TrackerApi(
+            tracker_api_key, backend_url
+        )  # THIS IS THE PROBLEM WITH THE Connection to the backend
         tracker.register_study_config(study_config)
 
         # Signal the start of a new study

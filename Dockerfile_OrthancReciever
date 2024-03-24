@@ -4,6 +4,16 @@ LABEL authors="iejohnson"
 
 WORKDIR /app
 
+RUN apt-get update && apt-get install -y \
+    python3-dev \
+    inetutils-ping \
+    curl \
+    net-tools\
+    dnsutils\
+    # Clean up the apt cache to reduce image size
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 # TODO: Seperate requirements for OrthancReciever and TrackerAPI from the generic backend requirements file
 # Copy the Python requirements file into the container
 COPY job_monitoring_app/trackerapi/requirements.txt requirements_tracker.txt
@@ -28,6 +38,10 @@ COPY internal_servers/orthanc_reciever_agent.py .
 COPY internal_servers/orthanc_data_logging.py .
 
 ENV PYTHONPATH $PYTHONPATH:/app:
-#CMD ["ls", "-l" , "/app"]
+ARG DEBIAN_FRONTEND=noninteractive
+ARG API_KEY
+ARG BACKEND_URL
+ENV API_KEY=${API_KEY}
 
-CMD ["python3", "orthanc_reciever_agent.py", "--base_output_dir", "/internal_data", "--product_path", "runner.sh", "--orthanc_url", "http://orthanc:8026"]
+
+CMD ["python3", "orthanc_reciever_agent.py", "--base_output_dir", "/internal_data", "--product_path", "runner.sh", "--orthanc_url", "http://orthanc:8026", "--backend_url", "${BACKEND_URL}", "--api_key", "${API_KEY}"]

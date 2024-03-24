@@ -7,6 +7,7 @@ import time
 import zipfile
 from orthanc_data_logging import OrthancStudyLogger
 import argparse
+import os
 
 
 def check_study_stable(study: pyorthanc.Study) -> bool:
@@ -210,7 +211,8 @@ def get_default_output_path():
 
 # TODO make the study_processed_dict its own class
 def make_list_of_studies_to_process(
-    study_processed_dict: dict[str, any], orthanc_client: pyorthanc.Orthanc
+    study_processed_dict: dict[str, any],
+    orthanc_client: pyorthanc.Orthanc,
 ) -> list[pyorthanc.Study]:
     """
     Fetch the list of studies to process from Orthanc.
@@ -227,7 +229,6 @@ def make_list_of_studies_to_process(
     studies_to_process = []
     for study in studies:
         study_id = study.id_
-        has_properties = False
         if study_id not in study_processed_dict:
             has_properties = check_study_has_properties(study)
             # TODO Update this to have the hospital_id
@@ -249,15 +250,28 @@ def make_list_of_studies_to_process(
                     f"{hospital_id}_{study_id}_{datetime.now().strftime('%Y%m%dT%H%M')}"
                 )
                 if study_id not in study_processed_dict.keys():
-                    study_processed_dict[study_id] = OrthancStudyLogger(
-                        hospital_id=1,
-                        study_id=unique_study_id,
-                        tracker_api_key="epysCnrob7qQG4m8vdrYspDR66U",
-                        study_config_file="hospital_job_configuration.json",
+                    print(
+                        f"Study {study_id} has properties. Adding to processing list.."
                     )
+                    api_key = os.environ.get("API_KEY")
+                    backend_url = os.environ.get("BACKEND_URL")
+                    print(
+                        f"Attempting to create logger object for study {study_id}"
+                        f"with api_key: {api_key} and backend_url: {backend_url}"
+                    )
+                    try:
+                        study_processed_dict[study_id] = OrthancStudyLogger(
+                            hospital_id=1,
+                            study_id=unique_study_id,
+                            tracker_api_key=os.environ["API_KEY"],
+                            backend_url=os.environ["BACKEND_URL"],
+                            study_config_file="hospital_job_configuration.json",
+                        )
+                    except Exception as e:
+                        print(f"Error with creating logger object: {e}")
+
             else:
                 print(f"Study {study_id} does not have properties. Skipping..")
-                # TODO: Check if we want to delete the study if it does not have properties
                 continue
 
         has_properties = check_study_has_properties(study)
@@ -285,6 +299,7 @@ def main(internal_data_output_path: Path, product_path: Path, orthanc_url: str):
             print("product_path: ", product_path)
             print("internal_data_output_path: ", internal_data_output_path)
             with pyorthanc.Orthanc(orthanc_url) as internal_orthanc:
+                print(f"Connected to Orthanc at {orthanc_url}")
                 study_processed_dict = {}
                 while True:
                     # Fetch list of studies
@@ -300,16 +315,22 @@ def main(internal_data_output_path: Path, product_path: Path, orthanc_url: str):
                             if current_logger.step_is_ready(2):
                                 current_logger.update_step_status(2, "In progress")
                                 try:
-                                    study_data_path = internal_data_output_path / study.id_
+                                    study_data_path = (
+                                        internal_data_output_path / study.id_
+                                    )
                                     zip_path = download_study(
                                         study.id_,
                                         f"{study_data_path}/archive",
                                         internal_orthanc,
                                     )
-                                    unzip_study(zip_path.as_posix(), f"{study_data_path}/data")
+                                    unzip_study(
+                                        zip_path.as_posix(), f"{study_data_path}/data"
+                                    )
                                     current_logger.update_step_status(2, "Complete")
                                 except Exception as e:
-                                    current_logger.update_step_status(2, "Error", str(e))
+                                    current_logger.update_step_status(
+                                        2, "Error", str(e)
+                                    )
                             if current_logger.step_is_ready(3):
                                 current_logger.update_step_status(3, "In progress")
                                 try:
@@ -323,7 +344,9 @@ def main(internal_data_output_path: Path, product_path: Path, orthanc_url: str):
                                     current_logger.update_step_status(3, "Complete")
                                     # current_logger.update_data_processing("download_path")
                                 except Exception as e:
-                                    current_logger.update_step_status(3, "Error", str(e))
+                                    current_logger.update_step_status(
+                                        3, "Error", str(e)
+                                    )
                             if current_logger.step_is_ready(4):
                                 current_logger.update_step_status(4, "In progress")
                                 try:
@@ -331,10 +354,14 @@ def main(internal_data_output_path: Path, product_path: Path, orthanc_url: str):
                                         directory_path=f"{study_data_path}/deliverables",
                                         orthanc=internal_orthanc,
                                     )
-                                    return_to_original_hospital(internal_orthanc, study.id_)
+                                    return_to_original_hospital(
+                                        internal_orthanc, study.id_
+                                    )
                                     current_logger.update_step_status(4, "Complete")
                                 except Exception as e:
-                                    current_logger.update_step_status(4, "Error", str(e))
+                                    current_logger.update_step_status(
+                                        4, "Error", str(e)
+                                    )
                                     break
 
                             if current_logger._stage_is_complete(4):
@@ -353,7 +380,14 @@ def main(internal_data_output_path: Path, product_path: Path, orthanc_url: str):
                     time.sleep(10)
         except Exception as e:
             print(f"Error: {e}")
+
             print("Sleeping for 10 seconds..")
+            print(
+                f"try to connect to Orthanc: {orthanc_url}\n" f"curl -v {orthanc_url}/"
+            )
+
+            # subprocess.run(["curl", "-v", f"{orthanc_url}/"])
+
             time.sleep(10)
 
 
@@ -382,12 +416,40 @@ if __name__ == "__main__":
         help="The url to the orthanc server",
         default="http://localhost:8026",
     )
+    parser.add_argument(
+        "-k",
+        "--api_key",
+        type=str,
+        help="The api key to use for the orthanc server",
+        required=False,  # Default to a seeded API key for ease of development
+    )
+    parser.add_argument(
+        "-b",
+        "--backend_url",
+        type=str,
+        help="The url to the backend server",
+        default="http://localhost:8000",
+    )
 
     args = parser.parse_args()
 
     base_output_dir = Path(args.base_output_dir)
     product_path = Path(args.product_path)
     orthanc_url = args.orthanc_url
-    print(f"Starting orthanc agent with base_output_dir: {base_output_dir}")
+    backend_url = args.backend_url
 
-    main(base_output_dir, product_path, orthanc_url)
+    if args.api_key is not None:
+        os.environ["API_KEY"] = args.api_key
+
+    os.environ["BACKEND_URL"] = backend_url
+    print("a")
+    if os.environ.get("API_KEY") is None:
+        raise ValueError(
+            "API_KEY was not provided. Please provide an API_KEY to use for the TrackerApi"
+        )
+    print(f"Starting orthanc agent with base_output_dir: {base_output_dir}")
+    main(
+        base_output_dir,
+        product_path,
+        orthanc_url,
+    )
