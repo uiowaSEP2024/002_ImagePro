@@ -22,8 +22,7 @@ class User(Base, DateMixin):
             The last name of the user
 
         role : str
-            The role of the user (provider, customer)
-            # TODO: Rename these to be more descriptive ? Hospital and TechCompany ?
+            The role of the user (provider, hospital, admin)
         api_keys : relationship
             The api keys associated with the user (one to many)
         studies : relationship
@@ -65,9 +64,9 @@ class User(Base, DateMixin):
     last_name = Column(String, nullable=True)
 
     role = Column(
-        Enum("provider", "customer", name="user_role"),
-        nullable=True,
-        default="customer",
+        Enum("provider", "hospital", "admin", name="user_role"),
+        nullable=False,
+        default="hospital",
     )
 
     api_keys = relationship(
