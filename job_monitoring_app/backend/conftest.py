@@ -58,6 +58,7 @@ def random_test_user_no_role(db):
             password="abc",
             first_name="random",
             last_name="last",
+            role=UserRoleEnum.hospital,
         ),
     )
     return test_user_no_role
@@ -153,6 +154,7 @@ def random_test_user_factory(db):
                     password="abc",
                     first_name="first",
                     last_name="last",
+                    role=UserRoleEnum.hospital,
                 ),
             )
             return test_user
