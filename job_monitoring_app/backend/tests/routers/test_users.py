@@ -1,4 +1,7 @@
-def test_create_user(app_client):
+from app.schemas.user import UserRoleEnum
+
+
+def test_create_user_no_role(app_client):
     data = {
         "email": "janedoe@example.com",
         "password": "abc",
@@ -8,6 +11,51 @@ def test_create_user(app_client):
     response = app_client.post("/users/", json=data)
     assert response.status_code == 200
     assert response.json()["email"] == "janedoe@example.com"
+    assert response.json()["created_at"] is not None
+
+
+def test_create_user_provider_role(app_client):
+    data = {
+        "email": "p@example.com",
+        "password": "abc",
+        "first_name": "Paul",
+        "last_name": "Doe",
+        "role": UserRoleEnum.provider,
+    }
+    response = app_client.post("/users/", json=data)
+    assert response.status_code == 200
+    assert response.json()["email"] == "p@example.com"
+    assert response.json()["role"] == UserRoleEnum.provider
+    assert response.json()["created_at"] is not None
+
+
+def test_create_user_hospital_role(app_client):
+    data = {
+        "email": "gh@example.com",
+        "password": "abc",
+        "first_name": "Jess",
+        "last_name": "Doe",
+        "role": UserRoleEnum.hospital,
+    }
+    response = app_client.post("/users/", json=data)
+    assert response.status_code == 200
+    assert response.json()["email"] == "gh@example.com"
+    assert response.json()["role"] == UserRoleEnum.hospital
+    assert response.json()["created_at"] is not None
+
+
+def test_create_user_admin_role(app_client):
+    data = {
+        "email": "ui@example.com",
+        "password": "abc",
+        "first_name": "Will",
+        "last_name": "Doe",
+        "role": UserRoleEnum.admin,
+    }
+    response = app_client.post("/users/", json=data)
+    assert response.status_code == 200
+    assert response.json()["email"] == "ui@example.com"
+    assert response.json()["role"] == UserRoleEnum.admin
     assert response.json()["created_at"] is not None
 
 
