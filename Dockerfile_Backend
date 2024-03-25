@@ -30,6 +30,8 @@ COPY job_monitoring_app/backend/config ./config
 COPY job_monitoring_app/backend/alembic ./alembic
 COPY job_monitoring_app/backend/alembic.ini ./alembic.ini
 COPY job_monitoring_app/backend/app ./app
+COPY job_monitoring_app/backend/tasks.py ./tasks.py
+COPY job_monitoring_app/backend/seed.py ./seed.py
 #COPY job_monitoring_app/trackerapi /app/trackerapi
 
 #RUN APP_ENV=development alembic upgrade head
