@@ -33,14 +33,14 @@ USERS_DATA = [
         password="abcdefg",
         first_name="John",
         last_name="Doe",
-        role=UserRoleEnum.customer,
+        role=UserRoleEnum.hospital,
     ),
     dict(
         email="janeblack@gmail.com",
         password="abcdefg",
         first_name="Jane",
         last_name="Black",
-        role=UserRoleEnum.customer,
+        role=UserRoleEnum.hospital,
     ),
     # Providers
     dict(
@@ -206,28 +206,28 @@ STUDIES_CONFIGURATIONS = [
 STUDIES_DATA = [
     # study 1 John
     dict(
-        customer_email="johndoe@gmail.com",
+        hospital_email="johndoe@gmail.com",
         provider_email="botimage@gmail.com",
         provider_study_id="botimage-123",
         study_configuration_tag="lung_cancer",
     ),
     # study 2 John
     dict(
-        customer_email="johndoe@gmail.com",
+        hospital_email="johndoe@gmail.com",
         provider_email="botimage@gmail.com",
         provider_study_id="botimage-456",
         study_configuration_tag="heart_cancer",
     ),
     # study 3 John
     dict(
-        customer_email="johndoe@gmail.com",
+        hospital_email="johndoe@gmail.com",
         provider_email="botimage@gmail.com",
         provider_study_id="botimage-789",
         study_configuration_tag="pancreas_cancer",
     ),
     # study 1 Jane
     dict(
-        customer_email="janeblack@gmail.com",
+        hospital_email="janeblack@gmail.com",
         provider_email="noodlesco@gmail.com",
         provider_study_id="noodlesco-123",
         study_configuration_tag="lung_cancer",
@@ -398,12 +398,12 @@ def seed_studies(db):
 
     for study_data in STUDIES_DATA:
         print(f"  Seeding study {str(study_data)}")
-        customer = users[study_data["customer_email"]]
+        hospital = users[study_data["hospital_email"]]
         provider = users[study_data["provider_email"]]
         study_config = study_configs[study_data["study_configuration_tag"]]
 
         study = models.Study(
-            hospital_id=customer.id,
+            hospital_id=hospital.id,
             provider_id=provider.id,
             study_configuration_id=study_config.id,
             provider_study_id=study_data["provider_study_id"],
