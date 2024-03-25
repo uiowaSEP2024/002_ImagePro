@@ -68,7 +68,7 @@ def drop_db(settings):
         print(f"Database {settings.postgres_db} dropped successfully...")
     except Exception as e:
         print(e)
-        print(f"Database {settings.postgres_db} creation failed")
+        print(f"Database {settings.postgres_db} drop failed")
 
     finally:
         conn.close() if conn else None
