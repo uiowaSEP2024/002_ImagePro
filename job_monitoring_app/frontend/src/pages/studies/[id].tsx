@@ -2,7 +2,7 @@
  * This file contains the StudyPage component of the application.
  * The StudyPage component is a React component that displays the details of a specific study.
  * It fetches the study data and the events associated with the study from the server, and displays them in a user-friendly format.
- * The study details include the study's name, date, time, customer ID, and provider.
+ * The study details include the study's name, date, time, hospital ID, and provider.
  * The events are displayed in a timeline format, with each event represented by a timeline item.
  * The component also provides a feature for the user to report an issue with the study by sending an email to the system administrator.
  */
@@ -42,7 +42,7 @@ type Kind = "error" | "pending" | "complete" | "in_progress" | "info";
 /**
  * The StudyPage component is a React component that displays the details of a specific study.
  * It fetches the study data and the events associated with the study from the server, and displays them in a user-friendly format.
- * The study details include the study's name, date, time, customer ID, and provider.
+ * The study details include the study's name, date, time, hospital ID, and provider.
  * The events are displayed in a timeline format, with each event represented by a timeline item.
  * The component also provides a feature for the user to report an issue with the study by sending an email to the system administrator.
  */
@@ -162,7 +162,7 @@ function StudyPage({ initialIsPageLoading = true }) {
     "Study Name": study?.study_configuration.name,
     Date: studyDate ? studyDate.toLocaleDateString() : "-",
     Time: studyDate ? studyDate.toLocaleTimeString() : "-",
-    "Customer ID": study?.hospital_id,
+    "Hospital ID": study?.hospital_id,
     Provider: study?.provider.first_name
   };
 

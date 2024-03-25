@@ -5,12 +5,12 @@ import { AuthContextProvider } from "@/contexts/authContext";
 import * as data from "@/data";
 import { User } from "@/data/types";
 
-const testCustomer: User = Object.freeze({
+const testHospital: User = Object.freeze({
   id: 1,
   first_name: "John",
   last_name: "Doe",
   email: "johndoe@gmail.com",
-  role: "customer"
+  role: "hospital"
 });
 
 const testProvider: User = Object.freeze({
@@ -117,7 +117,7 @@ describe("API Keys Page", () => {
     beforeEach(() => {
       jest.spyOn(data, "fetchCheckUserLoggedIn").mockImplementation(() =>
         Promise.resolve({
-          user: testCustomer,
+          user: testHospital,
           message: ""
         })
       );

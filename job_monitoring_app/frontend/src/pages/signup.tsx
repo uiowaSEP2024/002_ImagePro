@@ -50,7 +50,7 @@ function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [notificationMessage, setNotificationMessage] = useState("");
-  const [role, setRole] = useState<User["role"]>("customer");
+  const [role, setRole] = useState<User["role"]>("hospital");
 
   // Fetch the logIn function from the authentication context.
   const { logIn } = useAuthContext();
@@ -195,7 +195,7 @@ function SignUp() {
             value={role}
           >
             <Stack direction="row" gap={8}>
-              <Radio value="customer">Customer</Radio>
+              <Radio value="hospital">Hospital</Radio>
               <Radio value="provider">Provider</Radio>
             </Stack>
           </RadioGroup>

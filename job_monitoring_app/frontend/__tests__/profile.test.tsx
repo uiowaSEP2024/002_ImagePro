@@ -36,7 +36,7 @@ jest.spyOn(data, "fetchCheckUserLoggedIn").mockImplementation(() =>
       last_name: "Doe",
       email: "johndoe@gmail.com",
       id: 1,
-      role: "customer"
+      role: "hospital"
     },
     message: ""
   })
@@ -97,7 +97,7 @@ describe("Profile", () => {
     expect(study).toBeInTheDocument();
   });
 
-  it("renders copy id section for customer", async () => {
+  it("renders copy id section for hospital", async () => {
     await act(async () =>
       render(<Profile />, { wrapper: AuthContextProvider })
     );
