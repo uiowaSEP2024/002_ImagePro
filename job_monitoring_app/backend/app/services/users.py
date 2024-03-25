@@ -31,13 +31,13 @@ def get_user_by_email(db: Session, email: str) -> models.User:
     return db.query(models.User).filter(models.User.email == email).first()
 
 
-def create_user(db: Session, user: schemas.UserCreate) -> models.User:
+def create_hospital_user(db: Session, user: schemas.UserHospitalCreate) -> models.User:
     """
-    Creates a new user in the database.
+    Creates a new user in the database associated with a hospital.
 
     Args:
         db (Session): The database session.
-        user (schemas.UserCreate): The user to create.
+        user (schemas.UserHospitalCreate): The user to create.
     """
     db_user = models.User(
         email=user.email,
@@ -46,6 +46,29 @@ def create_user(db: Session, user: schemas.UserCreate) -> models.User:
         last_name=user.last_name,
         role=user.role,
     )
+    # add association to join table here
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+
+def create_provider_user(db: Session, user: schemas.UserHospitalCreate) -> models.User:
+    """
+    Creates a new user in the database associated with a hospital.
+
+    Args:
+        db (Session): The database session.
+        user (schemas.UserHospitalCreate): The user to create.
+    """
+    db_user = models.User(
+        email=user.email,
+        hashed_password=get_password_hash(user.password),
+        first_name=user.first_name,
+        last_name=user.last_name,
+        role=user.role,
+    )
+    # add association to join table here
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
