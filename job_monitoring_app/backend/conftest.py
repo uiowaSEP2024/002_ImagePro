@@ -49,9 +49,9 @@ def db():
 
 
 @pytest.fixture
-def random_test_user_no_role(db):
+def random_test_user(db):
     random_tag = get_next_user_count()
-    test_user_no_role = services.create_user(
+    test_user = services.create_user(
         db,
         schemas.UserCreate(
             email=f"testuser_{random_tag}@example.com",
@@ -61,7 +61,7 @@ def random_test_user_no_role(db):
             role=UserRoleEnum.hospital,
         ),
     )
-    return test_user_no_role
+    return test_user
 
 
 @pytest.fixture
@@ -155,26 +155,6 @@ def random_test_user_factory(db):
                     first_name="first",
                     last_name="last",
                     role=UserRoleEnum.hospital,
-                ),
-            )
-            return test_user
-
-    return Factory()
-
-
-@pytest.fixture
-def random_test_user_no_role_factory(db):
-    class Factory(object):
-        @staticmethod
-        def get():
-            random_tag = get_next_user_count()
-            test_user = services.create_user(
-                db,
-                schemas.UserCreate(
-                    email=f"testuser_{random_tag}@example.com",
-                    password="abc",
-                    first_name="first",
-                    last_name="last",
                 ),
             )
             return test_user
