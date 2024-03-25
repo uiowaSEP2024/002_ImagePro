@@ -136,8 +136,8 @@ def test_get_study_as_different_customer(
     random_test_user_no_role_factory,
     random_study_configuration_factory,
 ):
-    customer_a = random_test_user_no_role_factory.get()
-    customer_b = random_test_user_no_role_factory.get()
+    hospital_a = random_test_user_no_role_factory.get()
+    hospital_b = random_test_user_no_role_factory.get()
 
     study_configuration = random_study_configuration_factory.get()
 
@@ -145,7 +145,7 @@ def test_get_study_as_different_customer(
         db,
         schemas.StudyCreate(
             provider_study_id="145254",
-            hospital_id=customer_a.id,
+            hospital_id=hospital_a.id,
             tag=study_configuration.tag,
         ),
         provider=random_provider_user_with_api_key,
@@ -154,13 +154,13 @@ def test_get_study_as_different_customer(
     db.commit()
     db.refresh(study)
 
-    # Simulate user log in as customer b (different customer from the
+    # Simulate user log in as hospital b (different hospital from the
     # one who the study was made for)
     response = app_client.post(
-        "/login", data={"username": customer_b.email, "password": "abc"}
+        "/login", data={"username": hospital_b.email, "password": "abc"}
     )
 
-    # Grab access token for the different customer
+    # Grab access token for the different hospital
     access_token = response.json()["access_token"]
 
     # Use access token in the request to get a study
