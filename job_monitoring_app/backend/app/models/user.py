@@ -102,6 +102,6 @@ class User(Base, DateMixin):
     )
 
     # Define the relationship to Hospital
-    hospital = relationship(
+    hospitals = relationship(
         "Hospital", secondary=hospital_user_association, back_populates="users"
     )
