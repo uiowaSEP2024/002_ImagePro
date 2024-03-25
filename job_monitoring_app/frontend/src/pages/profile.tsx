@@ -55,8 +55,8 @@ function Profile() {
     loadStudies();
   }, []);
 
-  // Determine if the current user is a customer.
-  const isCustomer = currentUser?.role === "customer";
+  // Determine if the current user is a hospital.
+  const isHospital = currentUser?.role === "hospital";
 
   // Handle the copy ID button click event.
   const onCopyId = useCallback(() => {
@@ -103,10 +103,10 @@ function Profile() {
                 color="red.400"
               >
                 {currentUser?.role}{" "}
-                {isCustomer ? `(id: #${currentUser.id})` : ""}
+                {isHospital ? `(id: #${currentUser.id})` : ""}
               </Heading>
 
-              {isCustomer &&
+              {isHospital &&
                 (copied ? (
                   <Text fontSize="sm" color="green.500">
                     Copied to clipboard!

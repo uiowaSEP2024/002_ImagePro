@@ -41,8 +41,8 @@ export interface paths {
     post: operations["logout_logout_post"];
   };
   "/studies": {
-    /** Get Customer Studies */
-    get: operations["get_customer_studies_studies_get"];
+    /** Get Hospital Studies */
+    get: operations["get_hospital_studies_studies_get"];
     /** Create Study */
     post: operations["create_study_studies_post"];
   };
@@ -375,7 +375,7 @@ export interface components {
       first_name: string;
       /** Last Name */
       last_name: string;
-      /** @default customer */
+      /** @default hospital */
       role?: components["schemas"]["UserRoleEnum"];
       /** Id */
       id: number;
@@ -398,7 +398,7 @@ export interface components {
       first_name: string;
       /** Last Name */
       last_name: string;
-      /** @default customer */
+      /** @default hospital */
       role?: components["schemas"]["UserRoleEnum"];
       /** Password */
       password: string;
@@ -408,7 +408,7 @@ export interface components {
      * @description An enumeration.
      * @enum {string}
      */
-    UserRoleEnum: "customer" | "provider";
+    UserRoleEnum: "hospital" | "provider" | "admin";
     /** ValidationError */
     ValidationError: {
       /** Location */
@@ -594,8 +594,8 @@ export interface operations {
       };
     };
   };
-  /** Get Customer Studies */
-  get_customer_studies_studies_get: {
+  /** Get Hospital Studies */
+  get_hospital_studies_studies_get: {
     responses: {
       /** @description Successful Response */
       200: {
