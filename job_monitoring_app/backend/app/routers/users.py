@@ -2,6 +2,7 @@ from app.dependencies import get_db, get_current_user_from_token
 from app import schemas, services
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from typing import Union
 
 
 router = APIRouter()
@@ -9,8 +10,18 @@ router.tags = ["users"]
 
 
 @router.post("/users/", response_model=schemas.User)
-def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    return services.create_user(db=db, user=user)
+def create_user(
+    user: Union[
+        schemas.UserCreate.schemas.UserHospitalCreate, schemas.UserProviderCreate
+    ],
+    db: Session = Depends(get_db),
+):
+    if user.role == "hospital":
+        return services.create_hospital_user(db=db, user=user)
+    elif user.role == "provider":
+        return services.create_provider_user(db=db, user=user)
+    else:
+        return services.create_user(db=db, user=user)
 
 
 @router.get("/users/{user_id}", response_model=schemas.User)
