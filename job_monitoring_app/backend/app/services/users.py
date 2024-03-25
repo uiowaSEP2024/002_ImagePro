@@ -55,7 +55,29 @@ def create_hospital_user(db: Session, user: schemas.UserHospitalCreate) -> model
 
 def create_provider_user(db: Session, user: schemas.UserHospitalCreate) -> models.User:
     """
-    Creates a new user in the database associated with a hospital.
+    Creates a new user in the database associated with a provider.
+
+    Args:
+        db (Session): The database session.
+        user (schemas.UserHospitalCreate): The user to create.
+    """
+    db_user = models.User(
+        email=user.email,
+        hashed_password=get_password_hash(user.password),
+        first_name=user.first_name,
+        last_name=user.last_name,
+        role=user.role,
+    )
+    # add association to join table here
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+
+def create_user(db: Session, user: schemas.UserCreate) -> models.User:
+    """
+    Creates a new admin user in the database.
 
     Args:
         db (Session): The database session.
