@@ -5,7 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
 # Association table
-user_hospital_association = Table(
+hospital_user_association = Table(
     "user_hospital",
     Base.metadata,
     Column("user_id", Integer, ForeignKey("users.id"), primary_key=True),
