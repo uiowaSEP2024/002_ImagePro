@@ -8,6 +8,9 @@ import zipfile
 from orthanc_data_logging import OrthancStudyLogger
 import argparse
 import os
+import logging
+
+LOGGER_NAME = "orthanc_agent"
 
 
 def check_study_stable(study: pyorthanc.Study) -> bool:
@@ -23,10 +26,11 @@ def check_study_stable(study: pyorthanc.Study) -> bool:
     try:
         is_stable = study.get_main_information().get("IsStable", False)
     except Exception as get_main_info_e:
+        logger = logging.getLogger(LOGGER_NAME)
         msg: str = (
             f"ERROR getting study main information for {study.id_}: {get_main_info_e}"
         )
-        print(msg)
+        logger.info(msg)
     return is_stable
 
 
@@ -57,6 +61,7 @@ def download_study(study_id, download_dir: str, orthanc: pyorthanc.Orthanc):
 
     The function prints a message indicating the success or failure of the download operation.
     """
+    logger = logging.getLogger(LOGGER_NAME)
     # Ensure the Path object is used for path operations
     download_dir = Path(download_dir)
     download_dir.mkdir(
@@ -73,10 +78,12 @@ def download_study(study_id, download_dir: str, orthanc: pyorthanc.Orthanc):
         # Save the ZIP file to the specified path
         with open(zip_path, "wb") as f:
             f.write(study_archive)
-        print(f"Downloaded and saved DICOM study ZIP to {zip_path}")
+        logger.info(f"Downloaded and saved DICOM study ZIP to {zip_path}")
         return zip_path
     except Exception as e:
-        print(f"Error to download DICOM study for study ID {study_id}. Error: {e}")
+        logger.info(
+            f"Error to download DICOM study for study ID {study_id}. Error: {e}"
+        )
 
 
 def unzip_study(zip_path: str, extract_dir: str):
@@ -92,7 +99,7 @@ def unzip_study(zip_path: str, extract_dir: str):
 
     The function prints a message indicating the success or failure of the extraction operation.
     """
-
+    logger = logging.getLogger(LOGGER_NAME)
     # Ensure the Path objects are used for path operations
     zip_path = Path(zip_path)
     extract_dir = Path(extract_dir)
@@ -104,9 +111,9 @@ def unzip_study(zip_path: str, extract_dir: str):
         # Open the ZIP file and extract its contents
         with zipfile.ZipFile(zip_path, "r") as zip_ref:
             zip_ref.extractall(extract_dir)
-        print(f"Extracted DICOM study to {extract_dir}")
+        logger.info(f"Extracted DICOM study to {extract_dir}")
     except Exception as e:
-        print(f"Error to extract ZIP file {zip_path}. Error: {e}")
+        logger.info(f"Error to extract ZIP file {zip_path}. Error: {e}")
 
 
 def process_data(
@@ -124,7 +131,7 @@ def process_data(
     This function executes the brainmask_tool.py script with specified input and output directories
     using subprocess.run. It checks for execution success and prints the script output or errors.
     """
-
+    logger = logging.getLogger(LOGGER_NAME)
     # Ensure the output directory exists
     Path(output_path).mkdir(parents=True, exist_ok=True)
 
@@ -143,10 +150,10 @@ def process_data(
     try:
         # Execute the command
         result = subprocess.run(command, check=True, text=True, capture_output=True)
-        print(f"Script output: {result.stdout}")
-        print("Script executed successfully.")
+        logger.info(f"Script output: {result.stdout}")
+        logger.info("Script executed successfully.")
     except Exception as e:
-        print(f"Error executing script: {e}")
+        logger.error(f"Error executing script: {e}")
 
 
 def upload_data_to_internal(directory_path: str, orthanc: pyorthanc.Orthanc):
@@ -157,6 +164,7 @@ def upload_data_to_internal(directory_path: str, orthanc: pyorthanc.Orthanc):
     - directory_path (str): The path to the directory containing DICOM files to be uploaded.
     - orthanc (pyorthanc.Orthanc): The Orthanc server object.
     """
+    logger = logging.getLogger(LOGGER_NAME)
     # Iterate over each file in the directory and upload it
     directory = Path(directory_path)
     for file_path in directory.rglob(
@@ -165,11 +173,11 @@ def upload_data_to_internal(directory_path: str, orthanc: pyorthanc.Orthanc):
         try:
             with open(file_path, "rb") as file:
                 result = orthanc.post_instances(file.read())
-                print(result.get("Status"))
-                print(result)
-            print(f"Successfully uploaded {file_path.name} to Orthanc.")
+                logger.debug(result.get("Status"))
+                logger.debug(result)
+            logger.info(f"Successfully uploaded {file_path.name} to Orthanc.")
         except Exception as e:
-            print(f"Failed to upload {file_path.name}. Error: {e}")
+            logger.error(f"Failed to upload {file_path.name}. Error: {e}")
 
 
 def return_to_original_hospital(orthanc: pyorthanc.Orthanc, study_id: str):
@@ -250,12 +258,12 @@ def make_list_of_studies_to_process(
                     f"{hospital_id}_{study_id}_{datetime.now().strftime('%Y%m%dT%H%M')}"
                 )
                 if study_id not in study_processed_dict.keys():
-                    print(
+                    logger.info(
                         f"Study {study_id} has properties. Adding to processing list.."
                     )
                     api_key = os.environ.get("API_KEY")
                     backend_url = os.environ.get("BACKEND_URL")
-                    print(
+                    logger.debug(
                         f"Attempting to create logger object for study {study_id}"
                         f"with api_key: {api_key} and backend_url: {backend_url}"
                     )
@@ -268,10 +276,10 @@ def make_list_of_studies_to_process(
                             study_config_file="hospital_job_configuration.json",
                         )
                     except Exception as e:
-                        print(f"Error with creating logger object: {e}")
+                        logger.error(f"Error with creating logger object: {e}")
 
             else:
-                print(f"Study {study_id} does not have properties. Skipping..")
+                logger.info(f"Study {study_id} does not have properties. Skipping..")
                 continue
 
         has_properties = check_study_has_properties(study)
@@ -279,7 +287,7 @@ def make_list_of_studies_to_process(
             studies_to_process.append(study)
         else:
             # TODO: ensure that if at this point in the program the properties file was not created, it won't be
-            print(f"Study {study_id} does not have properties. Deleting..")
+            logger.info(f"Study {study_id} does not have properties. Deleting..")
             orthanc_client.delete_studies_id(study_id)
             study_processed_dict.pop(study_id)
             continue
@@ -293,20 +301,23 @@ def make_list_of_studies_to_process(
 
 
 def main(internal_data_output_path: Path, product_path: Path, orthanc_url: str):
-    while True:
+    logger = logging.getLogger("orthanc_agent")
+    max_retries = 5
+    while max_retries > 0:
         try:
-            print("Trying to connect to Orthanc: ", orthanc_url)
-            print("product_path: ", product_path)
-            print("internal_data_output_path: ", internal_data_output_path)
+            logger.info("Starting Orthanc Agent")
+            logger.info(f"Orthanc URL: {orthanc_url}")
+            logger.info(f"Product Path: {product_path}")
+            logger.info(f"Internal Data Output Path: {internal_data_output_path}")
             with pyorthanc.Orthanc(orthanc_url) as internal_orthanc:
-                print(f"Connected to Orthanc at {orthanc_url}")
+                logger.info("Connected to Orthanc")
                 study_processed_dict = {}
                 while True:
                     # Fetch list of studies
                     studies = make_list_of_studies_to_process(
                         study_processed_dict, internal_orthanc
                     )
-                    print(f"Found {len(studies)} studies to process")
+                    logger.info(f"Found {len(studies)} studies to process")
 
                     for study in studies:
                         current_logger = study_processed_dict[study.id_]
@@ -365,30 +376,45 @@ def main(internal_data_output_path: Path, product_path: Path, orthanc_url: str):
                                     break
 
                             if current_logger._stage_is_complete(4):
-                                print(
+                                logger.info(
+                                    f"Study {study.id_} has been processed and sent to hospital"
+                                )
+                                logger.info(
                                     f"Study {study.id_} has been processed and sent to hospital"
                                 )
 
-                                print(f"Deleting study {study.id_}")
+                                logger.info(f"Deleting study {study.id_}")
                                 # delete the study from the internal orthanc
                                 internal_orthanc.delete_studies_id(study.id_)
                                 study_processed_dict.pop(study.id_)
                                 # delete study from local system
                                 shutil.rmtree(study_data_path)
-
-                    print("Sleeping for 10 seconds..")
+                    logger.info("Sleeping for 10 seconds..")
                     time.sleep(10)
         except Exception as e:
-            print(f"Error: {e}")
+            logger.error(f"Error: {e}\n Retrying connnection in 10 seconds..")
 
-            print("Sleeping for 10 seconds..")
-            print(
-                f"try to connect to Orthanc: {orthanc_url}\n" f"curl -v {orthanc_url}/"
-            )
-
-            # subprocess.run(["curl", "-v", f"{orthanc_url}/"])
+            max_retries -= 1
 
             time.sleep(10)
+
+
+def setup_custom_logger(name):
+    """
+    Set up a custom logger with the specified name.
+    """
+    formatter = logging.Formatter(
+        fmt="%(asctime)s - %(levelname)s - %(module)s - %(message)s"
+    )
+
+    handler = logging.StreamHandler()
+    handler.setFormatter(formatter)
+
+    logger = logging.getLogger(name)
+    logger.setLevel(logging.DEBUG)
+    logger.addHandler(handler)
+
+    return logger
 
 
 if __name__ == "__main__":
@@ -437,17 +463,22 @@ if __name__ == "__main__":
     product_path = Path(args.product_path)
     orthanc_url = args.orthanc_url
     backend_url = args.backend_url
-
+    logging.basicConfig(level=logging.INFO)
     if args.api_key is not None:
         os.environ["API_KEY"] = args.api_key
-
-    os.environ["BACKEND_URL"] = backend_url
-    print("a")
+    if args.backend_url is not None:
+        os.environ["BACKEND_URL"] = backend_url
+    logger = setup_custom_logger("orthanc_agent")
+    logger.debug(
+        f"Starting orthanc agent with base_output_dir: {base_output_dir}"
+        f"product_path: {product_path}"
+        f"orthanc_url: {orthanc_url}"
+        f"backend_url: {backend_url}"
+    )
     if os.environ.get("API_KEY") is None:
         raise ValueError(
             "API_KEY was not provided. Please provide an API_KEY to use for the TrackerApi"
         )
-    print(f"Starting orthanc agent with base_output_dir: {base_output_dir}")
     main(
         base_output_dir,
         product_path,
