@@ -20,11 +20,11 @@ def create_study(
 
 # TODO: another route for get_provider_studies
 @router.get("/studies", response_model=List[schemas.Study])
-def get_customer_studies(
+def get_hospital_studies(
     db: Session = Depends(get_db),
     user=Depends(get_current_user_from_token),
 ):
-    if user.role == "customer":
+    if user.role == "hospital":
         return services.get_studies_for_hospital(db=db, user_id=user.id)
 
     return services.get_studies_for_provider(db=db, user_id=user.id)
