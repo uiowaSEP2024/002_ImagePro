@@ -4,13 +4,15 @@ import sqlalchemy
 
 from app import models
 
+# TODO will need to be refactored once we implement a required role
 
-def test_create_event(db, random_test_user, random_provider_user):
+
+def test_create_event(db, random_test_user_no_role, random_provider_user):
 
     study = models.Study(
         provider_study_id="abc123",
         provider_study_name="kidneyV1",
-        hospital_id=random_test_user.id,
+        hospital_id=random_test_user_no_role.id,
         provider_id=random_provider_user.id,
     )
     db.add(study)
@@ -53,10 +55,10 @@ def test_create_event_missing_study_id(db):
     assert "study_id" in str(exc.value.orig)
 
 
-def test_create_study_missing_kind(db, random_test_user, random_provider_user):
+def test_create_study_missing_kind(db, random_test_user_no_role, random_provider_user):
     study = models.Study(
         provider_study_name="kidneyV1",
-        hospital_id=random_test_user.id,
+        hospital_id=random_test_user_no_role.id,
         provider_id=random_provider_user.id,
     )
 
@@ -71,12 +73,12 @@ def test_create_study_missing_kind(db, random_test_user, random_provider_user):
 
 
 def test_create_study_missing_provider_study_name(
-    db, random_test_user, random_provider_user
+    db, random_test_user_no_role, random_provider_user
 ):
     study = models.Study(
         provider_study_id="abc123",
         provider_study_name="kidneyV1",
-        hospital_id=random_test_user.id,
+        hospital_id=random_test_user_no_role.id,
         provider_id=random_provider_user.id,
     )
 
@@ -98,14 +100,17 @@ def test_create_study_missing_provider_study_name(
 
 
 def test_create_event_for_step(
-    db, random_test_user, random_provider_user, random_study_configuration_factory
+    db,
+    random_test_user_no_role,
+    random_provider_user,
+    random_study_configuration_factory,
 ):
     study_configuration = random_study_configuration_factory.get(num_steps=1)
 
     study = models.Study(
         provider_study_id="abc123",
         provider_study_name="kidneyV1",
-        hospital_id=random_test_user.id,
+        hospital_id=random_test_user_no_role.id,
         provider_id=random_provider_user.id,
         study_configuration_id=study_configuration.id,
     )

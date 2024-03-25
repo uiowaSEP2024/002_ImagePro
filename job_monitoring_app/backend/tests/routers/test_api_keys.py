@@ -6,6 +6,8 @@ from app.dependencies import (
     INVALID_API_KEY_CREDENTIALS_UNAUTHORIZED,
 )
 
+# TODO will need to be refactored once we implement a required role
+
 
 def test_create_api_key(app_client, random_provider_user):
     data = {"username": random_provider_user.email, "password": "abc"}
@@ -50,9 +52,9 @@ def test_get_api_keys(app_client, random_provider_user):
     assert result[0]["created_at"] is not None
 
 
-def test_api_key_protected_route(app_client, db, random_test_user):
+def test_api_key_protected_route(app_client, db, random_test_user_no_role):
     api_key = services.create_apikey_for_user(
-        db, random_test_user.id, key=schemas.ApikeyCreate(note="key")
+        db, random_test_user_no_role.id, key=schemas.ApikeyCreate(note="key")
     )
 
     response = app_client.get(
@@ -64,9 +66,9 @@ def test_api_key_protected_route(app_client, db, random_test_user):
     assert result == "Authorized!"
 
 
-def test_missing_api_key_on_protected_route(app_client, db, random_test_user):
+def test_missing_api_key_on_protected_route(app_client, db, random_test_user_no_role):
     api_key = services.create_apikey_for_user(
-        db, random_test_user.id, key=schemas.ApikeyCreate(note="key")
+        db, random_test_user_no_role.id, key=schemas.ApikeyCreate(note="key")
     )
 
     response = app_client.get(
@@ -79,7 +81,7 @@ def test_missing_api_key_on_protected_route(app_client, db, random_test_user):
     assert result["detail"] == INVALID_API_KEY_CREDENTIALS_MISSING
 
 
-def test_bad_api_key_on_protected_route(app_client, db, random_test_user):
+def test_bad_api_key_on_protected_route(app_client, db):
     response = app_client.get(
         "/api-keys/protected", headers={API_KEY_HEADER_NAME: "key that does not exist"}
     )
