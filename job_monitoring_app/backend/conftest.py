@@ -49,9 +49,9 @@ def db():
 
 
 @pytest.fixture
-def random_test_user(db):
+def random_test_user_no_role(db):
     random_tag = get_next_user_count()
-    test_user = services.create_user(
+    test_user_no_role = services.create_user(
         db,
         schemas.UserCreate(
             email=f"testuser_{random_tag}@example.com",
@@ -60,7 +60,7 @@ def random_test_user(db):
             last_name="last",
         ),
     )
-    return test_user
+    return test_user_no_role
 
 
 @pytest.fixture
@@ -92,7 +92,6 @@ def study_for_random_user_with_api_key(
 
 @pytest.fixture
 def random_provider_user(db):
-    # TODO: update to actually create a 'provider' user
     random_tag = get_next_user_count()
     test_provider_user = services.create_user(
         db,
@@ -107,10 +106,62 @@ def random_provider_user(db):
     return test_provider_user
 
 
+@pytest.fixture
+def random_hospital_user(db):
+    random_tag = get_next_user_count()
+    test_hospital_user = services.create_user(
+        db,
+        schemas.UserCreate(
+            email=f"test-hospital-user_{random_tag}@example.com",
+            password="abc",
+            first_name="first",
+            last_name="last",
+            role=UserRoleEnum.hospital,
+        ),
+    )
+    return test_hospital_user
+
+
+@pytest.fixture
+def random_admin_user(db):
+    random_tag = get_next_user_count()
+    test_admin_user = services.create_user(
+        db,
+        schemas.UserCreate(
+            email=f"test-admin-user_{random_tag}@example.com",
+            password="abc",
+            first_name="first",
+            last_name="last",
+            role=UserRoleEnum.admin,
+        ),
+    )
+    return test_admin_user
+
+
 # Convenience fixture factory for generating multiple
 # users for a test. See https://stackoverflow.com/a/21590140
 @pytest.fixture
 def random_test_user_factory(db):
+    class Factory(object):
+        @staticmethod
+        def get():
+            random_tag = get_next_user_count()
+            test_user = services.create_user(
+                db,
+                schemas.UserCreate(
+                    email=f"testuser_{random_tag}@example.com",
+                    password="abc",
+                    first_name="first",
+                    last_name="last",
+                ),
+            )
+            return test_user
+
+    return Factory()
+
+
+@pytest.fixture
+def random_test_user_no_role_factory(db):
     class Factory(object):
         @staticmethod
         def get():
