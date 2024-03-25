@@ -24,6 +24,8 @@ studies = {}
 events = {}
 api_keys = {}
 study_configs = {}
+hospitals = {}
+providers = {}
 
 # Data to be seeded for each entity
 USERS_DATA = [
@@ -355,6 +357,24 @@ EVENTS_DATA = [
     ),
 ]
 
+HOSPITALS_DATA = [
+    dict(
+        hospital_name="John's Hospital",
+    ),
+    dict(
+        hospital_name="Jane's Hospital",
+    ),
+]
+
+PROVIDERS_DATA = [
+    dict(
+        provider_name="BotImage",
+    ),
+    dict(
+        provider_name="NoodlesCo",
+    ),
+]
+
 
 def seed_users(db):
     print("Seeding Users")
@@ -464,6 +484,34 @@ def seed_study_configurations(db):
         study_configs[study_config.tag] = study_config
 
 
+def seed_hospitals(db):
+    print("Seeding Hospitals")
+    from app import models
+
+    for hospital_data in HOSPITALS_DATA:
+        print(f"  Seeding hospital: {str(hospital_data)}")
+        hospital = models.Hospital(**hospital_data)
+        db.add(hospital)
+        db.commit()
+        db.refresh(hospital)
+
+        hospitals[hospital.id] = hospital
+
+
+def seed_providers(db):
+    print("Seeding Providers")
+    from app import models
+
+    for provider_data in PROVIDERS_DATA:
+        print(f"  Seeding provider: {str(provider_data)}")
+        provider = models.Provider(**provider_data)
+        db.add(provider)
+        db.commit()
+        db.refresh(provider)
+
+        providers[provider.id] = provider
+
+
 def seed_db():
     db = config.db.SessionLocal()
     seed_users(db)
@@ -471,3 +519,5 @@ def seed_db():
     seed_study_configurations(db)
     seed_studies(db)
     seed_events(db)
+    seed_hospitals(db)
+    seed_providers(db)
