@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Optional
 
 from pydantic import BaseModel
 
@@ -7,15 +6,16 @@ from enum import Enum
 
 
 class UserRoleEnum(str, Enum):
-    customer = "customer"
+    hospital = "hospital"
     provider = "provider"
+    admin = "admin"
 
 
 class UserBase(BaseModel):
     email: str
     first_name: str
     last_name: str
-    role: Optional[UserRoleEnum] = UserRoleEnum.customer
+    role: UserRoleEnum = UserRoleEnum.hospital
 
 
 class UserCreate(UserBase):
