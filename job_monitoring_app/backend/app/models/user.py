@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, Enum
 from sqlalchemy.orm import relationship
 
 from .base import Base, DateMixin
+from .hospital_users import hospital_user_association
 
 
 class User(Base, DateMixin):
@@ -98,4 +99,9 @@ class User(Base, DateMixin):
         back_populates="provider",
         foreign_keys="StudyConfiguration.provider_id",
         cascade="all, delete-orphan",
+    )
+
+    # Define the relationship to Hospital
+    hospital = relationship(
+        "Hospital", secondary=hospital_user_association, back_populates="users"
     )
