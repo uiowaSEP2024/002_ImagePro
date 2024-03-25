@@ -49,19 +49,19 @@ def db():
 
 
 @pytest.fixture
-def random_test_user(db):
+def random_test_admin_user(db):
     random_tag = get_next_user_count()
-    test_user = services.create_user(
+    test_admin_user = services.create_user(
         db,
         schemas.UserCreate(
             email=f"testuser_{random_tag}@example.com",
             password="abc",
             first_name="random",
             last_name="last",
-            role=UserRoleEnum.hospital,
+            role=UserRoleEnum.admin,
         ),
     )
-    return test_user
+    return test_admin_user
 
 
 @pytest.fixture

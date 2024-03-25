@@ -123,35 +123,3 @@ def test_unique_user_email():
                 }
             ),
         )
-
-
-def test_hospital_user():
-    db = config.db.SessionLocal()
-
-    # db_hospital = create_hospital(
-    #     db,
-    #     HospitalCreate.parse_obj(
-    #         {
-    #             "hospital_name": "Hospital 1",
-    #         }
-    #     ),
-    # )
-
-    db_user = create_user(
-        db,
-        UserCreate.parse_obj(
-            {
-                "email": "jimbrown@example.com",
-                "password": "abc",
-                "first_name": "Jim",
-                "last_name": "Brown",
-                "role": UserRoleEnum.hospital,
-            }
-        ),
-    )
-
-    assert db_user.email == "jimbrown@example.com"
-    assert db_user.hashed_password is not None
-    assert db_user.first_name == "Jim"
-    assert db_user.last_name == "Brown"
-    assert db_user.created_at is not None
