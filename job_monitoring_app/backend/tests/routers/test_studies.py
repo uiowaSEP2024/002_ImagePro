@@ -32,7 +32,7 @@ def test_get_study_as_customer(
     app_client,
     db,
     random_provider_user_with_api_key,
-    random_test_user,
+    random_test_admin_user,
     random_study_configuration_factory,
 ):
     study_configuration = random_study_configuration_factory.get()
@@ -41,7 +41,7 @@ def test_get_study_as_customer(
         db,
         schemas.StudyCreate(
             provider_study_id="145254",
-            hospital_id=random_test_user.id,
+            hospital_id=random_test_admin_user.id,
             tag=study_configuration.tag,
         ),
         provider=random_provider_user_with_api_key,
@@ -52,7 +52,7 @@ def test_get_study_as_customer(
 
     # Simulate user log in
     response = app_client.post(
-        "/login", data={"username": random_test_user.email, "password": "abc"}
+        "/login", data={"username": random_test_admin_user.email, "password": "abc"}
     )
 
     # Grab access token for user
@@ -75,7 +75,7 @@ def test_get_studies_as_hospital(
     app_client,
     db,
     random_provider_user_with_api_key,
-    random_test_user,
+    random_hospital_user,
     random_study_configuration_factory,
 ):
     study_configuration = random_study_configuration_factory.get()
@@ -84,7 +84,7 @@ def test_get_studies_as_hospital(
         db,
         schemas.StudyCreate(
             provider_study_id="145254",
-            hospital_id=random_test_user.id,
+            hospital_id=random_hospital_user.id,
             tag=study_configuration.tag,
         ),
         provider=random_provider_user_with_api_key,
@@ -94,7 +94,7 @@ def test_get_studies_as_hospital(
         db,
         schemas.StudyCreate(
             provider_study_id="145255",
-            hospital_id=random_test_user.id,
+            hospital_id=random_hospital_user.id,
             tag=study_configuration.tag,
         ),
         provider=random_provider_user_with_api_key,
@@ -106,7 +106,7 @@ def test_get_studies_as_hospital(
 
     # Simulate user log in
     response = app_client.post(
-        "/login", data={"username": random_test_user.email, "password": "abc"}
+        "/login", data={"username": random_hospital_user.email, "password": "abc"}
     )
 
     # Grab access token for user

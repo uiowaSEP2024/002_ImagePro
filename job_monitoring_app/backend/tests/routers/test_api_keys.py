@@ -52,9 +52,9 @@ def test_get_api_keys(app_client, random_provider_user):
     assert result[0]["created_at"] is not None
 
 
-def test_api_key_protected_route(app_client, db, random_test_user):
+def test_api_key_protected_route(app_client, db, random_test_admin_user):
     api_key = services.create_apikey_for_user(
-        db, random_test_user.id, key=schemas.ApikeyCreate(note="key")
+        db, random_test_admin_user.id, key=schemas.ApikeyCreate(note="key")
     )
 
     response = app_client.get(
@@ -66,9 +66,9 @@ def test_api_key_protected_route(app_client, db, random_test_user):
     assert result == "Authorized!"
 
 
-def test_missing_api_key_on_protected_route(app_client, db, random_test_user):
+def test_missing_api_key_on_protected_route(app_client, db, random_test_admin_user):
     api_key = services.create_apikey_for_user(
-        db, random_test_user.id, key=schemas.ApikeyCreate(note="key")
+        db, random_test_admin_user.id, key=schemas.ApikeyCreate(note="key")
     )
 
     response = app_client.get(
