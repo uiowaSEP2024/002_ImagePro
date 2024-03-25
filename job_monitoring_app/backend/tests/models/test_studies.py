@@ -4,8 +4,6 @@ import sqlalchemy
 
 from app import models
 
-# TODO will need to be refactored once we implement a required role
-
 
 def test_delete_study_configuration_after_creating_study(
     db, random_provider_user, random_test_user_no_role
@@ -175,7 +173,7 @@ def test_create_study_missing_hospital_id(db, random_provider_user):
 
 
 def test_create_study_missing_provider_study_id(
-    db, random_test_user_no_role, random_provider_user
+    db, random_test_user, random_provider_user
 ):
     study_configuration = models.StudyConfiguration(
         tag="prostate_v1_study",
@@ -188,7 +186,7 @@ def test_create_study_missing_provider_study_id(
     db.commit()
     study = models.Study(
         provider_study_name="kidneyV1",
-        hospital_id=random_test_user_no_role.id,
+        hospital_id=random_test_user.id,
         provider_id=random_provider_user.id,
         study_configuration=study_configuration,
     )
