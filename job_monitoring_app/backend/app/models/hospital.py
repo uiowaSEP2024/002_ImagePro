@@ -3,7 +3,8 @@ from sqlalchemy.sql.sqltypes import String, Integer
 from sqlalchemy.orm import relationship
 
 from .base import Base, DateMixin
-from .hospital_users import hospital_user_association
+
+# from .hospital_users import hospital_user_association
 
 
 class Hospital(Base, DateMixin):
@@ -43,7 +44,7 @@ class Hospital(Base, DateMixin):
         foreign_keys="Pacs.hospital_id",
         cascade="all, delete-orphan",
     )
-
-    users = relationship(
-        "User", secondary=hospital_user_association, back_populates="hospitals"
-    )
+    #
+    # users = relationship(
+    #     "User", secondary=hospital_user_association, back_populates="hospitals"
+    # )
