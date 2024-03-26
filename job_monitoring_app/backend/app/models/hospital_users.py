@@ -10,6 +10,13 @@ Base = declarative_base()
 hospital_user_association = Table(
     "user_hospital",
     Base.metadata,
-    Column("user_id", Integer, ForeignKey(User.id), primary_key=True),
-    Column("hospital_id", Integer, ForeignKey(Hospital.id), primary_key=True),
+    Column(
+        "user_id", Integer, ForeignKey(User.id, ondelete="CASCADE"), primary_key=True
+    ),
+    Column(
+        "hospital_id",
+        Integer,
+        ForeignKey(Hospital.id, ondelete="CASCADE"),
+        primary_key=True,
+    ),
 )
