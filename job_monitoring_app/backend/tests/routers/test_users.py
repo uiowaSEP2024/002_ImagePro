@@ -1,4 +1,6 @@
 from app.schemas.user import UserRoleEnum
+from app.schemas.hospital import HospitalCreate
+from app.services.hospitals import create_hospital
 
 
 def test_create_user_no_role(app_client):
@@ -29,7 +31,17 @@ def test_create_user_provider_role(app_client):
     assert response.json()["created_at"] is not None
 
 
-def test_create_user_hospital_role(app_client):
+def make_hospital(db):
+    # Create a test hospital which will have id 1
+    #
+    hospital_data = HospitalCreate(hospital_name="Test Hospital")
+    return create_hospital(db=db, hospital=hospital_data)
+
+
+def test_create_user_hospital_role(db, app_client):
+    # Create a test hospital
+    make_hospital(db)
+
     data = {
         "email": "gh@example.com",
         "password": "abc",
