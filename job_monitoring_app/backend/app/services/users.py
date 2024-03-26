@@ -51,6 +51,8 @@ def create_hospital_user(db: Session, user: schemas.UserHospitalCreate) -> model
     # add association to join table here
     db.add(db_user)
     db.commit()
+    print(db_user.id)
+    print(user.hospital_id)
     db.execute(
         hospital_user_association.insert().values(
             user_id=db_user.id, hospital_id=user.hospital_id
@@ -123,3 +125,19 @@ def authenticate_user(db: Session, username: str, password: str) -> models.User:
     if not verify_password(password, user.hashed_password):
         return False
     return user
+
+
+def get_user_hospital(db: Session, user_id: int) -> models.Hospital:
+    """
+    Retrieves the hospital associated with a user, only for 'hospital' users
+
+    Args:
+        db (Session): The database session.
+        user_id (int): The ID of the user to retrieve the hospital for.
+    """
+    return (
+        db.query(models.Hospital)
+        .join(hospital_user_association)
+        .filter(hospital_user_association.c.user_id == user_id)
+        .first()
+    )
