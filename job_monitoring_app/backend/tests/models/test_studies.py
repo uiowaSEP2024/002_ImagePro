@@ -6,7 +6,7 @@ from app import models
 
 
 def test_delete_study_configuration_after_creating_study(
-    db, random_provider_user, random_test_admin_user
+    db, random_provider_user, random_hospital_user
 ):
     study_configuration = models.StudyConfiguration(
         tag="prostate_v1_study",
@@ -21,7 +21,7 @@ def test_delete_study_configuration_after_creating_study(
     study = models.Study(
         provider_study_id="abc123",
         provider_study_name="kidneyV1",
-        hospital_id=random_test_admin_user.id,
+        hospital_id=random_hospital_user.id,
         provider_id=random_provider_user.id,
         study_configuration_id=study_configuration.id,
     )
@@ -42,7 +42,7 @@ def test_delete_study_configuration_after_creating_study(
 
 
 def test_create_study_with_configuration(
-    db, random_test_admin_user, random_provider_user
+    db, random_hospital_user, random_provider_user
 ):
     study_configuration = models.StudyConfiguration(
         tag="prostate_v1_study",
@@ -57,7 +57,7 @@ def test_create_study_with_configuration(
     study = models.Study(
         provider_study_id="abc123",
         provider_study_name="kidneyV1",
-        hospital_id=random_test_admin_user.id,
+        hospital_id=random_hospital_user.id,
         provider_id=random_provider_user.id,
         study_configuration_id=study_configuration.id,
     )
@@ -68,17 +68,17 @@ def test_create_study_with_configuration(
     db.refresh(study)
 
     assert isinstance(study, models.Study)
-    assert study.hospital_id == random_test_admin_user.id
+    assert study.hospital_id == random_hospital_user.id
     assert study.provider_study_id == "abc123"
     assert study.provider_study_name == "kidneyV1"
     assert study.study_configuration == study_configuration
     assert study.created_at is not None
 
-    db.refresh(random_test_admin_user)
+    db.refresh(random_hospital_user)
     # Check that the customer user now has the correct studies associated with them
-    assert len(random_test_admin_user.studies) == 1
-    assert random_test_admin_user.studies[0].provider_study_id == "abc123"
-    assert random_test_admin_user.studies[0].hospital_id == random_test_admin_user.id
+    assert len(random_hospital_user.studies) == 1
+    assert random_hospital_user.studies[0].provider_study_id == "abc123"
+    assert random_hospital_user.studies[0].hospital_id == random_hospital_user.id
 
     db.refresh(random_provider_user)
     # Check that the provider user now has the correct studies associated with them
@@ -96,7 +96,7 @@ def test_create_study_with_configuration(
 
 
 def test_create_study_duplicate_provider_study_ids(
-    db, random_test_admin_user, random_provider_user
+    db, random_hospital_user, random_provider_user
 ):
     study_configuration = models.StudyConfiguration(
         tag="prostate_v1_study",
@@ -113,7 +113,7 @@ def test_create_study_duplicate_provider_study_ids(
     study1 = models.Study(
         provider_study_id=duplicate_study_id,
         provider_study_name="kidneyV1",
-        hospital_id=random_test_admin_user.id,
+        hospital_id=random_hospital_user.id,
         provider_id=random_provider_user.id,
         study_configuration=study_configuration,
     )
@@ -124,7 +124,7 @@ def test_create_study_duplicate_provider_study_ids(
     study2 = models.Study(
         provider_study_id=duplicate_study_id,
         provider_study_name="kidneyV1",
-        hospital_id=random_test_admin_user.id,
+        hospital_id=random_hospital_user.id,
         provider_id=random_provider_user.id,
         study_configuration=study_configuration,
     )
@@ -171,7 +171,7 @@ def test_create_study_missing_hospital_id(db, random_provider_user):
 
 
 def test_create_study_missing_provider_study_id(
-    db, random_test_admin_user, random_provider_user
+    db, random_hospital_user, random_provider_user
 ):
     study_configuration = models.StudyConfiguration(
         tag="prostate_v1_study",
@@ -184,7 +184,7 @@ def test_create_study_missing_provider_study_id(
     db.commit()
     study = models.Study(
         provider_study_name="kidneyV1",
-        hospital_id=random_test_admin_user.id,
+        hospital_id=random_hospital_user.id,
         provider_id=random_provider_user.id,
         study_configuration=study_configuration,
     )

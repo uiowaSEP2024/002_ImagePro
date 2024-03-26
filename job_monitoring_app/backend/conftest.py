@@ -142,7 +142,7 @@ def random_admin_user(db):
 # Convenience fixture factory for generating multiple
 # users for a test. See https://stackoverflow.com/a/21590140
 @pytest.fixture
-def random_test_user_factory(db):
+def random_test_hospital_user_factory(db):
     class Factory(object):
         @staticmethod
         def get():
@@ -150,7 +150,7 @@ def random_test_user_factory(db):
             test_user = services.create_user(
                 db,
                 schemas.UserCreate(
-                    email=f"testuser_{random_tag}@example.com",
+                    email=f"test_hospital_user_{random_tag}@example.com",
                     password="abc",
                     first_name="first",
                     last_name="last",
