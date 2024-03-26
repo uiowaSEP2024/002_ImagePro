@@ -2,7 +2,8 @@ from sqlalchemy import Column, Integer, String, Enum
 from sqlalchemy.orm import relationship
 
 from .base import Base, DateMixin
-from .hospital_users import hospital_user_association
+
+# from .hospital_users import hospital_user_association
 
 
 class User(Base, DateMixin):
@@ -101,7 +102,10 @@ class User(Base, DateMixin):
         cascade="all, delete-orphan",
     )
 
-    # Define the relationship to Hospital
-    hospitals = relationship(
-        "Hospital", secondary=hospital_user_association, back_populates="users"
-    )
+    # # Define the hospitals relationship only for users with role "hospital"
+    # hospitals = relationship(
+    #     "Hospital",
+    #     secondary=hospital_user_association,
+    #     back_populates="users",
+    #     primaryjoin=lambda: and_(User.id == hospital_user_association.c.user_id, User.role == 'hospital')
+    # )
