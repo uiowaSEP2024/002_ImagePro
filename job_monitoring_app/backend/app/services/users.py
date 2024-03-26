@@ -4,6 +4,7 @@ from app import models, schemas
 from app.internal import get_password_hash, verify_password
 
 from app.models.hospital_users import hospital_user_association
+from app.models.provider_users import provider_user_association
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -61,7 +62,7 @@ def create_hospital_user(db: Session, user: schemas.UserHospitalCreate) -> model
     return db_user
 
 
-def create_provider_user(db: Session, user: schemas.UserCreate) -> models.User:
+def create_provider_user(db: Session, user: schemas.UserProviderCreate) -> models.User:
     """
     Creates a new user in the database associated with a provider.
 
@@ -78,6 +79,12 @@ def create_provider_user(db: Session, user: schemas.UserCreate) -> models.User:
     )
     # add association to join table here
     db.add(db_user)
+    db.commit()
+    db.execute(
+        provider_user_association.insert().values(
+            user_id=db_user.id, provider_id=user.provider_id
+        )
+    )
     db.commit()
     db.refresh(db_user)
     return db_user
@@ -142,12 +149,17 @@ def get_user_hospital(db: Session, user_id: int) -> models.Hospital:
 
 
 def get_user_provider(db: Session, user_id: int) -> models.Provider:
-    pass
-    # """
-    # Retrieves the provider associated with a user, only for 'provider' users
-    #
-    # Args:
-    #     db (Session): The database session.
-    #     user_id (int): The ID of the user to retrieve the provider for.
-    # """
-    # return db.query(models.Provider).filter(models.Provider.id == user_id).first()
+
+    """
+    Retrieves the provider associated with a user, only for 'provider' users
+
+    Args:
+        db (Session): The database session.
+        user_id (int): The ID of the user to retrieve the provider for.
+    """
+    return (
+        db.query(models.Provider)
+        .join(provider_user_association)
+        .filter(provider_user_association.c.user_id == user_id)
+        .first()
+    )
