@@ -3,13 +3,16 @@ from app.dependencies import API_KEY_HEADER_NAME
 
 
 def test_create_study(
-    app_client, random_provider_user_with_api_key, random_study_configuration_factory
+    app_client,
+    random_provider_user_with_api_key,
+    random_study_configuration_factory,
+    random_hospital_user,
 ):
     study_configuration = random_study_configuration_factory.get()
 
     data = {
         "provider_study_id": "2432424",
-        "hospital_id": random_provider_user_with_api_key.id,
+        "hospital_id": random_hospital_user.id,
         "tag": study_configuration.tag,
     }
 
@@ -23,16 +26,16 @@ def test_create_study(
 
     assert response.status_code == 200
     assert response.json()["provider_study_id"] == "2432424"
-    assert response.json()["hospital_id"] == random_provider_user_with_api_key.id
+    assert response.json()["hospital_id"] == random_hospital_user.id
     assert response.json()["created_at"] is not None
     assert response.json()["study_configuration_id"] == study_configuration.id
 
 
-def test_get_study_as_customer(
+def test_get_study_as_hospital(
     app_client,
     db,
     random_provider_user_with_api_key,
-    random_test_admin_user,
+    random_hospital_user,
     random_study_configuration_factory,
 ):
     study_configuration = random_study_configuration_factory.get()
@@ -41,7 +44,7 @@ def test_get_study_as_customer(
         db,
         schemas.StudyCreate(
             provider_study_id="145254",
-            hospital_id=random_test_admin_user.id,
+            hospital_id=random_hospital_user.id,
             tag=study_configuration.tag,
         ),
         provider=random_provider_user_with_api_key,
@@ -52,7 +55,7 @@ def test_get_study_as_customer(
 
     # Simulate user log in
     response = app_client.post(
-        "/login", data={"username": random_test_admin_user.email, "password": "abc"}
+        "/login", data={"username": random_hospital_user.email, "password": "abc"}
     )
 
     # Grab access token for user
@@ -129,15 +132,15 @@ def test_get_studies_as_hospital(
     assert response.json()[1]["created_at"] is not None
 
 
-def test_get_study_as_different_customer(
+def test_get_study_as_different_hospital(
     app_client,
     db,
     random_provider_user_with_api_key,
-    random_test_user_factory,
+    random_test_hospital_user_factory,
     random_study_configuration_factory,
 ):
-    hospital_a = random_test_user_factory.get()
-    hospital_b = random_test_user_factory.get()
+    hospital_a = random_test_hospital_user_factory.get()
+    hospital_b = random_test_hospital_user_factory.get()
 
     study_configuration = random_study_configuration_factory.get()
 
@@ -173,11 +176,14 @@ def test_get_study_as_different_customer(
 
 
 def test_create_study_with_missing_tag(
-    app_client, random_provider_user_with_api_key, random_study_configuration_factory
+    app_client,
+    random_provider_user_with_api_key,
+    random_study_configuration_factory,
+    random_hospital_user,
 ):
     data = {
         "provider_study_id": "2432424",
-        "hospital_id": random_provider_user_with_api_key.id,
+        "hospital_id": random_hospital_user.id,
     }
 
     response = app_client.post(

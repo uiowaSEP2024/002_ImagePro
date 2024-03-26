@@ -6,8 +6,6 @@ from app.dependencies import (
     INVALID_API_KEY_CREDENTIALS_UNAUTHORIZED,
 )
 
-# TODO will need to be refactored once we implement a required role
-
 
 def test_create_api_key(app_client, random_provider_user):
     data = {"username": random_provider_user.email, "password": "abc"}
