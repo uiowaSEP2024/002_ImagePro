@@ -19,9 +19,17 @@ depends_on = None
 def upgrade():
     op.create_table(
         "user_hospital",
-        sa.Column("user_id", sa.Integer(), sa.ForeignKey("users.id"), primary_key=True),
         sa.Column(
-            "hospital_id", sa.Integer(), sa.ForeignKey("hospitals.id"), primary_key=True
+            "user_id",
+            sa.Integer(),
+            sa.ForeignKey("users.id", ondelete="CASCADE"),
+            primary_key=True,
+        ),
+        sa.Column(
+            "hospital_id",
+            sa.Integer(),
+            sa.ForeignKey("hospitals.id", ondelete="CASCADE"),
+            primary_key=True,
         ),
     )
 
