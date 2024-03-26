@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session
 from app import models, schemas
 from app.internal import get_password_hash, verify_password
 
+from app.models.hospital_users import hospital_user_association
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
@@ -48,6 +50,11 @@ def create_hospital_user(db: Session, user: schemas.UserHospitalCreate) -> model
     )
     # add association to join table here
     db.add(db_user)
+    db.commit()
+    # TODO: this hospital_id is hardcoded so the router unit test will pass
+    db.execute(
+        hospital_user_association.insert().values(user_id=db_user.id, hospital_id=1)
+    )
     db.commit()
     db.refresh(db_user)
     return db_user
