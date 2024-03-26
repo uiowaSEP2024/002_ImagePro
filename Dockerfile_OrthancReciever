@@ -31,6 +31,7 @@ COPY job_monitoring_app/trackerapi /app/job_monitoring_app/trackerapi
 
 # Copy the executable script into the container
 COPY example_run_brain_mask_tool_light_docker.sh runner.sh
+RUN chmod +x runner.sh
 
 COPY internal_servers/hospital_job_configuration.json .
 COPY internal_servers/job-configurations-schema.generated.json .
@@ -49,5 +50,4 @@ ENV API_KEY=${API_KEY}
 ENV BACKEND_URL=${BACKEND_URL}
 ENV ORTHANC_URL=${ORTHANC_URL}
 
-CMD ["python3", "orthanc_reciever_agent.py", "--base_output_dir", "/internal_data", "--product_path", "runner.sh", "--orthanc_url", "${ORTHANC_URL}", "--backend_url", "${BACKEND_URL}", "--api_key", "${API_KEY}"]
-#CMD ["python3", "test_ping_orthanc.py"]
+CMD ["python3", "orthanc_reciever_agent.py", "--base_output_dir", "/internal_data", "--product_path", "runner.sh", "--api_key", "${API_KEY}"]
