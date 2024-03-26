@@ -51,22 +51,23 @@ def create_hospital_user(db: Session, user: schemas.UserHospitalCreate) -> model
     # add association to join table here
     db.add(db_user)
     db.commit()
-    # TODO: this hospital_id is hardcoded so the router unit test will pass
     db.execute(
-        hospital_user_association.insert().values(user_id=db_user.id, hospital_id=1)
+        hospital_user_association.insert().values(
+            user_id=db_user.id, hospital_id=user.hospital_id
+        )
     )
     db.commit()
     db.refresh(db_user)
     return db_user
 
 
-def create_provider_user(db: Session, user: schemas.UserHospitalCreate) -> models.User:
+def create_provider_user(db: Session, user: schemas.UserCreate) -> models.User:
     """
     Creates a new user in the database associated with a provider.
 
     Args:
         db (Session): The database session.
-        user (schemas.UserHospitalCreate): The user to create.
+        user (schemas.UserProviderCreate): The user to create.
     """
     db_user = models.User(
         email=user.email,

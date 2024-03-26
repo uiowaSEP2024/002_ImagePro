@@ -31,16 +31,24 @@ def test_create_user_provider_role(app_client):
     assert response.json()["created_at"] is not None
 
 
-def make_hospital(db):
-    # Create a test hospital which will have id 1
-    #
-    hospital_data = HospitalCreate(hospital_name="Test Hospital")
-    return create_hospital(db=db, hospital=hospital_data)
+# def make_hospital(db):
+#     # Create a test hospital which will have id 1
+#     #
+#     hospital_data = HospitalCreate(hospital_name="Test Hospital")
+#     return create_hospital(db=db, hospital=hospital_data)
 
 
 def test_create_user_hospital_role(db, app_client):
     # Create a test hospital
-    make_hospital(db)
+    # make_hospital(db)
+
+    # Create a test hospital which will have id 1
+    hospital = create_hospital(
+        db,
+        HospitalCreate(
+            hospital_name="Test Hospital",
+        ),
+    )
 
     data = {
         "email": "gh@example.com",
@@ -48,6 +56,7 @@ def test_create_user_hospital_role(db, app_client):
         "first_name": "Jess",
         "last_name": "Doe",
         "role": UserRoleEnum.hospital,
+        "hospital_id": hospital.id,
     }
     response = app_client.post("/users/", json=data)
     assert response.status_code == 200
