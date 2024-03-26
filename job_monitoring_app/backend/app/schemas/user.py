@@ -15,7 +15,6 @@ class UserBase(BaseModel):
     email: str
     first_name: str
     last_name: str
-    role: UserRoleEnum = UserRoleEnum.hospital
 
 
 # for admins
@@ -27,16 +26,19 @@ class UserCreate(UserBase):
 # based on what is selected at signup, the user will be associated with hospital or provider
 class UserHospitalCreate(UserBase):
     password: str
+    role: UserRoleEnum = UserRoleEnum.hospital
     hospital_id: int
 
 
 class UserProviderCreate(UserBase):
     password: str
+    role: UserRoleEnum = UserRoleEnum.provider
     provider_id: int
 
 
 class User(UserBase):
     id: int
+    role: UserRoleEnum
     created_at: datetime = None
     updated_at: datetime = None
 

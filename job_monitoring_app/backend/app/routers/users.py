@@ -12,7 +12,7 @@ router.tags = ["users"]
 @router.post("/users/", response_model=schemas.User)
 def create_user(
     user: Union[
-        schemas.UserCreate, schemas.UserHospitalCreate, schemas.UserProviderCreate
+        schemas.UserHospitalCreate, schemas.UserProviderCreate, schemas.UserCreate
     ],
     db: Session = Depends(get_db),
 ):
