@@ -137,14 +137,14 @@ def process_data(
 
     # Command to run the script
     command = [
-        "python3",
+        "/bin/bash",
         brains_tool_path,
-        "-i",
-        study_id,
         "-s",
         input_data_path,
         "-o",
         output_path,
+        "-i",
+        study_id,
     ]
 
     try:
@@ -232,9 +232,11 @@ def make_list_of_studies_to_process(
     param orthanc_client: The PyOrthanc client to use to fetch the list of studies.
     return: A list of studies to process.
     """
+    logger = logging.getLogger(LOGGER_NAME)
     studies: list[pyorthanc.Study] = pyorthanc.find_studies(client=orthanc_client)
     # Filter out studies that have already been processed
     studies_to_process = []
+    logger.info(f"Found {len(studies)} studies in Orthanc")
     for study in studies:
         study_id = study.id_
         if study_id not in study_processed_dict:
@@ -263,7 +265,7 @@ def make_list_of_studies_to_process(
                     )
                     api_key = os.environ.get("API_KEY")
                     backend_url = os.environ.get("BACKEND_URL")
-                    logger.debug(
+                    logger.info(
                         f"Attempting to create logger object for study {study_id}"
                         f"with api_key: {api_key} and backend_url: {backend_url}"
                     )
@@ -433,7 +435,7 @@ if __name__ == "__main__":
         "--product_path",
         type=str,
         help="The path to the product executable to run",
-        default="../example_tool/brainmask_tool.py",
+        default="../example_run_brain_mask_tool_docker.sh",
     )
     parser.add_argument(
         "-u",
@@ -441,6 +443,7 @@ if __name__ == "__main__":
         type=str,
         help="The url to the orthanc server",
         default="http://localhost:8026",
+        required=False,
     )
     parser.add_argument(
         "-k",
@@ -455,6 +458,7 @@ if __name__ == "__main__":
         type=str,
         help="The url to the backend server",
         default="http://localhost:8000",
+        required=False,
     )
 
     args = parser.parse_args()
@@ -464,16 +468,24 @@ if __name__ == "__main__":
     orthanc_url = args.orthanc_url
     backend_url = args.backend_url
     logging.basicConfig(level=logging.INFO)
-    if args.api_key is not None:
-        os.environ["API_KEY"] = args.api_key
-    if args.backend_url is not None:
+
+    if os.environ.get("BACKEND_URL") is not None:
+        backend_url = os.environ.get("BACKEND_URL")
+    else:
         os.environ["BACKEND_URL"] = backend_url
+    if os.environ.get("ORTHANC_URL") is not None:
+        orthanc_url = os.environ.get("ORTHANC_URL")
+    else:
+        os.environ["ORTHANC_URL"] = orthanc_url
+
     logger = setup_custom_logger("orthanc_agent")
-    logger.debug(
+    logger.info(
+        f"*********************\n"
         f"Starting orthanc agent with base_output_dir: {base_output_dir}"
-        f"product_path: {product_path}"
-        f"orthanc_url: {orthanc_url}"
-        f"backend_url: {backend_url}"
+        f"product_path: {product_path}\n"
+        f"orthanc_url: {orthanc_url}\n"
+        f"backend_url: {backend_url}\n"
+        f"*********************\n"
     )
     if os.environ.get("API_KEY") is None:
         raise ValueError(
