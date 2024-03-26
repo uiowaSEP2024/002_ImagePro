@@ -1,8 +1,12 @@
 from app import models
+from app import services
 from app.internal import get_password_hash
 from app.schemas.user import UserRoleEnum
 from config import config
 from sqlalchemy import event, inspect
+from app.schemas.user import UserHospitalCreate
+from app.schemas.user import UserProviderCreate
+from app.schemas.user import UserCreate
 
 
 @event.listens_for(models.StudyConfiguration, "init")
@@ -19,61 +23,15 @@ def create_nested(target, args, kwargs):
 
 
 # Cache for Created Entities
-users = {}
+study_configs = {}
 studies = {}
 events = {}
-api_keys = {}
-study_configs = {}
 hospitals = {}
 providers = {}
+users = {}
+api_keys = {}
 
 # Data to be seeded for each entity
-USERS_DATA = [
-    # Customers
-    dict(
-        email="johndoe@gmail.com",
-        password="abcdefg",
-        first_name="John",
-        last_name="Doe",
-        role=UserRoleEnum.hospital,
-    ),
-    dict(
-        email="janeblack@gmail.com",
-        password="abcdefg",
-        first_name="Jane",
-        last_name="Black",
-        role=UserRoleEnum.hospital,
-    ),
-    # Providers
-    dict(
-        email="noodlesco@gmail.com",
-        password="abcdefg",
-        first_name="NoodlesCo",
-        role=UserRoleEnum.provider,
-    ),
-    dict(
-        email="botimage@gmail.com",
-        password="abcdefg",
-        first_name="BotImage",
-        role=UserRoleEnum.provider,
-    ),
-]
-
-API_KEYS_DATA = [
-    # Providers
-    dict(
-        email="noodlesco@gmail.com",
-        key="VCm4-RBXxgtg__yqxf0SYGLHGn8",
-        note="Noodles & Co Key",
-    ),
-    dict(
-        email="botimage@gmail.com",
-        key="q-jAqPWCRGr2u6SeK6r6U0LBfJA",
-        note="Bot Image Key",
-    ),
-]
-
-
 STUDIES_CONFIGURATIONS = [
     dict(
         name="Kidney Cancer",
@@ -375,6 +333,55 @@ PROVIDERS_DATA = [
     ),
 ]
 
+USERS_DATA = [
+    # Hospital users
+    dict(
+        email="johndoe@gmail.com",
+        password="abcdefg",
+        first_name="John",
+        last_name="Doe",
+        role=UserRoleEnum.hospital,
+        hospital_id=1,
+    ),
+    dict(
+        email="janeblack@gmail.com",
+        password="abcdefg",
+        first_name="Jane",
+        last_name="Black",
+        role=UserRoleEnum.hospital,
+        hospital_id=2,
+    ),
+    # Providers
+    dict(
+        email="noodlesco@gmail.com",
+        password="abcdefg",
+        first_name="NoodlesCo",
+        role=UserRoleEnum.provider,
+        provider_id=2,
+    ),
+    dict(
+        email="botimage@gmail.com",
+        password="abcdefg",
+        first_name="BotImage",
+        role=UserRoleEnum.provider,
+        provider_id=1,
+    ),
+]
+
+API_KEYS_DATA = [
+    # Providers
+    dict(
+        email="noodlesco@gmail.com",
+        key="VCm4-RBXxgtg__yqxf0SYGLHGn8",
+        note="Noodles & Co Key",
+    ),
+    dict(
+        email="botimage@gmail.com",
+        key="q-jAqPWCRGr2u6SeK6r6U0LBfJA",
+        note="Bot Image Key",
+    ),
+]
+
 
 def seed_users(db):
     print("Seeding Users")
@@ -388,11 +395,43 @@ def seed_users(db):
             hashed_password=get_password_hash(user_data["password"]),
             role=user_data["role"],
         )
-        db.add(user)
-        db.commit()
-        db.refresh(user)
 
-        users[user.email] = user
+        if user.role == UserRoleEnum.hospital:
+            input = {
+                "email": user_data["email"],
+                "first_name": user_data.get("first_name", ""),
+                "last_name": user_data.get("last_name", ""),
+                "password": user_data["password"],
+                "role": user_data["role"],
+                "hospital_id": user_data.get("hospital_id", None),
+            }
+            db_user = services.create_hospital_user(
+                db, UserHospitalCreate.parse_obj(input)
+            )
+
+        elif user.role == UserRoleEnum.provider:
+            input = {
+                "email": user_data["email"],
+                "first_name": user_data.get("first_name", ""),
+                "last_name": user_data.get("last_name", ""),
+                "password": user_data["password"],
+                "role": user_data["role"],
+                "provider_id": user_data.get("provider_id", None),
+            }
+            db_user = services.create_provider_user(
+                db, UserProviderCreate.parse_obj(input)
+            )
+        else:
+            input = {
+                "email": user_data["email"],
+                "first_name": user_data.get("first_name", ""),
+                "last_name": user_data.get("last_name", ""),
+                "password": user_data["password"],
+                "role": user_data["role"],
+            }
+            db_user = services.create_user(db, UserCreate.parse_obj(input))
+
+        users[user.email] = db_user
 
 
 def seed_api_keys(db):
@@ -514,10 +553,10 @@ def seed_providers(db):
 
 def seed_db():
     db = config.db.SessionLocal()
+    seed_hospitals(db)
+    seed_providers(db)
     seed_users(db)
     seed_api_keys(db)
     seed_study_configurations(db)
     seed_studies(db)
     seed_events(db)
-    seed_hospitals(db)
-    seed_providers(db)
