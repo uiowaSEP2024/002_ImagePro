@@ -4,12 +4,17 @@ import sqlalchemy
 from config import config
 from app.schemas import UserCreate
 from app.schemas import UserHospitalCreate
+from app.schemas import ProviderCreate
 from app.services.users import create_user
 from app.services.users import create_hospital_user
 from app.schemas.user import UserRoleEnum
 from app.schemas.hospital import HospitalCreate
 from app.services.hospitals import create_hospital
 from app.services.users import get_user_hospital
+from app.services.providers import create_provider
+from app.schemas import UserProviderCreate
+from app.services.users import create_provider_user
+from app.services.users import get_user_provider
 
 
 def test_users_no_role():
@@ -163,3 +168,38 @@ def test_users_hospital_association():
     assert db_user.role == UserRoleEnum.hospital
     assert db_user.created_at is not None
     assert get_user_hospital(db, db_user.id).hospital_name == db_hospital.hospital_name
+
+
+def test_users_provider_association():
+    db = config.db.SessionLocal()
+
+    db_provider = create_provider(
+        db,
+        ProviderCreate.parse_obj(
+            {
+                "provider_name": "test_provider_banjo",
+            }
+        ),
+    )
+
+    db_user = create_provider_user(
+        db,
+        UserProviderCreate.parse_obj(
+            {
+                "email": "banjo@example.com",
+                "password": "abc",
+                "first_name": "Banjo",
+                "last_name": "Kazooie",
+                "role": UserRoleEnum.provider,
+                "provider_id": db_provider.id,
+            }
+        ),
+    )
+
+    assert db_user.email == "banjo@example.com"
+    assert db_user.hashed_password is not None
+    assert db_user.first_name == "Banjo"
+    assert db_user.last_name == "Kazooie"
+    assert db_user.role == UserRoleEnum.provider
+    assert db_user.created_at is not None
+    assert get_user_provider(db, db_user.id).provider_name == db_provider.provider_name

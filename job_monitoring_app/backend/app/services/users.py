@@ -139,3 +139,15 @@ def get_user_hospital(db: Session, user_id: int) -> models.Hospital:
         .filter(hospital_user_association.c.user_id == user_id)
         .first()
     )
+
+
+def get_user_provider(db: Session, user_id: int) -> models.Provider:
+    pass
+    # """
+    # Retrieves the provider associated with a user, only for 'provider' users
+    #
+    # Args:
+    #     db (Session): The database session.
+    #     user_id (int): The ID of the user to retrieve the provider for.
+    # """
+    # return db.query(models.Provider).filter(models.Provider.id == user_id).first()

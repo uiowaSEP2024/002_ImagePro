@@ -16,3 +16,15 @@ def create_provider(db: Session, provider: schemas.ProviderCreate) -> models.Pro
     db.commit()
     db.refresh(db_provider)
     return db_provider
+
+
+def get_provider_users(db: Session, provider_id: int) -> models.User:
+    pass
+    # """
+    # Get all users in a provider.
+    #
+    # Args:
+    #     db (Session): The database session.
+    #     provider_id (int): The provider id.
+    # """
+    # return db.query(models.User).filter(models.User.provider_id == provider_id).all()
