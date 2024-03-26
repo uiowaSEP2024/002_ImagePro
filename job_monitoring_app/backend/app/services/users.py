@@ -51,8 +51,6 @@ def create_hospital_user(db: Session, user: schemas.UserHospitalCreate) -> model
     # add association to join table here
     db.add(db_user)
     db.commit()
-    print(db_user.id)
-    print(user.hospital_id)
     db.execute(
         hospital_user_association.insert().values(
             user_id=db_user.id, hospital_id=user.hospital_id

@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from app import models, schemas
+from app.models.hospital_users import hospital_user_association
 
 
 def create_hospital(db: Session, hospital: schemas.HospitalCreate) -> models.Hospital:
@@ -16,3 +17,19 @@ def create_hospital(db: Session, hospital: schemas.HospitalCreate) -> models.Hos
     db.commit()
     db.refresh(db_hospital)
     return db_hospital
+
+
+def get_hospital_users(db: Session, hospital_id: int) -> models.User:
+    """
+    Get all users in a hospital.
+
+    Args:
+        db (Session): The database session.
+        hospital_id (int): The hospital id.
+    """
+    return (
+        db.query(models.User)
+        .join(hospital_user_association)
+        .filter(hospital_user_association.c.hospital_id == hospital_id)
+        .all()
+    )

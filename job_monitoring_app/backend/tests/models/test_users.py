@@ -142,7 +142,6 @@ def test_users_hospital_association():
         ),
     )
 
-    db = config.db.SessionLocal()
     db_user = create_hospital_user(
         db,
         UserHospitalCreate.parse_obj(
