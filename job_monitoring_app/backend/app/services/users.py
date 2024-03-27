@@ -49,7 +49,6 @@ def create_hospital_user(db: Session, user: schemas.UserHospitalCreate) -> model
         last_name=user.last_name,
         role=user.role,
     )
-    # add association to join table here
     db.add(db_user)
     db.commit()
     db.execute(
@@ -77,7 +76,6 @@ def create_provider_user(db: Session, user: schemas.UserProviderCreate) -> model
         last_name=user.last_name,
         role=user.role,
     )
-    # add association to join table here
     db.add(db_user)
     db.commit()
     db.execute(
@@ -105,7 +103,6 @@ def create_user(db: Session, user: schemas.UserCreate) -> models.User:
         last_name=user.last_name,
         role=user.role,
     )
-    # add association to join table here
     db.add(db_user)
     db.commit()
     db.refresh(db_user)

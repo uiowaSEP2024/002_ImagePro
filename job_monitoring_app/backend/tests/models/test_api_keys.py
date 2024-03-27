@@ -6,8 +6,6 @@ from app.services.api_keys import (
 
 from app import models, services, schemas
 
-# TODO these will need to be refactored once we implement a required role
-
 
 def test_generate_api_key():
     key = generate_apikey()
