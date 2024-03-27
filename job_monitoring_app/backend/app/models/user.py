@@ -6,53 +6,59 @@ from .base import Base, DateMixin
 
 class User(Base, DateMixin):
     """
-        User model
+    Represents a User model.
 
-        Attributes:
-        -----------
-        id : int
-            The primary key of the user
-        email : str
-            The email of the user
-        hashed_password : str
-            The hashed password of the user
-        first_name : str
-            The first name of the user
-        last_name : str
-            The last name of the user
+    Attributes
+    ----------
+    id : int
+        The primary key of the user.
+    email : str
+        The email of the user.
+    hashed_password : str
+        The hashed password of the user.
+    first_name : str
+        The first name of the user.
+    last_name : str
+        The last name of the user.
+    role : str
+        The role of the user (provider, hospital, admin).
+    api_keys : relationship
+        The API keys associated with the user (one to many).
+    studies : relationship
+        The studies associated with the user (one to many).
+    provider_studies : relationship
+        The provider studies associated with the user (one to many).
+    study_configurations : relationship
+        The study configurations associated with the user (one to many).
 
-        role : str
-            The role of the user (provider, hospital, admin)
-        api_keys : relationship
-            The api keys associated with the user (one to many)
-        studies : relationship
-            The studies associated with the user (one to many)
-        provider_studies : relationship
-            The provider studies associated with the user (one to many)
-        study_configurations : relationship
-            The study configurations associated with the user (one to many)
-        Note:
+    Notes
+    -----
     Provider has many study configurations:
-        This indicates that a single User instance, when acting as a Provider,
-         can be associated with multiple StudyConfiguration instances.
-         This is a one-to-many relationship from the Provider's perspective.
+        A single User instance, when acting as a Provider, can be associated with multiple
+        StudyConfiguration instances. This is a one-to-many relationship from the Provider's
+        perspective.
+
     Bidirectional:
-        This means that the relationship is set up in such a way that it can be navigated in both directions.
-        From a StudyConfiguration instance, you can access the associated Provider (User), and from a Provider (User),
-        you can access all associated StudyConfigurations.
+        The relationship is set up in such a way that it can be navigated in both directions.
+        From a StudyConfiguration instance, you can access the associated Provider (User), and from
+        a Provider (User), you can access all associated StudyConfigurations.
+
     Child class -> StudyConfiguration:
-        This indicates that StudyConfiguration is the child class in this relationship.
-        In other words, StudyConfiguration instances are the ones being "owned" or referenced by the Provider (User).
+        Indicates that StudyConfiguration is the child class in this relationship.
+        StudyConfiguration instances are the ones being "owned" or referenced by the Provider (User).
+
     Parent class -> Provider:
-        This indicates that User (referred to as Provider in this context) is the parent class in this relationship.
-        In other words, a Provider can "own" or reference multiple StudyConfiguration instances.
+        Indicates that the User (referred to as Provider in this context) is the parent class in
+        this relationship. A Provider can "own" or reference multiple StudyConfiguration instances.
+
     Parent-child relationship (has many to one) -> provider_study_configurations:
-    This is another way of saying that a Provider can have many StudyConfigurations.
-    The provider_study_configurations seems to be the name given to this relationship,
-     but it's not directly visible in the provided code.
+        Another way of saying that a Provider can have many StudyConfigurations. The
+        `provider_study_configurations` seems to be the name given to this relationship, but it's not
+        directly visible in the provided code.
+
     Child-parent relationship (one to many) -> provider (see study_configuration.py):
-    This is referring to the ability of a StudyConfiguration instance to reference its associated Provider (User).
-    The provider attribute in the StudyConfiguration class is the SQLAlchemy relationship that enables this.
+        Refers to the ability of a StudyConfiguration instance to reference its associated Provider (User).
+        The `provider` attribute in the StudyConfiguration class is the SQLAlchemy relationship that enables this.
     """
 
     __tablename__ = "users"

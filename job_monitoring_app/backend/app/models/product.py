@@ -7,24 +7,25 @@ from .base import Base, DateMixin
 
 class Product(Base, DateMixin):
     """
-    A product is a device that performs computation for a study
-    A product is owned by a provider
 
-    #TODO @Ivan is this correct?
-    Attributes:
-    -----------
-    id: int
-        Auto-generated internal product id
-    product_name: str
-        A name identifier given to the product
-    provider_id: int
-        The id of the provider that owns this product
+    Represents a product, which is a device that performs computation for a study.
+    Each product is owned by a provider.
 
 
-    relationships:
-    --------------
-    provider:
-        the provider that this product is connected to
+    Attributes
+    ----------
+    id : int
+        Auto-generated internal product ID.
+    product_name : str
+        A name identifier given to the product.
+    provider_id : int
+        The ID of the provider that owns this product.
+
+    Relationships
+    -------------
+    provider
+        The provider that this product is connected to.
+
     """
 
     __tablename__ = "products"
