@@ -6,7 +6,12 @@ Inside of this folder, the source folder contains rst files that are used to gen
 To format the documentation, the source folder structure mirrors our project structure. Each directory needs its own index file which references the rst files of the modules in that directory.
 Sub index files must be referenced in the index file of the parent directory.
 The build folder contains the generated documentation in HTML format. The build folder is not included in the repository and is generated when the documentation is built.
-To generate the build folder, run the following command in the terminal inside of the sphinx_docs folder:
+**To Run**
+1. Install Sphinx
+```
+pip install sphinx
+```
+2. To generate the build folder, run the following command in the terminal inside of the sphinx_docs folder:
 ```
 sphinx-build -b html source/ build/
 ```
