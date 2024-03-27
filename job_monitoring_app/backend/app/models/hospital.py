@@ -4,8 +4,6 @@ from sqlalchemy.orm import relationship
 
 from .base import Base, DateMixin
 
-# from .hospital_users import hospital_user_association
-
 
 class Hospital(Base, DateMixin):
     """
@@ -25,9 +23,6 @@ class Hospital(Base, DateMixin):
     pacs: list
         A list of PACS that the hospital is connected to
 
-    # TODO Add connection to users, this should be done after users are updated
-    # TODO Add connection to PACS when that table is created
-
     """
 
     __tablename__ = "hospitals"
@@ -44,7 +39,3 @@ class Hospital(Base, DateMixin):
         foreign_keys="Pacs.hospital_id",
         cascade="all, delete-orphan",
     )
-    #
-    # users = relationship(
-    #     "User", secondary=hospital_user_association, back_populates="hospitals"
-    # )

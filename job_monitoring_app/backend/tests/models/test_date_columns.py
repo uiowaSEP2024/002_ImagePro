@@ -1,6 +1,3 @@
-# TODO will need to be refactored once we require a role
-
-
 def test_user_date_fields(random_test_admin_user, db):
     assert (
         random_test_admin_user.created_at is not None
