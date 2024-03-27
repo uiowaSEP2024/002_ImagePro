@@ -6,3 +6,5 @@ Sphinx Modules
 .. toctree::
    :maxdepth: 1
    :caption: Contents:
+
+   rst_autogenerate

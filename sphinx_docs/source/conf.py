@@ -24,6 +24,9 @@ sys.path.insert(
 sys.path.insert(
     0, os.path.join(project_root, "example_tool")
 )  # Add the example_tool directory to the system path
+sys.path.insert(
+    0, os.path.join(project_root, "sphinx_docs")
+)  # Add the sphinx_docs directory to the system path
 
 
 # Configuration file for the Sphinx documentation builder.

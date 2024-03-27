@@ -13,6 +13,8 @@ Welcome to 002_Image_Pro's documentation!
    job_monitoring_app/job_mon_app_index
    internal_servers/internal_servers_index
    sphinx/sphinx_index.rst
+   example_tool/example_tool_index
+   example_tool_light/example_tool_light_index
 
 
 
