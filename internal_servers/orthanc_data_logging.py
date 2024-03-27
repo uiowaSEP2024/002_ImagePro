@@ -117,10 +117,10 @@ class OrthancStudyLogger:
 
         The log file is expected to be in JSON format with the following structure:
 
-        .. code-block:: json
+        .. code-block:: none
 
             {
-                "status": "complete" or "failed",
+                "status": "complete",  // "status" can be either "complete" or "failed"
                 "reason": "optional message if status is failed"
             }
 
