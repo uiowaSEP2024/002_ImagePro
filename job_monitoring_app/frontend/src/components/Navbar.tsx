@@ -108,7 +108,7 @@ const Navbar = (): JSX.Element => {
       to: "/apikeys",
       name: "Generate API Keys",
       id: "apikeys",
-      show: currentUser?.role === "provider"
+      show: currentUser?.role === "admin"
     }
   ];
 

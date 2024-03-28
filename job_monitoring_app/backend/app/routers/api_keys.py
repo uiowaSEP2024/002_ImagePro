@@ -2,39 +2,53 @@ from app.dependencies import (
     get_db,
     get_user_from_api_key,
     API_KEY_HEADER_NAME,
-    get_current_provider,
+    get_current_admin,
+    get_current_user_from_token,
 )
 from app import schemas, services
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 router = APIRouter()
 router.tags = ["api-keys"]
 
 
-# TODO: add current_user/authenticated_user dependency to ensure only
-#   accessible by logged in user
 # create API Key
 @router.post("/api-keys", response_model=schemas.Apikey)
 def generate_api_key(
     key: schemas.ApikeyCreate,
-    user=Depends(get_current_provider),
+    user=Depends(get_current_admin),
+    logged_in_user=Depends(get_current_user_from_token),
     db: Session = Depends(get_db),
 ):
-    return services.create_apikey_for_user(db, user.id, key=key)
+    if user.id == logged_in_user.id:
+        return services.create_apikey_for_user(db, user.id, key=key)
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Not authorized",
+        )
 
 
-# TODO: add current_user/authenticated_user dependency to ensure only
-#   accessible by logged in user
 # get all API keys for current user
 @router.get("/api-keys", response_model=list[schemas.ApikeyPublic])
-def read_apikeys(user=Depends(get_current_provider), db: Session = Depends(get_db)):
-    return services.get_api_keys_for_user(db, user.id)
+def read_apikeys(
+    user=Depends(get_current_admin),
+    logged_in_user=Depends(get_current_user_from_token),
+    db: Session = Depends(get_db),
+):
+    if user.id == logged_in_user.id:
+        return services.get_api_keys_for_user(db, user.id)
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Not authorized",
+        )
 
 
 @router.post("/api-keys/{apikey_id}/expire", response_model=schemas.ApikeyPublic)
 def expire_apikey(
-    apikey_id: int, user=Depends(get_current_provider), db: Session = Depends(get_db)
+    apikey_id: int, user=Depends(get_current_admin), db: Session = Depends(get_db)
 ):
     return services.expire_apikey_for_user(db, user.id, apikey_id)
 

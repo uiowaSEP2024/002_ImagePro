@@ -107,9 +107,9 @@ function Dashboard() {
       text: "API Integration",
       icon: <Icon as={IoAnalyticsSharp} color={"yellow.500"} w={5} h={5} />,
       iconBg: "yellow.100",
-      show: currentUser?.role === "provider",
+      show: currentUser?.role === "admin",
       link: "/apikeys",
-      description: "Generate API keys for your provider account"
+      description: "Generate API keys"
     }
   ];
 
