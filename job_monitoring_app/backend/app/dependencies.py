@@ -115,6 +115,20 @@ def get_current_user_from_token(
 get_api_key_from_header = APIKeyHeader(name=API_KEY_HEADER_NAME, auto_error=False)
 
 
+def get_current_admin(user=Depends(get_current_user_from_token)) -> User:
+    """
+    This function checks if the current user is an admin and returns the user if true.
+    If the user is not an admin, it raises an HTTPException with status code 401.
+    """
+    if user.role == UserRoleEnum.admin:
+        return user
+
+    raise HTTPException(
+        status_code=HTTP_401_UNAUTHORIZED,
+        detail="Not authorized",
+    )
+
+
 def get_current_provider(user=Depends(get_current_user_from_token)) -> User:
     """
     This function checks if the current user is a provider and returns the user if true.
