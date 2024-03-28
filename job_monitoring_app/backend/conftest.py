@@ -123,22 +123,6 @@ def random_hospital_user(db):
     return test_hospital_user
 
 
-@pytest.fixture
-def random_admin_user(db):
-    random_tag = get_next_user_count()
-    test_admin_user = services.create_user(
-        db,
-        schemas.UserCreate(
-            email=f"test-admin-user_{random_tag}@example.com",
-            password="abc",
-            first_name="first",
-            last_name="last",
-            role=UserRoleEnum.admin,
-        ),
-    )
-    return test_admin_user
-
-
 # Convenience fixture factory for generating multiple
 # users for a test. See https://stackoverflow.com/a/21590140
 @pytest.fixture
