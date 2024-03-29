@@ -4,7 +4,7 @@ Feature: API Keys
     Given user is on the homepage
     And user clicks "/login" href button
     Then user should be on "/login" page
-    When user fills "Email" with "botimage@gmail.com"
+    When user fills "Email" with "admin1@admin.com"
     And user fills "Password" with "abcdefg"
     And user clicks "login" datatestid button
     Then user should see "Login successful. Redirecting..."

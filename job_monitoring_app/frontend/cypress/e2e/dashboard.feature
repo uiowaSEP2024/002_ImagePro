@@ -19,7 +19,3 @@ Feature: Dashboard
   Scenario: Analytics route
     When user clicks "/analytics" href button
     Then user should be on "/analytics" page
-
-  Scenario: API Keys Route
-    When user clicks "/apikeys" href button
-    Then user should be on "/apikeys" page
