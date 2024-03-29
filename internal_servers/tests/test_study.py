@@ -1,6 +1,6 @@
 import subprocess
 import time
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 from internal_servers.study import SingleStudyRun, StudyState
 import pytest
 from internal_servers.util_functions import ping_orthanc, OrthancConnectionException
@@ -118,3 +118,78 @@ def test_init_orthanc_connection_failure():
                 study_config_file="config",
                 hospital_mapping_file="mapping",
             )
+
+
+def test_get_hospital_return_aet_mapping():
+    study_run = SingleStudyRun(
+        orthanc_url=internal_orthanc_url,
+        study_id="1",
+        tracker_api_key="key",
+        study_config_file="config",
+        hospital_mapping_file="mapping",
+    )
+    mapping = study_run._get_hospital_return_aet_mapping("mapping")
+    assert mapping == {"EXAMPLE_TOOL": "EXAMPLE_TOOL"}
+
+
+def test_study_is_stable():
+    with patch("internal_servers.study.pyorthanc.Study") as mock_study:
+        mock_study.get_main_information.return_value = {"IsStable": True}
+        study_run = SingleStudyRun(
+            orthanc_url=internal_orthanc_url,
+            study_id="1",
+            tracker_api_key="key",
+            study_config_file="config",
+            hospital_mapping_file="mapping",
+        )
+        assert study_run.study_is_stable(mock_study) is True
+
+
+def test_study_has_properties():
+    # Create a mock series object with the desired return value for the get_main_information method.
+    mock_series = MagicMock()
+    mock_series.get_main_information.return_value = {
+        "MainDicomTags": {"SeriesDescription": "PROPERTIES"}
+    }
+
+    # Mock the Study object's series attribute to be a list containing our mock series.
+    with patch("internal_servers.study.pyorthanc.Study") as mock_study:
+        mock_study.series = [mock_series]
+
+        # Initialize the SingleStudyRun object with the required parameters.
+        study_run = SingleStudyRun(
+            orthanc_url="internal_orthanc_url",
+            study_id="1",
+            tracker_api_key="key",
+            study_config_file="config",
+            hospital_mapping_file="mapping",
+        )
+
+        # Set the study attribute of the SingleStudyRun instance to the mock_study
+        study_run.study = mock_study
+
+        # The actual test: checking if the study_run.study_has_properties() returns True.
+        assert study_run.study_has_properties() is True
+
+
+def test_init_study_logger():
+    with patch("internal_servers.study.OrthancStudyLogger") as mock_logger:
+        study_run = SingleStudyRun(
+            orthanc_url=internal_orthanc_url,
+            study_id="1",
+            tracker_api_key="key",
+            study_config_file="config",
+            hospital_mapping_file="mapping",
+        )
+        study_run._init_study_logger("key", "config")
+        mock_logger.assert_called_once_with(
+            hospital_id="EXAMPLE_TOOL",
+            study_id="1",
+            tracker_api_key="key",
+            study_config_file="config",
+        )
+
+
+def test_init_study_object():
+    # TODO Implement this test
+    pass
