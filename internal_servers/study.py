@@ -3,8 +3,11 @@ from enum import Enum
 import pyorthanc
 import logging
 import time
-from orthanc_data_logging import OrthancStudyLogger
-from util_functions import OrthancConnectionException, format_time_delta_human_readable
+from internal_servers.orthanc_data_logging import OrthancStudyLogger
+from internal_servers.util_functions import (
+    OrthancConnectionException,
+    format_time_delta_human_readable,
+)
 
 
 class StudyState(Enum):
