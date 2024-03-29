@@ -7,6 +7,15 @@ import time
 import zipfile
 from internal_servers.orthanc_data_logging import OrthancStudyLogger
 
+import os
+from dotenv import load_dotenv
+
+base_project_dir = Path(__file__).parent.parent
+relative_env_path = base_project_dir / "job_monitoring_app/backend/.env.local"
+assert relative_env_path.exists(), f"Expected to find .env file at {relative_env_path}"
+load_dotenv(relative_env_path)
+
+API_KEY = os.environ.get("API_KEY")
 
 product_path = Path(__file__).parent.parent / "example_tool" / "brainmask_tool.py"
 assert product_path.exists()
@@ -264,7 +273,7 @@ def make_list_of_studies_to_process(
                     study_processed_dict[study_id] = OrthancStudyLogger(
                         hospital_id=1,
                         study_id=unique_study_id,
-                        tracker_api_key="epysCnrob7qQG4m8vdrYspDR66U",
+                        tracker_api_key=API_KEY,
                         study_config_file="hospital_job_configuration.json",
                     )
             else:
