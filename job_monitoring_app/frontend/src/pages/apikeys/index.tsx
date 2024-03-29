@@ -114,7 +114,7 @@ function ApiKeys() {
     <Container pt={12} maxW="container.lg">
       <Box mb={8}>
         <Heading>API Keys</Heading>
-        <Text>Manage API Keys for your provider account</Text>
+        <Text>Manage API Keys</Text>
       </Box>
 
       <VStack alignItems={"flex-start"} spacing={8}>
@@ -265,4 +265,4 @@ function ApiKeys() {
 /**
  * Export the ApiKeys component wrapped with the withAuthenticated higher-order component.
  */
-export default withAuthenticated(ApiKeys, ["provider"]);
+export default withAuthenticated(ApiKeys, ["admin"]);
