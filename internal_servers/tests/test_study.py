@@ -9,39 +9,49 @@ internal_orthanc_url = "http://localhost:8026"
 hospital_orthanc_url = "http://localhost:8030"
 
 
+def kill_all_orthanc_processes():
+    """
+    Hard stop the orthanc server
+    """
+    subprocess.run(["pkill", "-f", "Orthanc"])
+
+
 @pytest.fixture(scope="session", autouse=True)
 def orthanc_server(tmp_path_factory):
     current_dir = Path(__file__).parent
     relative_orthanc_paths = current_dir.parent.parent / "example_tool" / "Orthanc"
     internal_orthanc_startup_path = relative_orthanc_paths / "run_internal_pacs.sh"
-    hospital_orthanc_startup_path = relative_orthanc_paths / "run_hospital_pacs.sh"
+    hospital_orthanc_startup_path = relative_orthanc_paths / "run_hospital.sh"
     # Adjust this path
+    if not internal_orthanc_startup_path.exists():
+        raise FileNotFoundError(
+            f"Internal Orthanc startup script not found at {internal_orthanc_startup_path}"
+        )
+
     # Start internal Orthanc
     internal_orthanc_log = tmp_path_factory.mktemp("logs") / "internal_orthanc.log"
-    internal_proc = subprocess.Popen(
+    _ = subprocess.Popen(
         ["bash", str(internal_orthanc_startup_path)],
         stdout=internal_orthanc_log.open("w"),
+        start_new_session=True,
         stderr=subprocess.STDOUT,
     )
-
-    # Start hospital Orthanc (adjust paths and ports as needed)
     hospital_orthanc_log = tmp_path_factory.mktemp("logs") / "hospital_orthanc.log"
-    hospital_proc = subprocess.Popen(
+    _ = subprocess.Popen(
         ["bash", hospital_orthanc_startup_path.as_posix()],
         stdout=hospital_orthanc_log.open("w"),
+        start_new_session=True,
         stderr=subprocess.STDOUT,
     )
+
     print(
-        f"Started Orthanc servers at {internal_orthanc_url} and {hospital_orthanc_url} sleeping 10 seconds to ensure they are up"
+        f"Started Orthanc servers at {internal_orthanc_url}  sleeping 15 seconds to ensure they are up"
     )
     # Wait for Orthanc servers to be up
-    time.sleep(10)  # Adjust this based on how long Orthanc takes to start
+    time.sleep(15)  # Adjust this based on how long Orthanc takes to start
+    yield internal_orthanc_url, hospital_orthanc_url
 
-    yield internal_orthanc_url, hospital_orthanc_url  # Replace with actual URLs if different
-
-    # Shutdown Orthanc servers after tests
-    internal_proc.terminate()
-    hospital_proc.terminate()
+    kill_all_orthanc_processes()
 
 
 def test_orthanc_server_is_up():
