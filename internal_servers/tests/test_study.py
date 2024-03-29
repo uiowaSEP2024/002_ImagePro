@@ -1,8 +1,9 @@
 import subprocess
 import time
-
+from unittest.mock import patch
+from internal_servers.study import SingleStudyRun, StudyState
 import pytest
-from internal_servers.util_functions import ping_orthanc
+from internal_servers.util_functions import ping_orthanc, OrthancConnectionException
 from pathlib import Path
 
 internal_orthanc_url = "http://localhost:8026"
@@ -64,21 +65,56 @@ def test_orthanc_server_is_up():
 
 
 def test_single_study_run_initialization():
-    pass
-    # study = SingleStudyRun(
-    #     orthanc_url=internal_orthanc_url,
-    #     study_id=""
+    with patch("internal_servers.study.pyorthanc.AsyncOrthanc") as mock_orthanc:
+        study_run = SingleStudyRun(
+            orthanc_url="http://localhost:8026",
+            study_id="1",
+            tracker_api_key="key",
+            study_config_file="config",
+            hospital_mapping_file="mapping",
+        )
+        assert study_run.study_status == StudyState.IN_PROGRESS
+        assert study_run.study_id == "1"
+        assert study_run.is_processed is False
+        assert study_run.hospital_mapping == {"EXAMPLE_TOOL": "EXAMPLE_TOOL"}
+        mock_orthanc.assert_called_once_with("http://localhost:8026")
 
 
-# def test_ensure_orthanc_is_up():
-#     """
-#     Test that the orthanc server is up
-#     """
-#     # Add more assertions based on what you expect to be initialized.
-#     study = SingleStudyRun(
-#         orthanc_url=internal_orthanc_url,
-#         study_id=
+def test_study_status_methods():
+    study_run = SingleStudyRun(
+        orthanc_url=internal_orthanc_url,
+        study_id="1",
+        tracker_api_key="key",
+        study_config_file="config",
+        hospital_mapping_file="mapping",
+    )
+    assert study_run.get_study_is_in_progress() is True
+    assert study_run.get_study_is_completed() is False
+    assert study_run.get_study_is_errored() is False
+    assert study_run.get_study_is_failed() is False
 
-# def test_single_study_run_initialization(mocker):
-#
-#     # Add more assertions based on what you expect to be initialized.
+
+def test_init_orthanc_connection_success():
+    with patch("internal_servers.study.pyorthanc.AsyncOrthanc") as mock_orthanc:
+        _ = SingleStudyRun(
+            orthanc_url=internal_orthanc_url,
+            study_id="1",
+            tracker_api_key="key",
+            study_config_file="config",
+            hospital_mapping_file="mapping",
+        )
+        mock_orthanc.assert_called_once_with("http://localhost:8026")
+
+
+def test_init_orthanc_connection_failure():
+    with patch(
+        "internal_servers.study.pyorthanc.AsyncOrthanc", side_effect=Exception("Error")
+    ):
+        with pytest.raises(OrthancConnectionException):
+            _ = SingleStudyRun(
+                orthanc_url="http://localhost:9999",
+                study_id="1",
+                tracker_api_key="key",
+                study_config_file="config",
+                hospital_mapping_file="mapping",
+            )
