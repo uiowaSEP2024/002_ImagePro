@@ -40,12 +40,16 @@ class SingleStudyRun:
         self.hospital_mapping = self._get_hospital_return_aet_mapping(
             hospital_mapping_file
         )
+        self.study: pyorthanc.Study | None = (
+            None  # Should be overwritten the _init_study_object function
+        )
         self.async_orthanc: pyorthanc.AsyncOrthanc | None = None
         self.start_time = time.time()
         self.end_time: time.time | None = None
 
         self.max_retries: int = 5
         self._init_orthanc_connection()
+        self._init_study_object()
 
     # Boilerplate code for the study state
     def get_study_is_in_progress(self) -> bool:
@@ -136,11 +140,15 @@ class SingleStudyRun:
                 self.async_orthanc,
                 study_filter=lambda study: study.id_ == self.study_id,
             )
+
             if len(studies) > 1:
                 self.logger.error(
                     f"ERROR: Found more than one study with ID {self.study_id}"
                 )
                 self.study_status = StudyState.ERROR
+            else:
+                self.study = studies[0]
+                self.logger.info(f"Study {self.study_id} found")
         except Exception as e:
             self.logger.error(f"ERROR getting study {self.study_id} from Orthanc: {e}")
             self.study_status = StudyState.ERROR
