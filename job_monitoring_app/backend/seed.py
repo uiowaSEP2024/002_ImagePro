@@ -366,6 +366,19 @@ USERS_DATA = [
         role=UserRoleEnum.provider,
         provider_id=1,
     ),
+    # Admins
+    dict(
+        email="admin1@admin.com",
+        password="abcdefg",
+        first_name="Admin1",
+        role=UserRoleEnum.admin,
+    ),
+    dict(
+        email="admin2@admin.com",
+        password="abcdefg",
+        first_name="Admin2",
+        role=UserRoleEnum.admin,
+    ),
 ]
 
 API_KEYS_DATA = [
