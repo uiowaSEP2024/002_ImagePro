@@ -13,7 +13,7 @@ Feature: API Keys
     Then user should be on "/apikeys" page
 
   Scenario: Create API Key Happy Route
-    Then user should see "Manage API Keys for your provider account"
+    Then user should see "Manage API Keys"
     When user fills "Note" with "My Key"
     And user clicks "submit" datatestid button
     Then user should see "Please copy this key for later. This is the only time you will see it."
