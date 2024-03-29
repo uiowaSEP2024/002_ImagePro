@@ -3,8 +3,11 @@ import time
 import pyorthanc
 
 from internal_servers.util_functions import setup_custom_logger
-from study import SingleStudyRun
-from util_functions import check_study_has_properties, OrthancConnectionException
+from internal_servers.study import SingleStudyRun
+from internal_servers.util_functions import (
+    check_study_has_properties,
+    OrthancConnectionException,
+)
 
 
 class ReceiverLoop:
@@ -66,13 +69,19 @@ class ReceiverLoop:
                     self.logger.info(
                         f"Study {study.id_} already in studies_dict skipping"
                     )
+            else:
+                raise ValueError(
+                    f"Study {study.id_} does not have the required properties"
+                )
 
     def check_for_completed_studies(self):
+        studies_to_remove = []
         for study_id, single_study_run in self.studies_dict.items():
-            if single_study_run.get_study_is_completed():
-                # remove from studies_dict
-                self.studies_dict.pop(study_id)
-                self.logger.info(
-                    f"Study {study_id} has been removed from studies_dict after processing for {single_study_run.get_study_is_completed()}"
-                )
-            # TODO Handle Error states
+            if not single_study_run.get_study_is_in_progress():
+                studies_to_remove.append(study_id)
+
+        for study_id in studies_to_remove:
+            self.studies_dict.pop(study_id)
+            self.logger.info(
+                f"Study {study_id} has been removed from studies_dict after processing for {single_study_run.get_study_is_completed()}"
+            )
