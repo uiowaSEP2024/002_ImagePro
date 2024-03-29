@@ -21,6 +21,14 @@ const testProvider: User = Object.freeze({
   role: "provider"
 });
 
+const testAdmin: User = Object.freeze({
+  id: 1,
+  first_name: "Admin",
+  last_name: "Admin",
+  email: "admin@gmail.com",
+  role: "admin"
+});
+
 jest.mock("@/data", () => ({
   __esModule: true,
   ...jest.requireActual("@/data")
@@ -59,7 +67,7 @@ describe("API Keys Page", () => {
   beforeEach(() => {
     jest.spyOn(data, "fetchCheckUserLoggedIn").mockImplementation(() =>
       Promise.resolve({
-        user: testProvider,
+        user: testAdmin,
         message: ""
       })
     );
@@ -76,7 +84,7 @@ describe("API Keys Page", () => {
         name: 'API Keys'
       })
     );
-    const text = await waitFor(() => screen.getByText('Manage API Keys for your provider account'));
+    const text = await waitFor(() => screen.getByText('Manage API Keys'));
 
     expect(heading).toBeInTheDocument();
     expect(text).toBeInTheDocument();
@@ -99,7 +107,7 @@ describe("API Keys Page", () => {
     expect(heading).toBeInTheDocument();
   });
 
-  describe("when user is provider", () => {
+  describe("when user is admin", () => {
     it("renders a list of API keys", async () => {
       const { getByTestId } = await act(async () =>
         render(<ApiKeys />, { wrapper: AuthContextProvider })
@@ -113,7 +121,7 @@ describe("API Keys Page", () => {
     });
   });
 
-  describe("when user is not provider", () => {
+  describe("when user is not admin", () => {
     beforeEach(() => {
       jest.spyOn(data, "fetchCheckUserLoggedIn").mockImplementation(() =>
         Promise.resolve({
