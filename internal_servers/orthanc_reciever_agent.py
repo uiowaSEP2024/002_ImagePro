@@ -16,6 +16,7 @@ assert relative_env_path.exists(), f"Expected to find .env file at {relative_env
 load_dotenv(relative_env_path)
 
 API_KEY = os.environ.get("API_KEY")
+EXAMPLE_OUTPUT_PATH = os.environ.get("EXAMPLE_OUTPUT_PATH")
 
 product_path = Path(__file__).parent.parent / "example_tool" / "brainmask_tool.py"
 assert product_path.exists()
@@ -370,4 +371,4 @@ def main(internal_data_path: Path):
 
 
 if __name__ == "__main__":
-    main(Path("/home/mbrzus/programming/002_ImagePro/example_tool/example_output"))
+    main(Path(EXAMPLE_OUTPUT_PATH))
