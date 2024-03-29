@@ -1,6 +1,7 @@
 import logging
 
 import pyorthanc
+import requests
 
 
 def check_study_has_properties(study: pyorthanc.Study) -> bool:
@@ -43,3 +44,14 @@ def format_time_delta_human_readable(time_delta: float) -> str:
     """
     minutes, seconds = divmod(time_delta, 60)
     return f" {int(minutes)}m {int(seconds)}s"
+
+
+def ping_orthanc(orthanc_url: str) -> bool:
+    """
+    Ping the orthanc server to check if it is up.
+    """
+    try:
+        requests.get(orthanc_url)
+        return True
+    except Exception:
+        return False
