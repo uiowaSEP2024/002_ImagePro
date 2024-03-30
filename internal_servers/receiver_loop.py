@@ -2,12 +2,14 @@ import time
 
 import pyorthanc
 
-from internal_servers.util_functions import setup_custom_logger
+
 from internal_servers.study import SingleStudyRun
 from internal_servers.util_functions import (
     check_study_has_properties,
     OrthancConnectionException,
+    setup_custom_logger,
 )
+import argparse
 
 
 class ReceiverLoop:
@@ -16,7 +18,13 @@ class ReceiverLoop:
     STARTING_MAX_RETRIES = 10
     QUERY_INTERVAL = 5
 
-    def __init__(self, orthanc_url: str):
+    def __init__(
+        self,
+        orthanc_url: str,
+        api_key: str,
+        hospital_mapping_file: str,
+        study_config_file: str,
+    ):
         self.continue_running = True
 
         self.orthanc_url = orthanc_url
@@ -24,6 +32,9 @@ class ReceiverLoop:
         self.max_retries = self.STARTING_MAX_RETRIES
         self.logger = setup_custom_logger("receiver_loop")
         self.internal_orthanc: pyorthanc.Orthanc | None = None
+        self.api_key = api_key
+        self.hospital_mapping_file = hospital_mapping_file
+        self.study_config_file = study_config_file
         self._init_orthanc_connection()
         self.studies_dict: dict[str, SingleStudyRun] = {}
 
@@ -50,9 +61,9 @@ class ReceiverLoop:
         single_study_run = SingleStudyRun(
             orthanc_url=self.orthanc_url,
             study_id=study_id,
-            tracker_api_key="",
-            study_config_file="",
-            hospital_mapping_file="",
+            tracker_api_key=self.api_key,
+            study_config_file=self.study_config_file,
+            hospital_mapping_file=self.hospital_mapping_file,
         )
         return single_study_run
 
@@ -85,3 +96,23 @@ class ReceiverLoop:
             self.logger.info(
                 f"Study {study_id} has been removed from studies_dict after processing for {single_study_run.get_study_is_completed()}"
             )
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--orthanc_url", type=str, required=True)
+    parser.add_argument("--api_key", type=str, required=True)
+    parser.add_argument("--hospital_mapping_file", type=str, required=True)
+    parser.add_argument("--study_config_file", type=str, required=True)
+    args = parser.parse_args()
+
+    receiver_loop = ReceiverLoop(
+        orthanc_url=args.orthanc_url,
+        api_key=args.api_key,
+        hospital_mapping_file=args.hospital_mapping_file,
+        study_config_file=args.study_config_file,
+    )
+    while receiver_loop.continue_running:
+        receiver_loop._check_for_new_studies()
+        receiver_loop.check_for_completed_studies()
+        time.sleep(receiver_loop.QUERY_INTERVAL)
