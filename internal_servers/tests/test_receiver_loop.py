@@ -6,7 +6,9 @@ from internal_servers.receiver_loop import ReceiverLoop
 @pytest.fixture
 def receiver():
     with patch("pyorthanc.Orthanc", return_value=MagicMock()):
-        return ReceiverLoop("http://localhost")
+        return ReceiverLoop(
+            "http://localhost", "api_key", "hospital_mapping", "study_config"
+        )
 
 
 def test_check_for_new_studies_new_study_found(receiver):
