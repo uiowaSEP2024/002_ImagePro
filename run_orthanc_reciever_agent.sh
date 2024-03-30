@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Get the directory of the script
-CURRENT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+#CURRENT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 INTERNAL_DATA_DIR="orthanc_receiver_agent_data"
 if [ ! -d "${INPUT_DIR}" ]; then
