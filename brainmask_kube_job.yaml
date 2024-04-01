@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: brainmask-tool-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: brainmask-tool
+        image: example_tool_light
+        # Specify necessary env vars, volumes, and other configurations here.
+      restartPolicy: Never
+  backoffLimit: 4
+
