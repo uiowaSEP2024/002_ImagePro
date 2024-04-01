@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orthanc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orthanc
+  template:
+    metadata:
+      labels:
+        app: orthanc
+    spec:
+      containers:
+      - name: orthanc
+        image: orthanc
+        ports:
+        - containerPort: 8026
+        - containerPort: 4026
+        volumeMounts:
+        - name: orthanc-config
+          mountPath: /etc/orthanc
+      volumes:
+      - name: orthanc-config
+        configMap:
+          name: orthanc-config
+
