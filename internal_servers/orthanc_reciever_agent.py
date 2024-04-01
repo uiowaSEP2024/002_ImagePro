@@ -5,7 +5,7 @@ import pyorthanc
 import subprocess
 import time
 import zipfile
-from orthanc_data_logging import OrthancStudyLogger
+from internal_servers.orthanc_data_logging import OrthancStudyLogger
 import argparse
 import os
 import logging
