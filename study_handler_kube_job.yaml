@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: study-handler-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: study-handler
+        image: <your-study-handler-image>
+        # Add necessary environment variables, volumes, etc.
+      restartPolicy: Never
+  backoffLimit: 4
+
