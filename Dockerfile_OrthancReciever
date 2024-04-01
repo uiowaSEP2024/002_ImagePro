@@ -37,7 +37,7 @@ COPY internal_servers/hospital_job_configuration.json .
 COPY internal_servers/job-configurations-schema.generated.json .
 COPY internal_servers/orthanc_reciever_agent.py .
 COPY internal_servers/orthanc_data_logging.py .
-COPY internal_servers/test_ping_orthanc.py .
+COPY internal_servers/tests/test_ping_orthanc.py .
 COPY internal_servers/run_test_ping.sh .
 
 
