@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: <your-backend-image>
+        image: backend-image
         ports:
         - containerPort: 8000
         env:
