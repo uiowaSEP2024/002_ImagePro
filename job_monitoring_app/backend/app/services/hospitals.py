@@ -33,3 +33,13 @@ def get_hospital_users(db: Session, hospital_id: int) -> models.User:
         .filter(hospital_user_association.c.hospital_id == hospital_id)
         .all()
     )
+
+
+def get_all_hospitals(db: Session) -> models.Hospital:
+    """
+    Get all hospitals in the database.
+
+    Args:
+        db (Session): The database session.
+    """
+    return db.query(models.Hospital).all()
