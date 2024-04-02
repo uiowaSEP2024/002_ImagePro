@@ -403,6 +403,36 @@ export interface components {
       /** Password */
       password: string;
     };
+    /** UserHospitalCreate */
+    UserHospitalCreate: {
+      /** Email */
+      email: string;
+      /** First Name */
+      first_name: string;
+      /** Last Name */
+      last_name: string;
+      /** @default hospital */
+      role?: components["schemas"]["UserRoleEnum"];
+      /** Password */
+      password: string;
+      /** Hospital ID **/
+      hospital_id: number;
+    };
+    /** UserProviderCreate */
+    UserProviderCreate: {
+      /** Email */
+      email: string;
+      /** First Name */
+      first_name: string;
+      /** Last Name */
+      last_name: string;
+      /** @default hospital */
+      role?: components["schemas"]["UserRoleEnum"];
+      /** Password */
+      password: string;
+      /** Hospital ID **/
+      provider_id: number;
+    };
     /**
      * UserRoleEnum
      * @description An enumeration.
@@ -417,6 +447,34 @@ export interface components {
       msg: string;
       /** Error Type */
       type: string;
+    };
+    /** Hospital */
+    Hospital: {
+      /** ID */
+      id: number;
+      /** hospital_name **/
+      hospital_name: string;
+
+      created_at?: string;
+      /**
+       * Updated At
+       * Format: date-time
+       */
+      updated_at?: string;
+    };
+    /** Provider */
+    Provider: {
+      /** ID */
+      id: number;
+      /** provider_name **/
+      provider_name: string;
+
+      created_at?: string;
+      /**
+       * Updated At
+       * Format: date-time
+       */
+      updated_at?: string;
     };
   };
   responses: never;

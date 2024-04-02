@@ -1,4 +1,4 @@
-import { Study, StudyEvent, ApiKey, User, UserCreate } from "./types";
+import { Study, StudyEvent, ApiKey, User, UserCreate, Hospital, Provider, UserHospitalCreate, UserProviderCreate } from "./types";
 
 
 // The base URL for the backend API.
@@ -205,7 +205,7 @@ export const fetchLogin = async (email: string, password: string): Promise<{ use
  * @param {UserCreate} data - The data to send in the request body.
  * @returns {Promise<any>} A promise that resolves to the response data.
  */
-export const fetchSignUp = async (data: UserCreate): Promise<any> => {
+export const fetchSignUp = async (data: UserCreate | UserHospitalCreate | UserProviderCreate ): Promise<any> => {
   const response = await fetch(`${backendUrl}/users`, {
     method: "POST",
     headers: {
@@ -284,6 +284,45 @@ export const fetchDownloadReport = async (
   window.URL.revokeObjectURL(url);
 };
 
+/**
+ * Fetches all hospitals from the backend API.
+ *
+ * @returns {Promise<Hospital[] | void>} A promise that resolves to an array of hospitals or void.
+ */
+export const fetchHospitals = async (): Promise<Hospital[] | void> => {
+  return fetch(`${backendUrl}/hospitals`, {
+    credentials: "include",
+    method: "GET"
+  })
+    .then(async (response) => {
+      if (response.status == 200) {
+        return (await response.json()) as Hospital[];
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
+
+/**
+ * Fetches all providers from the backend API.
+ *
+ * @returns {Promise<Provider[] | void>} A promise that resolves to an array of providers or void.
+ */
+export const fetchProviders = async (): Promise<Provider[] | void> => {
+  return fetch(`${backendUrl}/providers`, {
+    credentials: "include",
+    method: "GET"
+  })
+    .then(async (response) => {
+      if (response.status == 200) {
+        return (await response.json()) as Provider[];
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
 /**
  * Checks if the backend is up and running.
  *
