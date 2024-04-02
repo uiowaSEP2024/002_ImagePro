@@ -6,6 +6,7 @@
  */
 
 // Import necessary libraries, components, hooks, and types.
+import { useAuthContext } from "@/hooks/useAuthContext";
 import { withAuthenticated } from "@/components/withAuthenticated";
 import { fetchStudies } from "@/data";
 import { Study } from "@/data/types";
@@ -28,13 +29,42 @@ import NextLink from "next/link";
 import React, { useMemo } from "react";
 import { useState, useEffect } from "react";
 
+
+
+/**
+ * The Studies component is a React component that displays a list of all studies in the system.
+ * It fetches the studies data from the server, filters the studies based on the user's search input, and displays the studies in a table.
+ * Each row in the table represents a study and contains the study's name, provider, status, and a link to the study's details page.
+ */
+function Studies() {
+const { currentUser } = useAuthContext();
+
 // Define the columns for the studies table.
-const columns = [
-  { name: "Study No.", uid: "reference_number" },
-  { name: "Name", uid: "name" },
-  { name: "Provider", uid: "provider_name" },
-  { name: "Status", uid: "status" }
-];
+if (currentUser.role == "admin") {
+    const columns = [
+      { name: "Study No.", uid: "reference_number" },
+      { name: "Name", uid: "name" },
+      { name: "Hospital", uid: "hospital_name"},
+      { name: "Provider", uid: "provider_name" },
+      { name: "Status", uid: "status" }
+    ];
+}
+if (currentUser.role == "provider") {
+    const columns = [
+      { name: "Study No.", uid: "reference_number" },
+      { name: "Name", uid: "name" },
+      { name: "Hospital", uid: "hospital_name"},
+      { name: "Status", uid: "status" }
+    ];
+}
+if (currentUser.role == "hospital") {
+    const columns = [
+      { name: "Study No.", uid: "reference_number" },
+      { name: "Name", uid: "name" },
+      { name: "Provider", uid: "provider_name"},
+      { name: "Status", uid: "status" }
+    ];
+}
 
 /**
  * The StudyTableCell component is a React component that displays a cell in the studies table.
@@ -60,6 +90,10 @@ const StudyTableCell: React.FC<StudyTableCellProps> = ({ study, colId }) => {
     );
   }
 
+  if (colId === "hospital_name") {
+    return <Text>{study.hospital.first_name}</Text>;
+  }
+
   if (colId === "provider_name") {
     return <Text>{study.provider.first_name}</Text>;
   }
@@ -77,13 +111,6 @@ const StudyTableCell: React.FC<StudyTableCellProps> = ({ study, colId }) => {
 
   return null;
 };
-
-/**
- * The Studies component is a React component that displays a list of all studies in the system.
- * It fetches the studies data from the server, filters the studies based on the user's search input, and displays the studies in a table.
- * Each row in the table represents a study and contains the study's name, provider, status, and a link to the study's details page.
- */
-function Studies() {
   // Initialize state variables for the studies data and the search input.
   const [studies, setStudies] = useState<Study[]>([]);
   const [search, setSearch] = React.useState("");
