@@ -5,3 +5,5 @@ from .events import router as events_router
 from .study_configurations import router as study_configurations_router
 from .reporting import router as reporting_router
 from .studies import router as studies_router
+from .hospitals import router as hospitals_router
+from .providers import router as providers_router
