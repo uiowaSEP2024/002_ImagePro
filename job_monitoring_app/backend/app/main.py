@@ -8,6 +8,8 @@ from app.routers import (
     study_configurations_router,
     reporting_router,
     studies_router,
+    hospitals_router,
+    providers_router,
 )
 from config import config
 from fastapi import FastAPI
@@ -47,6 +49,8 @@ app.include_router(events_router)
 app.include_router(study_configurations_router)
 app.include_router(reporting_router)
 app.include_router(studies_router)
+app.include_router(hospitals_router)
+app.include_router(providers_router)
 
 # Create handler for AWS lambda
 handler = Mangum(app, lifespan="on")
