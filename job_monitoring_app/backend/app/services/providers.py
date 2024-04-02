@@ -34,3 +34,13 @@ def get_provider_users(db: Session, provider_id: int) -> models.User:
         .filter(provider_user_association.c.provider_id == provider_id)
         .all()
     )
+
+
+def get_all_providers(db: Session) -> models.Provider:
+    """
+    Get all providers in the database.
+
+    Args:
+        db (Session): The database session.
+    """
+    return db.query(models.Provider).all()
