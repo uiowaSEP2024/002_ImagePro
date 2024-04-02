@@ -54,7 +54,8 @@ function SignUp() {
   const [role, setRole] = useState<User["role"]>("hospital");
   const [hospitals, setHospitals] = useState([]); // State to store fetched hospitals
   const [selectedHospital, setSelectedHospital] = useState(""); // State to store the selected hospital
-
+  const [providers, setProviders] = useState([]); // State to store fetched providers
+  const [selectedProvider, setSelectedProvider] = useState(""); // State to store the selected provider
   // Fetch the logIn function from the authentication context.
   const { logIn } = useAuthContext();
 
@@ -71,8 +72,22 @@ function SignUp() {
       }
     };
 
+    const fetchProviders = async () => {
+      try {
+        const response = await fetch("/api/providers"); // Adjust this to your API endpoint
+        const data = await response.json();
+        setProviders(data.providers); // Adjust this based on your API response structure
+      } catch (error) {
+        console.error("Failed to fetch providers:", error);
+        setErrorMessage("Failed to load providers.");
+      }
+    };
+
+    fetchProviders();
     fetchHospitals();
+
   }, []);
+
 
   // Define the sign-up request function.
   const sendSignUpReq = useCallback(
@@ -223,23 +238,34 @@ function SignUp() {
             </Stack>
           </RadioGroup>
 
-          {/* Hospital Dropdown */}
-          <Box flex="1" w="100%">
-            <Text fontSize="md" fontWeight="medium">
-              Select Hospital
-            </Text>
-            <Select
-              placeholder="Select hospital"
-              onChange={(e) => setSelectedHospital(e.target.value)}
-              value={selectedHospital}
-            >
-              {hospitals.map((hospital) => (
-                <option key={hospital.id} value={hospital.id}>
-                  {hospital.name}
-                </option>
-              ))}
-            </Select>
-          </Box>
+           {/* Conditional Dropdown based on selected role */}
+          {role === "hospital" ? (
+            <Box flex="1" w="100%">
+              <Text fontSize="md" fontWeight="medium">Select Hospital</Text>
+              <Select
+                placeholder="Select hospital"
+                onChange={(e) => setSelectedHospital(e.target.value)}
+                value={selectedHospital}
+              >
+                {hospitals.map((hospital) => (
+                  <option key={hospital.id} value={hospital.id}>{hospital.hospital_name}</option>
+                ))}
+              </Select>
+            </Box>
+          ) : role === "provider" ? (
+            <Box flex="1" w="100%">
+              <Text fontSize="md" fontWeight="medium">Select Provider</Text>
+              <Select
+                placeholder="Select provider"
+                onChange={(e) => setSelectedProvider(e.target.value)}
+                value={selectedProvider}
+              >
+                {providers.map((provider) => (
+                  <option key={provider.id} value={provider.id}>{provider.provider_name}</option>
+                ))}
+              </Select>
+            </Box>
+          ) : null}
 
           <Button
             type="submit"
