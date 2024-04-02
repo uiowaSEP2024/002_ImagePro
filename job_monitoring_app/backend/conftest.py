@@ -147,6 +147,31 @@ def random_test_hospital_user_factory(db):
 
 
 @pytest.fixture
+def random_provider_user_with_api_key_factory(db):
+    class Factory(object):
+        @staticmethod
+        def get():
+            random_tag = get_next_user_count()
+            test_user = services.create_user(
+                db,
+                schemas.UserCreate(
+                    email=f"test_provider_user_{random_tag}@example.com",
+                    password="abc",
+                    first_name="first",
+                    last_name="last",
+                    role=UserRoleEnum.provider,
+                ),
+            )
+            services.create_apikey_for_user(
+                db, test_user.id, key=schemas.ApikeyCreate(note="key")
+            )
+            db.refresh(test_user)
+            return test_user
+
+    return Factory()
+
+
+@pytest.fixture
 def random_study_configuration_factory(db, random_provider_user):
     class Factory(object):
         @staticmethod
