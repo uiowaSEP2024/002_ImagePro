@@ -30,9 +30,9 @@ import {
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai/index.js";
 import { useAuthContext } from "@/hooks/useAuthContext";
-import { fetchSignUp } from "@/data";
+import { fetchSignUp, fetchHospitals, fetchProviders } from "@/data";
 import { withUnauthenticated } from "@/components/withAuthenticated";
-import { User } from "@/data/types";
+import {User, Hospital, Provider, Study} from "@/data/types";
 
 import NextLink from "next/link";
 
@@ -52,41 +52,31 @@ function SignUp() {
   const [errorMessage, setErrorMessage] = useState("");
   const [notificationMessage, setNotificationMessage] = useState("");
   const [role, setRole] = useState<User["role"]>("hospital");
-  const [hospitals, setHospitals] = useState([]); // State to store fetched hospitals
-  const [selectedHospital, setSelectedHospital] = useState(""); // State to store the selected hospital
-  const [providers, setProviders] = useState([]); // State to store fetched providers
-  const [selectedProvider, setSelectedProvider] = useState(""); // State to store the selected provider
+  const [hospitals, setHospitals] =  useState<Hospital[]>([]); // State to store fetched hospitals
+  const [hospital_id, setHospital_ID] = useState<number>();
+  const [providers, setProviders] = useState<Provider[]>([]); // State to store fetched providers
+  const [provider_id, setProvider_ID] = useState<number>();
   // Fetch the logIn function from the authentication context.
   const { logIn } = useAuthContext();
 
-  // Fetch the list of hospitals from the database
+  // Fetch the studies data when the component mounts.
   useEffect(() => {
-    const fetchHospitals = async () => {
-      try {
-        const response = await fetch("/api/hospitals"); // Adjust this to your API endpoint
-        const data = await response.json();
-        setHospitals(data.hospitals); // Adjust this based on your API response structure
-      } catch (error) {
-        console.error("Failed to fetch hospitals:", error);
-        setErrorMessage("Failed to load hospitals.");
+    async function loadHospitals() {
+      const data = await fetchHospitals();
+      if (data) {
+        setHospitals(data);
       }
-    };
-
-    const fetchProviders = async () => {
-      try {
-        const response = await fetch("/api/providers"); // Adjust this to your API endpoint
-        const data = await response.json();
-        setProviders(data.providers); // Adjust this based on your API response structure
-      } catch (error) {
-        console.error("Failed to fetch providers:", error);
-        setErrorMessage("Failed to load providers.");
+    }
+    async function loadProviders() {
+      const data = await fetchProviders();
+      if (data) {
+        setProviders(data);
       }
-    };
-
-    fetchProviders();
-    fetchHospitals();
-
+    }
+    loadHospitals();
+    loadProviders();
   }, []);
+
 
 
   // Define the sign-up request function.
@@ -103,13 +93,33 @@ function SignUp() {
 
       // Attempt to create a new user account.
       try {
-        await fetchSignUp({
-          email,
-          first_name,
-          last_name,
-          password,
-          role
-        });
+        if (role === "hospital" && hospital_id) {
+          await fetchSignUp({
+            email,
+            first_name,
+            last_name,
+            password,
+            role,
+            hospital_id
+          });
+        } else if (role === "provider" && provider_id) {
+          await fetchSignUp({
+            email,
+            first_name,
+            last_name,
+            password,
+            role,
+            provider_id
+          });
+        } else {
+          await fetchSignUp({
+            email,
+            first_name,
+            last_name,
+            password,
+            role,
+          });
+        }
         setNotificationMessage("Sign up successful! Logging you in...");
         await logIn(email, password);
       } catch (e) {
@@ -244,8 +254,8 @@ function SignUp() {
               <Text fontSize="md" fontWeight="medium">Select Hospital</Text>
               <Select
                 placeholder="Select hospital"
-                onChange={(e) => setSelectedHospital(e.target.value)}
-                value={selectedHospital}
+                onChange={(e) => setHospital_ID(Number(e.target.value))}
+                value={hospital_id}
               >
                 {hospitals.map((hospital) => (
                   <option key={hospital.id} value={hospital.id}>{hospital.hospital_name}</option>
@@ -257,8 +267,8 @@ function SignUp() {
               <Text fontSize="md" fontWeight="medium">Select Provider</Text>
               <Select
                 placeholder="Select provider"
-                onChange={(e) => setSelectedProvider(e.target.value)}
-                value={selectedProvider}
+                onChange={(e) => setProvider_ID(Number(e.target.value))}
+                value={provider_id}
               >
                 {providers.map((provider) => (
                   <option key={provider.id} value={provider.id}>{provider.provider_name}</option>
