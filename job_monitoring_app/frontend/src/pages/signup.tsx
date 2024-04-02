@@ -6,7 +6,7 @@
  */
 
 // Import necessary libraries, components, hooks, and types.
-import React, { FormEvent, useCallback, useState } from "react";
+import React, { FormEvent, useCallback, useState, useEffect } from "react";
 import ErrorMessageBox from "@/components/ErrorMessageBox";
 import {
   Text,
@@ -24,7 +24,8 @@ import {
   Radio,
   Stack,
   Heading,
-  Flex
+  Flex,
+    Select
 } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai/index.js";
@@ -51,9 +52,27 @@ function SignUp() {
   const [errorMessage, setErrorMessage] = useState("");
   const [notificationMessage, setNotificationMessage] = useState("");
   const [role, setRole] = useState<User["role"]>("hospital");
+  const [hospitals, setHospitals] = useState([]); // State to store fetched hospitals
+  const [selectedHospital, setSelectedHospital] = useState(""); // State to store the selected hospital
 
   // Fetch the logIn function from the authentication context.
   const { logIn } = useAuthContext();
+
+  // Fetch the list of hospitals from the database
+  useEffect(() => {
+    const fetchHospitals = async () => {
+      try {
+        const response = await fetch("/api/hospitals"); // Adjust this to your API endpoint
+        const data = await response.json();
+        setHospitals(data.hospitals); // Adjust this based on your API response structure
+      } catch (error) {
+        console.error("Failed to fetch hospitals:", error);
+        setErrorMessage("Failed to load hospitals.");
+      }
+    };
+
+    fetchHospitals();
+  }, []);
 
   // Define the sign-up request function.
   const sendSignUpReq = useCallback(
@@ -85,6 +104,10 @@ function SignUp() {
     },
     [confirmPassword, email, first_name, last_name, logIn, password, role]
   );
+
+
+
+
 
   // Render the SignUp component.
   return (
@@ -199,6 +222,24 @@ function SignUp() {
               <Radio value="provider">Provider</Radio>
             </Stack>
           </RadioGroup>
+
+          {/* Hospital Dropdown */}
+          <Box flex="1" w="100%">
+            <Text fontSize="md" fontWeight="medium">
+              Select Hospital
+            </Text>
+            <Select
+              placeholder="Select hospital"
+              onChange={(e) => setSelectedHospital(e.target.value)}
+              value={selectedHospital}
+            >
+              {hospitals.map((hospital) => (
+                <option key={hospital.id} value={hospital.id}>
+                  {hospital.name}
+                </option>
+              ))}
+            </Select>
+          </Box>
 
           <Button
             type="submit"
