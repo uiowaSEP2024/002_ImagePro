@@ -65,6 +65,22 @@ def get_study_by_provider_study_id(
     )
 
 
+def get_all_studies(db: Session) -> list[models.Study]:
+    """
+    Get all studies for every user in the database
+
+    Args:
+        db (Session): Database session
+    Returns:
+        list[models.Study]: List of studies
+    """
+    all_studies = []
+    users = db.query(models.User).all()
+    for user in users:
+        all_studies.extend(user.studies)
+    return all_studies
+
+
 def get_studies_for_hospital(db: Session, user_id: int) -> list[models.Study]:
     """
     Get all studies associated with the hospital with the given user_id

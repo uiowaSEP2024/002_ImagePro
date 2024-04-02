@@ -18,16 +18,40 @@ def create_study(
     return services.create_study(db=db, study=study, provider=provider)
 
 
-# TODO: another route for get_provider_studies
 @router.get("/studies", response_model=List[schemas.Study])
+def get_all_studies(
+    db: Session = Depends(get_db),
+    user=Depends(get_current_user_from_token),
+):
+    if user.role == schemas.UserRoleEnum.admin:
+        return services.get_all_studies(db=db)
+    else:
+        # TODO: redirect to home
+        raise HTTPException(status_code=403, detail="Not allowed")
+
+
+@router.get("/studies-hospital", response_model=List[schemas.Study])
 def get_hospital_studies(
     db: Session = Depends(get_db),
     user=Depends(get_current_user_from_token),
 ):
-    if user.role == "hospital":
+    if user.role == schemas.UserRoleEnum.hospital:
         return services.get_studies_for_hospital(db=db, user_id=user.id)
+    else:
+        # TODO: redirect to home
+        raise HTTPException(status_code=403, detail="Not allowed")
 
-    return services.get_studies_for_provider(db=db, user_id=user.id)
+
+@router.get("/studies-provider", response_model=List[schemas.Study])
+def get_provider_studies(
+    db: Session = Depends(get_db),
+    user=Depends(get_current_user_from_token),
+):
+    if user.role == schemas.UserRoleEnum.provider:
+        return services.get_studies_for_provider(db=db, user_id=user.id)
+    else:
+        # TODO: redirect to home
+        raise HTTPException(status_code=403, detail="Not allowed")
 
 
 @router.get("/studies/{study_id}", response_model=schemas.Study)
