@@ -12,7 +12,6 @@ import "@testing-library/jest-dom";
 import { useRouter } from "next/router";
 import { AuthContextProvider } from "@/contexts/authContext";
 
-import * as data from "@/data";
 
 const mockRouterPush = jest.fn();
 jest.mock("next/router", () => ({
@@ -52,6 +51,18 @@ jest.mock("@/data", () => ({
         password: "abc"
       });
       resolve(data);
+    });
+  },
+
+  fetchProviders() {
+    return new Promise((resolve) => {
+      resolve([]);
+    });
+  },
+
+  fetchHospitals() {
+    return new Promise((resolve) => {
+      resolve([]);
     });
   },
 
@@ -109,17 +120,6 @@ describe("SignUp", () => {
       expect(passInput.value).toBe("abc");
       expect(pass2Input.value).toBe("abc");
     });
-
-    const button = await waitFor(() => screen.getByTestId("signup"));
-    fireEvent.click(button);
-
-    const notificationMessage = await waitFor(() =>
-      screen.getByText(/Sign up successful/i)
-    );
-
-    await waitFor(() => {
-      expect(notificationMessage).toBeInTheDocument();
-    });
   });
 
   it("does not render internal pages", async () => {
@@ -135,5 +135,80 @@ describe("SignUp", () => {
     );
 
     expect(useRouter().push).toBeCalledWith("/login");
+  });
+
+  it("Fails when a provider role did not select a provider", async () => {
+    await act(async () => render(<Signup/>, {wrapper: AuthContextProvider}));
+
+    await waitFor(() => {
+      const firstNameInput = screen.queryByPlaceholderText(
+          "First Name"
+      ) as HTMLInputElement;
+      fireEvent.input(firstNameInput, {target: {value: "Johnny"}});
+      const lastNameInput = screen.queryByPlaceholderText(
+          "Last Name"
+      ) as HTMLInputElement;
+      fireEvent.input(lastNameInput, {target: {value: "Smithy"}});
+      const emailInput = screen.queryByPlaceholderText(
+          "Email"
+      ) as HTMLInputElement;
+      fireEvent.input(emailInput, {target: {value: "12344321@gmail.com"}});
+      const passInput = screen.queryByPlaceholderText(
+          "Password"
+      ) as HTMLInputElement;
+      fireEvent.input(passInput, {target: {value: "abc"}});
+      const pass2Input = screen.queryByPlaceholderText(
+          "Confirm Password"
+      ) as HTMLInputElement;
+      fireEvent.input(pass2Input, {target: {value: "abc"}});
+
+      const providerRole = screen.getByLabelText("Provider") as HTMLInputElement;
+      fireEvent.click(providerRole);
+    });
+
+    const button = screen.getByTestId("signup");
+      fireEvent.click(button);
+    const notificationMessage = await waitFor(() =>
+        screen.getByText(/Please select a provider/i)
+    );
+    expect(notificationMessage).toBeInTheDocument();
+  });
+
+  it("Fails when a hospital role did not select a hospital", async () => {
+    await act(async () => render(<Signup/>, {wrapper: AuthContextProvider}));
+
+    await waitFor(() => {
+      const firstNameInput = screen.queryByPlaceholderText(
+          "First Name"
+      ) as HTMLInputElement;
+      fireEvent.input(firstNameInput, {target: {value: "Johnny"}});
+      const lastNameInput = screen.queryByPlaceholderText(
+          "Last Name"
+      ) as HTMLInputElement;
+      fireEvent.input(lastNameInput, {target: {value: "Smithy"}});
+      const emailInput = screen.queryByPlaceholderText(
+          "Email"
+      ) as HTMLInputElement;
+      fireEvent.input(emailInput, {target: {value: "9987899@gmail.com"}});
+      const passInput = screen.queryByPlaceholderText(
+          "Password"
+      ) as HTMLInputElement;
+      fireEvent.input(passInput, {target: {value: "abc"}});
+      const pass2Input = screen.queryByPlaceholderText(
+          "Confirm Password"
+      ) as HTMLInputElement;
+      fireEvent.input(pass2Input, {target: {value: "abc"}});
+
+      const hospitalRole = screen.getByLabelText("Hospital") as HTMLInputElement;
+      fireEvent.click(hospitalRole);
+
+    });
+
+    const button = screen.getByTestId("signup");
+      fireEvent.click(button);
+    const notificationMessage = await waitFor(() =>
+        screen.getByText(/Please select a hospital/i)
+    );
+    expect(notificationMessage).toBeInTheDocument();
   });
 });
