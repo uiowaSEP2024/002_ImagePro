@@ -55,14 +55,35 @@ export const fetchStudyById = async (id: number): Promise<Study | void> => {
  * @param {number} id - The ID of the study to fetch.
  * @returns {Promise<Provider | void>} A promise that resolves to a provider or void.
  */
-export const fetchProvider = async (id: number): Promise<Provider | void> => {
+export const fetchProviderById = async (id: number): Promise<Provider | void> => {
   return await fetch(`${backendUrl}/providers/${id}`, {
     credentials: "include",
     method: "GET"
   })
     .then(async (response) => {
       if (response.status == 200) {
-        return (await response.json()) as Study;
+        return (await response.json()) as Provider;
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
+
+/**
+ * Fetches a hospital by its ID from the backend API.
+ *
+ * @param {number} id - The ID of the study to fetch.
+ * @returns {Promise<Hospital | void>} A promise that resolves to a hospital or void.
+ */
+export const fetchHospitalById = async (id: number): Promise<Hospital | void> => {
+  return await fetch(`${backendUrl}/hospitals/${id}`, {
+    credentials: "include",
+    method: "GET"
+  })
+    .then(async (response) => {
+      if (response.status == 200) {
+        return (await response.json()) as Hospital;
       }
     })
     .catch((e) => {
