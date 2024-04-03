@@ -1,8 +1,13 @@
 from app.schemas.user import UserRoleEnum
 from app.schemas.hospital import HospitalCreate
 from app.schemas.provider import ProviderCreate
+from app.schemas.user import UserHospitalCreate
+from app.schemas.user import UserProviderCreate
+from app.services.users import create_hospital_user
+from app.services.users import create_provider_user
 from app.services.hospitals import create_hospital
 from app.services.providers import create_provider
+from config import config
 
 
 def test_create_user_no_role(app_client):
@@ -113,3 +118,95 @@ def test_read_user(app_client):
     assert read_user_response.status_code == 200
     assert read_user_response.json()["id"] == created_user_id
     assert read_user_response.json()["created_at"] is not None
+
+
+def test_read_user_hospital(app_client):
+
+    db = config.db.SessionLocal()
+
+    db_hospital = create_hospital(
+        db,
+        HospitalCreate.parse_obj(
+            {
+                "hospital_name": "test_hospital_router",
+            }
+        ),
+    )
+
+    db_user = create_hospital_user(
+        db,
+        UserHospitalCreate.parse_obj(
+            {
+                "email": "zzz123@example.com",
+                "password": "abc",
+                "first_name": "Micky",
+                "last_name": "Rourke",
+                "role": UserRoleEnum.hospital,
+                "hospital_id": db_hospital.id,
+            }
+        ),
+    )
+
+    # Simulate user log in
+    response = app_client.post(
+        "/login", data={"username": db_user.email, "password": "abc"}
+    )
+
+    # Grab access token for user
+    access_token = response.json()["access_token"]
+
+    read_user_hospital_response = app_client.get(
+        f"/users/{db_user.id}/hospital", cookies={"access_token": access_token}
+    )
+
+    assert read_user_hospital_response.status_code == 200
+    assert (
+        read_user_hospital_response.json()["hospital_name"] == db_hospital.hospital_name
+    )
+    assert read_user_hospital_response.json()["created_at"] is not None
+
+
+def test_read_user_provider(app_client):
+
+    db = config.db.SessionLocal()
+
+    db_provider = create_provider(
+        db,
+        ProviderCreate.parse_obj(
+            {
+                "provider_name": "test_provider_router",
+            }
+        ),
+    )
+
+    db_user = create_provider_user(
+        db,
+        UserProviderCreate.parse_obj(
+            {
+                "email": "zzz321@example.com",
+                "password": "abc",
+                "first_name": "Gene",
+                "last_name": "Wilder",
+                "role": UserRoleEnum.hospital,
+                "provider_id": db_provider.id,
+            }
+        ),
+    )
+
+    # Simulate user log in
+    response = app_client.post(
+        "/login", data={"username": db_user.email, "password": "abc"}
+    )
+
+    # Grab access token for user
+    access_token = response.json()["access_token"]
+
+    read_user_provider_response = app_client.get(
+        f"/users/{db_user.id}/provider", cookies={"access_token": access_token}
+    )
+
+    assert read_user_provider_response.status_code == 200
+    assert (
+        read_user_provider_response.json()["provider_name"] == db_provider.provider_name
+    )
+    assert read_user_provider_response.json()["created_at"] is not None
