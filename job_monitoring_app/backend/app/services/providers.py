@@ -44,3 +44,14 @@ def get_all_providers(db: Session) -> models.Provider:
         db (Session): The database session.
     """
     return db.query(models.Provider).all()
+
+
+def get_provider_by_id(db: Session, provider_id: int) -> models.Provider:
+    """
+    Get a provider by id.
+
+    Args:
+        db (Session): The database session.
+        provider_id (int): The provider id.
+    """
+    return db.query(models.Provider).get(provider_id)

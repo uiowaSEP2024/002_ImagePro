@@ -5,7 +5,7 @@ from app.services.providers import create_provider
 from app.schemas import UserProviderCreate
 from app.services.users import create_provider_user
 from app.schemas.user import UserRoleEnum
-from app.services.providers import get_provider_users
+from app.services.providers import get_provider_users, get_provider_by_id
 
 
 def test_provider_creation():
@@ -94,3 +94,20 @@ def test_provider_users():
     provider_2_users = get_provider_users(db, db_provider_2.id)
     assert len(provider_2_users) == 1
     assert provider_2_users[0].first_name == db_user_2.first_name
+
+
+def test_get_provider_by_id():
+    db = config.db.SessionLocal()
+
+    db_provider_1 = create_provider(
+        db,
+        ProviderCreate.parse_obj(
+            {
+                "provider_name": "test_provider_1",
+            }
+        ),
+    )
+
+    provider = get_provider_by_id(db, db_provider_1.id)
+    assert provider.id == db_provider_1.id
+    assert provider.provider_name == db_provider_1.provider_name
