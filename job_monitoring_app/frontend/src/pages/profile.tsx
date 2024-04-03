@@ -56,7 +56,7 @@ function Profile() {
     }
     async function loadProvider() {
       if (currentUser?.role === "provider") {
-        const data = await fetchUserProvider(currentUser.id);
+        const data = await fetchUserProvider(currentUser?.id);
         if (data) {
           setProvider(data);
         }
@@ -64,7 +64,7 @@ function Profile() {
     }
     async function loadHospital() {
       if (currentUser?.role === "hospital") {
-        const data = await fetchUserHospital(currentUser.id);
+        const data = await fetchUserHospital(currentUser?.id);
         if (data) {
           setHospital(data);
         }
