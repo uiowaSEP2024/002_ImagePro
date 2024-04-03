@@ -8,7 +8,7 @@
 // Import necessary libraries, components, hooks, and types.
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { withAuthenticated } from "@/components/withAuthenticated";
-import { fetchStudies, fetchProvider } from "@/data";
+import { fetchStudies, fetchProviderById, fetchHospitalById } from "@/data";
 import { Study } from "@/data/types";
 import {
   Input,
@@ -38,6 +38,7 @@ function Studies() {
   const [studies, setStudies] = useState<Study[]>([]);
   const [search, setSearch] = React.useState("");
   const [providerNames, setProviderNames] = useState<{ [key: string]: string }>({});
+  const [hospitalNames, setHospitalNames] = useState<{ [key: string]: string }>({});
   const { currentUser } = useAuthContext();
 
   // Define the columns for the studies table.
@@ -82,8 +83,8 @@ function Studies() {
   const StudyTableCell: React.FC<StudyTableCellProps> = ({ study, colId }) => {
     useEffect(() => {
       studies.forEach((study) => {
-        if (study.provider_id) {
-          fetchProvider(study.provider_id).then((data) => {
+        if (study.provider_id && !providerNames[study.id]) {
+          fetchProviderById(study.hospital_id).then((data) => {
             setProviderNames((prev) => ({
               ...prev,
               [study.id]: data.provider_name,
@@ -93,8 +94,22 @@ function Studies() {
       });
     }, [studies]);
 
-    // Inside the StudyTableCell component
     const providerName = providerNames[study.id];
+
+    useEffect(() => {
+      studies.forEach((study) => {
+        if (study.hospital_id && !hospitalNames[study.id]) {
+          fetchHospitalById(study.hospital_id).then((data) => {
+            setHospitalNames((prev) => ({
+              ...prev,
+              [study.id]: data.hospital_name,
+            }));
+          });
+        }
+      });
+    }, [studies]);
+
+    const hospitalName = hospitalNames[study.id];
 
     if (!study) return null;
 
@@ -111,7 +126,7 @@ function Studies() {
     }
 
     if (colId === "hospital_name") {
-      return <Text>{study.hospital_id}</Text>;
+      return <Text>{hospitalName}</Text>;
     }
 
     if (colId === "provider_name") {
