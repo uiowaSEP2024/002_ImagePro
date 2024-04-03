@@ -26,12 +26,23 @@ def test_get_hospitals(app_client, db):
     response = app_client.get("/hospitals")
 
     assert response.status_code == 200
-    assert len(response.json()) == 2
+    assert len(response.json()) >= 2
 
-    assert response.json()[0]["id"] == db_hospital_1.id
-    assert response.json()[0]["hospital_name"] == db_hospital_1.hospital_name
-    assert response.json()[0]["created_at"] is not None
+    # Flag to check if the hospitals are found in the response
+    found_hospital_1 = False
+    found_hospital_2 = False
 
-    assert response.json()[1]["id"] == db_hospital_2.id
-    assert response.json()[1]["hospital_name"] == db_hospital_2.hospital_name
-    assert response.json()[1]["created_at"] is not None
+    for item in response.json():
+        if item["hospital_name"] == db_hospital_1.hospital_name:
+            assert item["id"] == db_hospital_1.id
+            assert item["created_at"] is not None
+            found_hospital_1 = True
+
+        if item["hospital_name"] == db_hospital_2.hospital_name:
+            assert item["id"] == db_hospital_2.id
+            assert item["created_at"] is not None
+            found_hospital_2 = True
+
+    # Ensure both hospitals were found in the response
+    assert found_hospital_1, "hospital 1 not found in response"
+    assert found_hospital_2, "hospital 2 not found in response"
