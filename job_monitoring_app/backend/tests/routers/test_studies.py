@@ -116,9 +116,7 @@ def test_get_studies_as_hospital(
     access_token = response.json()["access_token"]
 
     # Use access token in the request to get a study
-    response = app_client.get(
-        "/studies-hospital", cookies={"access_token": access_token}
-    )
+    response = app_client.get("/studies", cookies={"access_token": access_token})
 
     assert response.status_code == 200
     assert len(response.json()) == 2
@@ -220,9 +218,7 @@ def test_get_studies_as_provider(
     access_token = response.json()["access_token"]
 
     # Use access token in the request to get a study
-    response = app_client.get(
-        "/studies-provider", cookies={"access_token": access_token}
-    )
+    response = app_client.get("/studies", cookies={"access_token": access_token})
 
     assert response.status_code == 200
     assert len(response.json()) == 2
@@ -244,11 +240,11 @@ def test_get_all_studies(
     random_study_configuration_factory,
     random_test_admin_user,
     random_provider_user_with_api_key_factory,
-    random_hospital_user_factory,
+    random_test_hospital_user_factory,
 ):
     study_configuration = random_study_configuration_factory.get()
-    hospital1 = random_hospital_user_factory.get()
-    hospital2 = random_hospital_user_factory.get()
+    hospital1 = random_test_hospital_user_factory.get()
+    hospital2 = random_test_hospital_user_factory.get()
     provider1 = random_provider_user_with_api_key_factory.get()
     provider2 = random_provider_user_with_api_key_factory.get()
 
