@@ -1,4 +1,4 @@
-from app import services, schemas
+from app import services, schemas, models
 
 
 def test_get_hospitals(app_client, db):
@@ -46,3 +46,14 @@ def test_get_hospitals(app_client, db):
     # Ensure both hospitals were found in the response
     assert found_hospital_1, "hospital 1 not found in response"
     assert found_hospital_2, "hospital 2 not found in response"
+
+
+def test_get_hospital(db, app_client):
+    hospital = models.Hospital(
+        hospital_name="Test",
+    )
+    db.add(hospital)
+    db.commit()
+    response = app_client.get(f"/hospitals/{hospital.id}")
+    assert response.status_code == 200
+    assert response.json()["hospital_name"] == "Test"
