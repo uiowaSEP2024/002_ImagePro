@@ -355,14 +355,14 @@ USERS_DATA = [
     dict(
         email="noodlesco@gmail.com",
         password="abcdefg",
-        first_name="NoodlesCo",
+        first_name="NoodlesCo user",
         role=UserRoleEnum.provider,
         provider_id=2,
     ),
     dict(
         email="botimage@gmail.com",
         password="abcdefg",
-        first_name="BotImage",
+        first_name="BotImage user",
         role=UserRoleEnum.provider,
         provider_id=1,
     ),
@@ -470,13 +470,13 @@ def seed_studies(db):
 
     for study_data in STUDIES_DATA:
         print(f"  Seeding study {str(study_data)}")
-        hospital = users[study_data["hospital_email"]]
-        provider = users[study_data["provider_email"]]
+        user_hospital = users[study_data["hospital_email"]]
+        user_provider = users[study_data["provider_email"]]
         study_config = study_configs[study_data["study_configuration_tag"]]
 
         study = models.Study(
-            hospital_id=hospital.id,
-            provider_id=provider.id,
+            hospital_id=services.get_user_hospital(db, user_hospital.id).id,
+            provider_id=services.get_user_provider(db, user_provider.id).id,
             study_configuration_id=study_config.id,
             provider_study_id=study_data["provider_study_id"],
         )
