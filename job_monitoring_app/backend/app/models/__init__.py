@@ -11,3 +11,5 @@ from .pacs import Pacs
 from .product import Product
 from .study_configuration import StudyConfiguration
 from .pacs import Pacs
+from .hospital_users import HospitalUsers
+from .provider_users import ProviderUsers
