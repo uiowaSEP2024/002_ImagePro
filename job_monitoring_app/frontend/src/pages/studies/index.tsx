@@ -8,7 +8,7 @@
 // Import necessary libraries, components, hooks, and types.
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { withAuthenticated } from "@/components/withAuthenticated";
-import { fetchStudies } from "@/data";
+import { fetchStudies, fetchProvider } from "@/data";
 import { Study } from "@/data/types";
 import {
   Input,
@@ -37,34 +37,42 @@ import { useState, useEffect } from "react";
  * Each row in the table represents a study and contains the study's name, provider, status, and a link to the study's details page.
  */
 function Studies() {
-const { currentUser } = useAuthContext();
+  // Initialize state variables for the studies data and the search input.
+  const [studies, setStudies] = useState<Study[]>([]);
+  const [search, setSearch] = React.useState("");
+  const [providerName, setProviderName] = React.useState("");
+  const { currentUser } = useAuthContext();
 
 // Define the columns for the studies table.
-if (currentUser.role == "admin") {
-    const columns = [
-      { name: "Study No.", uid: "reference_number" },
-      { name: "Name", uid: "name" },
-      { name: "Hospital", uid: "hospital_name"},
-      { name: "Provider", uid: "provider_name" },
-      { name: "Status", uid: "status" }
-    ];
-}
-if (currentUser.role == "provider") {
-    const columns = [
-      { name: "Study No.", uid: "reference_number" },
-      { name: "Name", uid: "name" },
-      { name: "Hospital", uid: "hospital_name"},
-      { name: "Status", uid: "status" }
-    ];
-}
-if (currentUser.role == "hospital") {
-    const columns = [
-      { name: "Study No.", uid: "reference_number" },
-      { name: "Name", uid: "name" },
-      { name: "Provider", uid: "provider_name"},
-      { name: "Status", uid: "status" }
-    ];
-}
+let columns = [];
+if (currentUser) {
+
+    if (currentUser.role == "admin") {
+        columns = [
+          { name: "Study No.", uid: "reference_number" },
+          { name: "Name", uid: "name" },
+          { name: "Hospital", uid: "hospital_name"},
+          { name: "Provider", uid: "provider_name" },
+          { name: "Status", uid: "status" }
+        ];
+    }
+    if (currentUser.role == "provider") {
+        columns = [
+          { name: "Study No.", uid: "reference_number" },
+          { name: "Name", uid: "name" },
+          { name: "Hospital", uid: "hospital_name"},
+          { name: "Status", uid: "status" }
+        ];
+    }
+    if (currentUser.role == "hospital") {
+        columns = [
+          { name: "Study No.", uid: "reference_number" },
+          { name: "Name", uid: "name" },
+          { name: "Provider", uid: "provider_name"},
+          { name: "Status", uid: "status" }
+        ];
+    }
+  }
 
 /**
  * The StudyTableCell component is a React component that displays a cell in the studies table.
@@ -76,6 +84,13 @@ type StudyTableCellProps = {
 };
 
 const StudyTableCell: React.FC<StudyTableCellProps> = ({ study, colId }) => {
+    useEffect(() => {
+      if (study.provider_id) {
+        fetchProvider(study.provider_id).then(data => {
+          setProviderName(data.provider_name);
+        });
+      }
+    }, [study.provider_id]);
   if (!study) return null;
 
   if (colId === "name") {
@@ -91,11 +106,11 @@ const StudyTableCell: React.FC<StudyTableCellProps> = ({ study, colId }) => {
   }
 
   if (colId === "hospital_name") {
-    return <Text>{study.hospital.first_name}</Text>;
+    return <Text>{study.hospital_id}</Text>;
   }
 
   if (colId === "provider_name") {
-    return <Text>{study.provider.first_name}</Text>;
+    return <Text>{providerName}</Text>;
   }
 
   if (colId === "status") {
@@ -111,9 +126,6 @@ const StudyTableCell: React.FC<StudyTableCellProps> = ({ study, colId }) => {
 
   return null;
 };
-  // Initialize state variables for the studies data and the search input.
-  const [studies, setStudies] = useState<Study[]>([]);
-  const [search, setSearch] = React.useState("");
 
   // Define the function to handle changes to the search input.
   const handleSearch = (event: {

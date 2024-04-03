@@ -50,6 +50,27 @@ export const fetchStudyById = async (id: number): Promise<Study | void> => {
 };
 
 /**
+ * Fetches a provider by its ID from the backend API.
+ *
+ * @param {number} id - The ID of the study to fetch.
+ * @returns {Promise<Provider | void>} A promise that resolves to a provider or void.
+ */
+export const fetchProvider = async (id: number): Promise<Provider | void> => {
+  return await fetch(`${backendUrl}/providers/${id}`, {
+    credentials: "include",
+    method: "GET"
+  })
+    .then(async (response) => {
+      if (response.status == 200) {
+        return (await response.json()) as Study;
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
+
+/**
  * Generates API keys by making a POST request to the backend API.
  */
 export const generateAPIKeys = async () => {
