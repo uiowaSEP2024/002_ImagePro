@@ -74,11 +74,7 @@ def get_all_studies(db: Session) -> list[models.Study]:
     Returns:
         list[models.Study]: List of studies
     """
-    all_studies = []
-    users = db.query(models.User).all()
-    for user in users:
-        all_studies.extend(user.studies)
-    return all_studies
+    return db.query(models.Study).all()
 
 
 def get_studies_for_hospital(db: Session, user_id: int) -> list[models.Study]:
