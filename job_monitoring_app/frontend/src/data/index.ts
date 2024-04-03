@@ -323,6 +323,36 @@ export const fetchProviders = async (): Promise<Provider[] | void> => {
       console.log(e);
     });
 };
+
+export const fetchUserProvider = async (user_id: number): Promise<Provider | void> => {
+  return fetch(`${backendUrl}/users/${user_id}/provider`, {
+    credentials: "include",
+    method: "GET"
+  })
+    .then(async (response) => {
+      if (response.status == 200) {
+        return (await response.json()) as Provider;
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
+
+export const fetchUserHospital = async (user_id: number): Promise<Hospital | void> => {
+  return fetch(`${backendUrl}/users/${user_id}/hospital`, {
+    credentials: "include",
+    method: "GET"
+  })
+    .then(async (response) => {
+      if (response.status == 200) {
+        return (await response.json()) as Hospital;
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
 /**
  * Checks if the backend is up and running.
  *

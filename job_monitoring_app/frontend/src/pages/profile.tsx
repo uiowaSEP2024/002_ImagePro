@@ -23,8 +23,8 @@ import {
   Icon,
   IconButton
 } from "@chakra-ui/react";
-import { fetchStudies } from "@/data";
-import { Study } from "@/data/types";
+import { fetchStudies, fetchUserProvider, fetchUserHospital } from "@/data";
+import { Study, Provider, Hospital } from "@/data/types";
 import { useState, useEffect, useMemo, useCallback } from "react";
 
 import NextLink from "next/link";
@@ -54,7 +54,25 @@ function Profile() {
         setStudies(data);
       }
     }
+    async function loadProvider() {
+      if (currentUser?.role === "provider") {
+        const data = await fetchUserProvider(currentUser.id);
+        if (data) {
+          setProvider(data);
+        }
+      }
+    }
+    async function loadHospital() {
+      if (currentUser?.role === "hospital") {
+        const data = await fetchUserHospital(currentUser.id);
+        if (data) {
+          setHospital(data);
+        }
+      }
+    }
     loadStudies();
+    loadProvider();
+    loadHospital();
   }, []);
 
   // Determine if the current user is a hospital.
@@ -105,7 +123,7 @@ function Profile() {
                 color="red.400"
               >
                 {currentUser?.role}{" "}
-                {isHospital ? `(id: #${currentUser.id})` : ""}
+                {isHospital ? `: ${hospital?.hospital_name}` : `: ${provider?.provider_name}`}
               </Heading>
 
               {isHospital &&
