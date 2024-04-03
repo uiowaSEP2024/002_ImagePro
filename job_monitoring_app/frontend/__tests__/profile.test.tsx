@@ -6,6 +6,7 @@ import { AuthContextProvider } from "@/contexts/authContext";
 import * as data from "@/data";
 import { kidneyStudyFixture } from "fixtures/kidneyStudyFixture";
 
+
 jest.mock("@/data", () => ({
   __esModule: true,
   ...jest.requireActual("@/data")
@@ -49,6 +50,19 @@ jest.spyOn(data, "fetchEvents").mockImplementation(() => Promise.resolve([]));
 jest.spyOn(data, "fetchStudyById").mockImplementation(() =>
   Promise.resolve(kidneyStudyFixture)
 );
+
+jest.spyOn(data, "fetchUserHospital").mockImplementation(() => Promise.resolve({
+    id: 1,
+    hospital_id: 1
+    })
+);
+
+jest.spyOn(data, "fetchUserProvider").mockImplementation(() => Promise.resolve({
+    id: 1,
+    provider_id: 1
+    })
+);
+
 
 describe("Profile", () => {
   it("shows initial messages", async () => {

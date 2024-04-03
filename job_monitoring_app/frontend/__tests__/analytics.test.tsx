@@ -43,6 +43,10 @@ jest.spyOn(data, "fetchCheckUserLoggedIn").mockImplementation(() =>
   })
 );
 
+jest.spyOn(data, "fetchProviders").mockImplementation(() => Promise.resolve([]));
+
+jest.spyOn(data, "fetchHospitals").mockImplementation(() => Promise.resolve([]));
+
 jest.mock("react-chartjs-2", () => ({
   Bar: () => null
 }));
