@@ -91,6 +91,27 @@ function SignUp() {
         return;
       }
 
+      // Simple regex for email validation. You might want to use a more complex one depending on your needs.
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!emailRegex.test(email)) {
+        console.log("Invalid Email Format");
+        setErrorMessage("Invalid Email Format");
+        return;
+      }
+
+      if (role === "hospital" && !hospital_id) {
+          console.log("Please select a hospital");
+          setErrorMessage("Please select a hospital");
+          return;
+      }
+
+      if (role === "provider" && !provider_id) {
+          console.log("Please select a provider");
+          setErrorMessage("Please select a provider");
+          return;
+      }
+
       // Attempt to create a new user account.
       try {
         if (role === "hospital" && hospital_id) {
@@ -111,14 +132,6 @@ function SignUp() {
             role,
             provider_id
           });
-        } else {
-          await fetchSignUp({
-            email,
-            first_name,
-            last_name,
-            password,
-            role,
-          });
         }
         setNotificationMessage("Sign up successful! Logging you in...");
         await logIn(email, password);
@@ -127,7 +140,7 @@ function SignUp() {
         setErrorMessage("Sign up failed!");
       }
     },
-    [confirmPassword, email, first_name, last_name, logIn, password, role]
+    [confirmPassword, email, first_name, last_name, logIn, password, role, hospital_id, provider_id]
   );
 
 
