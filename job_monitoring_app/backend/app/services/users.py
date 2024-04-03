@@ -3,9 +3,6 @@ from sqlalchemy.orm import Session
 from app import models, schemas
 from app.internal import get_password_hash, verify_password
 
-from app.models.hospital_users import hospital_user_association
-from app.models.provider_users import provider_user_association
-
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
@@ -51,11 +48,10 @@ def create_hospital_user(db: Session, user: schemas.UserHospitalCreate) -> model
     )
     db.add(db_user)
     db.commit()
-    db.execute(
-        hospital_user_association.insert().values(
-            user_id=db_user.id, hospital_id=user.hospital_id
-        )
+    db_hospital_user = models.HospitalUsers(
+        user_id=db_user.id, hospital_id=user.hospital_id
     )
+    db.add(db_hospital_user)
     db.commit()
     db.refresh(db_user)
     return db_user
@@ -78,11 +74,10 @@ def create_provider_user(db: Session, user: schemas.UserProviderCreate) -> model
     )
     db.add(db_user)
     db.commit()
-    db.execute(
-        provider_user_association.insert().values(
-            user_id=db_user.id, provider_id=user.provider_id
-        )
+    db_provider_user = models.ProviderUsers(
+        user_id=db_user.id, provider_id=user.provider_id
     )
+    db.add(db_provider_user)
     db.commit()
     db.refresh(db_user)
     return db_user
@@ -137,12 +132,16 @@ def get_user_hospital(db: Session, user_id: int) -> models.Hospital:
         db (Session): The database session.
         user_id (int): The ID of the user to retrieve the hospital for.
     """
-    return (
+    x = (
         db.query(models.Hospital)
-        .join(hospital_user_association)
-        .filter(hospital_user_association.c.user_id == user_id)
+        .join(models.HospitalUsers)
+        .filter(models.HospitalUsers.user_id == user_id)
         .first()
     )
+    print("user id", user_id)
+    print(x.hospital_name)
+    print(x.id)
+    return x
 
 
 def get_user_provider(db: Session, user_id: int) -> models.Provider:
@@ -154,9 +153,13 @@ def get_user_provider(db: Session, user_id: int) -> models.Provider:
         db (Session): The database session.
         user_id (int): The ID of the user to retrieve the provider for.
     """
-    return (
+    x = (
         db.query(models.Provider)
-        .join(provider_user_association)
-        .filter(provider_user_association.c.user_id == user_id)
+        .join(models.ProviderUsers)
+        .filter(models.ProviderUsers.user_id == user_id)
         .first()
     )
+    print("user id", user_id)
+    print(x.provider_name)
+    print(x.id)
+    return x

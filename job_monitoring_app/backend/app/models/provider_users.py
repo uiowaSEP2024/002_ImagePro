@@ -1,23 +1,17 @@
-from sqlalchemy import Column, Integer, ForeignKey, Table
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, ForeignKey
 
+from .base import Base
 from .user import User
 from .provider import Provider
 
 
-Base = declarative_base()
+class ProviderUsers(Base):
+    """
+    Represents the association between users and providers.
+    """
 
-# Association table
-provider_user_association = Table(
-    "user_provider",
-    Base.metadata,
-    Column(
-        "user_id", Integer, ForeignKey(User.id, ondelete="CASCADE"), primary_key=True
-    ),
-    Column(
-        "provider_id",
-        Integer,
-        ForeignKey(Provider.id, ondelete="CASCADE"),
-        primary_key=True,
-    ),
-)
+    __tablename__ = "user_provider"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer, ForeignKey(User.id, ondelete="CASCADE"))
+    provider_id = Column(Integer, ForeignKey(Provider.id, ondelete="CASCADE"))
