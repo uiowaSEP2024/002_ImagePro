@@ -40,6 +40,8 @@ function Profile() {
   const { currentUser } = useAuthContext();
   const [studies, setStudies] = useState<Study[]>([]);
   const [copied, setCopied] = useState(false);
+  const [provider, setProvider] = useState<Provider>();
+  const [hospital, setHospital] = useState<Hospital>();
 
   // Reverse the studies array for display purposes.
   const reversedStudies = useMemo(() => studies.slice().reverse(), [studies]);
