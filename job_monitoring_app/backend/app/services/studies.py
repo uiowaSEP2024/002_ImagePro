@@ -3,9 +3,10 @@ from starlette import status
 
 from app import models, schemas
 from sqlalchemy.orm import Session
-from .users import get_user
 
 from .study_configuration import get_study_configuration_by_tag
+from .providers import get_provider_by_user_id
+from .hospitals import get_hospital_by_user_id
 
 
 def create_study(
@@ -87,8 +88,11 @@ def get_studies_for_hospital(db: Session, user_id: int) -> list[models.Study]:
     Returns:
         list[models.Study]: List of studies
     """
-
-    return get_user(db, user_id).studies
+    # get hospital associated with user from join table
+    hospital = get_hospital_by_user_id(db, user_id)
+    print(hospital)
+    # get all studies associated with that provider
+    return db.query(models.Study).filter(models.Study.hospital_id == hospital.id).all()
 
 
 def get_studies_for_provider(db: Session, user_id: int) -> list[models.Study]:
@@ -101,7 +105,10 @@ def get_studies_for_provider(db: Session, user_id: int) -> list[models.Study]:
     Returns:
         list[models.Study]: List of studies
     """
-    return get_user(db, user_id).provider_studies
+    # get provider associated with user from join table
+    provider = get_provider_by_user_id(db, user_id)
+    # get all studies associated with that provider
+    return db.query(models.Study).filter(models.Study.provider_id == provider.id).all()
 
 
 def get_study_by_id(db: Session, study_id: int) -> models.Study:

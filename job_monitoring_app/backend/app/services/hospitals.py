@@ -69,5 +69,5 @@ def get_hospital_by_user_id(db: Session, user_id: int) -> models.Hospital:
         .first()
     )
     if hospital_user:
-        return hospital_user.hospital
+        return get_hospital_by_id(db, hospital_user.hospital_id)
     return None
