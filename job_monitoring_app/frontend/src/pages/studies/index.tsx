@@ -26,10 +26,7 @@ import {
   Tag
 } from "@chakra-ui/react";
 import NextLink from "next/link";
-import React, { useMemo } from "react";
-import { useState, useEffect } from "react";
-
-
+import React, { useMemo, useEffect, useState } from "react";
 
 /**
  * The Studies component is a React component that displays a list of all studies in the system.
@@ -40,92 +37,100 @@ function Studies() {
   // Initialize state variables for the studies data and the search input.
   const [studies, setStudies] = useState<Study[]>([]);
   const [search, setSearch] = React.useState("");
-  const [providerName, setProviderName] = React.useState("");
+  const [providerNames, setProviderNames] = useState<{ [key: string]: string }>({});
   const { currentUser } = useAuthContext();
 
-// Define the columns for the studies table.
-let columns = [];
-if (currentUser) {
-
+  // Define the columns for the studies table.
+  let columns = [];
+  if (currentUser) {
     if (currentUser.role == "admin") {
-        columns = [
-          { name: "Study No.", uid: "reference_number" },
-          { name: "Name", uid: "name" },
-          { name: "Hospital", uid: "hospital_name"},
-          { name: "Provider", uid: "provider_name" },
-          { name: "Status", uid: "status" }
-        ];
+      columns = [
+        { name: "Study No.", uid: "reference_number" },
+        { name: "Name", uid: "name" },
+        { name: "Hospital", uid: "hospital_name" },
+        { name: "Provider", uid: "provider_name" },
+        { name: "Status", uid: "status" }
+      ];
     }
     if (currentUser.role == "provider") {
-        columns = [
-          { name: "Study No.", uid: "reference_number" },
-          { name: "Name", uid: "name" },
-          { name: "Hospital", uid: "hospital_name"},
-          { name: "Status", uid: "status" }
-        ];
+      columns = [
+        { name: "Study No.", uid: "reference_number" },
+        { name: "Name", uid: "name" },
+        { name: "Hospital", uid: "hospital_name" },
+        { name: "Status", uid: "status" }
+      ];
     }
     if (currentUser.role == "hospital") {
-        columns = [
-          { name: "Study No.", uid: "reference_number" },
-          { name: "Name", uid: "name" },
-          { name: "Provider", uid: "provider_name"},
-          { name: "Status", uid: "status" }
-        ];
+      columns = [
+        { name: "Study No.", uid: "reference_number" },
+        { name: "Name", uid: "name" },
+        { name: "Provider", uid: "provider_name" },
+        { name: "Status", uid: "status" }
+      ];
     }
   }
 
-/**
- * The StudyTableCell component is a React component that displays a cell in the studies table.
- * It takes a study and a column ID as props, and displays the appropriate data for the cell based on the column ID.
- */
-type StudyTableCellProps = {
-  study: Study;
-  colId: (typeof columns)[number]["uid"];
-};
+  /**
+   * The StudyTableCell component is a React component that displays a cell in the studies table.
+   * It takes a study and a column ID as props, and displays the appropriate data for the cell based on the column ID.
+   */
+  type StudyTableCellProps = {
+    study: Study;
+    colId: (typeof columns)[number]["uid"];
+  };
 
-const StudyTableCell: React.FC<StudyTableCellProps> = ({ study, colId }) => {
+  const StudyTableCell: React.FC<StudyTableCellProps> = ({ study, colId }) => {
     useEffect(() => {
-      if (study.provider_id) {
-        fetchProvider(study.provider_id).then(data => {
-          setProviderName(data.provider_name);
-        });
-      }
-    }, [study.provider_id]);
-  if (!study) return null;
+      studies.forEach((study) => {
+        if (study.provider_id) {
+          fetchProvider(study.provider_id).then((data) => {
+            setProviderNames((prev) => ({
+              ...prev,
+              [study.id]: data.provider_name,
+            }));
+          });
+        }
+      });
+    }, [studies]);
 
-  if (colId === "name") {
-    return <Text>{study.study_configuration.name} </Text>;
-  }
+    // Inside the StudyTableCell component
+    const providerName = providerNames[study.id];
 
-  if (colId === "reference_number") {
-    return (
-      <Link as={NextLink} href={`/studies/${study.id}`} passHref>
-        <Text>{study.id} ↗</Text>
-      </Link>
-    );
-  }
+    if (!study) return null;
 
-  if (colId === "hospital_name") {
-    return <Text>{study.hospital_id}</Text>;
-  }
+    if (colId === "name") {
+      return <Text>{study.study_configuration.name} </Text>;
+    }
 
-  if (colId === "provider_name") {
-    return <Text>{providerName}</Text>;
-  }
+    if (colId === "reference_number") {
+      return (
+        <Link as={NextLink} href={`/studies/${study.id}`} passHref>
+          <Text>{study.id} ↗</Text>
+        </Link>
+      );
+    }
 
-  if (colId === "status") {
-    const numCompletedSteps = study.events?.filter(
-      (event) => event.kind === "Complete"
-    ).length;
-    const numSteps = study.study_configuration.step_configurations.length;
-    const status = numCompletedSteps === numSteps ? "Done" : "Waiting";
-    return (
-      <Tag colorScheme={status === "Done" ? "green" : "yellow"}>{status}</Tag>
-    );
-  }
+    if (colId === "hospital_name") {
+      return <Text>{study.hospital_id}</Text>;
+    }
 
-  return null;
-};
+    if (colId === "provider_name") {
+      return <Text>{providerName}</Text>;
+    }
+
+    if (colId === "status") {
+      const numCompletedSteps = study.events?.filter(
+        (event) => event.kind === "Complete"
+      ).length;
+      const numSteps = study.study_configuration.step_configurations.length;
+      const status = numCompletedSteps === numSteps ? "Done" : "Waiting";
+      return (
+        <Tag colorScheme={status === "Done" ? "green" : "yellow"}>{status}</Tag>
+      );
+    }
+
+    return null;
+  };
 
   // Define the function to handle changes to the search input.
   const handleSearch = (event: {
