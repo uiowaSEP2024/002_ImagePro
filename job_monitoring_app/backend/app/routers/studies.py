@@ -36,17 +36,21 @@ def get_study(
     study_id: int,
     db: Session = Depends(get_db),
     user=Depends(get_current_user_from_token),
-    # TODO: support getting study with api_key OR maybe new route so they can use provider_study_id?
 ):
     study = services.get_study_by_id(db, study_id=study_id)
 
     if study is None:
         raise HTTPException(status_code=404, detail="Study not found")
 
-    if user.id not in [study.hospital_id, study.provider_id]:
-        # TODO: add study.provider_id to the list of allowed users that can
-        #  access this once we have api key based access? See above comment
-        raise HTTPException(status_code=403, detail="Not allowed")
+    if user.role == schemas.UserRoleEnum.provider:
+        provider = services.get_provider_by_user_id(db, user_id=user.id)
+        if provider.id != study.provider_id:
+            raise HTTPException(status_code=403, detail="Not allowed")
+
+    if user.role == schemas.UserRoleEnum.hospital:
+        hospital = services.get_hospital_by_user_id(db, user_id=user.id)
+        if hospital.id != study.hospital_id:
+            raise HTTPException(status_code=403, detail="Not allowed")
 
     return study
 
@@ -57,13 +61,19 @@ def get_study_events(
     db: Session = Depends(get_db),
     user=Depends(get_current_user_from_token),
 ):
-    # TODO: see comments from /studies/{study_id}
     study = services.get_study_by_id(db, study_id=study_id)
 
     if study is None:
         raise HTTPException(status_code=404, detail="Study not found")
 
-    if user.id not in [study.hospital_id, study.provider_id]:
-        raise HTTPException(status_code=403, detail="Not allowed")
+    if user.role == schemas.UserRoleEnum.provider:
+        provider = services.get_provider_by_user_id(db, user_id=user.id)
+        if provider.id != study.provider_id:
+            raise HTTPException(status_code=403, detail="Not allowed")
+
+    if user.role == schemas.UserRoleEnum.hospital:
+        hospital = services.get_hospital_by_user_id(db, user_id=user.id)
+        if hospital.id != study.hospital_id:
+            raise HTTPException(status_code=403, detail="Not allowed")
 
     return study.events
