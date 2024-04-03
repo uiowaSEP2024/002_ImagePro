@@ -1,4 +1,4 @@
-from app import services, schemas
+from app import services, schemas, models
 
 
 def test_get_providers(app_client, db):
@@ -46,3 +46,14 @@ def test_get_providers(app_client, db):
     # Ensure both providers were found in the response
     assert found_provider_1, "Provider 1 not found in response"
     assert found_provider_2, "Provider 2 not found in response"
+
+
+def test_get_provider(db, app_client):
+    provider = models.Provider(
+        provider_name="Test",
+    )
+    db.add(provider)
+    db.commit()
+    response = app_client.get(f"/providers/{provider.id}")
+    assert response.status_code == 200
+    assert response.json()["provider_name"] == "Test"
