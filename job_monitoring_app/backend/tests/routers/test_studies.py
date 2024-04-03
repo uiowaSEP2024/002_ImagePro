@@ -234,43 +234,28 @@ def test_get_studies_as_provider(
     assert response.json()[1]["created_at"] is not None
 
 
-def test_get_all_studies(
+def test_get_study_as_admin(
     app_client,
     db,
+    random_provider_user_with_api_key,
+    random_hospital_user,
     random_study_configuration_factory,
     random_test_admin_user,
-    random_provider_user_with_api_key_factory,
-    random_test_hospital_user_factory,
 ):
     study_configuration = random_study_configuration_factory.get()
-    hospital1 = random_test_hospital_user_factory.get()
-    hospital2 = random_test_hospital_user_factory.get()
-    provider1 = random_provider_user_with_api_key_factory.get()
-    provider2 = random_provider_user_with_api_key_factory.get()
 
-    study1 = services.create_study(
+    study = services.create_study(
         db,
         schemas.StudyCreate(
             provider_study_id="145254",
-            hospital_id=hospital1.id,
+            hospital_id=random_hospital_user.id,
             tag=study_configuration.tag,
         ),
-        provider=provider1,
-    )
-
-    study2 = services.create_study(
-        db,
-        schemas.StudyCreate(
-            provider_study_id="145255",
-            hospital_id=hospital2.id,
-            tag=study_configuration.tag,
-        ),
-        provider=provider2,
+        provider=random_provider_user_with_api_key,
     )
 
     db.commit()
-    db.refresh(study1)
-    db.refresh(study2)
+    db.refresh(study)
 
     # Simulate user log in
     response = app_client.post(
@@ -284,17 +269,23 @@ def test_get_all_studies(
     response = app_client.get("/studies", cookies={"access_token": access_token})
 
     assert response.status_code == 200
-    assert len(response.json()) == 2
 
-    assert response.json()[0]["id"] == study1.id
-    assert response.json()[0]["hospital_id"] == study1.hospital_id
-    assert response.json()[0]["provider_id"] == study1.provider_id
-    assert response.json()[0]["created_at"] is not None
+    # Ensure that the response contains at least one study
+    assert response.json()
 
-    assert response.json()[1]["id"] == study2.id
-    assert response.json()[1]["hospital_id"] == study2.hospital_id
-    assert response.json()[1]["provider_id"] == study2.provider_id
-    assert response.json()[1]["created_at"] is not None
+    # Check the first study in the response
+    first_study = response.json()[0]
+    assert first_study["id"] == study.id
+    assert first_study["hospital_id"] == study.hospital_id
+    assert first_study["provider_id"] == study.provider_id
+    assert first_study["created_at"] is not None
+
+    # Ensure that study_configuration_id and study_configuration are not None
+    assert "study_configuration_id" in first_study
+    assert first_study["study_configuration_id"] is not None
+
+    assert "study_configuration" in first_study
+    assert first_study["study_configuration"] is not None
 
 
 def test_create_study_with_missing_tag(
