@@ -6,13 +6,13 @@ def test_create_study(
     app_client,
     random_provider_user_with_api_key,
     random_study_configuration_factory,
-    random_hospital_user,
+    random_hospital,
 ):
     study_configuration = random_study_configuration_factory.get()
 
     data = {
         "provider_study_id": "2432424",
-        "hospital_id": random_hospital_user.id,
+        "hospital_id": random_hospital.id,
         "tag": study_configuration.tag,
     }
 
@@ -26,7 +26,7 @@ def test_create_study(
 
     assert response.status_code == 200
     assert response.json()["provider_study_id"] == "2432424"
-    assert response.json()["hospital_id"] == random_hospital_user.id
+    assert response.json()["hospital_id"] == random_hospital.id
     assert response.json()["created_at"] is not None
     assert response.json()["study_configuration_id"] == study_configuration.id
 
@@ -40,11 +40,13 @@ def test_get_study_as_hospital(
 ):
     study_configuration = random_study_configuration_factory.get()
 
+    hospital = services.get_hospital_by_user_id(db, user_id=random_hospital_user.id)
+
     study = services.create_study(
         db,
         schemas.StudyCreate(
             provider_study_id="145254",
-            hospital_id=random_hospital_user.id,
+            hospital_id=hospital.id,
             tag=study_configuration.tag,
         ),
         provider=random_provider_user_with_api_key,
@@ -83,11 +85,13 @@ def test_get_studies_as_hospital(
 ):
     study_configuration = random_study_configuration_factory.get()
 
+    hospital = services.get_hospital_by_user_id(db, user_id=random_hospital_user.id)
+
     study1 = services.create_study(
         db,
         schemas.StudyCreate(
             provider_study_id="145254",
-            hospital_id=random_hospital_user.id,
+            hospital_id=hospital.id,
             tag=study_configuration.tag,
         ),
         provider=random_provider_user_with_api_key,
@@ -97,7 +101,7 @@ def test_get_studies_as_hospital(
         db,
         schemas.StudyCreate(
             provider_study_id="145255",
-            hospital_id=random_hospital_user.id,
+            hospital_id=hospital.id,
             tag=study_configuration.tag,
         ),
         provider=random_provider_user_with_api_key,
@@ -139,10 +143,12 @@ def test_get_study_as_different_hospital(
     random_test_hospital_user_factory,
     random_study_configuration_factory,
 ):
-    hospital_a = random_test_hospital_user_factory.get()
-    hospital_b = random_test_hospital_user_factory.get()
+    hospital_user_a = random_test_hospital_user_factory.get()
+    hospital_user_b = random_test_hospital_user_factory.get()
 
     study_configuration = random_study_configuration_factory.get()
+
+    hospital_a = services.get_hospital_by_user_id(db, user_id=hospital_user_a.id)
 
     study = services.create_study(
         db,
@@ -160,7 +166,7 @@ def test_get_study_as_different_hospital(
     # Simulate user log in as hospital b (different hospital from the
     # one who the study was made for)
     response = app_client.post(
-        "/login", data={"username": hospital_b.email, "password": "abc"}
+        "/login", data={"username": hospital_user_b.email, "password": "abc"}
     )
 
     # Grab access token for the different hospital
@@ -175,33 +181,38 @@ def test_get_study_as_different_hospital(
     assert response.status_code == 403
 
 
+# TODO: clear db and check if provider is matching with the user
 def test_get_studies_as_provider(
     app_client,
     db,
     random_provider_user_with_api_key,
-    random_hospital_user,
+    random_hospital,
     random_study_configuration_factory,
 ):
     study_configuration = random_study_configuration_factory.get()
+
+    provider = services.get_provider_by_user_id(
+        db, user_id=random_provider_user_with_api_key.id
+    )
 
     study1 = services.create_study(
         db,
         schemas.StudyCreate(
             provider_study_id="145254",
-            hospital_id=random_hospital_user.id,
+            hospital_id=random_hospital.id,
             tag=study_configuration.tag,
         ),
-        provider=random_provider_user_with_api_key,
+        provider=provider,
     )
 
     study2 = services.create_study(
         db,
         schemas.StudyCreate(
             provider_study_id="145255",
-            hospital_id=random_hospital_user.id,
+            hospital_id=random_hospital.id,
             tag=study_configuration.tag,
         ),
-        provider=random_provider_user_with_api_key,
+        provider=provider,
     )
 
     db.commit()
@@ -238,7 +249,7 @@ def test_get_study_as_admin(
     app_client,
     db,
     random_provider_user_with_api_key,
-    random_hospital_user,
+    random_hospital,
     random_study_configuration_factory,
     random_test_admin_user,
 ):
@@ -248,7 +259,7 @@ def test_get_study_as_admin(
         db,
         schemas.StudyCreate(
             provider_study_id="145254",
-            hospital_id=random_hospital_user.id,
+            hospital_id=random_hospital.id,
             tag=study_configuration.tag,
         ),
         provider=random_provider_user_with_api_key,
