@@ -128,6 +128,7 @@ def test_get_hospital_return_aet_mapping():
         study_config_file="config",
         hospital_mapping_file="mapping",
     )
+    # This test is kinda useless and needs to be refactored once the actual implementation is done
     mapping = study_run._get_hospital_return_aet_mapping("mapping")
     assert mapping == {"EXAMPLE_TOOL": "EXAMPLE_TOOL"}
 

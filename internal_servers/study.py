@@ -43,7 +43,7 @@ class SingleStudyRun:
         self.study: pyorthanc.Study | None = (
             None  # Should be overwritten the _init_study_object function
         )
-        self.async_orthanc: pyorthanc.AsyncOrthanc | None = None
+        self.orthanc: pyorthanc.Orthanc | None = None
         self.start_time = time.time()
         self.end_time: time.time | None = None
 
@@ -122,22 +122,22 @@ class SingleStudyRun:
         )
 
     def _init_orthanc_connection(self) -> None:
-        while self.max_retries > 0 and not self.async_orthanc:
+        while self.max_retries > 0 and not self.orthanc:
             try:
-                self.async_orthanc = pyorthanc.AsyncOrthanc(self.orthanc_url)
+                self.orthanc = pyorthanc.Orthanc(self.orthanc_url)
             except Exception as orthanc_e:
                 self.max_retries -= 1
                 self.logger.error(f"ERROR connecting to Orthanc: {orthanc_e}")
                 time.sleep(5)
-        if not self.async_orthanc:
+        if not self.orthanc:
             raise OrthancConnectionException(
                 f"Study {self.study_id} failed to connect to Orthanc at {self.orthanc_url} after {self.max_retries} retries"
             )
 
-    async def _init_study_object(self):
+    def _init_study_object(self):
         try:
-            studies = await pyorthanc.find(
-                self.async_orthanc,
+            studies = pyorthanc.find(
+                self.orthanc,
                 study_filter=lambda study: study.id_ == self.study_id,
             )
 
