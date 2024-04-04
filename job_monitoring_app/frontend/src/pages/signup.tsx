@@ -92,7 +92,7 @@ function SignUp() {
       }
 
       // Simple regex for email validation. You might want to use a more complex one depending on your needs.
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
       if (!emailRegex.test(email)) {
         console.log("Invalid Email Format");
