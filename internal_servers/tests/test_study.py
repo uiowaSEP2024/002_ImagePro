@@ -65,37 +65,50 @@ def test_orthanc_server_is_up():
 
 
 def test_single_study_run_initialization():
-    with patch("internal_servers.study.pyorthanc.AsyncOrthanc") as mock_orthanc:
+    with patch("internal_servers.study.pyorthanc.Orthanc") as mock_orthanc:
+        with patch(
+            "internal_servers.study.SingleStudyRun._init_study_object"
+        ) as mock_init_logger:
+            with patch("internal_servers.study.pyorthanc.find") as mock_find:
+                mock_study = MagicMock()
+                mock_study.id_ = "1"
+                mock_find.return_value = [mock_study]
+                study_run = SingleStudyRun(
+                    orthanc_url="http://localhost:8026",
+                    study_id="1",
+                    tracker_api_key="key",
+                    study_config_file="config",
+                    hospital_mapping_file="mapping",
+                )
+
+                assert study_run.study_status == StudyState.IN_PROGRESS
+                assert study_run.study_id == "1"
+                assert study_run.is_processed is False
+                assert study_run.hospital_mapping == {"EXAMPLE_TOOL": "EXAMPLE_TOOL"}
+                mock_orthanc.assert_called_once_with("http://localhost:8026")
+                mock_init_logger.assert_called_once()
+
+
+def test_study_status_methods():
+    with patch("internal_servers.study.pyorthanc.find") as mock_find:
+        mock_study = MagicMock()
+        mock_study.id_ = "1"
+        mock_find.return_value = [mock_study]
         study_run = SingleStudyRun(
-            orthanc_url="http://localhost:8026",
+            orthanc_url=internal_orthanc_url,
             study_id="1",
             tracker_api_key="key",
             study_config_file="config",
             hospital_mapping_file="mapping",
         )
-        assert study_run.study_status == StudyState.IN_PROGRESS
-        assert study_run.study_id == "1"
-        assert study_run.is_processed is False
-        assert study_run.hospital_mapping == {"EXAMPLE_TOOL": "EXAMPLE_TOOL"}
-        mock_orthanc.assert_called_once_with("http://localhost:8026")
-
-
-def test_study_status_methods():
-    study_run = SingleStudyRun(
-        orthanc_url=internal_orthanc_url,
-        study_id="1",
-        tracker_api_key="key",
-        study_config_file="config",
-        hospital_mapping_file="mapping",
-    )
-    assert study_run.get_study_is_in_progress() is True
-    assert study_run.get_study_is_completed() is False
-    assert study_run.get_study_is_errored() is False
-    assert study_run.get_study_is_failed() is False
+        assert study_run.get_study_is_in_progress() is True
+        assert study_run.get_study_is_completed() is False
+        assert study_run.get_study_is_errored() is False
+        assert study_run.get_study_is_failed() is False
 
 
 def test_init_orthanc_connection_success():
-    with patch("internal_servers.study.pyorthanc.AsyncOrthanc") as mock_orthanc:
+    with patch("internal_servers.study.pyorthanc.Orthanc") as mock_orthanc:
         _ = SingleStudyRun(
             orthanc_url=internal_orthanc_url,
             study_id="1",
@@ -108,7 +121,7 @@ def test_init_orthanc_connection_success():
 
 def test_init_orthanc_connection_failure():
     with patch(
-        "internal_servers.study.pyorthanc.AsyncOrthanc", side_effect=Exception("Error")
+        "internal_servers.study.pyorthanc.Orthanc", side_effect=Exception("Error")
     ):
         with pytest.raises(OrthancConnectionException):
             _ = SingleStudyRun(
@@ -192,5 +205,28 @@ def test_init_study_logger():
 
 
 def test_init_study_object():
-    # TODO Implement this test
-    pass
+    with patch("internal_servers.study.pyorthanc.find") as mock_find:
+        mock_study = MagicMock()
+        mock_study.id_ = "1"
+        mock_find.return_value = [mock_study]
+        study_run = SingleStudyRun(
+            orthanc_url=internal_orthanc_url,
+            study_id="1",
+            tracker_api_key="key",
+            study_config_file="config",
+            hospital_mapping_file="mapping",
+        )
+        assert study_run.study.id_ == "1"
+
+
+def test_init_study_object_study_doesnt_exist():
+    with patch("internal_servers.study.pyorthanc.find") as mock_find:
+        mock_find.return_value = []
+        study_run = SingleStudyRun(
+            orthanc_url=internal_orthanc_url,
+            study_id="1",
+            tracker_api_key="key",
+            study_config_file="config",
+            hospital_mapping_file="mapping",
+        )
+        assert study_run.study_status == StudyState.ERROR
