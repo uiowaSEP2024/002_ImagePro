@@ -166,16 +166,17 @@ function Studies() {
   }, []);
 
   // Filter the studies based on the user's search input.
-  const filteredStudies = useMemo(() => {
-    return studies
-      .slice()
-      .filter(
-        (item) =>
-          item.study_configuration.name
-            .toLowerCase()
-            .includes(search.toLowerCase()) || String(item.id).includes(search)
-      );
-  }, [studies, search]);
+    const filteredStudies = useMemo(() => {
+      return studies.slice().filter((item) => {
+        const studyNameMatches = item.study_configuration.name.toLowerCase().includes(search.toLowerCase());
+        const studyIdMatches = String(item.id).includes(search);
+        const providerNameMatches = providerNames[item.id] && providerNames[item.id].toLowerCase().includes(search.toLowerCase());
+        const hospitalNameMatches = hospitalNames[item.id] && hospitalNames[item.id].toLowerCase().includes(search.toLowerCase());
+
+        // Return true if any of the conditions match
+        return studyNameMatches || studyIdMatches || providerNameMatches || hospitalNameMatches;
+      });
+    }, [studies, search, providerNames, hospitalNames]);
 
   // Render the Studies component.
   return (
