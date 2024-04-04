@@ -92,80 +92,150 @@ def study_for_random_user_with_api_key(
 
 
 @pytest.fixture
-def random_provider_user(db):
+def random_provider_user(db, random_provider_factory):
     random_tag = get_next_user_count()
-    test_provider_user = services.create_user(
+    provider = random_provider_factory.get()
+    test_provider_user = services.create_provider_user(
         db,
-        schemas.UserCreate(
+        schemas.UserProviderCreate(
             email=f"test-provider-user_{random_tag}@example.com",
             password="abc",
             first_name="first",
             last_name="last",
             role=UserRoleEnum.provider,
+            provider_id=provider.id,
         ),
     )
+    db.refresh(provider)
     return test_provider_user
 
 
 @pytest.fixture
-def random_hospital_user(db):
+def random_provider(db):
     random_tag = get_next_user_count()
-    test_hospital_user = services.create_user(
+    test_provider = services.create_provider(
         db,
-        schemas.UserCreate(
+        schemas.ProviderCreate(
+            provider_name=f"test-provider-{random_tag}",
+        ),
+    )
+    return test_provider
+
+
+@pytest.fixture
+def random_provider_factory(db):
+    class Factory(object):
+        @staticmethod
+        def get():
+            random_tag = get_next_user_count()
+            test_provider = services.create_provider(
+                db,
+                schemas.ProviderCreate(
+                    provider_name=f"test-provider-{random_tag}",
+                ),
+            )
+            return test_provider
+
+    return Factory()
+
+
+@pytest.fixture
+def random_hospital_user(db, random_hospital_factory):
+    random_tag = get_next_user_count()
+    hospital = random_hospital_factory.get()
+    test_hospital_user = services.create_hospital_user(
+        db,
+        schemas.UserHospitalCreate(
             email=f"test-hospital-user_{random_tag}@example.com",
             password="abc",
             first_name="first",
             last_name="last",
             role=UserRoleEnum.hospital,
+            hospital_id=hospital.id,
         ),
     )
+    db.refresh(hospital)
     return test_hospital_user
 
 
 # Convenience fixture factory for generating multiple
 # users for a test. See https://stackoverflow.com/a/21590140
 @pytest.fixture
-def random_test_hospital_user_factory(db):
+def random_test_hospital_user_factory(db, random_hospital_factory):
     class Factory(object):
         @staticmethod
         def get():
+            hospital = random_hospital_factory.get()
             random_tag = get_next_user_count()
-            test_user = services.create_user(
+            test_user = services.create_hospital_user(
                 db,
-                schemas.UserCreate(
+                schemas.UserHospitalCreate(
                     email=f"test_hospital_user_{random_tag}@example.com",
                     password="abc",
                     first_name="first",
                     last_name="last",
                     role=UserRoleEnum.hospital,
+                    hospital_id=hospital.id,
                 ),
             )
+            db.refresh(hospital)
             return test_user
 
     return Factory()
 
 
 @pytest.fixture
-def random_provider_user_with_api_key_factory(db):
+def random_hospital(db):
+    random_tag = get_next_user_count()
+    test_hospital = services.create_hospital(
+        db,
+        schemas.HospitalCreate(
+            hospital_name=f"test-hospital-{random_tag}",
+        ),
+    )
+    return test_hospital
+
+
+@pytest.fixture
+def random_hospital_factory(db):
     class Factory(object):
         @staticmethod
         def get():
             random_tag = get_next_user_count()
-            test_user = services.create_user(
+            test_hospital = services.create_hospital(
                 db,
-                schemas.UserCreate(
+                schemas.HospitalCreate(
+                    hospital_name=f"test-hospital-{random_tag}",
+                ),
+            )
+            return test_hospital
+
+    return Factory()
+
+
+@pytest.fixture
+def random_provider_user_with_api_key_factory(db, random_provider_factory):
+    class Factory(object):
+        @staticmethod
+        def get():
+            random_tag = get_next_user_count()
+            provider = random_provider_factory.get()
+            test_user = services.create_provider_user(
+                db,
+                schemas.UserProviderCreate(
                     email=f"test_provider_user_{random_tag}@example.com",
                     password="abc",
                     first_name="first",
                     last_name="last",
                     role=UserRoleEnum.provider,
+                    provider_id=provider.id,
                 ),
             )
             services.create_apikey_for_user(
                 db, test_user.id, key=schemas.ApikeyCreate(note="key")
             )
             db.refresh(test_user)
+            db.refresh(provider)
             return test_user
 
     return Factory()
