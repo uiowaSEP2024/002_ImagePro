@@ -5,11 +5,11 @@ import sqlalchemy
 from app import models
 
 
-def test_create_step_configuration(db, random_provider_user):
+def test_create_step_configuration(db, random_provider):
     study_configuration = models.StudyConfiguration(
         tag="prostate_v1_study",
         name="Prostate Study",
-        provider_id=random_provider_user.id,
+        provider_id=random_provider.id,
         version="1.2.1",
     )
 
@@ -38,9 +38,7 @@ def test_create_step_configuration(db, random_provider_user):
     assert study_configuration.step_configurations[0].tag == "kidney_scan"
 
 
-def test_create_step_configuration_missing_study_configuration_id(
-    db, random_provider_user
-):
+def test_create_step_configuration_missing_study_configuration_id(db, random_provider):
     step_configuration = models.StepConfiguration(
         tag="kidney_scan",
         name="Kidney Scan",
@@ -55,11 +53,11 @@ def test_create_step_configuration_missing_study_configuration_id(
     assert "study_configuration_id" in str(exc.value.orig)
 
 
-def test_create_step_configuration_missing_points(db, random_provider_user):
+def test_create_step_configuration_missing_points(db, random_provider):
     study_configuration = models.StudyConfiguration(
         tag="prostate_v1_study",
         name="Prostate Study",
-        provider_id=random_provider_user.id,
+        provider_id=random_provider.id,
         version="1.2.1",
     )
 
@@ -83,12 +81,12 @@ def test_create_step_configuration_missing_points(db, random_provider_user):
 
 
 def test_create_step_configuration_with_wrong_study_configuration_id(
-    db, random_provider_user
+    db, random_provider
 ):
     study_configuration = models.StudyConfiguration(
         tag="prostate_v1_study",
         name="Prostate Study",
-        provider_id=random_provider_user.id,
+        provider_id=random_provider.id,
         version="1.2.1",
     )
 
@@ -111,11 +109,11 @@ def test_create_step_configuration_with_wrong_study_configuration_id(
     assert isinstance(exc.value.orig, psycopg2.errors.ForeignKeyViolation)
 
 
-def test_duplicate_step_configuration_tag(db, random_provider_user):
+def test_duplicate_step_configuration_tag(db, random_provider):
     study_configuration1 = models.StudyConfiguration(
         tag="prostate_v1_study",
         name="Prostate Study",
-        provider_id=random_provider_user.id,
+        provider_id=random_provider.id,
         version="1.2.8",
     )
     db.add(study_configuration1)

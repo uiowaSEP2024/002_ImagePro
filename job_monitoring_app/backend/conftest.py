@@ -1,4 +1,5 @@
 import pytest
+
 from app import schemas, services, models
 from app.models.base import truncate_all_tables
 from fastapi.testclient import TestClient
@@ -28,7 +29,7 @@ def get_next_study_configuration_count():
     return study_configuration_counter
 
 
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(autouse=True)
 def run_around_tests():
     truncate_all_tables()
     yield
@@ -74,8 +75,8 @@ def random_provider_user_with_api_key(db, random_provider_user):
 
 
 @pytest.fixture
-def study_for_random_user_with_api_key(
-    db, random_provider_user_with_api_key, random_study_configuration_factory
+def study_for_random_provider_with_api_key(
+    db, random_study_configuration_factory, random_hospital
 ):
     study_configuration = random_study_configuration_factory.get()
 
@@ -83,10 +84,10 @@ def study_for_random_user_with_api_key(
         db,
         schemas.StudyCreate(
             provider_study_id="145254",
-            hospital_id=random_provider_user_with_api_key.id,
+            hospital_id=random_hospital.id,
             tag=study_configuration.tag,
         ),
-        provider=random_provider_user_with_api_key,
+        provider=study_configuration.provider,
     )
     return study
 
@@ -242,15 +243,18 @@ def random_provider_user_with_api_key_factory(db, random_provider_factory):
 
 
 @pytest.fixture
-def random_study_configuration_factory(db, random_provider_user):
+def random_study_configuration_factory(db, random_provider_user_with_api_key_factory):
     class Factory(object):
         @staticmethod
         def get(num_steps=0):
             count = get_next_study_configuration_count()
+            provider = services.get_provider_by_user_id(
+                db, random_provider_user_with_api_key_factory.get().id
+            )
             test_study_configuration = models.StudyConfiguration(
                 tag=f"test_study_{count}",
                 name="Test Study",
-                provider_id=random_provider_user.id,
+                provider_id=provider.id,
                 version="0.0." + str(get_next_user_count()),
             )
 

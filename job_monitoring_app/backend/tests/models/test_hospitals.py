@@ -1,5 +1,3 @@
-from config import config
-
 from app.schemas import HospitalCreate
 from app.services.hospitals import create_hospital
 from app.schemas import UserHospitalCreate
@@ -8,8 +6,7 @@ from app.schemas.user import UserRoleEnum
 from app.services.hospitals import get_hospital_users
 
 
-def test_hospital_creation():
-    db = config.db.SessionLocal()
+def test_hospital_creation(db):
     db_hospital = create_hospital(
         db,
         HospitalCreate.parse_obj(
@@ -23,9 +20,7 @@ def test_hospital_creation():
     assert db_hospital.created_at is not None
 
 
-def test_hospital_get_users():
-    db = config.db.SessionLocal()
-
+def test_hospital_get_users(db):
     db_hospital_1 = create_hospital(
         db,
         HospitalCreate.parse_obj(

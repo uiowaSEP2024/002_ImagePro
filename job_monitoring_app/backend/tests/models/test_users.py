@@ -1,7 +1,6 @@
 import pytest
 import sqlalchemy
 
-from config import config
 from app.schemas import UserCreate
 from app.schemas import UserHospitalCreate
 from app.schemas import ProviderCreate
@@ -17,8 +16,7 @@ from app.services.users import create_provider_user
 from app.services.users import get_user_provider
 
 
-def test_users_no_role():
-    db = config.db.SessionLocal()
+def test_users_no_role(db):
     db_user = create_user(
         db,
         UserCreate.parse_obj(
@@ -38,8 +36,7 @@ def test_users_no_role():
     assert db_user.created_at is not None
 
 
-def test_users_provider_role():
-    db = config.db.SessionLocal()
+def test_users_provider_role(db):
     db_user = create_user(
         db,
         UserCreate.parse_obj(
@@ -61,8 +58,7 @@ def test_users_provider_role():
     assert db_user.created_at is not None
 
 
-def test_users_hospital_role():
-    db = config.db.SessionLocal()
+def test_users_hospital_role(db):
     db_user = create_user(
         db,
         UserCreate.parse_obj(
@@ -84,8 +80,7 @@ def test_users_hospital_role():
     assert db_user.created_at is not None
 
 
-def test_users_admin_role():
-    db = config.db.SessionLocal()
+def test_users_admin_role(db):
     db_user = create_user(
         db,
         UserCreate.parse_obj(
@@ -107,9 +102,8 @@ def test_users_admin_role():
     assert db_user.created_at is not None
 
 
-def test_unique_user_email():
+def test_unique_user_email(db):
     with pytest.raises(sqlalchemy.exc.IntegrityError):
-        db = config.db.SessionLocal()
         create_user(
             db,
             UserCreate.parse_obj(
@@ -135,9 +129,7 @@ def test_unique_user_email():
         )
 
 
-def test_users_hospital_association():
-    db = config.db.SessionLocal()
-
+def test_users_hospital_association(db):
     db_hospital = create_hospital(
         db,
         HospitalCreate.parse_obj(
@@ -170,9 +162,7 @@ def test_users_hospital_association():
     assert get_user_hospital(db, db_user.id).hospital_name == db_hospital.hospital_name
 
 
-def test_users_provider_association():
-    db = config.db.SessionLocal()
-
+def test_users_provider_association(db):
     db_provider = create_provider(
         db,
         ProviderCreate.parse_obj(

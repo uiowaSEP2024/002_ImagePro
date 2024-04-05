@@ -4,22 +4,21 @@ from app import services
 from app.dependencies import API_KEY_HEADER_NAME
 
 
-def test_create_event(app_client, study_for_random_user_with_api_key, db):
-    study = study_for_random_user_with_api_key
+def test_create_event(app_client, study_for_random_provider_with_api_key, db):
+    study = study_for_random_provider_with_api_key
     data = {
         "kind": "Pending",
         "name": "Scanning",
         "provider_study_id": study.provider_study_id,
         "event_metadata": {"official": "Yes"},
     }
+    provider_user = services.get_user(
+        db, study_for_random_provider_with_api_key.provider.users[0].user_id
+    )
     response = app_client.post(
         "/events",
         json=data,
-        headers={
-            API_KEY_HEADER_NAME: study_for_random_user_with_api_key.provider.api_keys[
-                0
-            ].key
-        },
+        headers={API_KEY_HEADER_NAME: provider_user.api_keys[0].key},
     )
     assert response.status_code == 200
     assert response.json()["kind"] == "Pending"
@@ -38,23 +37,22 @@ def test_create_event(app_client, study_for_random_user_with_api_key, db):
     assert response.json()["created_at"] is not None
 
 
-def test_update_event(app_client, study_for_random_user_with_api_key, db):
+def test_update_event(app_client, study_for_random_provider_with_api_key, db):
     # Create an event
-    study = study_for_random_user_with_api_key
+    study = study_for_random_provider_with_api_key
     event_data = {
         "kind": "Pending",
         "name": "Scanning",
         "provider_study_id": study.provider_study_id,
         "event_metadata": {"official": "Yes"},
     }
+    provider_user = services.get_user(
+        db, study_for_random_provider_with_api_key.provider.users[0].user_id
+    )
     response = app_client.post(
         "/events",
         json=event_data,
-        headers={
-            API_KEY_HEADER_NAME: study_for_random_user_with_api_key.provider.api_keys[
-                0
-            ].key
-        },
+        headers={API_KEY_HEADER_NAME: provider_user.api_keys[0].key},
     )
     assert response.status_code == 200
 
@@ -75,11 +73,7 @@ def test_update_event(app_client, study_for_random_user_with_api_key, db):
     update_response = app_client.post(
         "/update_event",
         json=updated_event_data,
-        headers={
-            API_KEY_HEADER_NAME: study_for_random_user_with_api_key.provider.api_keys[
-                0
-            ].key
-        },
+        headers={API_KEY_HEADER_NAME: provider_user.api_keys[0].key},
     )
 
     # Retrieve the updated events update time

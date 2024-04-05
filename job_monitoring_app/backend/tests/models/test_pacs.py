@@ -1,13 +1,10 @@
-from config import config
 from app import models
 
 from app.schemas import PacsCreate
 from app.services.pacs import create_pacs
 
 
-def test_create_pacs():
-    db = config.db.SessionLocal()
-
+def test_create_pacs(db):
     # Create a new hospital
 
     hospital = models.Hospital(hospital_name="test_hospital")

@@ -1,13 +1,10 @@
-from config import config
 from app import models
 
 from app.schemas import ProductCreate
 from app.services.products import create_product
 
 
-def test_create_products():
-    db = config.db.SessionLocal()
-
+def test_create_products(db):
     # Create a new provider
 
     provider = models.Provider(provider_name="test_provider")

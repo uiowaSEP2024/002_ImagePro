@@ -5,13 +5,13 @@ import sqlalchemy
 from app import models
 
 
-def test_create_event(db, random_hospital_user, random_provider_user):
+def test_create_event(db, random_hospital, random_provider):
 
     study = models.Study(
         provider_study_id="abc123",
         provider_study_name="kidneyV1",
-        hospital_id=random_hospital_user.id,
-        provider_id=random_provider_user.id,
+        hospital_id=random_hospital.id,
+        provider_id=random_provider.id,
     )
     db.add(study)
     db.commit()
@@ -53,11 +53,11 @@ def test_create_event_missing_study_id(db):
     assert "study_id" in str(exc.value.orig)
 
 
-def test_create_study_missing_kind(db, random_hospital_user, random_provider_user):
+def test_create_study_missing_kind(db, random_hospital, random_provider):
     study = models.Study(
         provider_study_name="kidneyV1",
-        hospital_id=random_hospital_user.id,
-        provider_id=random_provider_user.id,
+        hospital_id=random_hospital.id,
+        provider_id=random_provider.id,
     )
 
     db.add(study)
@@ -70,14 +70,12 @@ def test_create_study_missing_kind(db, random_hospital_user, random_provider_use
     assert "provider_study_id" in str(exc.value.orig)
 
 
-def test_create_study_missing_provider_study_name(
-    db, random_hospital_user, random_provider_user
-):
+def test_create_study_missing_provider_study_name(db, random_hospital, random_provider):
     study = models.Study(
         provider_study_id="abc123",
         provider_study_name="kidneyV1",
-        hospital_id=random_hospital_user.id,
-        provider_id=random_provider_user.id,
+        hospital_id=random_hospital.id,
+        provider_id=random_provider.id,
     )
 
     db.add(study)
@@ -99,8 +97,8 @@ def test_create_study_missing_provider_study_name(
 
 def test_create_event_for_step(
     db,
-    random_hospital_user,
-    random_provider_user,
+    random_hospital,
+    random_provider,
     random_study_configuration_factory,
 ):
     study_configuration = random_study_configuration_factory.get(num_steps=1)
@@ -108,8 +106,8 @@ def test_create_event_for_step(
     study = models.Study(
         provider_study_id="abc123",
         provider_study_name="kidneyV1",
-        hospital_id=random_hospital_user.id,
-        provider_id=random_provider_user.id,
+        hospital_id=random_hospital.id,
+        provider_id=random_provider.id,
         study_configuration_id=study_configuration.id,
     )
 

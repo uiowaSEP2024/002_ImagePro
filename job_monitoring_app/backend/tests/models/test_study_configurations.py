@@ -5,11 +5,11 @@ import sqlalchemy
 from app import models
 
 
-def test_create_study_configurtaion(db, random_provider_user):
+def test_create_study_configurtaion(db, random_provider):
     study_configuration = models.StudyConfiguration(
         tag="prostate_v1_study",
         name="Prostate Study",
-        provider_id=random_provider_user.id,
+        provider_id=random_provider.id,
         version="1.1",
     )
 
@@ -18,24 +18,21 @@ def test_create_study_configurtaion(db, random_provider_user):
     db.refresh(study_configuration)
 
     assert isinstance(study_configuration, models.StudyConfiguration)
-    assert study_configuration.provider_id == random_provider_user.id
+    assert study_configuration.provider_id == random_provider.id
     assert study_configuration.tag == "prostate_v1_study"
     assert study_configuration.name == "Prostate Study"
 
-    db.refresh(random_provider_user)
-    assert len(random_provider_user.study_configurations) == 1
-    assert random_provider_user.study_configurations[0].tag == "prostate_v1_study"
-    assert (
-        random_provider_user.study_configurations[0].provider_id
-        == random_provider_user.id
-    )
+    db.refresh(random_provider)
+    assert len(random_provider.study_configurations) == 1
+    assert random_provider.study_configurations[0].tag == "prostate_v1_study"
+    assert random_provider.study_configurations[0].provider_id == random_provider.id
 
 
-def test_duplicate_study_configuration_tag_and_version(db, random_provider_user):
+def test_duplicate_study_configuration_tag_and_version(db, random_provider):
     study_configuration1 = models.StudyConfiguration(
         tag="prostate_v1_study",
         name="Prostate Study",
-        provider_id=random_provider_user.id,
+        provider_id=random_provider.id,
         version="1.2.8",
     )
     db.add(study_configuration1)
@@ -44,7 +41,7 @@ def test_duplicate_study_configuration_tag_and_version(db, random_provider_user)
     study_configuration1 = models.StudyConfiguration(
         tag="prostate_v1_study",
         name="Prostate Study",
-        provider_id=random_provider_user.id,
+        provider_id=random_provider.id,
         version="1.2.8",
     )
     db.add(study_configuration1)
@@ -59,10 +56,10 @@ def test_duplicate_study_configuration_tag_and_version(db, random_provider_user)
     )
 
 
-def test_missing_tag(db, random_provider_user):
+def test_missing_tag(db, random_provider):
     study_configuration = models.StudyConfiguration(
         name="Prostate Study",
-        provider_id=random_provider_user.id,
+        provider_id=random_provider.id,
         version="1.2.1",
     )
     db.add(study_configuration)
@@ -105,11 +102,11 @@ def test_create_study_missing_provider_id(db):
 
 
 #
-def test_create_study_missing_version(db, random_provider_user):
+def test_create_study_missing_version(db, random_provider):
     study_configuration = models.StudyConfiguration(
         tag="prostate_v1_study",
         name="Prostate Study",
-        provider_id=random_provider_user.id,
+        provider_id=random_provider.id,
     )
     db.add(study_configuration)
 
