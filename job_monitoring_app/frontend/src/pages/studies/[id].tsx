@@ -163,7 +163,7 @@ function StudyPage({ initialIsPageLoading = true }) {
     Date: studyDate ? studyDate.toLocaleDateString() : "-",
     Time: studyDate ? studyDate.toLocaleTimeString() : "-",
     "Hospital ID": study?.hospital_id,
-    Provider: study?.provider.first_name
+    Provider: study?.provider.provider_name
   };
 
   return (

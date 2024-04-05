@@ -83,7 +83,7 @@ function Studies() {
     useEffect(() => {
       studies.forEach((study) => {
         if (study.provider_id && !providerNames[study.id]) {
-          fetchProviderById(study.hospital_id).then((data) => {
+          fetchProviderById(study.provider_id).then((data) => {
             if (data) {
               setProviderNames((prev) => ({
                 ...prev,
