@@ -67,11 +67,12 @@ services:
   orthanc_receiver:
     build:
       context: .
-      dockerfile: Dockerfile_OrthancReciever
+      dockerfile: Dockerfile_OrthancReciever_kubernetes
       args:
           API_KEY: iv2YBLgB8X7IT3CiFyI9YYM82nA
           BACKEND_URL: http://backend:8000
           ORTHANC_URL: http://orthanc:8026
+          STUDY_CONFIG_FILE:
     depends_on:
       - orthanc
     networks:
