@@ -334,100 +334,83 @@ def main(internal_data_output_path: Path, product_path: Path, orthanc_url: str):
     logger = logging.getLogger("orthanc_agent")
     max_retries = 5
     while max_retries > 0:
-        try:
-            logger.info("Starting Orthanc Agent")
-            logger.info(f"Orthanc URL: {orthanc_url}")
-            logger.info(f"Product Path: {product_path}")
-            logger.info(f"Internal Data Output Path: {internal_data_output_path}")
-            with pyorthanc.Orthanc(orthanc_url) as internal_orthanc:
-                logger.info("Connected to Orthanc")
-                study_processed_dict = {}
-                while True:
-                    # Fetch list of studies
+        logger.info("Starting Orthanc Agent")
+        logger.info(f"Orthanc URL: {orthanc_url}")
+        logger.info(f"Product Path: {product_path}")
+        logger.info(f"Internal Data Output Path: {internal_data_output_path}")
+        with pyorthanc.Orthanc(orthanc_url) as internal_orthanc:
+            logger.info("Connected to Orthanc")
+            study_processed_dict = {}
+            while True:
+                # Fetch list of studies
 
-                    studies = make_list_of_studies_to_process(
-                        study_processed_dict, internal_orthanc
-                    )
-                    logger.info(f"Found {len(studies)} studies to process")
+                studies = make_list_of_studies_to_process(
+                    study_processed_dict, internal_orthanc
+                )
+                logger.info(f"Found {len(studies)} studies to process")
 
-                    for study in studies:
-                        current_logger = study_processed_dict[study.id_]
-                        if check_study_stable(study):
-                            current_logger.update_step_status(1, "Complete")
-                            if current_logger.step_is_ready(2):
-                                current_logger.update_step_status(2, "In progress")
-                                try:
-                                    study_data_path = (
-                                        internal_data_output_path / study.id_
-                                    )
-                                    zip_path = download_study(
-                                        study.id_,
-                                        f"{study_data_path}/archive",
-                                        internal_orthanc,
-                                    )
-                                    unzip_study(
-                                        zip_path.as_posix(), f"{study_data_path}/data"
-                                    )
-                                    current_logger.update_step_status(2, "Complete")
-                                except Exception as e:
-                                    current_logger.update_step_status(
-                                        2, "Error", str(e)
-                                    )
-                            if current_logger.step_is_ready(3):
-                                current_logger.update_step_status(3, "In progress")
-                                try:
-                                    process_data(
-                                        brains_tool_path=product_path.as_posix(),
-                                        study_id=study.id_,
-                                        input_data_path=f"{study_data_path}/data",
-                                        output_path=f"{study_data_path}/results",
-                                    )
-                                    # TODO Update this to have the processed data path
-                                    current_logger.update_step_status(3, "Complete")
-                                    # current_logger.update_data_processing("download_path")
-                                except Exception as e:
-                                    current_logger.update_step_status(
-                                        3, "Error", str(e)
-                                    )
-                            if current_logger.step_is_ready(4):
-                                current_logger.update_step_status(4, "In progress")
-                                try:
-                                    upload_data_to_internal(
-                                        directory_path=f"{study_data_path}/deliverables",
-                                        orthanc=internal_orthanc,
-                                    )
-                                    return_to_original_hospital(
-                                        internal_orthanc, study.id_
-                                    )
-                                    current_logger.update_step_status(4, "Complete")
-                                except Exception as e:
-                                    current_logger.update_step_status(
-                                        4, "Error", str(e)
-                                    )
-                                    break
-
-                            if current_logger._stage_is_complete(4):
-                                logger.info(
-                                    f"Study {study.id_} has been processed and sent to hospital"
+                for study in studies:
+                    current_logger = study_processed_dict[study.id_]
+                    if check_study_stable(study):
+                        current_logger.update_step_status(1, "Complete")
+                        if current_logger.step_is_ready(2):
+                            current_logger.update_step_status(2, "In progress")
+                            try:
+                                study_data_path = internal_data_output_path / study.id_
+                                zip_path = download_study(
+                                    study.id_,
+                                    f"{study_data_path}/archive",
+                                    internal_orthanc,
                                 )
-                                logger.info(
-                                    f"Study {study.id_} has been processed and sent to hospital"
+                                unzip_study(
+                                    zip_path.as_posix(), f"{study_data_path}/data"
                                 )
+                                current_logger.update_step_status(2, "Complete")
+                            except Exception as e:
+                                current_logger.update_step_status(2, "Error", str(e))
+                        if current_logger.step_is_ready(3):
+                            current_logger.update_step_status(3, "In progress")
+                            try:
+                                process_data(
+                                    brains_tool_path=product_path.as_posix(),
+                                    study_id=study.id_,
+                                    input_data_path=f"{study_data_path}/data",
+                                    output_path=f"{study_data_path}/results",
+                                )
+                                # TODO Update this to have the processed data path
+                                current_logger.update_step_status(3, "Complete")
+                                # current_logger.update_data_processing("download_path")
+                            except Exception as e:
+                                current_logger.update_step_status(3, "Error", str(e))
+                        if current_logger.step_is_ready(4):
+                            current_logger.update_step_status(4, "In progress")
+                            try:
+                                upload_data_to_internal(
+                                    directory_path=f"{study_data_path}/deliverables",
+                                    orthanc=internal_orthanc,
+                                )
+                                return_to_original_hospital(internal_orthanc, study.id_)
+                                current_logger.update_step_status(4, "Complete")
+                            except Exception as e:
+                                current_logger.update_step_status(4, "Error", str(e))
+                                break
 
-                                logger.info(f"Deleting study {study.id_}")
-                                # delete the study from the internal orthanc
-                                internal_orthanc.delete_studies_id(study.id_)
-                                study_processed_dict.pop(study.id_)
-                                # delete study from local system
-                                shutil.rmtree(study_data_path)
-                    logger.info("Sleeping for 10 seconds..")
-                    time.sleep(10)
-        except Exception as e:
-            logger.error(f"Error: {e}\n Retrying connnection in 10 seconds..")
+                        if current_logger._stage_is_complete(4):
+                            logger.info(
+                                f"Study {study.id_} has been processed and sent to hospital"
+                            )
+                            logger.info(
+                                f"Study {study.id_} has been processed and sent to hospital"
+                            )
 
-            max_retries -= 1
-
-            time.sleep(10)
+                            logger.info(f"Deleting study {study.id_}")
+                            # delete the study from the internal orthanc
+                            internal_orthanc.delete_studies_id(study.id_)
+                            study_processed_dict.pop(study.id_)
+                            # delete study from local system
+                            shutil.rmtree(study_data_path)
+                logger.info("Sleeping for 10 seconds..")
+                time.sleep(10)
 
 
 def setup_custom_logger(name):

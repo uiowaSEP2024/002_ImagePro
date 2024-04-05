@@ -1,19 +1,24 @@
-import sys
 import time
 
 import pyorthanc
-from pathlib import Path
-
-from internal_servers.study import SingleStudyRun
-from internal_servers.util_functions import (
-    check_study_has_properties,
-    OrthancConnectionException,
-    setup_custom_logger,
-)
+import os
 import argparse
 
-current_file_path = Path(__file__).parent.absolute()
-sys.path.append(str(current_file_path.parent))
+if os.environ.get("DOCKER_ENV"):
+    from study import SingleStudyRun
+    from util_functions import (
+        check_study_has_properties,
+        OrthancConnectionException,
+        setup_custom_logger,
+    )
+else:
+
+    from internal_servers.study import SingleStudyRun
+    from internal_servers.util_functions import (
+        check_study_has_properties,
+        OrthancConnectionException,
+        setup_custom_logger,
+    )
 
 
 class ReceiverLoop:
