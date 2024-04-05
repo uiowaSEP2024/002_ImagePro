@@ -7,7 +7,6 @@ from app.services.users import create_hospital_user
 from app.services.users import create_provider_user
 from app.services.hospitals import create_hospital
 from app.services.providers import create_provider
-from config import config
 
 
 def test_create_user_no_role(app_client):
@@ -120,10 +119,7 @@ def test_read_user(app_client):
     assert read_user_response.json()["created_at"] is not None
 
 
-def test_read_user_hospital(app_client):
-
-    db = config.db.SessionLocal()
-
+def test_read_user_hospital(db, app_client):
     db_hospital = create_hospital(
         db,
         HospitalCreate.parse_obj(
@@ -166,10 +162,7 @@ def test_read_user_hospital(app_client):
     assert read_user_hospital_response.json()["created_at"] is not None
 
 
-def test_read_user_provider(app_client):
-
-    db = config.db.SessionLocal()
-
+def test_read_user_provider(db, app_client):
     db_provider = create_provider(
         db,
         ProviderCreate.parse_obj(

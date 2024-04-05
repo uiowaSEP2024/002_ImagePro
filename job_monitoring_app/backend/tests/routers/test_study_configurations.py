@@ -231,10 +231,12 @@ def test_get_study_configuration(
 ):
     study_configuration = random_study_configuration_factory.get()
 
+    provider_user = services.get_user(db, study_configuration.provider.users[0].user_id)
+
     # Simulate user log in
     response = app_client.post(
         "/login",
-        data={"username": random_provider_user_with_api_key.email, "password": "abc"},
+        data={"username": provider_user.email, "password": "abc"},
     )
 
     # Grab access token for user

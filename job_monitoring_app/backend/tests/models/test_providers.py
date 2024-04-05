@@ -1,5 +1,3 @@
-from config import config
-
 from app.schemas import ProviderCreate
 from app.services.providers import create_provider
 from app.schemas import UserProviderCreate
@@ -8,8 +6,7 @@ from app.schemas.user import UserRoleEnum
 from app.services.providers import get_provider_users, get_provider_by_id
 
 
-def test_provider_creation():
-    db = config.db.SessionLocal()
+def test_provider_creation(db):
     db_provider = create_provider(
         db,
         ProviderCreate.parse_obj(
@@ -23,9 +20,7 @@ def test_provider_creation():
     assert db_provider.created_at is not None
 
 
-def test_provider_users():
-    db = config.db.SessionLocal()
-
+def test_provider_users(db):
     db_provider_1 = create_provider(
         db,
         ProviderCreate.parse_obj(
@@ -96,9 +91,7 @@ def test_provider_users():
     assert provider_2_users[0].first_name == db_user_2.first_name
 
 
-def test_get_provider_by_id():
-    db = config.db.SessionLocal()
-
+def test_get_provider_by_id(db):
     db_provider_1 = create_provider(
         db,
         ProviderCreate.parse_obj(
