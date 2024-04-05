@@ -156,7 +156,7 @@ def test_study_is_stable():
             study_config_file="config",
             hospital_mapping_file="mapping",
         )
-        assert study_run.study_is_stable(mock_study) is True
+        assert study_run.study_is_stable() is True
 
 
 def test_study_has_properties():
@@ -195,7 +195,7 @@ def test_init_study_logger():
             study_config_file="config",
             hospital_mapping_file="mapping",
         )
-        study_run._init_study_logger("key", "config")
+        study_run._init_study_logger()
         mock_logger.assert_called_once_with(
             hospital_id="EXAMPLE_TOOL",
             study_id="1",
@@ -230,3 +230,23 @@ def test_init_study_object_study_doesnt_exist():
             hospital_mapping_file="mapping",
         )
         assert study_run.study_status == StudyState.ERROR
+
+
+def test_study_can_download():
+    pass
+
+
+def test_study_can_call_example_tool():
+    pass
+
+
+def test_study_can_upload():
+    pass
+
+
+def test_study_can_log():
+    pass
+
+
+def test_study_can_return_completed():
+    pass
