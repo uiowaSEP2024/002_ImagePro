@@ -11,8 +11,9 @@ router.tags = ["events"]
 def create_event(
     event: schemas.EventCreatePublic,
     db: Session = Depends(get_db),
-    provider=Depends(get_user_from_api_key),
+    provider_user=Depends(get_user_from_api_key),
 ):
+    provider = services.get_provider_by_user_id(db, user_id=provider_user.id)
     return services.create_event(db=db, event=event, provider=provider)
 
 

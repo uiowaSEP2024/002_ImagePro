@@ -10,7 +10,7 @@ from .studies import get_study_by_provider_study_id
 
 
 def create_event(
-    db: Session, event: schemas.EventCreatePublic, provider: models.User
+    db: Session, event: schemas.EventCreatePublic, provider: models.Provider
 ) -> models.Event:
     """
     Create an event for a study

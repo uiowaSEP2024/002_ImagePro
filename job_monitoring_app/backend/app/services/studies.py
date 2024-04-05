@@ -10,7 +10,7 @@ from .hospitals import get_hospital_by_user_id
 
 
 def create_study(
-    db: Session, study: schemas.StudyCreate, provider: models.User
+    db: Session, study: schemas.StudyCreate, provider: models.Provider
 ) -> models.Study:
     """
     Create a new study for a provider, add it to the database, and return the study.
@@ -18,7 +18,7 @@ def create_study(
     Args:
         db (Session): Database session
         study (schemas.StudyCreate): Study information
-        provider (models.User): Provider information
+        provider (models.Provider): Provider information
     Returns:
         models.Study: The newly created Study
     """
@@ -90,9 +90,8 @@ def get_studies_for_hospital(db: Session, user_id: int) -> list[models.Study]:
     """
     # get hospital associated with user from join table
     hospital = get_hospital_by_user_id(db, user_id)
-    print(hospital)
-    # get all studies associated with that provider
-    return db.query(models.Study).filter(models.Study.hospital_id == hospital.id).all()
+    # get all studies associated with that hospital
+    return hospital.studies
 
 
 def get_studies_for_provider(db: Session, user_id: int) -> list[models.Study]:
@@ -108,7 +107,7 @@ def get_studies_for_provider(db: Session, user_id: int) -> list[models.Study]:
     # get provider associated with user from join table
     provider = get_provider_by_user_id(db, user_id)
     # get all studies associated with that provider
-    return db.query(models.Study).filter(models.Study.provider_id == provider.id).all()
+    return provider.studies
 
 
 def get_study_by_id(db: Session, study_id: int) -> models.Study:

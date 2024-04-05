@@ -13,8 +13,9 @@ router.tags = ["studies"]
 def create_study(
     study: schemas.StudyCreate,
     db: Session = Depends(get_db),
-    provider=Depends(get_user_from_api_key),
+    user_provider=Depends(get_user_from_api_key),
 ):
+    provider = services.get_provider_by_user_id(db, user_id=user_provider.id)
     return services.create_study(db=db, study=study, provider=provider)
 
 
