@@ -11,7 +11,7 @@
 import { Metadata } from "@/components/Metadata";
 import { EventTimeline } from "@/components/EventTimeline";
 import { withAuthenticated } from "@/components/withAuthenticated";
-import { fetchEvents, fetchStudyById } from "@/data";
+import { fetchEvents, fetchStudyById, fetchProviderById } from "@/data";
 import { Study, StudyEvent } from "@/data/types";
 import { useEnsureAuthenticated } from "@/hooks/useAuthContext";
 import { ArrowBackIcon } from "@chakra-ui/icons";
@@ -53,6 +53,7 @@ function StudyPage({ initialIsPageLoading = true }) {
   const [events, setEvents] = useState<StudyEventWithNumber[]>([]);
   const [study, setStudy] = useState<Study | null>(null);
   const [isPageLoading, setIsPageLoading] = useState(initialIsPageLoading);
+  const [providerName, setProviderName] = useState("");
 
   const allEvents = useMemo(() => {
     return events.slice().sort((a, b) => a.id - b.id);
@@ -163,7 +164,7 @@ function StudyPage({ initialIsPageLoading = true }) {
     Date: studyDate ? studyDate.toLocaleDateString() : "-",
     Time: studyDate ? studyDate.toLocaleTimeString() : "-",
     "Hospital ID": study?.hospital_id,
-    Provider: study?.provider.provider_name
+    "Provider ID": study?.provider_id
   };
 
   return (
