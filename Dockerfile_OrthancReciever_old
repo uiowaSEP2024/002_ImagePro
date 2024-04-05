@@ -1,0 +1,53 @@
+# Use a Python 3.10 image based on Debian slim as the base
+FROM python:3.10-slim
+LABEL authors="iejohnson"
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y \
+    python3-dev \
+    inetutils-ping \
+    curl \
+    net-tools\
+    dnsutils\
+    # Clean up the apt cache to reduce image size
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# TODO: Seperate requirements for OrthancReciever and TrackerAPI from the generic backend requirements file
+# Copy the Python requirements file into the container
+COPY job_monitoring_app/trackerapi/requirements.txt requirements_tracker.txt
+COPY internal_servers/requirements.txt requirements_receiver.txt
+
+# Install the Python dependencies
+RUN pip3 install --no-cache-dir -r requirements_tracker.txt -r requirements_receiver.txt
+
+# Explicitly create and copy the files so that the imports work correctly
+RUN mkdir -p ./internal_data
+# Copy the trackerapi code into the container
+COPY job_monitoring_app/trackerapi /app/job_monitoring_app/trackerapi
+
+# Copy the receiver code into the container
+
+# Copy the executable script into the container
+COPY example_run_brain_mask_tool_light_docker.sh runner.sh
+RUN chmod +x runner.sh
+
+COPY internal_servers/hospital_job_configuration.json .
+COPY internal_servers/job-configurations-schema.generated.json .
+COPY internal_servers/orthanc_reciever_agent.py .
+COPY internal_servers/orthanc_data_logging.py .
+COPY internal_servers/tests/test_ping_orthanc.py .
+COPY internal_servers/run_test_ping.sh .
+
+
+ENV PYTHONPATH $PYTHONPATH:/app:
+ARG DEBIAN_FRONTEND=noninteractive
+ARG API_KEY
+ARG BACKEND_URL
+ARG ORTHANC_URL
+ENV API_KEY=${API_KEY}
+ENV BACKEND_URL=${BACKEND_URL}
+ENV ORTHANC_URL=${ORTHANC_URL}
+
+CMD ["python3", "orthanc_reciever_agent.py", "--base_output_dir", "/internal_data", "--product_path", "runner.sh", "--api_key", "${API_KEY}"]
