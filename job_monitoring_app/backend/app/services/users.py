@@ -116,7 +116,6 @@ def authenticate_user(db: Session, username: str, password: str) -> models.User:
     """
 
     user = get_user_by_email(email=username, db=db)
-    # print(user)
     if not user:
         return False
     if not verify_password(password, user.hashed_password):
@@ -132,16 +131,12 @@ def get_user_hospital(db: Session, user_id: int) -> models.Hospital:
         db (Session): The database session.
         user_id (int): The ID of the user to retrieve the hospital for.
     """
-    x = (
+    return (
         db.query(models.Hospital)
         .join(models.HospitalUsers)
         .filter(models.HospitalUsers.user_id == user_id)
         .first()
     )
-    print("user id", user_id)
-    print(x.hospital_name)
-    print(x.id)
-    return x
 
 
 def get_user_provider(db: Session, user_id: int) -> models.Provider:
@@ -153,13 +148,9 @@ def get_user_provider(db: Session, user_id: int) -> models.Provider:
         db (Session): The database session.
         user_id (int): The ID of the user to retrieve the provider for.
     """
-    x = (
+    return (
         db.query(models.Provider)
         .join(models.ProviderUsers)
         .filter(models.ProviderUsers.user_id == user_id)
         .first()
     )
-    print("user id", user_id)
-    print(x.provider_name)
-    print(x.id)
-    return x
