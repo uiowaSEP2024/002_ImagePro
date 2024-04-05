@@ -46,32 +46,24 @@ def upgrade():
     # Add foreign key constraint studies -> hospitals
     op.drop_constraint("user_provider_provider_id_fkey", "user_provider")
 
-    # Add foreign key constraint user_providers -> providers
-    op.create_foreign_key(
-        "user_provider_provider_id_fkey",
-        "user_provider",
-        "providers",
-        ["provider_id"],
-        ["id"],
-    )
-
-    # Add foreign key constraint user_providers -> providers
-    op.create_foreign_key(
-        "user_provider_provider_id_fkey",
-        "user_provider",
-        "providers",
-        ["provider_id"],
-        ["id"],
-    )
-
-    # Add foreign key constraint user_hospitals -> hospital
-    op.create_foreign_key(
-        "user_hospital_hospital_id_fkey",
-        "user_hospital",
-        "hospitals",
-        ["hospital_id"],
-        ["id"],
-    )
+    # # Add foreign key constraint user_providers -> providers
+    # op.create_foreign_key(
+    #     "user_provider_provider_id_fkey",
+    #     "user_provider",
+    #     "providers",
+    #     ["provider_id"],
+    #     ["id"],
+    # )
+    #
+    #
+    # # Add foreign key constraint user_hospitals -> hospital
+    # op.create_foreign_key(
+    #     "user_hospital_hospital_id_fkey",
+    #     "user_hospital",
+    #     "hospitals",
+    #     ["hospital_id"],
+    #     ["id"],
+    # )
 
 
 def downgrade():
@@ -105,8 +97,8 @@ def downgrade():
     # Drop foreign key constraint studies -> hospitals
     op.drop_constraint("studies_hospital_id_hospital_table_fkey", "studies")
 
-    # Drop foreign key constraint user_providers -> providers
-    op.drop_constraint("user_provider_provider_id_fkey", "user_provider")
-
-    # Drop foreign key constraint user_hospitals -> hospitals
-    op.drop_constraint("user_hospital_hospital_id_fkey", "user_hospital")
+    # # Drop foreign key constraint user_providers -> providers
+    # op.drop_constraint("user_provider_provider_id_fkey", "user_provider")
+    #
+    # # Drop foreign key constraint user_hospitals -> hospitals
+    # op.drop_constraint("user_hospital_hospital_id_fkey", "user_hospital")
