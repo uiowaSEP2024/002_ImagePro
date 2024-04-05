@@ -1,9 +1,11 @@
+import { providerFixture } from "./providerFixture.tsx";
+
 export const kidneyStudyFixture = {
   id: 1,
   provider_study_name: "Kidney Cancer Detection",
   hospital_id: 1,
   provider_study_id: "236",
-  provider_id: 2,
+  provider_id: 1,
   created_at: "2021-03-01T00:00:00.000Z",
   study_configuration_id: 1,
   study_configuration: {
@@ -14,10 +16,5 @@ export const kidneyStudyFixture = {
     version: "1.0.0",
     provider_id: 1
   },
-  provider: {
-    id: 1,
-    first_name: "BotImage",
-    last_name: "",
-    email: "botimage@gmail.com"
-  }
+  provider: providerFixture
 };
