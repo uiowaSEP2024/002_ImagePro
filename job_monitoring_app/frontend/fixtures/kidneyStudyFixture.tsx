@@ -1,4 +1,4 @@
-import { providerFixture } from "./providerFixture.tsx";
+import { providerFixture } from "./providerFixture";
 
 export const kidneyStudyFixture = {
   id: 1,

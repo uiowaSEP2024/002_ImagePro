@@ -44,11 +44,14 @@ def upgrade():
     op.drop_constraint("studies_hospital_id_fkey", "studies")
 
     # Add foreign key constraint studies -> hospitals
+    op.drop_constraint("user_provider_provider_id_fkey", "user_provider")
+
+    # Add foreign key constraint user_providers -> providers
     op.create_foreign_key(
-        "studies_hospital_id_hospital_table_fkey",
-        "studies",
-        "hospitals",
-        ["hospital_id"],
+        "user_provider_provider_id_fkey",
+        "user_provider",
+        "providers",
+        ["provider_id"],
         ["id"],
     )
 
