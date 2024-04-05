@@ -1,7 +1,8 @@
+import sys
 import time
 
 import pyorthanc
-
+from pathlib import Path
 
 from internal_servers.study import SingleStudyRun
 from internal_servers.util_functions import (
@@ -10,6 +11,9 @@ from internal_servers.util_functions import (
     setup_custom_logger,
 )
 import argparse
+
+current_file_path = Path(__file__).parent.absolute()
+sys.path.append(str(current_file_path.parent))
 
 
 class ReceiverLoop:
@@ -24,6 +28,7 @@ class ReceiverLoop:
         api_key: str,
         hospital_mapping_file: str,
         study_config_file: str,
+        backend_url: str,
     ):
         self.continue_running = True
 
@@ -33,6 +38,7 @@ class ReceiverLoop:
         self.logger = setup_custom_logger("receiver_loop")
         self.internal_orthanc: pyorthanc.Orthanc | None = None
         self.api_key = api_key
+        self.backend_url = backend_url
         self.hospital_mapping_file = hospital_mapping_file
         self.study_config_file = study_config_file
         self._init_orthanc_connection()
@@ -47,7 +53,7 @@ class ReceiverLoop:
                     f"Connection to Orthanc timed out sleeping for {self.QUERY_INTERVAL} seconds"
                 )
                 self.max_retries -= 1
-                time.sleep(self.QUERY_INTERVAL)
+                time.sleep(self.TIME_BETWEEN_CONNECTIONS)
             except Exception as orthanc_e:
                 self.max_retries -= 1
                 self.logger.error(f"ERROR connecting to Orthanc: {orthanc_e}")
@@ -64,6 +70,7 @@ class ReceiverLoop:
             tracker_api_key=self.api_key,
             study_config_file=self.study_config_file,
             hospital_mapping_file=self.hospital_mapping_file,
+            backend_url=self.backend_url,
         )
         return single_study_run
 
@@ -104,6 +111,7 @@ if __name__ == "__main__":
     parser.add_argument("--api_key", type=str, required=True)
     parser.add_argument("--hospital_mapping_file", type=str, required=True)
     parser.add_argument("--study_config_file", type=str, required=True)
+    parser.add_argument("--backend_url", type=str, required=True)
     args = parser.parse_args()
 
     receiver_loop = ReceiverLoop(
@@ -111,6 +119,7 @@ if __name__ == "__main__":
         api_key=args.api_key,
         hospital_mapping_file=args.hospital_mapping_file,
         study_config_file=args.study_config_file,
+        backend_url=args.backend_url,
     )
     while receiver_loop.continue_running:
         receiver_loop._check_for_new_studies()

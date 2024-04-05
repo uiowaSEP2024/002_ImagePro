@@ -31,6 +31,7 @@ class SingleStudyRun:
         tracker_api_key: str,
         study_config_file: str,
         hospital_mapping_file: str,
+        backend_url: str,
     ):
         self.orthanc_url = orthanc_url
         self.study_status = StudyState.IN_PROGRESS
@@ -38,6 +39,7 @@ class SingleStudyRun:
         self.is_processed = False
         self.tracker_api_key = tracker_api_key
         self.study_config_file = study_config_file
+        self.backend_url = backend_url
 
         self.study_dir = Path(f"/tmp/{self.study_id}")
         self.study_dir.mkdir(parents=True, exist_ok=True)
@@ -135,6 +137,7 @@ class SingleStudyRun:
             study_id=self.study_id,
             tracker_api_key=self.tracker_api_key,
             study_config_file=self.study_config_file,
+            backend_url=self.backend_url,
         )
 
     def _init_orthanc_connection(self) -> None:
