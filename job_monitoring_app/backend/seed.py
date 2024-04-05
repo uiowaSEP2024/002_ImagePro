@@ -524,9 +524,10 @@ def seed_study_configurations(db):
     for study_config_data in STUDIES_CONFIGURATIONS:
         print(f"  Seeding study configuration: {str(study_config_data)}")
         user = users[study_config_data.pop("provider_email")]
+        provider = services.get_provider_by_user_id(db, user.id)
 
         study_config = models.StudyConfiguration(
-            **study_config_data, provider_id=user.id
+            **study_config_data, provider_id=provider.id
         )
 
         db.add(study_config)
