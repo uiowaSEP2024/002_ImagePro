@@ -5,24 +5,32 @@ import pyorthanc
 import subprocess
 import time
 import zipfile
-from internal_servers.orthanc_data_logging import OrthancStudyLogger
 import argparse
 import os
 import logging
 
+if os.environ.get("DOCKER_ENV") is not None:
+    from orthanc_data_logging import OrthancStudyLogger
 
-from dotenv import load_dotenv
+    product_path = Path("/app/runner.sh")
+else:
+    from internal_servers.orthanc_data_logging import OrthancStudyLogger
+    from dotenv import load_dotenv
 
-base_project_dir = Path(__file__).parent.parent
-relative_env_path = base_project_dir / "job_monitoring_app/backend/.env.local"
-assert relative_env_path.exists(), f"Expected to find .env file at {relative_env_path}"
-load_dotenv(relative_env_path)
+    base_project_dir = Path(__file__).parent.parent
+    relative_env_path = base_project_dir / "job_monitoring_app/backend/.env.local"
+    assert (
+        relative_env_path.exists()
+    ), f"Expected to find .env file at {relative_env_path}"
+    load_dotenv(relative_env_path)
+    product_path = base_project_dir / "example_tool" / "brainmask_tool.py"
+assert product_path.exists()
+
+
 BACKEND_URL = os.environ.get("BACKEND_URL")
 API_KEY = os.environ.get("API_KEY")
 EXAMPLE_OUTPUT_PATH = os.environ.get("EXAMPLE_OUTPUT_PATH")
 
-product_path = Path(__file__).parent.parent / "example_tool" / "brainmask_tool.py"
-assert product_path.exists()
 
 LOGGER_NAME = "orthanc_agent"
 
@@ -336,6 +344,7 @@ def main(internal_data_output_path: Path, product_path: Path, orthanc_url: str):
                 study_processed_dict = {}
                 while True:
                     # Fetch list of studies
+
                     studies = make_list_of_studies_to_process(
                         study_processed_dict, internal_orthanc
                     )
