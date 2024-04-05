@@ -36,13 +36,14 @@ import React, { useMemo, useEffect, useState } from "react";
 function Studies() {
   // Initialize state variables for the studies data and the search input.
   const [studies, setStudies] = useState<Study[]>([]);
-  const [search, setSearch] = React.useState("");
+  const [search, setSearch] = useState("");
   const [providerNames, setProviderNames] = useState<{ [key: string]: string }>({});
   const [hospitalNames, setHospitalNames] = useState<{ [key: string]: string }>({});
   const { currentUser } = useAuthContext();
 
   // Define the columns for the studies table.
-  let columns = [];
+  let columns: { name: string; uid: string }[] = [];
+
   if (currentUser) {
     if (currentUser.role == "admin") {
       columns = [
@@ -52,16 +53,14 @@ function Studies() {
         { name: "Provider", uid: "provider_name" },
         { name: "Status", uid: "status" }
       ];
-    }
-    if (currentUser.role == "provider") {
+    } else if (currentUser.role == "provider") {
       columns = [
         { name: "Study No.", uid: "reference_number" },
         { name: "Name", uid: "name" },
         { name: "Hospital", uid: "hospital_name" },
         { name: "Status", uid: "status" }
       ];
-    }
-    if (currentUser.role == "hospital") {
+    } else {
       columns = [
         { name: "Study No.", uid: "reference_number" },
         { name: "Name", uid: "name" },
@@ -85,10 +84,12 @@ function Studies() {
       studies.forEach((study) => {
         if (study.provider_id && !providerNames[study.id]) {
           fetchProviderById(study.hospital_id).then((data) => {
-            setProviderNames((prev) => ({
-              ...prev,
-              [study.id]: data.provider_name,
-            }));
+            if (data) {
+              setProviderNames((prev) => ({
+                ...prev,
+                [study.id]: data.provider_name,
+              }));
+            }
           });
         }
       });
@@ -100,10 +101,12 @@ function Studies() {
       studies.forEach((study) => {
         if (study.hospital_id && !hospitalNames[study.id]) {
           fetchHospitalById(study.hospital_id).then((data) => {
-            setHospitalNames((prev) => ({
-              ...prev,
-              [study.id]: data.hospital_name,
-            }));
+            if (data) {
+              setHospitalNames((prev) => ({
+                ...prev,
+                [study.id]: data.hospital_name,
+              }));
+            }
           });
         }
       });
@@ -166,17 +169,17 @@ function Studies() {
   }, []);
 
   // Filter the studies based on the user's search input.
-    const filteredStudies = useMemo(() => {
-      return studies.slice().filter((item) => {
-        const studyNameMatches = item.study_configuration.name.toLowerCase().includes(search.toLowerCase());
-        const studyIdMatches = String(item.id).includes(search);
-        const providerNameMatches = providerNames[item.id] && providerNames[item.id].toLowerCase().includes(search.toLowerCase());
-        const hospitalNameMatches = hospitalNames[item.id] && hospitalNames[item.id].toLowerCase().includes(search.toLowerCase());
+  const filteredStudies = useMemo(() => {
+    return studies.slice().filter((item) => {
+      const studyNameMatches = item.study_configuration.name.toLowerCase().includes(search.toLowerCase());
+      const studyIdMatches = String(item.id).includes(search);
+      const providerNameMatches = providerNames[item.id] && providerNames[item.id].toLowerCase().includes(search.toLowerCase());
+      const hospitalNameMatches = hospitalNames[item.id] && hospitalNames[item.id].toLowerCase().includes(search.toLowerCase());
 
-        // Return true if any of the conditions match
-        return studyNameMatches || studyIdMatches || providerNameMatches || hospitalNameMatches;
-      });
-    }, [studies, search, providerNames, hospitalNames]);
+      // Return true if any of the conditions match
+      return studyNameMatches || studyIdMatches || providerNameMatches || hospitalNameMatches;
+    });
+  }, [studies, search, providerNames, hospitalNames]);
 
   // Render the Studies component.
   return (
