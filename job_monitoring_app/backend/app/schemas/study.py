@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 from . import Event
 from .study_configuration import StudyConfiguration
-from .user import User
+from .provider import Provider
 
 
 class StudyBase(BaseModel):
@@ -30,7 +30,7 @@ class StudyPure(StudyBase):
 
 
 class Study(StudyPure):
-    provider: User
+    provider: Provider
     study_configuration: StudyConfiguration
     events: List[Event] = []
 

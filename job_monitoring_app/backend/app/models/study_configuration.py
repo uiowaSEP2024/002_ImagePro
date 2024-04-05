@@ -22,11 +22,11 @@ class StudyConfiguration(Base, DateMixin):
     name : str
         The study configuration name as specified by the provider
     provider_id : int
-        ForeignKey to User id of the provider
+        ForeignKey to id of the provider
     version : str
         Version of the study configuration
     provider : relationship
-        Relationship to the User model representing the provider
+        Relationship to the Provider model representing the provider
     step_configurations : relationship
         Relationship to the StepConfiguration model. Represents all step configurations associated with this study configuration
     studies : relationship
@@ -47,14 +47,14 @@ class StudyConfiguration(Base, DateMixin):
 
     # The provider creating the configuration
     provider_id: Column = Column(
-        Integer, ForeignKey("users.id"), index=True, nullable=False
+        Integer, ForeignKey("providers.id"), index=True, nullable=False
     )
 
     # version of the study configuration
     version = Column(String, index=True, nullable=False)
 
     provider = relationship(
-        "User", back_populates="study_configurations", foreign_keys=[provider_id]
+        "Provider", back_populates="study_configurations", foreign_keys=[provider_id]
     )
 
     step_configurations = relationship(

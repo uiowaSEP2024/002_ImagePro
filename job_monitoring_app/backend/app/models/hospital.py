@@ -22,6 +22,10 @@ class Hospital(Base, DateMixin):
     --------------
     pacs: list
         A list of PACS that the hospital is connected to
+    studies : relationship
+        The studies associated with the hospital (one to many).
+    users : relationship
+        The users associated with the hospital (one to many).
 
     """
 
@@ -37,5 +41,19 @@ class Hospital(Base, DateMixin):
         "Pacs",
         back_populates="hospital",
         foreign_keys="Pacs.hospital_id",
+        cascade="all, delete-orphan",
+    )
+
+    studies = relationship(
+        "Study",
+        back_populates="hospital",
+        foreign_keys="Study.hospital_id",
+        cascade="all, delete-orphan",
+    )
+
+    users = relationship(
+        "HospitalUsers",
+        back_populates="hospital",
+        foreign_keys="HospitalUsers.hospital_id",
         cascade="all, delete-orphan",
     )

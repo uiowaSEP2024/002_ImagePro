@@ -24,12 +24,6 @@ class User(Base, DateMixin):
         The role of the user (provider, hospital, admin).
     api_keys : relationship
         The API keys associated with the user (one to many).
-    studies : relationship
-        The studies associated with the user (one to many).
-    provider_studies : relationship
-        The provider studies associated with the user (one to many).
-    study_configurations : relationship
-        The study configurations associated with the user (one to many).
 
     Notes
     -----
@@ -77,31 +71,4 @@ class User(Base, DateMixin):
 
     api_keys = relationship(
         "Apikey", back_populates="user", cascade="all, delete-orphan"
-    )
-
-    studies = relationship(
-        "Study",
-        back_populates="hospital",
-        foreign_keys="Study.hospital_id",
-        cascade="all, delete-orphan",
-    )
-
-    provider_studies = relationship(
-        "Study",
-        back_populates="provider",
-        foreign_keys="Study.provider_id",
-        cascade="all, delete-orphan",
-    )
-
-    # provider has many study configurations
-    # bidirectional
-    # Child class -> StuduyConfiguration
-    # Parent class -> Provider
-    # Parent-child relationship (has many to one) -> provider_study_configurations
-    # Child-parent relationship (one to many) -> provider (see study_configuration.py)
-    study_configurations = relationship(
-        "StudyConfiguration",
-        back_populates="provider",
-        foreign_keys="StudyConfiguration.provider_id",
-        cascade="all, delete-orphan",
     )

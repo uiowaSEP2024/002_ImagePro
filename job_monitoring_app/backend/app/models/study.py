@@ -16,7 +16,7 @@ class Study(Base, DateMixin):
     id : int
         Auto-generated internal study ID.
     provider_id : int
-        ForeignKey to the User ID of the provider.
+        ForeignKey to the ID of the provider.
     provider_study_id : str
         The study ID as provided by the provider. This is the ID given by the provider.
         The combination of `provider_id` and `provider_study_id` is unique.
@@ -24,7 +24,7 @@ class Study(Base, DateMixin):
         The study name as specified by the provider, e.g., "ProstateV1", "KidneyV2".
         May be used to set up billing or display information later.
     hospital_id : int
-        ForeignKey to the User ID of the hospital.
+        ForeignKey to the ID of the hospital.
     study_configuration_id : int
         ForeignKey to the StudyConfiguration ID.
     events : list of Events
@@ -39,12 +39,12 @@ class Study(Base, DateMixin):
     id: Column = Column(Integer, primary_key=True, index=True)
 
     provider_id: Column = Column(
-        Integer, ForeignKey("users.id"), index=True, nullable=False
+        Integer, ForeignKey("providers.id"), index=True, nullable=False
     )
 
     # The person sending the studies
     provider = relationship(
-        "User", back_populates="studies", foreign_keys=[provider_id]
+        "Provider", back_populates="studies", foreign_keys=[provider_id]
     )
 
     # The study_id as provided by the provider
@@ -56,10 +56,10 @@ class Study(Base, DateMixin):
 
     # The hospital that this study belongs to. Must be a user in the system
     hospital_id: Column = Column(
-        Integer, ForeignKey("users.id"), index=True, nullable=False
+        Integer, ForeignKey("hospitals.id"), index=True, nullable=False
     )
     hospital = relationship(
-        "User",
+        "Hospital",
         back_populates="studies",
         foreign_keys=[
             hospital_id,
@@ -83,6 +83,5 @@ class Study(Base, DateMixin):
     study_configuration = relationship(
         "StudyConfiguration",
         back_populates="studies",
-        # backref=backref('studies', passive_deletes=True),
         foreign_keys=[study_configuration_id],
     )

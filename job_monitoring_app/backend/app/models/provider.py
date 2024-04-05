@@ -21,9 +21,12 @@ class Provider(Base, DateMixin):
     --------------
     products: list
         A list of products that the provider owns
-
-    # TODO Add connection to users, this should be done after users are updated
-    # TODO Add connection to products when that table is created
+    study_configurations : relationship
+        The study configurations associated with the user (one to many).
+    studies : relationship
+        The studies associated with the provider (one to many).
+    users : relationship
+        The users associated with the provider (one to many).
 
     """
 
@@ -39,5 +42,32 @@ class Provider(Base, DateMixin):
         "Product",
         back_populates="provider",
         foreign_keys="Product.provider_id",
+        cascade="all, delete-orphan",
+    )
+
+    # provider has many study configurations
+    # bidirectional
+    # Child class -> StuduyConfiguration
+    # Parent class -> Provider
+    # Parent-child relationship (has many to one) -> provider_study_configurations
+    # Child-parent relationship (one to many) -> provider (see study_configuration.py)
+    study_configurations = relationship(
+        "StudyConfiguration",
+        back_populates="provider",
+        foreign_keys="StudyConfiguration.provider_id",
+        cascade="all, delete-orphan",
+    )
+
+    studies = relationship(
+        "Study",
+        back_populates="provider",
+        foreign_keys="Study.provider_id",
+        cascade="all, delete-orphan",
+    )
+
+    users = relationship(
+        "ProviderUsers",
+        back_populates="provider",
+        foreign_keys="ProviderUsers.provider_id",
         cascade="all, delete-orphan",
     )
