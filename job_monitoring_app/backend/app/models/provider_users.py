@@ -1,8 +1,7 @@
 from sqlalchemy import Column, Integer, ForeignKey
+from sqlalchemy.orm import relationship
 
 from .base import Base
-from .user import User
-from .provider import Provider
 
 
 class ProviderUsers(Base):
@@ -13,5 +12,7 @@ class ProviderUsers(Base):
     __tablename__ = "user_provider"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(Integer, ForeignKey(User.id, ondelete="CASCADE"))
-    provider_id = Column(Integer, ForeignKey(Provider.id, ondelete="CASCADE"))
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
+    provider_id = Column(Integer, ForeignKey("providers.id", ondelete="CASCADE"))
+
+    provider = relationship("Provider", back_populates="users")

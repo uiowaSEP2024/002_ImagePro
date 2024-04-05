@@ -15,8 +15,9 @@ router.tags = ["study_configurations"]
 def create_study(
     study_configuration: schemas.StudyConfigurationCreate,
     db: Session = Depends(get_db),
-    provider=Depends(get_user_from_api_key),
+    provider_user=Depends(get_user_from_api_key),
 ):
+    provider = services.get_provider_by_user_id(db, provider_user.id)
     return services.create_study_configuration(
         db, provider_id=provider.id, study_configuration=study_configuration
     )
@@ -29,8 +30,9 @@ def create_study(
 def get_study_configuration_by_id(
     study_configuration_id: int,
     db: Session = Depends(get_db),
-    provider=Depends(get_current_provider),
+    provider_user=Depends(get_current_provider),
 ):
+    provider = services.get_provider_by_user_id(db, provider_user.id)
     study_configuration = services.get_study_configuration_by_id(
         db, study_configuration_id=study_configuration_id
     )
