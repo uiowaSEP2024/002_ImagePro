@@ -7,6 +7,8 @@ import {
 } from "@testing-library/react";
 import Studies from "@/pages/studies";
 import { kidneyStudyFixture } from "fixtures/kidneyStudyFixture";
+import { providerFixture } from "fixtures/providerFixture";
+import { hospitalFixture } from "fixtures/hospitalFixture";
 
 import * as data from "@/data/index";
 
@@ -49,6 +51,12 @@ jest.spyOn(data, "fetchStudies").mockImplementation(() =>
 jest.spyOn(data, "fetchEvents").mockImplementation(() => Promise.resolve([]));
 jest.spyOn(data, "fetchStudyById").mockImplementation(() =>
   Promise.resolve(kidneyStudyFixture)
+);
+jest.spyOn(data, "fetchProviderById").mockImplementation(() =>
+  Promise.resolve(providerFixture)
+);
+jest.spyOn(data, "fetchHospitalById").mockImplementation(() =>
+  Promise.resolve(hospitalFixture)
 );
 
 describe("Studies List Page", () => {
