@@ -1,4 +1,6 @@
+import zipfile
 from enum import Enum
+from pathlib import Path
 
 import pyorthanc
 import logging
@@ -34,6 +36,12 @@ class SingleStudyRun:
         self.study_status = StudyState.IN_PROGRESS
         self.study_id = study_id
         self.is_processed = False
+        self.tracker_api_key = tracker_api_key
+        self.study_config_file = study_config_file
+
+        self.study_dir = Path(f"/tmp/{self.study_id}")
+        self.study_dir.mkdir(parents=True, exist_ok=True)
+
         self.logger = logging.getLogger(
             "receiver_loop"
         )  # Possibly change this to a different logger its fine for now
@@ -50,6 +58,7 @@ class SingleStudyRun:
         self.max_retries: int = 5
         self._init_orthanc_connection()
         self._init_study_object()
+        self._init_study_logger()
 
     # Boilerplate code for the study state
     def get_study_is_in_progress(self) -> bool:
@@ -72,6 +81,13 @@ class SingleStudyRun:
         self.end_time = time.time()
         self.logger.info(f"Study {self.study_id}: {self._get_time_processing_str()}")
 
+    def _get_download_dir(self) -> Path:
+        return self.study_dir / "download"
+
+    def _get_extract_dir(self) -> Path:
+
+        return self.study_dir / "extract"
+
     def _get_time_processing_str(self) -> str:
         time_str = ""
         if self.end_time > 0:
@@ -86,7 +102,7 @@ class SingleStudyRun:
         print(f"Reading in hospital mapping from {hopital_mapping_file}")
         return {"EXAMPLE_TOOL": "EXAMPLE_TOOL"}
 
-    def study_is_stable(self, study: pyorthanc.Study) -> bool:
+    def study_is_stable(self) -> bool:
         """
         Check if the study is stable.
 
@@ -97,9 +113,9 @@ class SingleStudyRun:
         """
         is_stable: bool = False
         try:
-            is_stable = study.get_main_information().get("IsStable", False)
+            is_stable = self.study.get_main_information().get("IsStable", False)
         except Exception as get_main_info_e:
-            msg: str = f"ERROR getting study main information for {study.id_}: {get_main_info_e}"
+            msg: str = f"ERROR getting study main information for {self.study_id}: {get_main_info_e}"
             self.logger.info(msg)
         return is_stable
 
@@ -113,12 +129,12 @@ class SingleStudyRun:
                 return True
         return False
 
-    def _init_study_logger(self, tracker_api_key: str, study_config_file: str):
-        self.study_logger = OrthancStudyLogger(
+    def _init_study_logger(self):
+        self.study_job_tracker = OrthancStudyLogger(
             hospital_id=self.hospital_mapping["EXAMPLE_TOOL"],  # TODO make this dynamic
             study_id=self.study_id,
-            tracker_api_key=tracker_api_key,
-            study_config_file=study_config_file,
+            tracker_api_key=self.tracker_api_key,
+            study_config_file=self.study_config_file,
         )
 
     def _init_orthanc_connection(self) -> None:
@@ -152,3 +168,73 @@ class SingleStudyRun:
         except Exception as e:
             self.logger.error(f"ERROR getting study {self.study_id} from Orthanc: {e}")
             self.study_status = StudyState.ERROR
+
+    def _download_study(self) -> Path:
+        """
+        Downloads a DICOM study from an Orthanc server using pyorthanc and saves it to a specified directory as a ZIP file.
+
+        Args:
+        - download_dir (str): The directory path where the ZIP file will be saved.
+
+        This function first attempts to download the entire DICOM study associated with the given
+        study_id from the Orthanc server in ZIP format using the pyorthanc client. If the download is successful,
+        the ZIP file is saved to the specified directory. If the directory does not exist, it is created.
+
+        The function prints a message indicating the success or failure of the download operation.
+        """
+        # Ensure the Path object is used for path operations
+        download_dir = self._get_download_dir()
+        download_dir.mkdir(parents=True, exist_ok=True)
+        # Define the path for the ZIP file
+        zip_path = download_dir / f"{self.study_id}.zip"
+
+        try:
+            # Use pyorthanc to download the study as a ZIP archive
+            study_archive = self.orthanc.get_studies_id_archive(self.study_id)
+
+            # Save the ZIP file to the specified path
+            with open(zip_path, "wb") as f:
+                f.write(study_archive)
+            self.logger.info(f"Downloaded and saved DICOM study ZIP to {zip_path}")
+            return zip_path
+        except Exception as e:
+            self.logger.info(
+                f"Error to download DICOM study for study ID {self.study_id}. Error: {e}"
+            )
+
+    def _unzip_study(self):
+        """
+        Extracts a ZIP file containing a DICOM study into a specified directory.
+
+        Args:
+        - zip_path (str): The path to the ZIP file to be extracted.
+        - extract_dir (str): The directory path where the contents of the ZIP file will be extracted.
+
+        This function attempts to extract all the contents of the ZIP file specified by zip_path
+        into the directory specified by extract_dir. If the directory does not exist, it is created.
+
+        The function prints a message indicating the success or failure of the extraction operation.
+        """
+
+        # Ensure the Path objects are used for path operations
+        zip_path = self._get_download_dir() / f"{self.study_id}.zip"
+        extract_dir = self._get_extract_dir()
+        extract_dir.mkdir(
+            parents=True, exist_ok=True
+        )  # Ensure the extraction directory exists
+
+        try:
+            # Open the ZIP file and extract its contents
+            with zipfile.ZipFile(zip_path, "r") as zip_ref:
+                zip_ref.extractall(extract_dir)
+            self.logger.info(f"Extracted DICOM study to {extract_dir}")
+        except Exception as e:
+            self.logger.info(f"Error to extract ZIP file {zip_path}. Error: {e}")
+
+    def process_study(self):
+        if self.study_status != StudyState.IN_PROGRESS:
+            self.logger.error(
+                f"ERROR: Study {self.study_id} is not in progress. Not processing"
+            )
+        if self.study_is_stable():
+            self.study_job_tracker.update_step_status(1, "Complete")

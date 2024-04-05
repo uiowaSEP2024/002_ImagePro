@@ -20,6 +20,18 @@ class OrthancConnectionException(Exception):
         super().__init__(self.msg)
 
 
+class SingleStudyFailedException(Exception):
+    def __init__(self, msg: str = "Study failed") -> None:
+        self.msg = msg
+        super().__init__(self.msg)
+
+
+class SingleStudyFailedDownloadException(Exception):
+    def __init__(self, msg: str = "Study failed to download") -> None:
+        self.msg = msg
+        super().__init__(self.msg)
+
+
 def setup_custom_logger(name: str, log_level: int = logging.INFO):
     """
     Set up a custom logger with the specified name.
