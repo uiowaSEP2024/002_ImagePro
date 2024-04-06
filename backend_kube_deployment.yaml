@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
       - name: backend
-        image: backend-image
+        image: 002_imagepro-backend:latest
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000
         env:
@@ -24,4 +25,3 @@ spec:
           value: "postgres"
         - name: POSTGRES_SERVER
           value: "database"
-

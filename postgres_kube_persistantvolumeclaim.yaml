@@ -4,5 +4,7 @@ metadata:
   name: pg-data-pvc
 spec:
   accessModes:
-    - ReadWriteOnce &#8203;``【oaicite:0】``&#8203;
-
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
