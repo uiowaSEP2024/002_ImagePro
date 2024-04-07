@@ -14,10 +14,10 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: frontend
+        image: 002_imagepro-frontend:latest
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 3000
         env:
         - name: NEXT_PUBLIC_BACKEND_URL
           value: "http://backend:8000"
-

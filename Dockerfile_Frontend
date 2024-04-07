@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y \
 
 # Copy package.json and to the working directory
 COPY /job_monitoring_app/frontend/package.json ./
+COPY /job_monitoring_app/frontend/package-lock.json ./
 COPY /job_monitoring_app/frontend/public ./public
 COPY /job_monitoring_app/frontend/src ./src
 COPY /job_monitoring_app/frontend/fixtures ./fixtures
