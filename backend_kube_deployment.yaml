@@ -19,6 +19,8 @@ spec:
         ports:
         - containerPort: 8000
         env:
+        - name: APP_ENV
+          value: "development"
         - name: POSTGRES_PASSWORD
           value: "dev_password"
         - name: POSTGRES_USER
