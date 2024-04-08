@@ -11,7 +11,6 @@ import os
 import logging
 
 
-import os
 from dotenv import load_dotenv
 
 base_project_dir = Path(__file__).parent.parent
@@ -26,6 +25,8 @@ product_path = Path(__file__).parent.parent / "example_tool" / "brainmask_tool.p
 assert product_path.exists()
 
 LOGGER_NAME = "orthanc_agent"
+
+
 def check_study_stable(study: pyorthanc.Study) -> bool:
     """
     Check if the study is stable.
@@ -150,7 +151,7 @@ def process_data(
 
     # Command to run the script
     command = [
-        "/bin/bash",
+        "python3",
         brains_tool_path,
         "-s",
         input_data_path,
@@ -454,7 +455,7 @@ if __name__ == "__main__":
         "--product_path",
         type=str,
         help="The path to the product executable to run",
-        default="../example_run_brain_mask_tool_docker.sh",
+        default=f"{product_path}",
     )
     parser.add_argument(
         "-u",
