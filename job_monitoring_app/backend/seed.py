@@ -34,337 +34,269 @@ api_keys = {}
 # Data to be seeded for each entity
 STUDIES_CONFIGURATIONS = [
     dict(
-        name="Kidney Cancer",
-        version="1.0.0",
-        tag="kidney_cancer",
-        provider_email="botimage@gmail.com",
+        version="0.0.1",
+        name="Prostate Study",
+        tag="prostate_study",
+        provider_user_email="prostateimaginguser@gmail.com",
         step_configurations=[
-            dict(
-                name="Left Kidney",
-                tag="kidney_left",
-                points=15,
-                metadata_configurations=[
-                    dict(name="Protein Density", units="gm/cc", kind="number"),
-                    dict(name="Opacity", units="%", kind="number"),
-                    dict(name="Color", kind="text"),
-                    dict(name="Report", kind="link"),
-                ],
-            ),
-            dict(
-                name="Right Kidney",
-                tag="kidney_right",
-                points=15,
-                metadata_configurations=[
-                    dict(name="Protein Density", units="gm/cc", kind="number"),
-                    dict(name="Opacity", units="%", kind="number"),
-                    dict(name="Color", kind="text"),
-                    dict(name="Report", kind="link"),
-                ],
-            ),
-            dict(
-                name="Kidney Results",
-                tag="kidney_results",
-                points=10,
-                metadata_configurations=[dict(name="Verdict", kind="text")],
-            ),
+            dict(name="Data Receiving", tag="data_receiving", points=1),
+            dict(name="Data Download", tag="data_download", points=1),
+            dict(name="Data Processing", tag="data_processing", points=1),
+            dict(name="Data Return", tag="data_return", points=1),
         ],
     ),
     dict(
-        name="Heart Cancer",
-        version="1.0.0",
-        tag="heart_cancer",
-        provider_email="botimage@gmail.com",
+        version="0.0.1",
+        name="Full Brain Study",
+        tag="full_brain_study",
+        provider_user_email="brainmaskuser@gmail.com",
         step_configurations=[
-            dict(
-                name="Left Heart",
-                tag="heart_left",
-                points=15,
-                metadata_configurations=[
-                    dict(name="Protein Density", units="gm/cc", kind="number"),
-                    dict(name="Opacity", units="%", kind="number"),
-                    dict(name="Color", kind="text"),
-                    dict(name="Report", kind="link"),
-                ],
-            ),
-            dict(
-                name="Right Heart",
-                tag="heart_right",
-                points=15,
-                metadata_configurations=[
-                    dict(name="Protein Density", units="gm/cc", kind="number"),
-                    dict(name="Opacity", units="%", kind="number"),
-                    dict(name="Color", kind="text"),
-                    dict(name="Report", kind="link"),
-                ],
-            ),
-            dict(
-                name="Heart Results",
-                tag="heart_results",
-                points=10,
-                metadata_configurations=[dict(name="Verdict", kind="text")],
-            ),
+            dict(name="Data Receiving", tag="data_receiving", points=1),
+            dict(name="Data Download", tag="data_download", points=1),
+            dict(name="Data Processing", tag="data_processing", points=1),
+            dict(name="Data Return", tag="data_return", points=1),
         ],
     ),
     dict(
-        name="Pancreas Cancer",
-        version="1.0.0",
-        tag="pancreas_cancer",
-        provider_email="botimage@gmail.com",
+        version="0.0.1",
+        name="Cerebral Cortex Study",
+        tag="cerebral_cortex_study",
+        provider_user_email="brainmaskuser@gmail.com",
         step_configurations=[
-            dict(
-                name="Left Pancreas",
-                tag="pancreas_results",
-                points=15,
-                metadata_configurations=[
-                    dict(name="Protein Density", units="gm/cc", kind="number"),
-                    dict(name="Opacity", units="%", kind="number"),
-                    dict(name="Color", kind="text"),
-                    dict(name="Report", kind="link"),
-                ],
-            ),
+            dict(name="Data Receiving", tag="data_receiving", points=1),
+            dict(name="Data Download", tag="data_download", points=1),
+            dict(name="Data Processing", tag="data_processing", points=1),
+            dict(name="Data Return", tag="data_return", points=1),
         ],
     ),
     dict(
-        name="Lung Cancer",
-        version="1.0.0",
-        tag="lung_cancer",
-        provider_email="noodlesco@gmail.com",
+        version="0.0.1",
+        name="Cerebellum Study",
+        tag="cerebellum_study",
+        provider_user_email="brainmaskuser@gmail.com",
         step_configurations=[
-            dict(
-                name="Left Lung",
-                tag="left_lung",
-                points=15,
-                metadata_configurations=[
-                    dict(name="Protein Density", units="gm/cc", kind="number"),
-                    dict(name="Opacity", units="%", kind="number"),
-                    dict(name="Color", kind="text"),
-                    dict(name="Report", kind="link"),
-                ],
-            ),
-            dict(
-                name="Right Lung",
-                tag="right_lung",
-                points=15,
-                metadata_configurations=[
-                    dict(name="Protein Density", units="gm/cc", kind="number"),
-                    dict(name="Opacity", units="%", kind="number"),
-                    dict(name="Color", kind="text"),
-                    dict(name="Report", kind="link"),
-                ],
-            ),
-            dict(
-                name="Lung Results",
-                tag="lung_results",
-                points=10,
-                metadata_configurations=[dict(name="Verdict", kind="text")],
-            ),
+            dict(name="Data Receiving", tag="data_receiving", points=1),
+            dict(name="Data Download", tag="data_download", points=1),
+            dict(name="Data Processing", tag="data_processing", points=1),
+            dict(name="Data Return", tag="data_return", points=1),
         ],
     ),
 ]
 
-
 STUDIES_DATA = [
-    # study 1 John
+    # study 1 University Hospital
     dict(
-        hospital_email="johndoe@gmail.com",
-        provider_email="botimage@gmail.com",
-        provider_study_id="botimage-123",
-        study_configuration_tag="lung_cancer",
+        hospital_user_email="universityhospitaluser@gmail.com",
+        provider_user_email="prostateimaginguser@gmail.com",
+        provider_study_id="prostateimaging-123",
+        study_configuration_tag="prostate_study",
     ),
-    # study 2 John
+    # study 2 Mercy Hospital
     dict(
-        hospital_email="johndoe@gmail.com",
-        provider_email="botimage@gmail.com",
-        provider_study_id="botimage-456",
-        study_configuration_tag="heart_cancer",
+        hospital_user_email="mercyhospitaluser@gmail.com",
+        provider_user_email="brainmaskuser@gmail.com",
+        provider_study_id="brainmask-456",
+        study_configuration_tag="full_brain_study",
     ),
-    # study 3 John
+    # study 3 University Hospital
     dict(
-        hospital_email="johndoe@gmail.com",
-        provider_email="botimage@gmail.com",
-        provider_study_id="botimage-789",
-        study_configuration_tag="pancreas_cancer",
+        hospital_user_email="universityhospitaluser@gmail.com",
+        provider_user_email="brainmaskuser@gmail.com",
+        provider_study_id="brainmask-789",
+        study_configuration_tag="cerebral_cortex_study",
     ),
-    # study 1 Jane
+    # study 4 University Hospital
     dict(
-        hospital_email="janeblack@gmail.com",
-        provider_email="noodlesco@gmail.com",
-        provider_study_id="noodlesco-123",
-        study_configuration_tag="lung_cancer",
+        hospital_user_email="universityhospitaluser@gmail.com",
+        provider_user_email="brainmaskuser@gmail.com",
+        provider_study_id="brainmask-123",
+        study_configuration_tag="cerebellum_study",
     ),
 ]
 
 EVENTS_DATA = [
-    #  Study 1 John, Event 1
+    #  Study 1 University Hospital, Event 1
     dict(
-        provider_study_id="botimage-123",
-        kind="Pending",
-        study_configuration_tag="kidney_cancer",
-        step_configuration_tag="kidney_left",
-        event_metadata={
-            "Protein Density": 50,
-            "Opacity": 0.9,
-            "Report": "http://wwbp.org/papers/PsychSci2015_HeartDisease.pdf",
-            "Color": "Lime Pink",
-        },
-    ),
-    #  Study 1 John, Event 2
-    dict(
-        provider_study_id="botimage-123",
-        kind="Pending",
-        study_configuration_tag="kidney_cancer",
-        step_configuration_tag="kidney_right",
-        event_metadata={
-            "Protein Density": 50,
-            "Opacity": 0.9,
-            "Report": "http://wwbp.org/papers/PsychSci2015_HeartDisease.pdf",
-            "Color": "Lime Pink",
-        },
-    ),
-    #  Study 1 John, Event 3
-    dict(
-        provider_study_id="botimage-123",
+        provider_study_id="prostateimaging-123",
         kind="Complete",
-        study_configuration_tag="kidney_cancer",
-        step_configuration_tag="kidney_results",
-        event_metadata={
-            "Verdict": "Negative",
-        },
+        study_configuration_tag="prostate_study",
+        step_configuration_tag="data_receiving",
+        event_metadata=dict(status="Complete"),
     ),
-    #  Study 2 John, Event 1
+    #  Study 1 University Hospital, Event 2
     dict(
-        provider_study_id="botimage-456",
+        provider_study_id="prostateimaging-123",
+        kind="In progress",
+        study_configuration_tag="prostate_study",
+        step_configuration_tag="data_download",
+        event_metadata=dict(status="In progress"),
+    ),
+    #  Study 1 University Hospital, Event 3
+    dict(
+        provider_study_id="prostateimaging-123",
         kind="Pending",
-        study_configuration_tag="heart_cancer",
-        step_configuration_tag="heart_left",
-        event_metadata={
-            "Protein Density": 50,
-            "Opacity": 0.9,
-            "Report": "http://wwbp.org/papers/PsychSci2015_HeartDisease.pdf",
-            "Color": "Lime Pink",
-        },
+        study_configuration_tag="prostate_study",
+        step_configuration_tag="data_processing",
+        event_metadata=dict(status="Pending"),
     ),
-    #  Study 2 John, Event 2
+    #  Study 1 University Hospital, Event 4
     dict(
-        provider_study_id="botimage-456",
+        provider_study_id="prostateimaging-123",
         kind="Pending",
-        study_configuration_tag="heart_cancer",
-        step_configuration_tag="heart_right",
-        event_metadata={
-            "Protein Density": 50,
-            "Opacity": 0.9,
-            "Report": "http://wwbp.org/papers/PsychSci2015_HeartDisease.pdf",
-            "Color": "Lime Pink",
-        },
+        study_configuration_tag="prostate_study",
+        step_configuration_tag="data_return",
+        event_metadata=dict(status="Pending"),
     ),
-    #  Study 2 John, Event 3
+    #  Study 2 Mercy Hospital, Event 1
     dict(
-        provider_study_id="botimage-456",
+        provider_study_id="brainmask-456",
         kind="Complete",
-        study_configuration_tag="heart_cancer",
-        step_configuration_tag="heart_results",
-        event_metadata={
-            "Verdict": "Negative",
-        },
+        study_configuration_tag="full_brain_study",
+        step_configuration_tag="data_receiving",
+        event_metadata=dict(status="Complete"),
     ),
-    #  Study 3 John, Event 1
+    #  Study 2 Mercy Hospital, Event 2
     dict(
-        provider_study_id="botimage-789",
+        provider_study_id="brainmask-456",
         kind="Complete",
-        study_configuration_tag="pancreas_cancer",
-        step_configuration_tag="pancreas_results",
-        event_metadata={
-            "Verdict": "Negative",
-        },
+        study_configuration_tag="full_brain_study",
+        step_configuration_tag="data_download",
+        event_metadata=dict(status="Complete"),
     ),
-    #  Study 1 Jane, Event 1
+    #  Study 2 Mercy Hospital, Event 3
     dict(
-        provider_study_id="noodlesco-123",
+        provider_study_id="brainmask-456",
+        kind="In progress",
+        study_configuration_tag="full_brain_study",
+        step_configuration_tag="data_processing",
+        event_metadata=dict(status="In progress"),
+    ),
+    #  Study 2 Mercy Hospital, Event 4
+    dict(
+        provider_study_id="brainmask-456",
         kind="Pending",
-        study_configuration_tag="lung_cancer",
-        step_configuration_tag="left_lung",
-        event_metadata={
-            "Protein Density": 50,
-            "Opacity": 0.9,
-            "Report": "http://wwbp.org/papers/PsychSci2015_HeartDisease.pdf",
-            "Color": "Lime Pink",
-        },
+        study_configuration_tag="full_brain_study",
+        step_configuration_tag="data_return",
+        event_metadata=dict(status="Pending"),
     ),
-    #  Study 1 Jane, Event 2
+    #  Study 3 University Hospital, Event 1
     dict(
-        provider_study_id="noodlesco-123",
-        kind="Pending",
-        study_configuration_tag="lung_cancer",
-        step_configuration_tag="right_lung",
-        event_metadata={
-            "Protein Density": 50,
-            "Opacity": 0.9,
-            "Report": "http://wwbp.org/papers/PsychSci2015_HeartDisease.pdf",
-            "Color": "Lime Pink",
-        },
-    ),
-    #  Study 1 Jane, Event 3
-    dict(
-        provider_study_id="noodlesco-123",
+        provider_study_id="brainmask-789",
         kind="Complete",
-        study_configuration_tag="lung_cancer",
-        step_configuration_tag="lung_results",
-        event_metadata={
-            "Verdict": "Negative",
-        },
+        study_configuration_tag="cerebral_cortex_study",
+        step_configuration_tag="data_receiving",
+        event_metadata=dict(status="Complete"),
+    ),
+    #  Study 3 University Hospital, Event 2
+    dict(
+        provider_study_id="brainmask-789",
+        kind="Complete",
+        study_configuration_tag="cerebral_cortex_study",
+        step_configuration_tag="data_download",
+        event_metadata=dict(status="Complete"),
+    ),
+    #  Study 3 University Hospital, Event 3
+    dict(
+        provider_study_id="brainmask-789",
+        kind="Error",
+        study_configuration_tag="cerebral_cortex_study",
+        step_configuration_tag="data_processing",
+        event_metadata=dict(status="Error"),
+    ),
+    #  Study 3 University Hospital, Event 4
+    dict(
+        provider_study_id="brainmask-789",
+        kind="Pending",
+        study_configuration_tag="cerebral_cortex_study",
+        step_configuration_tag="data_return",
+        event_metadata=dict(status="Pending"),
+    ),
+    #  Study 4 University Hospital, Event 1
+    dict(
+        provider_study_id="brainmask-123",
+        kind="Complete",
+        study_configuration_tag="cerebellum_study",
+        step_configuration_tag="data_receiving",
+        event_metadata=dict(status="Complete"),
+    ),
+    #  Study 4 University Hospital, Event 2
+    dict(
+        provider_study_id="brainmask-123",
+        kind="Complete",
+        study_configuration_tag="cerebellum_study",
+        step_configuration_tag="data_download",
+        event_metadata=dict(status="Complete"),
+    ),
+    #  Study 4 University Hospital, Event 3
+    dict(
+        provider_study_id="brainmask-123",
+        kind="Complete",
+        study_configuration_tag="cerebellum_study",
+        step_configuration_tag="data_processing",
+        event_metadata=dict(status="Complete"),
+    ),
+    #  Study 4 University Hospital, Event 4
+    dict(
+        provider_study_id="brainmask-123",
+        kind="Complete",
+        study_configuration_tag="cerebellum_study",
+        step_configuration_tag="data_return",
+        event_metadata=dict(status="Complete"),
     ),
 ]
 
 HOSPITALS_DATA = [
     dict(
-        hospital_name="John's Hospital",
+        hospital_name="University Hospital",
     ),
     dict(
-        hospital_name="Jane's Hospital",
+        hospital_name="Mercy Hospital",
+    ),
+    dict(
+        hospital_name="Unity Point Hospital",
     ),
 ]
 
 PROVIDERS_DATA = [
     dict(
-        provider_name="BotImage",
+        provider_name="BrainMask",
     ),
     dict(
-        provider_name="NoodlesCo",
+        provider_name="ProstateImaging",
     ),
 ]
 
 USERS_DATA = [
     # Hospital users
     dict(
-        email="johndoe@gmail.com",
+        email="universityhospitaluser@gmail.com",
         password="abcdefg",
-        first_name="John",
-        last_name="Doe",
+        first_name="University Hospital user",
         role=UserRoleEnum.hospital,
         hospital_id=1,
     ),
     dict(
-        email="janeblack@gmail.com",
+        email="mercyhospitaluser@gmail.com",
         password="abcdefg",
-        first_name="Jane",
+        first_name="Mercy Hospital user",
         last_name="Black",
         role=UserRoleEnum.hospital,
         hospital_id=2,
     ),
     # Providers
     dict(
-        email="noodlesco@gmail.com",
+        email="brainmaskuser@gmail.com",
         password="abcdefg",
-        first_name="NoodlesCo user",
-        role=UserRoleEnum.provider,
-        provider_id=2,
-    ),
-    dict(
-        email="botimage@gmail.com",
-        password="abcdefg",
-        first_name="BotImage user",
+        first_name="BrainMask user",
         role=UserRoleEnum.provider,
         provider_id=1,
+    ),
+    dict(
+        email="prostateimaginguser@gmail.com",
+        password="abcdefg",
+        first_name="ProstateImaging user",
+        role=UserRoleEnum.provider,
+        provider_id=2,
     ),
     # Admins
     dict(
@@ -384,14 +316,14 @@ USERS_DATA = [
 API_KEYS_DATA = [
     # Providers
     dict(
-        email="noodlesco@gmail.com",
+        email="brainmaskuser@gmail.com",
         key="VCm4-RBXxgtg__yqxf0SYGLHGn8",
-        note="Noodles & Co Key",
+        note="BrainMask Key",
     ),
     dict(
-        email="botimage@gmail.com",
+        email="prostateimaginguser@gmail.com",
         key="q-jAqPWCRGr2u6SeK6r6U0LBfJA",
-        note="Bot Image Key",
+        note="ProstateImaging Key",
     ),
 ]
 
@@ -470,8 +402,8 @@ def seed_studies(db):
 
     for study_data in STUDIES_DATA:
         print(f"  Seeding study {str(study_data)}")
-        user_hospital = users[study_data["hospital_email"]]
-        user_provider = users[study_data["provider_email"]]
+        user_hospital = users[study_data["hospital_user_email"]]
+        user_provider = users[study_data["provider_user_email"]]
         study_config = study_configs[study_data["study_configuration_tag"]]
 
         study = models.Study(
@@ -523,7 +455,7 @@ def seed_study_configurations(db):
 
     for study_config_data in STUDIES_CONFIGURATIONS:
         print(f"  Seeding study configuration: {str(study_config_data)}")
-        user = users[study_config_data.pop("provider_email")]
+        user = users[study_config_data.pop("provider_user_email")]
         provider = services.get_provider_by_user_id(db, user.id)
 
         study_config = models.StudyConfiguration(
