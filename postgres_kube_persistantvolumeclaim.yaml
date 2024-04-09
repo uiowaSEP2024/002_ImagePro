@@ -1,10 +1,12 @@
+# Volume Claim Definition
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pg-data-pvc
+  name: postgres-pvc
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 100Mi
+      storage: 1Gi
+  volumeName: postgres-pv # Notice this matches the name of the volume
