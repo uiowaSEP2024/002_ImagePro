@@ -1,0 +1,40 @@
+# StatefulSet Definition -- has to be stateful and not deployment as it needs to maintain state
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres-statefulset
+spec:
+    serviceName: postgres
+    replicas: 1
+    selector:
+        matchLabels:
+          app: postgres
+    template:
+        metadata:
+          labels:
+              app: postgres
+        spec:
+          containers:
+              - name: postgres
+                image: postgres:14
+                ports:
+                  - containerPort: 5432
+                    name: postgres
+                    protocol: TCP
+                volumeMounts:
+                - name: postgres-persistent-storage
+                  mountPath: /var/lib/postgresql/data
+                env:
+                  - name: POSTGRES_DB
+                    value: postgres
+                  - name: POSTGRES_USER
+                    valueFrom:
+                      secretKeyRef:
+                        name: postgres-secrets
+                        key: username
+                  - name: POSTGRES_PASSWORD
+                    valueFrom:
+                      secretKeyRef:
+                        name: postgres-secrets
+                        key: password
+                      # TODO Add Volume Claim Template or Volume Claim reference?
