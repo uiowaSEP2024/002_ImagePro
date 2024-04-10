@@ -21,9 +21,15 @@ spec:
         env:
         - name: APP_ENV
           value: "development"
-        - name: POSTGRES_PASSWORD
-          value: "dev_password"
-        - name: POSTGRES_USER
-          value: "postgres"
         - name: POSTGRES_SERVER
-          value: "database"
+          value: "postgres"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secrets
+              key: password
+        - name: POSTGRES_USER
+          valueFrom:
+              secretKeyRef:
+                name: postgres-secrets
+                key: username
