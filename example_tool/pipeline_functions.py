@@ -21,7 +21,7 @@ import torch
 from pathlib import Path
 from dcm_classifier.study_processing import ProcessOneDicomStudyToVolumesMappingBase
 from dcm_classifier.image_type_inference import ImageTypeClassifierBase
-from dcm_classifier.namic_dicom_typing import itk_read_from_dicomfn_list
+from dcm_classifier.utility_functions import itk_read_from_dicomfn_list
 import re
 from pydicom import dcmread
 from subprocess import run
@@ -95,7 +95,7 @@ def validate_session_id(session_id: str) -> str:
 
 
 def dicom_inference_and_conversion(
-    session_dir: str, output_dir: str, model_path: str
+    session_dir: str, output_dir: str
 ) -> str:
     """
     This function takes a session directory with dicom data and converts them to NIfTI files in BIDS format.
@@ -105,9 +105,7 @@ def dicom_inference_and_conversion(
     :param dcm2niix_path_path: path to the dcm2niix script
     :return: path to the NIfTI sub-*/ses-* directory with converted data
     """
-    inferer = ImageTypeClassifierBase(
-        classification_model_filename=model_path, min_probability_threshold=0.2
-    )
+    inferer = ImageTypeClassifierBase()
     study = ProcessOneDicomStudyToVolumesMappingBase(
         study_directory=session_dir, inferer=inferer
     )
@@ -128,7 +126,7 @@ def dicom_inference_and_conversion(
         plane = series.get_acquisition_plane()
         print("Sub:", sub, "series:", series_number, "plane:", plane)
 
-        modality = series.get_modality()
+        modality = series.get_series_modality()
         if modality != "INVALID":
             if not Path(sub_ses_dir).exists():
                 run(["mkdir", "-p", sub_ses_dir])
@@ -139,9 +137,7 @@ def dicom_inference_and_conversion(
                     f"Series {series_number} not supported. More than one volume in series."
                 )
             else:
-                itk_im = itk_read_from_dicomfn_list(
-                    series_vol_list[0].get_one_volume_dcm_filenames()
-                )
+                itk_im = series_vol_list[0].get_itk_image()
                 itk.imwrite(itk_im, f"{sub_ses_dir}/{fname}.nii.gz")
 
     return sub_ses_dir
