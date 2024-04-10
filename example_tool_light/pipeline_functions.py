@@ -82,9 +82,7 @@ def dicom_inference_and_conversion(
     :param dcm2niix_path_path: path to the dcm2niix script
     :return: path to the NIfTI sub-*/ses-* directory with converted data
     """
-    inferer = ImageTypeClassifierBase(
-        classification_model_filename=model_path, min_probability_threshold=0.2
-    )
+    inferer = ImageTypeClassifierBase()
     study = ProcessOneDicomStudyToVolumesMappingBase(
         study_directory=session_dir, inferer=inferer
     )
@@ -116,9 +114,7 @@ def dicom_inference_and_conversion(
                     f"Series {series_number} not supported. More than one volume in series."
                 )
             else:
-                itk_im = itk_read_from_dicomfn_list(
-                    series_vol_list[0].get_one_volume_dcm_filenames()
-                )
+                itk_im = series_vol_list[0].get_itk_image()
                 itk.imwrite(itk_im, f"{sub_ses_dir}/{fname}.nii.gz")
 
     return sub_ses_dir
