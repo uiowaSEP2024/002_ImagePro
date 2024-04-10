@@ -1,7 +1,5 @@
 # Binaries and executables
 example_tool/brainmask_model.ckpt                         filter=lfs diff=lfs merge=lfs -text
-example_tool/rf_dicom_modality_classifier.onnx            filter=lfs diff=lfs merge=lfs -text
-example_tool_light/rf_dicom_modality_classifier.onnx      filter=lfs diff=lfs merge=lfs -text
 # Git lfs settings for files types
 *.IMA    filter=lfs diff=lfs merge=lfs -text
 *.nii.gz filter=lfs diff=lfs merge=lfs -text

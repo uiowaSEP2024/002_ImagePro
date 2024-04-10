@@ -63,7 +63,6 @@ try:
     nifti_path = dicom_inference_and_conversion(
         session_dir=session_path.as_posix(),
         output_dir=output_path.as_posix(),
-        model_path=f"{current_dir.as_posix()}/rf_dicom_modality_classifier.onnx",
     )
 except Exception as e:
     reason = f"Error in stage: {stage_name}"
