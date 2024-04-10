@@ -23,7 +23,17 @@ kubectl apply -f frontend_kube_deployment.yaml
 kubectl apply -f frontend_kube_service.yaml
 ```
 
-7. Build Backend Image in Minikube
+6. Add ingress to minikube and verify the nginx controller is running
+```bash
+minikube addons enable ingress
+kubectl get pods -n ingress-nginx
+```
+7. Verify the frontend service is running
+```bash
+minikube service web --url
+```
+
+9. Build Backend Image in Minikube
 
 ```bash
 eval $(minikube docker-env)
