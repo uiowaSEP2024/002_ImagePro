@@ -10,9 +10,8 @@ spec:
   selector:
     app: postgres
     role: service
-  type: NodePort
   ports:
-    - name: postgres
+    - name: postgres-port
       port: 5432
       targetPort: 5432
       protocol: TCP
