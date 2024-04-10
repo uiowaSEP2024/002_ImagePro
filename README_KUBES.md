@@ -30,7 +30,7 @@ kubectl get pods -n ingress-nginx
 ```
 7. Verify the frontend service is running
 ```bash
-minikube service web --url
+minikube service frontend-service --url
 ```
 
 9. Build Backend Image in Minikube
