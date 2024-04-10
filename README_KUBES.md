@@ -42,7 +42,7 @@ kubectl apply -f backend_kube_service.yaml
 ```bash
 kubectl apply -f postgres_kube_persistantvolume.yaml
 kubectl apply -f postgres_kube_persistantvolume_service.yaml
-kubectl apply -f postgres_kube_persistantvolume_statefullset.yaml
+kubectl apply -f postgres_kube_persistantvolume_statefulset.yaml
 kubectl apply -f postgres_kube_persistantvolumeclaim.yaml
-kubectl apply -f postgres_kube_secret.yaml
+kubectl apply -f postgres_kube_secrets.yaml
 ```
