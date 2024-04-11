@@ -5,6 +5,7 @@ metadata:
 spec:
   selector:
     app: frontend
+    role: service
   ports:
   - protocol: TCP
     port: 3000
