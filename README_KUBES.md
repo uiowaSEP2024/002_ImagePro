@@ -56,3 +56,7 @@ kubectl apply -f postgres_kube_persistantvolume_statefulset.yaml
 kubectl apply -f postgres_kube_persistantvolumeclaim.yaml
 kubectl apply -f postgres_kube_secrets.yaml
 ```
+10. To restart all pods and services
+```bash
+kubectl delete all --all -n default
+```
