@@ -29,7 +29,8 @@ RUN python3 -m pip install --upgrade pip
 RUN pip install kubernetes
 
 # Copy the script into the container
-COPY trigger_job.py .
+COPY dummy_study_handler.py .
+COPY test_data /app/data
 
 # You don't need to create input/output directories in the container, as these will be
 # provided by Kubernetes volumes mounted into the Pod that runs this container.
@@ -37,4 +38,4 @@ COPY trigger_job.py .
 # Set an environment variable for the Kubernetes configuration file, if needed
 # ENV KUBECONFIG /path/to/kubeconfig
 
-ENTRYPOINT ["python", "trigger_job.py"]
+ENTRYPOINT ["python", "dummy_study_handler.py"]

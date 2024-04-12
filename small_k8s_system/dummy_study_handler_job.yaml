@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
       - name: script-container
-        image: your-script-image:tag
+        image: study_handler:v0.1
         volumeMounts:
         - name: data-volume
           mountPath: /data
@@ -17,4 +17,3 @@ spec:
           claimName: data-pvc
       restartPolicy: Never
       serviceAccountName: job-creator-account
-

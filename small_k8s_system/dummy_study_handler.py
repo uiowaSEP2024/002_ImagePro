@@ -1,6 +1,17 @@
 import time
 from kubernetes import client, config
 import os
+import shutil
+
+
+def copy_test_data_to_pvc():
+    src_dir = "/app/test_data"
+    dest_dir = "/data"  # Assuming this is the mount path of the PVC
+    if os.path.exists(src_dir):
+        shutil.copytree(src_dir, dest_dir)
+        print(f"Copied test data from {src_dir} to {dest_dir}")
+    else:
+        print("Source directory does not exist.")
 
 
 def create_job_with_dynamic_args(api_instance, job_name, image, command, args):
@@ -12,29 +23,32 @@ def create_job_with_dynamic_args(api_instance, job_name, image, command, args):
         "spec": {
             "template": {
                 "spec": {
-                    "containers": [{
-                        "name": job_name,
-                        "image": image,
-                        "command": command,
-                        "args": args,
-                        "volumeMounts": [{
-                            "name": "data-volume",
-                            "mountPath": "/data"
-                        }]
-                    }],
-                    "restartPolicy": "Never",
-                    "volumes": [{
-                        "name": "data-volume",
-                        "persistentVolumeClaim": {
-                            "claimName": "data-pvc"
+                    "containers": [
+                        {
+                            "name": job_name,
+                            "image": image,
+                            "command": command,
+                            "args": args,
+                            "volumeMounts": [
+                                {"name": "data-volume", "mountPath": "/data"}
+                            ],
                         }
-                    }]
+                    ],
+                    "restartPolicy": "Never",
+                    "volumes": [
+                        {
+                            "name": "data-volume",
+                            "persistentVolumeClaim": {"claimName": "data-pvc"},
+                        }
+                    ],
                 }
             }
-        }
+        },
     }
 
-    api_response = api_instance.create_namespaced_job(body=job_manifest, namespace="default")
+    api_response = api_instance.create_namespaced_job(
+        body=job_manifest, namespace="default"
+    )
     print(f"Job '{api_response.metadata.name}' created.")
 
 
@@ -42,7 +56,9 @@ def check_job_completion(api_instance, job_name):
     print("Checking job completion status...")
     completed = False
     while not completed:
-        res = api_instance.read_namespaced_job_status(name=job_name, namespace="default")
+        res = api_instance.read_namespaced_job_status(
+            name=job_name, namespace="default"
+        )
         if res.status.succeeded:
             print("Job completed successfully.")
             completed = True
@@ -56,11 +72,17 @@ def check_job_completion(api_instance, job_name):
 
 
 def main():
-    config.load_kube_config()  # Use load_incluster_config() if inside a cluster
+    try:
+        # Use in-cluster configuration if running inside a pod
+        config.load_incluster_config()
+    except config.ConfigException:
+        # Use kubeconfig file if running outside the cluster (e.g., for local debugging)
+        config.load_kube_config()
     batch_v1 = client.BatchV1Api()
 
     # Simulate loading data to PVC (Assume it's already done)
-    print("Assuming data is already loaded into the PVC...")
+    print("loaded into the PVC...")
+    copy_test_data_to_pvc()
 
     # Wait for 5 seconds
     print("Waiting for 5 seconds before triggering the job...")
@@ -68,7 +90,7 @@ def main():
 
     # Trigger the BrainMask Tool job with dynamic arguments
     job_name = "brainmask-tool-job"
-    image = "your-brainmask-tool-image"
+    image = "brainmasktool_light:v0.1"
     command = ["python", "brainmask_tool.py"]
     args = ["-i", "abc123", "-s", "/data/input", "-o", "/data/output"]
     create_job_with_dynamic_args(batch_v1, job_name, image, command, args)
@@ -76,12 +98,14 @@ def main():
     # Check for job completion
     if check_job_completion(batch_v1, job_name):
         # Assuming we can access the filesystem where the output is stored (this may need adjustment in real scenarios)
-        output_dir = "/data/output"  # Adjust this path based on how your environment is set up
+        output_dir = (
+            "/data/output"  # Adjust this path based on how your environment is set up
+        )
         if os.listdir(output_dir):
             print("Success: Output data found in the PVC.")
         else:
             print("Failure: No output data found in the PVC.")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
