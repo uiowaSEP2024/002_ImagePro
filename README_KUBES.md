@@ -60,3 +60,20 @@ kubectl apply -f postgres_kube_secrets.yaml
 ```bash
 kubectl delete all --all -n default
 ```
+
+11. Testing Frontend and Backend Connection
+
+To ensure that the frontend and backend pods are connected, you can go to minikube dashboard and enter the
+frontend pod and run the following command in the exec shell:
+
+```bash
+curl -X POST "http://backend-service/login" \
+     -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" \
+     --data-urlencode "username=admin1@admin.com" \
+     --data-urlencode "password=abcdefg" \
+     --cookie-jar cookie.txt \
+     --cookie cookie.txt \
+     --include
+```
+You should get a response with a 200 status code and an access token in it for a successful login
+If you go to the logs of the backend pod, you should see a successful POST /login request
