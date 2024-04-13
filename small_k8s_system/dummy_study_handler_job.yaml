@@ -13,7 +13,7 @@ spec:
         - name: data-volume
           mountPath: /data
       restartPolicy: Never
-      serviceAccountName: job-creator-account
+      serviceAccountName: test-service-account
       volumes:
       - name: data-volume
         persistentVolumeClaim:
