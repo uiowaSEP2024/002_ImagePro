@@ -9,7 +9,7 @@ spec:
     command: ["sleep", "3600"]
     volumeMounts:
     - name: data-volume
-      mountPath: /mnt
+      mountPath: /data
   volumes:
   - name: data-volume
     persistentVolumeClaim:
