@@ -30,7 +30,7 @@ RUN pip install kubernetes
 
 # Copy the script into the container
 COPY dummy_study_handler.py .
-COPY test_data /app/data
+COPY test_data /app/test_data
 
 # You don't need to create input/output directories in the container, as these will be
 # provided by Kubernetes volumes mounted into the Pod that runs this container.
