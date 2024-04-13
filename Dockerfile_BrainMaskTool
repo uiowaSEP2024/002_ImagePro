@@ -56,16 +56,11 @@ COPY requirements_medical_tool.txt .
 # Install Python dependencies
 RUN pip install -r requirements_medical_tool.txt
 
-
-
-
-
 # Copy the rest of the code
 COPY example_tool/brainmask_tool.py /app/brainmask_tool.py
 COPY example_tool/cnn_transforms.py /app/cnn_transforms.py
 COPY example_tool/pipeline_functions.py /app/pipeline_functions.py
 COPY example_tool/pdf_report.py /app/pdf_report.py
-COPY example_tool/rf_dicom_modality_classifier.onnx /app/rf_dicom_modality_classifier.onnx
 COPY example_tool/brainmask_model.ckpt /app/brainmask_model.ckpt
 
 # TODO Check the code below. Im not sure if this is what we actually want
