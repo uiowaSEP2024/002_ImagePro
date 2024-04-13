@@ -1,6 +1,5 @@
 from dcm_classifier.study_processing import ProcessOneDicomStudyToVolumesMappingBase
 from dcm_classifier.image_type_inference import ImageTypeClassifierBase
-from dcm_classifier.namic_dicom_typing import itk_read_from_dicomfn_list
 import re
 from pydicom import dcmread
 from subprocess import run
@@ -42,7 +41,9 @@ def generate_uid():
     return sop_instance_uid
 
 
-def write_json_log(log_file_path: Path, study_id: str, status: str, reason: Optional[str]) -> None:
+def write_json_log(
+    log_file_path: Path, study_id: str, status: str, reason: Optional[str]
+) -> None:
     """
     Writes the current log to the file.
     :param log_file_path: path to the log file
