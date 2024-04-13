@@ -6,12 +6,23 @@ import shutil
 
 def copy_test_data_to_pvc():
     src_dir = "/app/test_data"
-    dest_dir = "/data"  # Assuming this is the mount path of the PVC
-    if os.path.exists(src_dir):
-        shutil.copytree(src_dir, dest_dir)
-        print(f"Copied test data from {src_dir} to {dest_dir}")
-    else:
-        print("Source directory does not exist.")
+    dest_dir = "/data/input"  # Assuming this is the mount path of the PVC
+    os.makedirs(dest_dir, exist_ok=True)
+    try:
+        if os.path.exists(src_dir):
+            print(f"Directory {src_dir} exists!")
+            # Printing contents of the src_dir
+            print("Contents of the source directory:")
+            for item in os.listdir(src_dir):
+                print(item)
+
+            # Copy the entire directory tree to the destination
+            shutil.copytree(src_dir, dest_dir, dirs_exist_ok=True)
+            print(f"Copied test data from {src_dir} to {dest_dir}")
+        else:
+            print("Source directory does not exist.")
+    except Exception as e:
+        print(f"Failed to copy data: {str(e)}")
 
 
 def create_job_with_dynamic_args(api_instance, job_name, image, command, args):
