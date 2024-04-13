@@ -61,24 +61,28 @@ def create_job_with_dynamic_args(api_instance, job_name, image, command, args):
         body=job_manifest, namespace="default"
     )
     print(f"Job '{api_response.metadata.name}' created.")
+    # Wait a few seconds after job creation before returning
+    time.sleep(5)  # Adjust time based on observed API behavior
 
 
 def check_job_completion(api_instance, job_name):
     print("Checking job completion status...")
     completed = False
     while not completed:
-        res = api_instance.read_namespaced_job_status(
-            name=job_name, namespace="default"
-        )
-        if res.status.succeeded:
-            print("Job completed successfully.")
-            completed = True
-        elif res.status.failed:
-            print("Job failed.")
-            completed = True
-        else:
-            print("Job still running. Checking again in 5 seconds...")
-            time.sleep(5)
+        try:
+            res = api_instance.read_namespaced_job_status(job_name, "default")
+            if res.status.succeeded == 1:
+                print("Job completed successfully.")
+                completed = True
+            elif res.status.failed is not None and res.status.failed > 0:
+                print("Job failed.")
+                completed = True
+            else:
+                print("Job still running. Checking again in 5 seconds...")
+                time.sleep(15)
+        except client.exceptions.ApiException as e:
+            print(f"Error checking job status: {e}")
+            break
     return completed
 
 
