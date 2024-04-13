@@ -30,7 +30,7 @@ def create_job_with_dynamic_args(api_instance, job_name, image, command, args):
     job_manifest = {
         "apiVersion": "batch/v1",
         "kind": "Job",
-        "metadata": {"name": job_name},
+        "metadata": {"name": job_name, "namespace": "default"},
         "spec": {
             "template": {
                 "spec": {
