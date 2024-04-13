@@ -23,9 +23,9 @@ RUN apt update
 
 # Install necessary libraries
 RUN apt-get install -y \
-    python3.10 \
+    python3.11 \
     python3-pip \
-    python3.10-venv \
+    python3.11-venv \
     libpango-1.0-0 \
     libharfbuzz0b \
     libpangoft2-1.0-0
@@ -43,11 +43,11 @@ WORKDIR /app
 
 
 # Upgrade pip
-RUN python3.10 -m pip install --upgrade pip
+RUN python3.11 -m pip install --upgrade pip
 
 # Create a virtual environment and activate it
-RUN python3.10 -m pip install --user virtualenv
-RUN python3.10 -m venv /opt/venv
+RUN python3.11 -m pip install --user virtualenv
+RUN python3.11 -m venv /opt/venv
 RUN . /opt/venv/bin/activate
 
 # Copy requirements file
