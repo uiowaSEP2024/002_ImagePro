@@ -102,7 +102,7 @@ def dicom_inference_and_conversion(session_dir: str, output_dir: str) -> str:
         plane = series.get_acquisition_plane()
         print("Sub:", sub, "series:", series_number, "plane:", plane)
 
-        modality = series.get_modality()
+        modality = series.get_series_modality()
         if modality != "INVALID":
             if not Path(sub_ses_dir).exists():
                 run(["mkdir", "-p", sub_ses_dir])
