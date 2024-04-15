@@ -1,0 +1,14 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: lil-eks
+  region: us-east-1
+  tags:
+    project: linkedin-learning-eks
+
+
+nodeGroups:
+  - name: worker-node # prefix for the node group
+    instanceType: m5.large
+    desiredCapacity: 3 # number of nodes
