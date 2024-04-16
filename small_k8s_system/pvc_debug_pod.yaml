@@ -10,6 +10,11 @@ spec:
     volumeMounts:
     - name: data-volume
       mountPath: /data
+    resources:
+      limits:
+        memory: "512Mi"
+        cpu: "500m"
+    automountServiceAccountToken: false
   volumes:
   - name: data-volume
     persistentVolumeClaim:
