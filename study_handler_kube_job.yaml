@@ -9,9 +9,9 @@ spec:
       - name: study-handler
         image: <your-study-handler-image>
         # Add necessary environment variables, volumes, etc.
-      resources:
-        limits:
-          memory: "512Mi"
-          cpu: "1"
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
       restartPolicy: Never
   backoffLimit: 4

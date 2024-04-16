@@ -38,6 +38,10 @@ spec:
                 secretKeyRef:
                   name: postgres-secrets
                   key: password
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
   volumeClaimTemplates:  # Add this section to dynamically provision PVCs
     - metadata:
         name: postgres-data  # This name matches the volumeMounts name above
