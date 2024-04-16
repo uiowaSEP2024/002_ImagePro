@@ -21,10 +21,10 @@ spec:
         volumeMounts:
         - name: orthanc-config
           mountPath: /etc/orthanc
-      resources:
-        limits:
-          memory: "512Mi"
-          cpu: "1"
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
       volumes:
       - name: orthanc-config
         configMap:
