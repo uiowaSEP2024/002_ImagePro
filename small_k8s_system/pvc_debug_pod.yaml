@@ -14,7 +14,7 @@ spec:
       limits:
         memory: "512Mi"
         cpu: "500m"
-    automountServiceAccountToken: false
+  automountServiceAccountToken: false
   volumes:
   - name: data-volume
     persistentVolumeClaim:
