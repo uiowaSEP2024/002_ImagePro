@@ -12,6 +12,10 @@ spec:
         volumeMounts:
         - name: data-volume
           mountPath: /data
+      resources:
+        limits:
+          memory: "512Mi"
+          cpu: "1"
       restartPolicy: Never
       serviceAccountName: test-service-account
       volumes:

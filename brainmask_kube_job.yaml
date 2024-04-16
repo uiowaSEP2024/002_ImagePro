@@ -9,6 +9,9 @@ spec:
       - name: brainmask-tool
         image: example_tool_light
         # Specify necessary env vars, volumes, and other configurations here.
+      resources:
+        limits:
+          memory: "512Mi"
+          cpu: "1"
       restartPolicy: Never
   backoffLimit: 4
-
