@@ -21,3 +21,7 @@ spec:
         env:
         - name: NEXT_PUBLIC_BACKEND_URL
           value: "http://backend-service:8000"
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "1"
