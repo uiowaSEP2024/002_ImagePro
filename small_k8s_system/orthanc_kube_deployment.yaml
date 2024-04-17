@@ -14,12 +14,13 @@ spec:
     spec:
       containers:
       - name: orthanc
-        image: orthanc
+        image: orthanc:latest
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8026
         - containerPort: 4026
         volumeMounts:
-        - name: orthanc-config
+        - name: data-volume
           mountPath: /etc/orthanc
         resources:
           limits:
@@ -27,6 +28,6 @@ spec:
             cpu: "500m"
       automountServiceAccountToken: false
       volumes:
-      - name: orthanc-config
-        configMap:
-          name: orthanc-config
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: data-pvc
