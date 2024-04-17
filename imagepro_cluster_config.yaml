@@ -1,0 +1,24 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: dev-cluster
+  region: us-east-1
+
+nodeGroups:
+  - name: dev-nodegroup
+    instanceType: t3.micro  # Eligible for free tier
+    desiredCapacity: 1
+    volumeSize: 10  # Smaller volumes for development, enough to handle basic applications
+
+fargateProfiles:
+  - name: fp-dev
+    selectors:
+      - namespace: dev  # Running your development workloads on Fargate to manage costs effectively
+
+cloudWatch:
+  clusterLogging:
+    # enable specific types of cluster control plane logs
+    enableTypes: ["api","audit", "authenticator", "controllerManager"]
+    # all supported types: "api", "audit", "authenticator", "controllerManager", "scheduler"
+    # supported special values: "*" and "all"
