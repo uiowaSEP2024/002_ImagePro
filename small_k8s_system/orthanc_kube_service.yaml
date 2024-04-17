@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: orthanc-service
+  namespace: default
 spec:
   selector:
     app: orthanc
@@ -9,8 +10,8 @@ spec:
   - protocol: TCP
     port: 8026
     targetPort: 8026
-    name: orthanc_http_port
+    name: orthanc-http-port
   - protocol: TCP
     port: 4026
     targetPort: 4026
-    name: orthanc_dicom_port
+    name: orthanc-dicom-port
