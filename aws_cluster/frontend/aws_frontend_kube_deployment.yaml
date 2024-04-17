@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: 325852638497.dkr.ecr.us-east-1.amazonaws.com/manual_gui_ecr:frontend_test
+        imagePullPolicy: Always # Always pull the latest image
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NEXT_PUBLIC_BACKEND_URL
+          value: "http://backend-service:8000" # We know this is broken for now
+        resources:
+          limits:
+            memory: "2Gi"
+            cpu: "500m"
+      imagePullSecrets:
+        - name: my-ecr-secret
+#      automountServiceAccountToken: false

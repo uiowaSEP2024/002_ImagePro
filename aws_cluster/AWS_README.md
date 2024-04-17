@@ -28,3 +28,39 @@ or
 ```bash
 kubectl config use-context THE-CLUSTER-NAME
 ```
+
+
+- Useful Commands
+```bash
+kubectl get events --sort-by='.metadata.creationTimestamp'
+```
+
+
+# TODO's/ possible fixes
+
+- [ ] Figure out how to interpret the cloudwatch logs https://us-east-1.console.aws.amazon.com/cloudwatch/
+
+```text
+Failures
+
+111s        Warning   Failed                    pod/frontend-86db8dfdfc-xczc5            Error: ImagePullBackOff
+6s          Warning   Failed                    pod/frontend-86db8dfdfc-xczc5            Failed to pull image "325852638497.dkr.ecr.us-east-1.amazonaws.com/manual_gui_ecr:frontend_test": failed to pull and unpack image "325852638497.dkr.ecr.us-east-1.amazonaws.com/manual_gui_ecr:frontend_test": failed to resolve reference "325852638497.dkr.ecr.us-east-1.amazonaws.com/manual_gui_ecr:frontend_test": failed to do request: Head "https://325852638497.dkr.ecr.us-east-1.amazonaws.com/v2/manual_gui_ecr/manifests/frontend_test": dial tcp 10.0.2.110:443: i/o timeout
+```
+- [ ] Find a way to link the EKS cluster/ Image pull to the ECR container registry
+- [ ] Create a DockerHub account and link the EKS cluster to the DockerHub container registry
+- [ ] Ensure that we are using the correct ARN for the ECR container registry
+- [ ] Configure secrets for the ECR container registry that we are using
+- [ ] Ensure that we have all correct permissions
+  - https://docs.aws.amazon.com/AmazonECR/latest/userguide/ECR_on_EKS.html
+  - https://docs.aws.amazon.com/eks/latest/userguide/pod-execution-role.html
+
+```text
+3m23s       Warning   InvalidDiskCapacity       node/fargate-ip-10-0-2-55.ec2.internal   invalid capacity 0 on image filesystem
+
+```
+
+
+- [ ] Find a way to increase the disk capacity on the image filesystem for the fargate node
+  - Usure if this is a problem or not, but it is something to look into
+  - This could be a problem with the fargate node, and not the EKS cluster itself
+  - Could be that the service is not configured correctly, or that the fargate node is not configured correctly
