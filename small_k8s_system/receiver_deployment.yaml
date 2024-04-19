@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: receiver-deployment
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: receiver
+  template:
+    metadata:
+      labels:
+        app: receiver
+    spec:
+      containers:
+      - name: receiver
+        image: receiver-loop:v0.1
+        args: ["--api_key", "ABCD1234", "--backend_url", "nothing", "--orthanc_url", "http://orthanc-service.default.svc.cluster.local:8026", "--hospital_mapping_file", "/app/internal_servers/hospital_job_configuration.json", "--study_config_file", "/app/internal_servers/job-configurations-schema.generated.json"]
+        env:
+        - name: API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: api-key-secret
+              key: api_key
+        - name: BACKEND_URL
+          value: "http://backend-service.default.svc.cluster.local"  # Adjust as necessary
+        - name: ORTHANC_URL
+          value: "http://orthanc-service.default.svc.cluster.local:8026"
+        resources:
+          requests:
+            cpu: "100m"  # 100 millicpu (0.1 CPU cores)
+            memory: "100Mi"  # 100 MiB
+          limits:
+            cpu: "200m"
+            memory: "200Mi"
