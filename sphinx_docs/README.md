@@ -8,11 +8,12 @@ Sub index files must be referenced in the index file of the parent directory.
 The build folder contains the generated documentation in HTML format. The build folder is not included in the repository and is generated when the documentation is built.
 **To Run**
 1. Install Sphinx
-```
+```bash
 pip install sphinx
 ```
 2. To generate the build folder, run the following command in the terminal inside of the sphinx_docs folder:
-```
+
+```bash
 sphinx-build -b html source/ build/
 ```
 The generated documentation can be viewed by opening the index.html file in the build folder in a web browser or other viewer.
