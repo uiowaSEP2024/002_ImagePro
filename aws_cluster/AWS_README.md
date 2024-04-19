@@ -29,6 +29,11 @@ or
 kubectl config use-context THE-CLUSTER-NAME
 ```
 
+-- the following command updates your kubeconfig file with the correct context for a new cluster
+```bash
+aws eks --region <region> update-kubeconfig --name <cluster-name>
+```
+
 
 - Useful Commands
 ```bash
@@ -64,3 +69,12 @@ Failures
   - Usure if this is a problem or not, but it is something to look into
   - This could be a problem with the fargate node, and not the EKS cluster itself
   - Could be that the service is not configured correctly, or that the fargate node is not configured correctly
+
+
+
+
+
+- Building frontend image in both arm64 and amd64 (it was arm64 naturally, but aws nodes use amd64 OS environment, this makes our image dual architecture compatible)
+```bash
+docker buildx build --platform linux/amd64,linux/arm64 -t 325852638497.dkr.ecr.us-east-1.amazonaws.com/manual_gui_ecr:frontend_test --file Dockerfile_frontend_aws --push .
+```
