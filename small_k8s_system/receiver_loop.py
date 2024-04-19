@@ -1,24 +1,26 @@
 import time
 
 import pyorthanc
-import os
 import argparse
 
-if os.environ.get("DOCKER_ENV"):
-    from study import SingleStudyRun
-    from util_functions import (
-        check_study_has_properties,
-        OrthancConnectionException,
-        setup_custom_logger,
-    )
-else:
+print(
+    "Script started", flush=True
+)  # Use flush=True to ensure it gets printed immediately
 
-    from internal_servers.study import SingleStudyRun
-    from internal_servers.util_functions import (
-        check_study_has_properties,
-        OrthancConnectionException,
-        setup_custom_logger,
-    )
+# TODO: For now comment out all logic not related to Orthanc connection
+# if os.environ.get("DOCKER_ENV"):
+#     from util_functions import (
+#         check_study_has_properties,
+#         OrthancConnectionException,
+#         setup_custom_logger,
+#     )
+# else:
+#     from internal_servers.study import SingleStudyRun
+#     from internal_servers.util_functions import (
+#         check_study_has_properties,
+#         OrthancConnectionException,
+#         setup_custom_logger,
+#     )
 
 
 class ReceiverLoop:
@@ -40,31 +42,38 @@ class ReceiverLoop:
         self.orthanc_url = orthanc_url
         self.internal_orthanc = None
         self.max_retries = self.STARTING_MAX_RETRIES
-        self.logger = setup_custom_logger("receiver_loop")
+        # self.logger = setup_custom_logger("receiver_loop")
         self.internal_orthanc: pyorthanc.Orthanc | None = None
         self.api_key = api_key
         self.backend_url = backend_url
         self.hospital_mapping_file = hospital_mapping_file
         self.study_config_file = study_config_file
         self._init_orthanc_connection()
-        self.studies_dict: dict[str, SingleStudyRun] = {}
+        # self.studies_dict: dict[str, SingleStudyRun] = {}
 
     def _init_orthanc_connection(self):
         while self.max_retries > 0 and not self.internal_orthanc:
             try:
                 self.internal_orthanc = pyorthanc.Orthanc(self.orthanc_url)
             except TimeoutError:
-                self.logger.error(
+                # self.logger.error(
+                #     f"Connection to Orthanc timed out sleeping for {self.QUERY_INTERVAL} seconds"
+                # )
+                print(
                     f"Connection to Orthanc timed out sleeping for {self.QUERY_INTERVAL} seconds"
                 )
                 self.max_retries -= 1
                 time.sleep(self.TIME_BETWEEN_CONNECTIONS)
             except Exception as orthanc_e:
                 self.max_retries -= 1
-                self.logger.error(f"ERROR connecting to Orthanc: {orthanc_e}")
+                # self.logger.error(f"ERROR connecting to Orthanc: {orthanc_e}")
+                print(f"ERROR connecting to Orthanc: {orthanc_e}")
                 time.sleep(self.TIME_BETWEEN_CONNECTIONS)
         if not self.internal_orthanc:
-            raise OrthancConnectionException(
+            # raise OrthancConnectionException(
+            #     f"Receiver Loop failed to connect to Orthanc at {self.orthanc_url} after {self.max_retries} retries"
+            # )
+            print(
                 f"Receiver Loop failed to connect to Orthanc at {self.orthanc_url} after {self.max_retries} retries"
             )
 
@@ -83,25 +92,25 @@ class ReceiverLoop:
     #     )
     #     return single_study_run
 
-    def _check_for_new_studies(self):
-        studies = pyorthanc.find_studies(self.internal_orthanc)
-        for study in studies:
-            if check_study_has_properties(study):
-                self.logger.info(f"Found study {study.id_}")
-                if study.id_ not in self.studies_dict:
-                    self.studies_dict[study.id_] = self._spawn_single_study_run(
-                        study.id_
-                    )
-                else:
-                    self.logger.info(
-                        f"Study {study.id_} already in studies_dict skipping"
-                    )
-            else:
-                raise ValueError(
-                    f"Study {study.id_} does not have the required properties"
-                )
-        else:
-            print("No studies found")
+    # def _check_for_new_studies(self):
+    #     studies = pyorthanc.find_studies(self.internal_orthanc)
+    #     for study in studies:
+    #         if check_study_has_properties(study):
+    #             self.logger.info(f"Found study {study.id_}")
+    #             if study.id_ not in self.studies_dict:
+    #                 self.studies_dict[study.id_] = self._spawn_single_study_run(
+    #                     study.id_
+    #                 )
+    #             else:
+    #                 self.logger.info(
+    #                     f"Study {study.id_} already in studies_dict skipping"
+    #                 )
+    #         else:
+    #             raise ValueError(
+    #                 f"Study {study.id_} does not have the required properties"
+    #             )
+    #     else:
+    #         print("No studies found")
 
     # def check_for_completed_studies(self):
     #     studies_to_remove = []
@@ -116,23 +125,32 @@ class ReceiverLoop:
     #         )
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--orthanc_url", type=str, required=True)
-    parser.add_argument("--api_key", type=str, required=True)
-    parser.add_argument("--hospital_mapping_file", type=str, required=True)
-    parser.add_argument("--study_config_file", type=str, required=True)
-    parser.add_argument("--backend_url", type=str, required=True)
-    args = parser.parse_args()
+# if __name__ == "__main__":
+print("Start of Receiver Loop main")
 
-    receiver_loop = ReceiverLoop(
-        orthanc_url=args.orthanc_url,
-        api_key=args.api_key,
-        # hospital_mapping_file=args.hospital_mapping_file,
-        study_config_file=args.study_config_file,
-        backend_url=args.backend_url,
-    )
-    while receiver_loop.continue_running:
-        receiver_loop._check_for_new_studies()
-        # receiver_loop.check_for_completed_studies()
-        time.sleep(receiver_loop.QUERY_INTERVAL)
+parser = argparse.ArgumentParser()
+parser.add_argument("--orthanc_url", type=str, required=True)
+parser.add_argument("--api_key", type=str, required=True)
+parser.add_argument("--hospital_mapping_file", type=str, required=True)
+parser.add_argument("--study_config_file", type=str, required=True)
+parser.add_argument("--backend_url", type=str, required=True)
+args = parser.parse_args()
+
+print(args)
+
+receiver_loop = ReceiverLoop(
+    orthanc_url=args.orthanc_url,
+    api_key=args.api_key,
+    hospital_mapping_file=args.hospital_mapping_file,
+    study_config_file=args.study_config_file,
+    backend_url=args.backend_url,
+)
+
+print("receiver loop initiated")
+
+while receiver_loop.continue_running:
+    print("Loop is running. Wait 5s")
+    time.sleep(5)
+    # receiver_loop._check_for_new_studies()
+    # receiver_loop.check_for_completed_studies()
+    # time.sleep(receiver_loop.QUERY_INTERVAL)
