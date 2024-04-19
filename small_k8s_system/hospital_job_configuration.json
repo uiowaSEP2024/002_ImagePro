@@ -1,0 +1,33 @@
+{
+  "$schema": "study-configurations-schema.generated.json",
+  "study_configs": [
+    {
+      "version": "0.0.1",
+      "name": "Hospital Study",
+      "tag": "hospital_study",
+      "step_configurations": [
+        {
+          "name": "Data Receiving",
+          "tag": "data_receiving",
+          "points": 1
+
+        },
+        {
+          "name": "Data Download",
+          "tag": "data_download",
+          "points": 1
+        },
+        {
+          "name": "Data Processing",
+          "tag": "data_processing",
+          "points": 1
+        },
+        {
+          "name": "Data Return",
+          "tag": "data_return",
+          "points": 1
+        }
+      ]
+    }
+  ]
+}
