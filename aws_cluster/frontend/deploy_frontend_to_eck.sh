@@ -8,7 +8,7 @@ kubectl apply -f "${CURRENT_DIR}/aws_frontend_kube_deployment.yaml"
 # Apply the frontend service to ECK
 kubectl apply -f "${CURRENT_DIR}/aws_frontend_kube_service.yaml"
 
-kubectl apply -f "${CURRENT_DIR}/aws_frontend_ingress.yaml"
+#kubectl apply -f "${CURRENT_DIR}/aws_frontend_ingress.yaml"
 
 
 # Check the status of the deployment
