@@ -14,13 +14,13 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy package.json and to the working directory
-COPY /job_monitoring_app/frontend/package.json ./
-COPY /job_monitoring_app/frontend/package-lock.json ./
-COPY /job_monitoring_app/frontend/public ./public
-COPY /job_monitoring_app/frontend/src ./src
-COPY /job_monitoring_app/frontend/fixtures ./fixtures
-COPY /job_monitoring_app/frontend/next.config.js ./
-COPY /job_monitoring_app/frontend/tsconfig.json ./
+COPY ./job_monitoring_app/frontend/package.json ./
+COPY ./job_monitoring_app/frontend/package-lock.json ./
+COPY ./job_monitoring_app/frontend/public ./public
+COPY ./job_monitoring_app/frontend/src ./src
+COPY ./job_monitoring_app/frontend/fixtures ./fixtures
+COPY ./job_monitoring_app/frontend/next.config.js ./
+COPY ./job_monitoring_app/frontend/tsconfig.json ./
 
 
 # Install the application dependencies
