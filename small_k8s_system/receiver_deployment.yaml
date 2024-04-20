@@ -16,6 +16,7 @@ spec:
       containers:
       - name: receiver
         image: receiver_loop:v0.1
+        imagePullPolicy: IfNotPresent
         command: ["python", "/app/internal_servers/receiver_loop.py"]
         args: [
           "--api_key", "$(API_KEY)",
@@ -30,6 +31,7 @@ spec:
             secretKeyRef:
               name: api-key-secret
               key: api_key
+          # value: 'dummyvalue'
         - name: BACKEND_URL
           value: "http://backend-service.default.svc.cluster.local"  # Adjust as necessary
         - name: ORTHANC_URL
