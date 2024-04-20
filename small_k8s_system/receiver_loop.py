@@ -3,9 +3,6 @@ import time
 import pyorthanc
 import argparse
 
-print(
-    "Script started", flush=True
-)  # Use flush=True to ensure it gets printed immediately
 
 # TODO: For now comment out all logic not related to Orthanc connection
 # if os.environ.get("DOCKER_ENV"):
@@ -76,6 +73,7 @@ class ReceiverLoop:
             print(
                 f"Receiver Loop failed to connect to Orthanc at {self.orthanc_url} after {self.max_retries} retries"
             )
+        print("connected to orthanc")
 
     # def _spawn_single_study_run(self, study_id: str):
     # TODO: this code will have to be replaced with the Kubernetes API Job manifest.
@@ -125,7 +123,6 @@ class ReceiverLoop:
     #         )
 
 
-# if __name__ == "__main__":
 print("Start of Receiver Loop main")
 
 parser = argparse.ArgumentParser()
@@ -148,9 +145,10 @@ receiver_loop = ReceiverLoop(
 
 print("receiver loop initiated")
 
-while receiver_loop.continue_running:
-    print("Loop is running. Wait 5s")
-    time.sleep(5)
-    # receiver_loop._check_for_new_studies()
-    # receiver_loop.check_for_completed_studies()
-    # time.sleep(receiver_loop.QUERY_INTERVAL)
+# TODO: figure out why this loop causes only print the first print statement to print
+# while receiver_loop.continue_running:
+#     print("Loop is running. Wait 5s")
+#     time.sleep(5)
+#     # receiver_loop._check_for_new_studies()
+#     # receiver_loop.check_for_completed_studies()
+#     # time.sleep(receiver_loop.QUERY_INTERVAL)
