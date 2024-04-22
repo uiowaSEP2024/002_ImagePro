@@ -22,7 +22,7 @@ spec:
         - name: APP_ENV
           value: "development"
         - name: POSTGRES_SERVER
-          value: "postgres"
+          value: sep-database.cnlo9lncbqf0.us-east-1.rds.amazonaws.com
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:

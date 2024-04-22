@@ -2,11 +2,6 @@
 FROM python:3.10-slim
 LABEL authors="iejohnson"
 
-
-ARG APP_ENV
-ENV APP_ENV=${APP_ENV}
-
-
 # Update the package lists and install dependencies required for psycopg2 and other operations
 RUN apt-get update && apt-get install -y \
     gcc \
