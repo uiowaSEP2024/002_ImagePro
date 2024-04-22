@@ -2,7 +2,9 @@ import time
 
 import pyorthanc
 import argparse
+import logging
 
+from util_functions import OrthancConnectionException, setup_custom_logger
 
 # TODO: For now comment out all logic not related to Orthanc connection
 # if os.environ.get("DOCKER_ENV"):
@@ -39,7 +41,7 @@ class ReceiverLoop:
         self.orthanc_url = orthanc_url
         self.internal_orthanc = None
         self.max_retries = self.STARTING_MAX_RETRIES
-        # self.logger = setup_custom_logger("receiver_loop")
+        self.logger = setup_custom_logger("receiver_loop")
         self.internal_orthanc: pyorthanc.Orthanc | None = None
         self.api_key = api_key
         self.backend_url = backend_url
@@ -53,27 +55,28 @@ class ReceiverLoop:
             try:
                 self.internal_orthanc = pyorthanc.Orthanc(self.orthanc_url)
             except TimeoutError:
-                # self.logger.error(
-                #     f"Connection to Orthanc timed out sleeping for {self.QUERY_INTERVAL} seconds"
-                # )
-                print(
+                self.logger.error(
                     f"Connection to Orthanc timed out sleeping for {self.QUERY_INTERVAL} seconds"
                 )
+                # print(
+                #     f"Connection to Orthanc timed out sleeping for {self.QUERY_INTERVAL} seconds"
+                # )
+
                 self.max_retries -= 1
                 time.sleep(self.TIME_BETWEEN_CONNECTIONS)
             except Exception as orthanc_e:
                 self.max_retries -= 1
-                # self.logger.error(f"ERROR connecting to Orthanc: {orthanc_e}")
-                print(f"ERROR connecting to Orthanc: {orthanc_e}")
+                self.logger.error(f"ERROR connecting to Orthanc: {orthanc_e}")
+                # print(f"ERROR connecting to Orthanc: {orthanc_e}")
                 time.sleep(self.TIME_BETWEEN_CONNECTIONS)
         if not self.internal_orthanc:
-            # raise OrthancConnectionException(
-            #     f"Receiver Loop failed to connect to Orthanc at {self.orthanc_url} after {self.max_retries} retries"
-            # )
-            print(
+            raise OrthancConnectionException(
                 f"Receiver Loop failed to connect to Orthanc at {self.orthanc_url} after {self.max_retries} retries"
             )
-        print("connected to orthanc")
+            # print(
+            #     f"Receiver Loop failed to connect to Orthanc at {self.orthanc_url} after {self.max_retries} retries"
+            # )
+        self.logger.info("connected to orthanc")
 
     # def _spawn_single_study_run(self, study_id: str):
     # TODO: this code will have to be replaced with the Kubernetes API Job manifest.
@@ -123,17 +126,19 @@ class ReceiverLoop:
     #         )
 
 
-print("Start of Receiver Loop main")
+logger = setup_custom_logger("initialization")
+logger = logging.getLogger("initialization")
+logger.info("Start of Receiver Loop main")
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--orthanc_url", type=str, required=True)
-parser.add_argument("--api_key", type=str, required=True)
-parser.add_argument("--hospital_mapping_file", type=str, required=True)
-parser.add_argument("--study_config_file", type=str, required=True)
-parser.add_argument("--backend_url", type=str, required=True)
+parser.add_argument("--orthanc_url", type=str, required=False)
+parser.add_argument("--api_key", type=str, required=False)
+parser.add_argument("--hospital_mapping_file", type=str, required=False)
+parser.add_argument("--study_config_file", type=str, required=False)
+parser.add_argument("--backend_url", type=str, required=False)
 args = parser.parse_args()
 
-print(args)
+logger.info(args)
 
 receiver_loop = ReceiverLoop(
     orthanc_url=args.orthanc_url,
@@ -143,12 +148,10 @@ receiver_loop = ReceiverLoop(
     backend_url=args.backend_url,
 )
 
-print("receiver loop initiated")
 
-# TODO: figure out why this loop causes only print the first print statement to print
-# while receiver_loop.continue_running:
-#     print("Loop is running. Wait 5s")
-#     time.sleep(5)
-#     # receiver_loop._check_for_new_studies()
-#     # receiver_loop.check_for_completed_studies()
-#     # time.sleep(receiver_loop.QUERY_INTERVAL)
+while receiver_loop.continue_running:
+    logger.info("Loop is running. Wait 5s")
+    time.sleep(5)
+    # receiver_loop._check_for_new_studies()
+    # receiver_loop.check_for_completed_studies()
+    # time.sleep(receiver_loop.QUERY_INTERVAL)
