@@ -35,13 +35,18 @@ aws eks --region <region> update-kubeconfig --name <cluster-name>
 ```
 
 
-- Useful Commands
+### Useful Commands
+
+##### Get events sorted by creation time
 ```bash
 kubectl get events --sort-by='.metadata.creationTimestamp'
 ```
+##### Start or Delete all resources in a directory
 ```bash
- kubectl apply --recursive -f <Directory>
+kubectl apply --recursive -f <Directory>
+kubectl delete --recursive -f <Directory>
 ```
+
 
 
 # TODO's/ possible fixes
