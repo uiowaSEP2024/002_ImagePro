@@ -17,7 +17,7 @@ TRACKER_API_DIR="${JOB_MONITORING_DIR}/tracker_api"
 # Should we update the naming convention for the Dockerfiles?
 FRONTEND_DOCKERFILE="${CURRENT_DIR}/frontend/Dockerfile_Frontend_aws"
 # TODO - Update the Dockerfile for the backend once we move it to the cluster directory
-BACKEND_DOCKERFILE="${CLUSTER_DIR}/Dockerfile_Backend"
+BACKEND_DOCKERFILE="${CURRENT_DIR}/backend/Dockerfile_Backend_aws"
 
 
 ## PATHS FOR ORTHANC and AGENT

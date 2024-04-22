@@ -1,7 +1,8 @@
 #!/bin/bash
-source aws_common_resources.sh
-CURRENT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
+
+CURRENT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+source "${CURRENT_DIR}/aws_common_resources.sh"
 # Ask user what they want to build:
 # 1. Frontend
 # 2. Backend
@@ -21,7 +22,7 @@ case $BUILD_CHOICE in
     1)
         echo "Building the frontend"
         # Build the frontend
-        DOCKERFILE_NAME="frontend/Dockerfile_Frontend_aws"
+        DOCKERFILE_NAME="${FRONTEND_DOCKERFILE}"
         IMAGE_TAG="frontend_test"
         IMAGE_LABEL="frontend"
         CONTEXT_DIR="${CLUSTER_DIR}"
@@ -29,7 +30,7 @@ case $BUILD_CHOICE in
     2)
         echo "Building the backend"
         # Build the backend
-        DOCKERFILE_NAME="backend/Dockerfile_Backend_aws"
+        DOCKERFILE_NAME="${BACKEND_DOCKERFILE}"
         IMAGE_TAG="backend_test"
         IMAGE_LABEL="backend"
         CONTEXT_DIR="${CLUSTER_DIR}"
@@ -41,6 +42,7 @@ case $BUILD_CHOICE in
 esac
 
 REGISTRY="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${REPOSITORY_NAME}"
+echo "Registry: ${REGISTRY}"
 # Build the docker image for the brain mask tool
 docker buildx build --platform linux/amd64,linux/arm64 --tag "${IMAGE_TAG}" --label "${IMAGE_LABEL}" --file "${DOCKERFILE_NAME}" "${CONTEXT_DIR}"
 # AWS ECR login
