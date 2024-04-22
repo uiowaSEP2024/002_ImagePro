@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
       - name: backend
-        image: 002_imagepro-backend:latest
-        imagePullPolicy: IfNotPresent
+        image: 325852638497.dkr.ecr.us-east-1.amazonaws.com/manual_gui_ecr:backend_test
+        imagePullPolicy: Always
         ports:
         - containerPort: 8000
         env:
@@ -26,12 +26,12 @@ spec:
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: postgres-secrets
+              name: cluster-secrets
               key: password
         - name: POSTGRES_USER
           valueFrom:
               secretKeyRef:
-                name: postgres-secrets
+                name: cluster-secrets
                 key: username
         resources:
           limits:
