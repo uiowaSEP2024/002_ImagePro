@@ -1,15 +1,44 @@
+#!/bin/bash
 source aws_common_resources.sh
-
-# Get the directory of the script
 CURRENT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-PARENT_DIR_2X_UP="$(dirname $(dirname ${CURRENT_DIR}))"
-echo "Parent directory: ${PARENT_DIR_2X_UP}"
 
-# TODO Make these variables be dynamically set based on inputs from the user
-DOCKERFILE_NAME="Dockerfile_Frontend_aws"
-IMAGE_TAG="frontend_test"
-IMAGE_LABEL="frontend"
-CONTEXT_DIR="${PARENT_DIR_2X_UP}"
+# Ask user what they want to build:
+# 1. Frontend
+# 2. Backend
+# 3. Orthanc
+# 4. Agent
+# 5. Job Monitoring App
+# 6. postgres
+# 7. All
+
+echo "Please select what you would like to build:"
+echo "1. Frontend"
+echo "2. Backend"
+
+read -r BUILD_CHOICE
+
+case $BUILD_CHOICE in
+    1)
+        echo "Building the frontend"
+        # Build the frontend
+        DOCKERFILE_NAME="frontend/Dockerfile_Frontend_aws"
+        IMAGE_TAG="frontend_test"
+        IMAGE_LABEL="frontend"
+        CONTEXT_DIR="${CLUSTER_DIR}"
+        ;;
+    2)
+        echo "Building the backend"
+        # Build the backend
+        DOCKERFILE_NAME="backend/Dockerfile_Backend_aws"
+        IMAGE_TAG="backend_test"
+        IMAGE_LABEL="backend"
+        CONTEXT_DIR="${CLUSTER_DIR}"
+
+        ;;
+    *)
+        echo "Invalid choice"
+        ;;
+esac
 
 # Build the docker image for the brain mask tool
 docker build --tag "${IMAGE_TAG}" --label "${IMAGE_LABEL}" --file "${DOCKERFILE_NAME}" "${CONTEXT_DIR}"
