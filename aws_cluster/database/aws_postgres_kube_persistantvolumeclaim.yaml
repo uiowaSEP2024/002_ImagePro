@@ -5,7 +5,8 @@ metadata:
   name: postgres-pvc
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
+  storageClassName: aws-efs
   resources:
     requests:
       storage: 1Gi
