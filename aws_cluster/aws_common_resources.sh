@@ -23,11 +23,12 @@ BACKEND_DOCKERFILE="${CLUSTER_DIR}/Dockerfile_Backend"
 ## PATHS FOR ORTHANC and AGENT
 
 ORTHANC_DIR="${CLUSTER_DIR}/example_tool/Orthanc"
-AGENT_DIR="${CLUSTER_DIR}/internal_servers
+AGENT_DIR="${CLUSTER_DIR}/internal_servers"
 
 
 
 ## AWS CONFIGURATION
+# shellcheck disable=SC2034
 AWS_REGION="us-east-1"
 AWS_ACCOUNT_ID=325852638497
 REPOSITORY_NAME="manual_gui_ecr"
