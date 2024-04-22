@@ -43,13 +43,9 @@ esac
 
 REGISTRY="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${REPOSITORY_NAME}"
 echo "Registry: ${REGISTRY}"
-# Build the docker image for the brain mask tool
-docker buildx build --platform linux/amd64,linux/arm64 --tag "${IMAGE_TAG}" --label "${IMAGE_LABEL}" --file "${DOCKERFILE_NAME}" "${CONTEXT_DIR}"
+
 # AWS ECR login
 aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${REGISTRY}
 
-# Tag the image for ECR with a versioned tag
-docker tag "${IMAGE_TAG}" "${REGISTRY}:${IMAGE_TAG}"
-
-# Push the image to AWS ECR
-docker push "${REGISTRY}:${IMAGE_TAG}"
+# Build the image and push the image to AWS ECR
+docker buildx build --platform linux/amd64 -t  "${REGISTRY}:${IMAGE_TAG}" --file "${DOCKERFILE_NAME}" --push "${CONTEXT_DIR}"
