@@ -1,137 +1,94 @@
 # Starting MiniKube
 
-1. Assuming you have installed MiniKube and Kubectl on your machine, you can start MiniKube by running the following command:
+1. Assuing you have installed MiniKube and Kubectl on your machine, you can start MiniKube by running the following command:
 
-    ```bash
-    minikube start
-    minikube status
-    minikube dashboard
-    ```
+```bash
+minikube start
+minikube status
+minikube dashboard
+```
 
-2. Add ingress to Minikube and verify the nginx controller is running
 
-    ```bash
-    minikube addons enable ingress
-    kubectl get pods -n ingress-nginx
-    ```
+4. Build Frontend Image in Minikube
 
-3. Build Frontend Image in Minikube
+```bash
+eval $(minikube docker-env)
+docker build -t 002_imagepro-frontend:latest --file Dockerfile_Frontend .
+```
 
-    ```bash
-    eval $(minikube docker-env)
-    docker build -t 002_imagepro-frontend:latest --file Dockerfile_Frontend .
-    ```
+5. Create a Deployment for Frontend
 
-4. Create a Deployment/Ingress for Frontend
+```bash
+kubectl apply -f frontend_kube_deployment.yaml
+kubectl apply -f frontend_kube_service.yaml
+```
 
-    ```bash
-    kubectl apply -f frontend_kube_deployment.yaml
-    kubectl apply -f frontend_kube_service.yaml
-    kubectl apply -f frontend_ingress.yaml
-    ```
+6. Add ingress to minikube and verify the nginx controller is running
+```bash
+minikube addons enable ingress
+minikube addons enable ingress-dns
+kubectl get pods -n ingress-nginx
+```
+**Note**: If running on MacOS you will need to add the following to your /etc/hosts file to ensure ingress works locally
+```bash
+sudo nano /etc/hosts
+```
+Add the following line to the file
+```bash
+127.0.0.1       frontend.example.com
+```
 
-5. Verify the frontend service is running
+7. Verify the frontend service is running
+```bash
+minikube service frontend-service --url
+```
+To visit the frontend open a new terminal and run
+```bash
+minikube tunnel
+```
+Then visit the url http://frontend.example.com.
 
-    ```bash
-    minikube service frontend-service --url
-    ```
+9. Build Backend Image in Minikube
 
-6. Build Backend Image in Minikube
+```bash
+eval $(minikube docker-env)
+docker build -t 002_imagepro-backend:latest --file Dockerfile_Backend .
+```
 
-    ```bash
-    eval $(minikube docker-env)
-    docker build -t 002_imagepro-backend:latest --file Dockerfile_Backend .
-    ```
+8. Create a Deployment for Backend
 
-7. Create a Deployment/Ingress for Backend
+```bash
+kubectl apply -f backend_kube_deployment.yaml
+kubectl apply -f backend_kube_service.yaml
+```
 
-    ```bash
-    kubectl apply -f backend_kube_deployment.yaml
-    kubectl apply -f backend_kube_service.yaml
-    kubectl apply -f backend_ingress.yaml
-    ```
+9. Create A Volume for Persistent Storage
 
-8. Create A Volume for Persistent Storage
+```bash
+kubectl apply -f postgres_kube_persistantvolume.yaml
+kubectl apply -f postgres_kube_persistantvolume_service.yaml
+kubectl apply -f postgres_kube_persistantvolume_statefulset.yaml
+kubectl apply -f postgres_kube_persistantvolumeclaim.yaml
+kubectl apply -f postgres_kube_secrets.yaml
+```
+10. To restart all pods and services
+```bash
+kubectl delete all --all -n default
+```
 
-    ```bash
-    kubectl apply -f postgres_kube_persistantvolume.yaml
-    kubectl apply -f postgres_kube_persistantvolume_service.yaml
-    kubectl apply -f postgres_kube_persistantvolume_statefulset.yaml
-    kubectl apply -f postgres_kube_persistantvolumeclaim.yaml
-    kubectl apply -f postgres_kube_secrets.yaml
-    ```
+11. Testing Frontend and Backend Connection
 
-9. Create a deployment/services/ingress for the internal server
+To ensure that the frontend and backend pods are connected, you can go to minikube dashboard and enter the
+frontend pod and run the following command in the exec shell:
 
-    ```bash
-    docker build -t orthanc-for-kube:latest --file Dockerfile_OrthancKube .
-    kubectl apply -f orthanc_kube_deployment.yaml
-    kubectl apply -f orthanc_kube_service.yaml
-    kubectl apply -f orthanc_send_dicom_service.yaml
-    kubectl apply -f orthanc_ingress.yaml
-    ```
-
-10. Build the study image for the study kube job
-
-    ```bash
-    docker build -t study:latest --file Dockerfile_Study .
-    ```
-
-11. Create the image/deployment for the receiver loop
-
-    ```bash
-    docker build -t receiver_loop:latest --file Dockerfile_ReceiverLoop .
-    kubectl apply -f receiver_deployment.yaml
-    ```
-
-12. Create the service account
-
-    ```bash
-    kubectl apply -f role.yaml
-    kubectl apply -f role_binding.yaml
-    kubectl apply -f service_account.yaml
-    ```
-
-13. If you are on MacOS, add the following to /etc/hosts
-
-    ```bash
-    127.0.0.1 internal-orthanc.com
-    127.0.0.1 frontend.example.com
-    127.0.0.1 backend.example.com
-    ```
-
-14. To send data from a hospital to the internal server, run the tmux_startup_only_hospital script. Then open up a new terminal and set up port forwarding to the internal server
-
-    ```bash
-    kubectl port-forward service/orthanc-send-dicom-service 4026:4026
-    ```
-
-    Open up another new terminal and run
-
-    ```bash
-    minikube tunnel
-    ```
-
-    Once those are running, you should be able to navigate to `internal-orthanc.com` and `localhost:8030` and send DICOM data like normal.
-
-15. To restart all pods and services
-
-    ```bash
-    kubectl delete all --all -n default
-    ```
-
-16. Testing Frontend and Backend Connection
-
-    To ensure that the frontend and backend pods are connected, you can go to Minikube dashboard and enter the frontend pod and run the following command in the exec shell:
-
-    ```bash
-    curl -X POST "http://backend-service/login" \
-         -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" \
-         --data-urlencode "username=admin1@admin.com" \
-         --data-urlencode "password=abcdefg" \
-         --cookie-jar cookie.txt \
-         --cookie cookie.txt \
-         --include
-    ```
-
-    You should get a response with a 200 status code and an access token in it for a successful login. If you go to the logs of the backend pod, you should see a successful POST /login request.
+```bash
+curl -X POST "http://backend-service/login" \
+     -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" \
+     --data-urlencode "username=admin1@admin.com" \
+     --data-urlencode "password=abcdefg" \
+     --cookie-jar cookie.txt \
+     --cookie cookie.txt \
+     --include
+```
+You should get a response with a 200 status code and an access token in it for a successful login
+If you go to the logs of the backend pod, you should see a successful POST /login request
