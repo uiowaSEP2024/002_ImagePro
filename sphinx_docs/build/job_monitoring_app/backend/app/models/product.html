@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Product.py &#8212; job_monitoring_app  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=12dfc556" />
+    <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Provider.py" href="provider.html" />
+    <link rel="prev" title="Pacs.py" href="pacs.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-job_monitoring_app.backend.app.models.product">
+<span id="product-py"></span><h1>Product.py<a class="headerlink" href="#module-job_monitoring_app.backend.app.models.product" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.models.product.Product">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">job_monitoring_app.backend.app.models.product.</span></span><span class="sig-name descname"><span class="pre">Product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#job_monitoring_app.backend.app.models.product.Product" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Base</span></code>, <a class="reference internal" href="base.html#job_monitoring_app.backend.app.models.base.DateMixin" title="job_monitoring_app.backend.app.models.base.DateMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">DateMixin</span></code></a></p>
+<p>Represents a product, which is a device that performs computation for a study.
+Each product is owned by a provider.</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>id<span class="classifier">int</span></dt><dd><p>Auto-generated internal product ID.</p>
+</dd>
+<dt>product_name<span class="classifier">str</span></dt><dd><p>A name identifier given to the product.</p>
+</dd>
+<dt>provider_id<span class="classifier">int</span></dt><dd><p>The ID of the provider that owns this product.</p>
+</dd>
+</dl>
+</section>
+<section id="relationships">
+<h2>Relationships<a class="headerlink" href="#relationships" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>provider</dt><dd><p>The provider that this product is connected to.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.models.product.Product.created_at">
+<span class="sig-name descname"><span class="pre">created_at</span></span><a class="headerlink" href="#job_monitoring_app.backend.app.models.product.Product.created_at" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.models.product.Product.id">
+<span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Column</span></em><a class="headerlink" href="#job_monitoring_app.backend.app.models.product.Product.id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.models.product.Product.product_name">
+<span class="sig-name descname"><span class="pre">product_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Column</span></em><a class="headerlink" href="#job_monitoring_app.backend.app.models.product.Product.product_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.models.product.Product.provider">
+<span class="sig-name descname"><span class="pre">provider</span></span><a class="headerlink" href="#job_monitoring_app.backend.app.models.product.Product.provider" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.models.product.Product.provider_id">
+<span class="sig-name descname"><span class="pre">provider_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Column</span></em><a class="headerlink" href="#job_monitoring_app.backend.app.models.product.Product.provider_id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.models.product.Product.updated_at">
+<span class="sig-name descname"><span class="pre">updated_at</span></span><a class="headerlink" href="#job_monitoring_app.backend.app.models.product.Product.updated_at" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">job_monitoring_app</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../job_mon_app_index.html">Job_Mon_App Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../internal_servers/internal_servers_index.html">Internal Servers Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sphinx/sphinx_index.html">Sphinx Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../example_tool/example_tool_index.html">Example Tool Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../example_tool_light/example_tool_light_index.html">Example Tool Light Modules</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../job_mon_app_index.html">Job_Mon_App Modules</a><ul>
+  <li><a href="../../backend_index.html">Backend Modules</a><ul>
+  <li><a href="../app_index.html">App Modules</a><ul>
+  <li><a href="models_index.html">Model Modules</a><ul>
+      <li>Previous: <a href="pacs.html" title="previous chapter">Pacs.py</a></li>
+      <li>Next: <a href="provider.html" title="next chapter">Provider.py</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Zach Morris, Ivan Johnson, Audrey Powers, Michal Brzus.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="../../../../_sources/job_monitoring_app/backend/app/models/product.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

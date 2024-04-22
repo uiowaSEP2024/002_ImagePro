@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>users.py &#8212; job_monitoring_app  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=12dfc556" />
+    <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="dependencies.py" href="../dependencies.html" />
+    <link rel="prev" title="study_configuration.py" href="study_configuration.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-job_monitoring_app.backend.app.services.users">
+<span id="users-py"></span><h1>users.py<a class="headerlink" href="#module-job_monitoring_app.backend.app.services.users" title="Link to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.services.users.authenticate_user">
+<span class="sig-prename descclassname"><span class="pre">job_monitoring_app.backend.app.services.users.</span></span><span class="sig-name descname"><span class="pre">authenticate_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../models/user.html#job_monitoring_app.backend.app.models.user.User" title="job_monitoring_app.backend.app.models.user.User"><span class="pre">User</span></a></span></span><a class="headerlink" href="#job_monitoring_app.backend.app.services.users.authenticate_user" title="Link to this definition">¶</a></dt>
+<dd><p>Authenticates a user by username and password.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>db (Session): The database session.
+username (str): The username of the user to authenticate.
+password (str): The password of the user to authenticate.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.services.users.create_hospital_user">
+<span class="sig-prename descclassname"><span class="pre">job_monitoring_app.backend.app.services.users.</span></span><span class="sig-name descname"><span class="pre">create_hospital_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../schemas/user.html#job_monitoring_app.backend.app.schemas.user.UserHospitalCreate" title="job_monitoring_app.backend.app.schemas.user.UserHospitalCreate"><span class="pre">UserHospitalCreate</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../models/user.html#job_monitoring_app.backend.app.models.user.User" title="job_monitoring_app.backend.app.models.user.User"><span class="pre">User</span></a></span></span><a class="headerlink" href="#job_monitoring_app.backend.app.services.users.create_hospital_user" title="Link to this definition">¶</a></dt>
+<dd><p>Creates a new user in the database associated with a hospital.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>db (Session): The database session.
+user (schemas.UserHospitalCreate): The user to create.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.services.users.create_provider_user">
+<span class="sig-prename descclassname"><span class="pre">job_monitoring_app.backend.app.services.users.</span></span><span class="sig-name descname"><span class="pre">create_provider_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../schemas/user.html#job_monitoring_app.backend.app.schemas.user.UserProviderCreate" title="job_monitoring_app.backend.app.schemas.user.UserProviderCreate"><span class="pre">UserProviderCreate</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../models/user.html#job_monitoring_app.backend.app.models.user.User" title="job_monitoring_app.backend.app.models.user.User"><span class="pre">User</span></a></span></span><a class="headerlink" href="#job_monitoring_app.backend.app.services.users.create_provider_user" title="Link to this definition">¶</a></dt>
+<dd><p>Creates a new user in the database associated with a provider.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>db (Session): The database session.
+user (schemas.UserProviderCreate): The user to create.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.services.users.create_user">
+<span class="sig-prename descclassname"><span class="pre">job_monitoring_app.backend.app.services.users.</span></span><span class="sig-name descname"><span class="pre">create_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../schemas/user.html#job_monitoring_app.backend.app.schemas.user.UserCreate" title="job_monitoring_app.backend.app.schemas.user.UserCreate"><span class="pre">UserCreate</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../models/user.html#job_monitoring_app.backend.app.models.user.User" title="job_monitoring_app.backend.app.models.user.User"><span class="pre">User</span></a></span></span><a class="headerlink" href="#job_monitoring_app.backend.app.services.users.create_user" title="Link to this definition">¶</a></dt>
+<dd><p>Creates a new admin user in the database.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>db (Session): The database session.
+user (schemas.UserHospitalCreate): The user to create.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.services.users.get_user">
+<span class="sig-prename descclassname"><span class="pre">job_monitoring_app.backend.app.services.users.</span></span><span class="sig-name descname"><span class="pre">get_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../models/user.html#job_monitoring_app.backend.app.models.user.User" title="job_monitoring_app.backend.app.models.user.User"><span class="pre">User</span></a></span></span><a class="headerlink" href="#job_monitoring_app.backend.app.services.users.get_user" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves a user from the database by ID.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>db (Session): The database session.
+user_id (int): The ID of the user to retrieve.</p>
+</dd>
+<dt>Returns:</dt><dd><p>models.User: The user retrieved from the database.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.services.users.get_user_by_email">
+<span class="sig-prename descclassname"><span class="pre">job_monitoring_app.backend.app.services.users.</span></span><span class="sig-name descname"><span class="pre">get_user_by_email</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../models/user.html#job_monitoring_app.backend.app.models.user.User" title="job_monitoring_app.backend.app.models.user.User"><span class="pre">User</span></a></span></span><a class="headerlink" href="#job_monitoring_app.backend.app.services.users.get_user_by_email" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves a user from the database by email.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>db (Session): The database session.
+email (str): The email of the user to retrieve.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.services.users.get_user_hospital">
+<span class="sig-prename descclassname"><span class="pre">job_monitoring_app.backend.app.services.users.</span></span><span class="sig-name descname"><span class="pre">get_user_hospital</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../models/hospital.html#job_monitoring_app.backend.app.models.hospital.Hospital" title="job_monitoring_app.backend.app.models.hospital.Hospital"><span class="pre">Hospital</span></a></span></span><a class="headerlink" href="#job_monitoring_app.backend.app.services.users.get_user_hospital" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves the hospital associated with a user, only for ‘hospital’ users</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>db (Session): The database session.
+user_id (int): The ID of the user to retrieve the hospital for.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.services.users.get_user_provider">
+<span class="sig-prename descclassname"><span class="pre">job_monitoring_app.backend.app.services.users.</span></span><span class="sig-name descname"><span class="pre">get_user_provider</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../models/provider.html#job_monitoring_app.backend.app.models.provider.Provider" title="job_monitoring_app.backend.app.models.provider.Provider"><span class="pre">Provider</span></a></span></span><a class="headerlink" href="#job_monitoring_app.backend.app.services.users.get_user_provider" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves the provider associated with a user, only for ‘provider’ users</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>db (Session): The database session.
+user_id (int): The ID of the user to retrieve the provider for.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">job_monitoring_app</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../job_mon_app_index.html">Job_Mon_App Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../internal_servers/internal_servers_index.html">Internal Servers Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sphinx/sphinx_index.html">Sphinx Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../example_tool/example_tool_index.html">Example Tool Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../example_tool_light/example_tool_light_index.html">Example Tool Light Modules</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../job_mon_app_index.html">Job_Mon_App Modules</a><ul>
+  <li><a href="../../backend_index.html">Backend Modules</a><ul>
+  <li><a href="../app_index.html">App Modules</a><ul>
+  <li><a href="services_index.html">Services Modules</a><ul>
+      <li>Previous: <a href="study_configuration.html" title="previous chapter">study_configuration.py</a></li>
+      <li>Next: <a href="../dependencies.html" title="next chapter">dependencies.py</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Zach Morris, Ivan Johnson, Audrey Powers, Michal Brzus.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="../../../../_sources/job_monitoring_app/backend/app/services/users.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

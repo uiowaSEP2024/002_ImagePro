@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Base.py &#8212; job_monitoring_app  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=12dfc556" />
+    <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Event.py" href="event.html" />
+    <link rel="prev" title="api_key.py" href="api_key.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-job_monitoring_app.backend.app.models.base">
+<span id="base-py"></span><h1>Base.py<a class="headerlink" href="#module-job_monitoring_app.backend.app.models.base" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.models.base.DateMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">job_monitoring_app.backend.app.models.base.</span></span><span class="sig-name descname"><span class="pre">DateMixin</span></span><a class="headerlink" href="#job_monitoring_app.backend.app.models.base.DateMixin" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>DateMixin class</p>
+<section id="attributes">
+<h2>Attributes:<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>created_at<span class="classifier">datetime</span></dt><dd><p>The date and time the object was created</p>
+</dd>
+<dt>updated_at<span class="classifier">datetime</span></dt><dd><p>The date and time the object was last updated</p>
+</dd>
+</dl>
+<p>This mixin adds the created_at and updated_at columns to the model and drys up the code</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.models.base.DateMixin.created_at">
+<span class="sig-name descname"><span class="pre">created_at</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Column(None,</span> <span class="pre">DateTime(timezone=True),</span> <span class="pre">table=None,</span> <span class="pre">server_default=DefaultClause(&lt;sqlalchemy.sql.functions.now</span> <span class="pre">at</span> <span class="pre">0x11e0e5960;</span> <span class="pre">now&gt;,</span> <span class="pre">for_update=False))</span></em><a class="headerlink" href="#job_monitoring_app.backend.app.models.base.DateMixin.created_at" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.models.base.DateMixin.updated_at">
+<span class="sig-name descname"><span class="pre">updated_at</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Column(None,</span> <span class="pre">DateTime(timezone=True),</span> <span class="pre">table=None,</span> <span class="pre">onupdate=ColumnElementColumnDefault(&lt;sqlalchemy.sql.functions.now</span> <span class="pre">at</span> <span class="pre">0x11e0e5b40;</span> <span class="pre">now&gt;))</span></em><a class="headerlink" href="#job_monitoring_app.backend.app.models.base.DateMixin.updated_at" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.models.base.truncate_all_tables">
+<span class="sig-prename descclassname"><span class="pre">job_monitoring_app.backend.app.models.base.</span></span><span class="sig-name descname"><span class="pre">truncate_all_tables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#job_monitoring_app.backend.app.models.base.truncate_all_tables" title="Link to this definition">¶</a></dt>
+<dd><p>Truncates all tables in the database</p>
+<p>This function is used to clear the database of all data</p>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">job_monitoring_app</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../job_mon_app_index.html">Job_Mon_App Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../internal_servers/internal_servers_index.html">Internal Servers Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sphinx/sphinx_index.html">Sphinx Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../example_tool/example_tool_index.html">Example Tool Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../example_tool_light/example_tool_light_index.html">Example Tool Light Modules</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../job_mon_app_index.html">Job_Mon_App Modules</a><ul>
+  <li><a href="../../backend_index.html">Backend Modules</a><ul>
+  <li><a href="../app_index.html">App Modules</a><ul>
+  <li><a href="models_index.html">Model Modules</a><ul>
+      <li>Previous: <a href="api_key.html" title="previous chapter">api_key.py</a></li>
+      <li>Next: <a href="event.html" title="next chapter">Event.py</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Zach Morris, Ivan Johnson, Audrey Powers, Michal Brzus.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="../../../../_sources/job_monitoring_app/backend/app/models/base.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

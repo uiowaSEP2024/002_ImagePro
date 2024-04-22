@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>study_configuration.py &#8212; job_monitoring_app  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=12dfc556" />
+    <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="users.py" href="users.html" />
+    <link rel="prev" title="studies.py" href="studies.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-job_monitoring_app.backend.app.services.study_configuration">
+<span id="study-configuration-py"></span><h1>study_configuration.py<a class="headerlink" href="#module-job_monitoring_app.backend.app.services.study_configuration" title="Link to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.services.study_configuration.create_study_configuration">
+<span class="sig-prename descclassname"><span class="pre">job_monitoring_app.backend.app.services.study_configuration.</span></span><span class="sig-name descname"><span class="pre">create_study_configuration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">provider_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">study_configuration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../schemas/study_configuration.html#job_monitoring_app.backend.app.schemas.study_configuration.StudyConfigurationCreate" title="job_monitoring_app.backend.app.schemas.study_configuration.StudyConfigurationCreate"><span class="pre">StudyConfigurationCreate</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../models/study_configuration.html#job_monitoring_app.backend.app.models.study_configuration.StudyConfiguration" title="job_monitoring_app.backend.app.models.study_configuration.StudyConfiguration"><span class="pre">StudyConfiguration</span></a></span></span><a class="headerlink" href="#job_monitoring_app.backend.app.services.study_configuration.create_study_configuration" title="Link to this definition">¶</a></dt>
+<dd><p>Create a study configuration</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>db (Session): SQLAlchemy session
+provider_id (str): Provider id
+study_configuration (schemas.StudyConfigurationCreate): Study configuration to create</p>
+</dd>
+<dt>Returns:</dt><dd><p>models.StudyConfiguration: Created study configuration</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.services.study_configuration.get_list_of_latest_versions_for_all_study_configurations">
+<span class="sig-prename descclassname"><span class="pre">job_monitoring_app.backend.app.services.study_configuration.</span></span><span class="sig-name descname"><span class="pre">get_list_of_latest_versions_for_all_study_configurations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">provider_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../models/study_configuration.html#job_monitoring_app.backend.app.models.study_configuration.StudyConfiguration" title="job_monitoring_app.backend.app.models.study_configuration.StudyConfiguration"><span class="pre">StudyConfiguration</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#job_monitoring_app.backend.app.services.study_configuration.get_list_of_latest_versions_for_all_study_configurations" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a list of the latest study configurations for all tags</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>db (Session): SQLAlchemy session
+provider_id (int): Provider id</p>
+</dd>
+<dt>Returns:</dt><dd><p>list[models.StudyConfiguration]: List of latest study configurations for all tags</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.services.study_configuration.get_step_configuration_by_composite_key">
+<span class="sig-prename descclassname"><span class="pre">job_monitoring_app.backend.app.services.study_configuration.</span></span><span class="sig-name descname"><span class="pre">get_step_configuration_by_composite_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">study_configuration_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../models/step_configuration.html#job_monitoring_app.backend.app.models.step_configuration.StepConfiguration" title="job_monitoring_app.backend.app.models.step_configuration.StepConfiguration"><span class="pre">StepConfiguration</span></a></span></span><a class="headerlink" href="#job_monitoring_app.backend.app.services.study_configuration.get_step_configuration_by_composite_key" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a unique step configuration given the composite key comprising the study_configuration_id and tag
+There should be only one step_configuration with a given tag for a given study_configuration_id</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>db (Session): SQLAlchemy session
+study_configuration_id (str): Study configuration id
+tag (str): Tag</p>
+</dd>
+<dt>Returns:</dt><dd><p>models.StepConfiguration: Step configuration associated with the given study_configuration_id and tag</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.services.study_configuration.get_study_configuration_by_composite_key">
+<span class="sig-prename descclassname"><span class="pre">job_monitoring_app.backend.app.services.study_configuration.</span></span><span class="sig-name descname"><span class="pre">get_study_configuration_by_composite_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">provider_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="../schemas/pydantic_version.html#job_monitoring_app.backend.app.schemas.pydantic_version.PydanticVersion" title="job_monitoring_app.backend.app.schemas.pydantic_version.PydanticVersion"><span class="pre">PydanticVersion</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../models/study_configuration.html#job_monitoring_app.backend.app.models.study_configuration.StudyConfiguration" title="job_monitoring_app.backend.app.models.study_configuration.StudyConfiguration"><span class="pre">StudyConfiguration</span></a></span></span><a class="headerlink" href="#job_monitoring_app.backend.app.services.study_configuration.get_study_configuration_by_composite_key" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a unique study configuration give the composite key comprising the provider_id, tag, and version
+There should be only one study_configuration given these fields.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>db (Session): SQLAlchemy session
+provider_id (str): Provider id
+tag (str): Tag
+version (Union[str, PydanticVersion]): Version</p>
+</dd>
+<dt>Returns:</dt><dd><p>models.StudyConfiguration: Study configuration associated with the given provider_id, tag, and version</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.services.study_configuration.get_study_configuration_by_id">
+<span class="sig-prename descclassname"><span class="pre">job_monitoring_app.backend.app.services.study_configuration.</span></span><span class="sig-name descname"><span class="pre">get_study_configuration_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">study_configuration_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../models/study_configuration.html#job_monitoring_app.backend.app.models.study_configuration.StudyConfiguration" title="job_monitoring_app.backend.app.models.study_configuration.StudyConfiguration"><span class="pre">StudyConfiguration</span></a></span></span><a class="headerlink" href="#job_monitoring_app.backend.app.services.study_configuration.get_study_configuration_by_id" title="Link to this definition">¶</a></dt>
+<dd><p>Get study configuration by id from the database</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>db (Session): SQLAlchemy session
+study_configuration_id (int): Study configuration id (primary key)</p>
+</dd>
+<dt>Returns:</dt><dd><p>models.StudyConfiguration: Study configuration with Primary Key study_configuration_id</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.services.study_configuration.get_study_configuration_by_tag">
+<span class="sig-prename descclassname"><span class="pre">job_monitoring_app.backend.app.services.study_configuration.</span></span><span class="sig-name descname"><span class="pre">get_study_configuration_by_tag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">provider_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../models/study_configuration.html#job_monitoring_app.backend.app.models.study_configuration.StudyConfiguration" title="job_monitoring_app.backend.app.models.study_configuration.StudyConfiguration"><span class="pre">StudyConfiguration</span></a></span></span><a class="headerlink" href="#job_monitoring_app.backend.app.services.study_configuration.get_study_configuration_by_tag" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a unique study configuration given the tag and provider_id</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>db (Session): SQLAlchemy session
+tag (str): Tag
+provider_id (int): Provider id</p>
+</dd>
+<dt>Returns:</dt><dd><p>models.StudyConfiguration: Study configuration associated with the given tag and provider_id</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.services.study_configuration.get_study_configurations_by_tag">
+<span class="sig-prename descclassname"><span class="pre">job_monitoring_app.backend.app.services.study_configuration.</span></span><span class="sig-name descname"><span class="pre">get_study_configurations_by_tag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">provider_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../models/study_configuration.html#job_monitoring_app.backend.app.models.study_configuration.StudyConfiguration" title="job_monitoring_app.backend.app.models.study_configuration.StudyConfiguration"><span class="pre">StudyConfiguration</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#job_monitoring_app.backend.app.services.study_configuration.get_study_configurations_by_tag" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a list of study configurations given the tag and provider_id
+get’s all study configurations for a particular tag</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>db (Session): SQLAlchemy session
+tag (str): Tag
+provider_id (int): Provider id</p>
+</dd>
+<dt>Returns:</dt><dd><p>list[models.StudyConfiguration]: List of study configurations associated with the given tag and provider_id</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">job_monitoring_app</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../job_mon_app_index.html">Job_Mon_App Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../internal_servers/internal_servers_index.html">Internal Servers Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sphinx/sphinx_index.html">Sphinx Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../example_tool/example_tool_index.html">Example Tool Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../example_tool_light/example_tool_light_index.html">Example Tool Light Modules</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../job_mon_app_index.html">Job_Mon_App Modules</a><ul>
+  <li><a href="../../backend_index.html">Backend Modules</a><ul>
+  <li><a href="../app_index.html">App Modules</a><ul>
+  <li><a href="services_index.html">Services Modules</a><ul>
+      <li>Previous: <a href="studies.html" title="previous chapter">studies.py</a></li>
+      <li>Next: <a href="users.html" title="next chapter">users.py</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Zach Morris, Ivan Johnson, Audrey Powers, Michal Brzus.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="../../../../_sources/job_monitoring_app/backend/app/services/study_configuration.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>User.py &#8212; job_monitoring_app  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=12dfc556" />
+    <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Router Modules" href="../routers/routers_index.html" />
+    <link rel="prev" title="Study_configuration.py" href="study_configuration.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-job_monitoring_app.backend.app.models.user">
+<span id="user-py"></span><h1>User.py<a class="headerlink" href="#module-job_monitoring_app.backend.app.models.user" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.models.user.User">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">job_monitoring_app.backend.app.models.user.</span></span><span class="sig-name descname"><span class="pre">User</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#job_monitoring_app.backend.app.models.user.User" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Base</span></code>, <a class="reference internal" href="base.html#job_monitoring_app.backend.app.models.base.DateMixin" title="job_monitoring_app.backend.app.models.base.DateMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">DateMixin</span></code></a></p>
+<p>Represents a User model.</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>id<span class="classifier">int</span></dt><dd><p>The primary key of the user.</p>
+</dd>
+<dt>email<span class="classifier">str</span></dt><dd><p>The email of the user.</p>
+</dd>
+<dt>hashed_password<span class="classifier">str</span></dt><dd><p>The hashed password of the user.</p>
+</dd>
+<dt>first_name<span class="classifier">str</span></dt><dd><p>The first name of the user.</p>
+</dd>
+<dt>last_name<span class="classifier">str</span></dt><dd><p>The last name of the user.</p>
+</dd>
+<dt>role<span class="classifier">str</span></dt><dd><p>The role of the user (provider, hospital, admin).</p>
+</dd>
+<dt>api_keys<span class="classifier">relationship</span></dt><dd><p>The API keys associated with the user (one to many).</p>
+</dd>
+<dt>studies<span class="classifier">relationship</span></dt><dd><p>The studies associated with the user (one to many).</p>
+</dd>
+<dt>provider_studies<span class="classifier">relationship</span></dt><dd><p>The provider studies associated with the user (one to many).</p>
+</dd>
+<dt>study_configurations<span class="classifier">relationship</span></dt><dd><p>The study configurations associated with the user (one to many).</p>
+</dd>
+</dl>
+</section>
+<section id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>Provider has many study configurations:</dt><dd><p>A single User instance, when acting as a Provider, can be associated with multiple
+StudyConfiguration instances. This is a one-to-many relationship from the Provider’s
+perspective.</p>
+</dd>
+<dt>Bidirectional:</dt><dd><p>The relationship is set up in such a way that it can be navigated in both directions.
+From a StudyConfiguration instance, you can access the associated Provider (User), and from
+a Provider (User), you can access all associated StudyConfigurations.</p>
+</dd>
+<dt>Child class -&gt; StudyConfiguration:</dt><dd><p>Indicates that StudyConfiguration is the child class in this relationship.
+StudyConfiguration instances are the ones being “owned” or referenced by the Provider (User).</p>
+</dd>
+<dt>Parent class -&gt; Provider:</dt><dd><p>Indicates that the User (referred to as Provider in this context) is the parent class in
+this relationship. A Provider can “own” or reference multiple StudyConfiguration instances.</p>
+</dd>
+<dt>Parent-child relationship (has many to one) -&gt; provider_study_configurations:</dt><dd><p>Another way of saying that a Provider can have many StudyConfigurations. The
+<cite>provider_study_configurations</cite> seems to be the name given to this relationship, but it’s not
+directly visible in the provided code.</p>
+</dd>
+<dt>Child-parent relationship (one to many) -&gt; provider (see study_configuration.py):</dt><dd><p>Refers to the ability of a StudyConfiguration instance to reference its associated Provider (User).
+The <cite>provider</cite> attribute in the StudyConfiguration class is the SQLAlchemy relationship that enables this.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.models.user.User.api_keys">
+<span class="sig-name descname"><span class="pre">api_keys</span></span><a class="headerlink" href="#job_monitoring_app.backend.app.models.user.User.api_keys" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.models.user.User.created_at">
+<span class="sig-name descname"><span class="pre">created_at</span></span><a class="headerlink" href="#job_monitoring_app.backend.app.models.user.User.created_at" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.models.user.User.email">
+<span class="sig-name descname"><span class="pre">email</span></span><a class="headerlink" href="#job_monitoring_app.backend.app.models.user.User.email" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.models.user.User.first_name">
+<span class="sig-name descname"><span class="pre">first_name</span></span><a class="headerlink" href="#job_monitoring_app.backend.app.models.user.User.first_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.models.user.User.hashed_password">
+<span class="sig-name descname"><span class="pre">hashed_password</span></span><a class="headerlink" href="#job_monitoring_app.backend.app.models.user.User.hashed_password" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.models.user.User.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#job_monitoring_app.backend.app.models.user.User.id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.models.user.User.last_name">
+<span class="sig-name descname"><span class="pre">last_name</span></span><a class="headerlink" href="#job_monitoring_app.backend.app.models.user.User.last_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.models.user.User.provider_studies">
+<span class="sig-name descname"><span class="pre">provider_studies</span></span><a class="headerlink" href="#job_monitoring_app.backend.app.models.user.User.provider_studies" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.models.user.User.role">
+<span class="sig-name descname"><span class="pre">role</span></span><a class="headerlink" href="#job_monitoring_app.backend.app.models.user.User.role" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.models.user.User.studies">
+<span class="sig-name descname"><span class="pre">studies</span></span><a class="headerlink" href="#job_monitoring_app.backend.app.models.user.User.studies" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.models.user.User.study_configurations">
+<span class="sig-name descname"><span class="pre">study_configurations</span></span><a class="headerlink" href="#job_monitoring_app.backend.app.models.user.User.study_configurations" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.backend.app.models.user.User.updated_at">
+<span class="sig-name descname"><span class="pre">updated_at</span></span><a class="headerlink" href="#job_monitoring_app.backend.app.models.user.User.updated_at" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">job_monitoring_app</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../job_mon_app_index.html">Job_Mon_App Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../internal_servers/internal_servers_index.html">Internal Servers Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sphinx/sphinx_index.html">Sphinx Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../example_tool/example_tool_index.html">Example Tool Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../example_tool_light/example_tool_light_index.html">Example Tool Light Modules</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../job_mon_app_index.html">Job_Mon_App Modules</a><ul>
+  <li><a href="../../backend_index.html">Backend Modules</a><ul>
+  <li><a href="../app_index.html">App Modules</a><ul>
+  <li><a href="models_index.html">Model Modules</a><ul>
+      <li>Previous: <a href="study_configuration.html" title="previous chapter">Study_configuration.py</a></li>
+      <li>Next: <a href="../routers/routers_index.html" title="next chapter">Router Modules</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Zach Morris, Ivan Johnson, Audrey Powers, Michal Brzus.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="../../../../_sources/job_monitoring_app/backend/app/models/user.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

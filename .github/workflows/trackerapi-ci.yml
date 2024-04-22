@@ -1,0 +1,48 @@
+name: TrackerAPI CI Workflow
+on:
+  workflow_call:
+jobs:
+  unit_tests:
+    name: TrackerAPI Unit Tests
+    strategy:
+      matrix:
+        os: ["ubuntu-latest"]
+        version: ["3.10"]
+    runs-on: ${{matrix.os}}
+    defaults:
+      run:
+        working-directory:  job_monitoring_app/trackerapi
+        shell: bash
+        # Service containers to run with `runner-job`
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name : Update Python Path
+        run: |
+          export PYTHONPATH=$PYTHONPATH:$(pwd)/trackerapi
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.version }}
+          cache: pip
+
+      - name: Install python dependencies
+        run: |
+          pip install -q -r requirements.txt
+
+      - name: Run Tests with Coverage
+        run:
+            pytest --cov-report "xml:coverage.xml" --cov --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov
+
+
+  shellcheck:
+    name: Shellcheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master

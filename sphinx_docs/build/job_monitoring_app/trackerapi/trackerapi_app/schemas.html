@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>schemas.py &#8212; job_monitoring_app  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=12dfc556" />
+    <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Internal Servers Modules" href="../../../internal_servers/internal_servers_index.html" />
+    <link rel="prev" title="helpers.py" href="helpers.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-job_monitoring_app.trackerapi.trackerapi.schemas">
+<span id="schemas-py"></span><h1>schemas.py<a class="headerlink" href="#module-job_monitoring_app.trackerapi.trackerapi.schemas" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="job_monitoring_app.trackerapi.trackerapi.schemas.MetadataConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">job_monitoring_app.trackerapi.trackerapi.schemas.</span></span><span class="sig-name descname"><span class="pre">MetadataConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">StrictStr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#job_monitoring_app.trackerapi.trackerapi.schemas.MetadataKindEnum" title="job_monitoring_app.trackerapi.trackerapi.schemas.MetadataKindEnum"><span class="pre">MetadataKindEnum</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">MetadataKindEnum.text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">StrictStr</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#job_monitoring_app.trackerapi.trackerapi.schemas.MetadataConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.trackerapi.trackerapi.schemas.MetadataConfig.kind">
+<span class="sig-name descname"><span class="pre">kind</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#job_monitoring_app.trackerapi.trackerapi.schemas.MetadataKindEnum" title="job_monitoring_app.trackerapi.trackerapi.schemas.MetadataKindEnum"><span class="pre">MetadataKindEnum</span></a></em><a class="headerlink" href="#job_monitoring_app.trackerapi.trackerapi.schemas.MetadataConfig.kind" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.trackerapi.trackerapi.schemas.MetadataConfig.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">StrictStr</span></em><a class="headerlink" href="#job_monitoring_app.trackerapi.trackerapi.schemas.MetadataConfig.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.trackerapi.trackerapi.schemas.MetadataConfig.units">
+<span class="sig-name descname"><span class="pre">units</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">StrictStr</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#job_monitoring_app.trackerapi.trackerapi.schemas.MetadataConfig.units" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="job_monitoring_app.trackerapi.trackerapi.schemas.MetadataKindEnum">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">job_monitoring_app.trackerapi.trackerapi.schemas.</span></span><span class="sig-name descname"><span class="pre">MetadataKindEnum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#job_monitoring_app.trackerapi.trackerapi.schemas.MetadataKindEnum" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.trackerapi.trackerapi.schemas.MetadataKindEnum.link">
+<span class="sig-name descname"><span class="pre">link</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'link'</span></em><a class="headerlink" href="#job_monitoring_app.trackerapi.trackerapi.schemas.MetadataKindEnum.link" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.trackerapi.trackerapi.schemas.MetadataKindEnum.number">
+<span class="sig-name descname"><span class="pre">number</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'number'</span></em><a class="headerlink" href="#job_monitoring_app.trackerapi.trackerapi.schemas.MetadataKindEnum.number" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.trackerapi.trackerapi.schemas.MetadataKindEnum.text">
+<span class="sig-name descname"><span class="pre">text</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'text'</span></em><a class="headerlink" href="#job_monitoring_app.trackerapi.trackerapi.schemas.MetadataKindEnum.text" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="job_monitoring_app.trackerapi.trackerapi.schemas.StepConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">job_monitoring_app.trackerapi.trackerapi.schemas.</span></span><span class="sig-name descname"><span class="pre">StepConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata_configurations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#job_monitoring_app.trackerapi.trackerapi.schemas.MetadataConfig" title="job_monitoring_app.trackerapi.trackerapi.schemas.MetadataConfig"><span class="pre">MetadataConfig</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#job_monitoring_app.trackerapi.trackerapi.schemas.StepConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#job_monitoring_app.trackerapi.trackerapi.schemas.UniqueTagModel" title="job_monitoring_app.trackerapi.trackerapi.schemas.UniqueTagModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">UniqueTagModel</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.trackerapi.trackerapi.schemas.StepConfig.metadata_configurations">
+<span class="sig-name descname"><span class="pre">metadata_configurations</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#job_monitoring_app.trackerapi.trackerapi.schemas.MetadataConfig" title="job_monitoring_app.trackerapi.trackerapi.schemas.MetadataConfig"><span class="pre">MetadataConfig</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#job_monitoring_app.trackerapi.trackerapi.schemas.StepConfig.metadata_configurations" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.trackerapi.trackerapi.schemas.StepConfig.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">StrictStr</span></em><a class="headerlink" href="#job_monitoring_app.trackerapi.trackerapi.schemas.StepConfig.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.trackerapi.trackerapi.schemas.StepConfig.points">
+<span class="sig-name descname"><span class="pre">points</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">StrictInt</span></em><a class="headerlink" href="#job_monitoring_app.trackerapi.trackerapi.schemas.StepConfig.points" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="job_monitoring_app.trackerapi.trackerapi.schemas.StudyConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">job_monitoring_app.trackerapi.trackerapi.schemas.</span></span><span class="sig-name descname"><span class="pre">StudyConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_configurations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#job_monitoring_app.trackerapi.trackerapi.schemas.StepConfig" title="job_monitoring_app.trackerapi.trackerapi.schemas.StepConfig"><span class="pre">StepConfig</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#job_monitoring_app.trackerapi.trackerapi.schemas.StudyConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#job_monitoring_app.trackerapi.trackerapi.schemas.UniqueTagModel" title="job_monitoring_app.trackerapi.trackerapi.schemas.UniqueTagModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">UniqueTagModel</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.trackerapi.trackerapi.schemas.StudyConfig.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">StrictStr</span></em><a class="headerlink" href="#job_monitoring_app.trackerapi.trackerapi.schemas.StudyConfig.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.trackerapi.trackerapi.schemas.StudyConfig.step_configurations">
+<span class="sig-name descname"><span class="pre">step_configurations</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ConstrainedListValue</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#job_monitoring_app.trackerapi.trackerapi.schemas.StepConfig" title="job_monitoring_app.trackerapi.trackerapi.schemas.StepConfig"><span class="pre">StepConfig</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#job_monitoring_app.trackerapi.trackerapi.schemas.StudyConfig.step_configurations" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.trackerapi.trackerapi.schemas.StudyConfig.version">
+<span class="sig-name descname"><span class="pre">version</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#job_monitoring_app.trackerapi.trackerapi.schemas.StudyConfig.version" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="job_monitoring_app.trackerapi.trackerapi.schemas.StudyConfigs">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">job_monitoring_app.trackerapi.trackerapi.schemas.</span></span><span class="sig-name descname"><span class="pre">StudyConfigs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">study_configs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#job_monitoring_app.trackerapi.trackerapi.schemas.StudyConfig" title="job_monitoring_app.trackerapi.trackerapi.schemas.StudyConfig"><span class="pre">StudyConfig</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#job_monitoring_app.trackerapi.trackerapi.schemas.StudyConfigs" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.trackerapi.trackerapi.schemas.StudyConfigs.study_configs">
+<span class="sig-name descname"><span class="pre">study_configs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ConstrainedListValue</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#job_monitoring_app.trackerapi.trackerapi.schemas.StudyConfig" title="job_monitoring_app.trackerapi.trackerapi.schemas.StudyConfig"><span class="pre">StudyConfig</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#job_monitoring_app.trackerapi.trackerapi.schemas.StudyConfigs.study_configs" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="job_monitoring_app.trackerapi.trackerapi.schemas.UniqueTagModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">job_monitoring_app.trackerapi.trackerapi.schemas.</span></span><span class="sig-name descname"><span class="pre">UniqueTagModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">StrictStr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#job_monitoring_app.trackerapi.trackerapi.schemas.UniqueTagModel" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="job_monitoring_app.trackerapi.trackerapi.schemas.UniqueTagModel.tag">
+<span class="sig-name descname"><span class="pre">tag</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">StrictStr</span></em><a class="headerlink" href="#job_monitoring_app.trackerapi.trackerapi.schemas.UniqueTagModel.tag" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">job_monitoring_app</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../job_mon_app_index.html">Job_Mon_App Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../internal_servers/internal_servers_index.html">Internal Servers Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sphinx/sphinx_index.html">Sphinx Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example_tool/example_tool_index.html">Example Tool Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example_tool_light/example_tool_light_index.html">Example Tool Light Modules</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../job_mon_app_index.html">Job_Mon_App Modules</a><ul>
+  <li><a href="../trackerapi_index.html">Trackerapi Modules</a><ul>
+  <li><a href="trackerapi_app_index.html">Trackerapi App Modules</a><ul>
+      <li>Previous: <a href="helpers.html" title="previous chapter">helpers.py</a></li>
+      <li>Next: <a href="../../../internal_servers/internal_servers_index.html" title="next chapter">Internal Servers Modules</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Zach Morris, Ivan Johnson, Audrey Powers, Michal Brzus.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="../../../_sources/job_monitoring_app/trackerapi/trackerapi_app/schemas.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

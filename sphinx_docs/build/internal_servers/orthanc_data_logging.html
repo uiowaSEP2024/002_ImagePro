@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>orthanc_data_logging.py &#8212; job_monitoring_app  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=12dfc556" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Sphinx Modules" href="../sphinx/sphinx_index.html" />
+    <link rel="prev" title="orthanc_reciever_agent.py" href="orthanc_reciever_agent.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-internal_servers.orthanc_data_logging">
+<span id="orthanc-data-logging-py"></span><h1>orthanc_data_logging.py<a class="headerlink" href="#module-internal_servers.orthanc_data_logging" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="internal_servers.orthanc_data_logging.OrthancStudyLogger">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">internal_servers.orthanc_data_logging.</span></span><span class="sig-name descname"><span class="pre">OrthancStudyLogger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hospital_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">study_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tracker_api_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">study_config_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#internal_servers.orthanc_data_logging.OrthancStudyLogger" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="internal_servers.orthanc_data_logging.OrthancStudyLogger.step_is_ready">
+<span class="sig-name descname"><span class="pre">step_is_ready</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">step_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#internal_servers.orthanc_data_logging.OrthancStudyLogger.step_is_ready" title="Link to this definition">¶</a></dt>
+<dd><p>Checks if a given step is ready to begin.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="internal_servers.orthanc_data_logging.OrthancStudyLogger.update_data_processing">
+<span class="sig-name descname"><span class="pre">update_data_processing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#internal_servers.orthanc_data_logging.OrthancStudyLogger.update_data_processing" title="Link to this definition">¶</a></dt>
+<dd><p>Updates the status of data processing based on a product-produced log file.</p>
+<p>The log file is expected to be in JSON format with the following structure:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>{
+    &quot;status&quot;: &quot;complete&quot;,  // &quot;status&quot; can be either &quot;complete&quot; or &quot;failed&quot;
+    &quot;reason&quot;: &quot;optional message if status is failed&quot;
+}
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>If the status is “failed”, including a reason for the failure is expected.</p></li>
+<li><p>If the status is “complete”, the data processing step is marked as complete.</p></li>
+</ul>
+<p><strong>Note:</strong>
+The “reason” field is mandatory when the status is “failed” and should provide insight into why the processing did not succeed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="internal_servers.orthanc_data_logging.OrthancStudyLogger.update_step_status">
+<span class="sig-name descname"><span class="pre">update_step_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">step_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reason</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#internal_servers.orthanc_data_logging.OrthancStudyLogger.update_step_status" title="Link to this definition">¶</a></dt>
+<dd><p>Updates the status of a given step and re-writes the log file.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">job_monitoring_app</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../job_monitoring_app/job_mon_app_index.html">Job_Mon_App Modules</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="internal_servers_index.html">Internal Servers Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sphinx/sphinx_index.html">Sphinx Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example_tool/example_tool_index.html">Example Tool Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example_tool_light/example_tool_light_index.html">Example Tool Light Modules</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="internal_servers_index.html">Internal Servers Modules</a><ul>
+      <li>Previous: <a href="orthanc_reciever_agent.html" title="previous chapter">orthanc_reciever_agent.py</a></li>
+      <li>Next: <a href="../sphinx/sphinx_index.html" title="next chapter">Sphinx Modules</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Zach Morris, Ivan Johnson, Audrey Powers, Michal Brzus.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="../_sources/internal_servers/orthanc_data_logging.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

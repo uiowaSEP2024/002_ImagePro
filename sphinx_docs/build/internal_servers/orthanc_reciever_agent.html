@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>orthanc_reciever_agent.py &#8212; job_monitoring_app  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=12dfc556" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="orthanc_data_logging.py" href="orthanc_data_logging.html" />
+    <link rel="prev" title="Internal Servers Modules" href="internal_servers_index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-internal_servers.orthanc_reciever_agent">
+<span id="orthanc-reciever-agent-py"></span><h1>orthanc_reciever_agent.py<a class="headerlink" href="#module-internal_servers.orthanc_reciever_agent" title="Link to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="internal_servers.orthanc_reciever_agent.check_study_has_properties">
+<span class="sig-prename descclassname"><span class="pre">internal_servers.orthanc_reciever_agent.</span></span><span class="sig-name descname"><span class="pre">check_study_has_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">study</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Study</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#internal_servers.orthanc_reciever_agent.check_study_has_properties" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="internal_servers.orthanc_reciever_agent.check_study_stable">
+<span class="sig-prename descclassname"><span class="pre">internal_servers.orthanc_reciever_agent.</span></span><span class="sig-name descname"><span class="pre">check_study_stable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">study</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Study</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#internal_servers.orthanc_reciever_agent.check_study_stable" title="Link to this definition">¶</a></dt>
+<dd><p>Check if the study is stable.</p>
+<p>This function checks if the study is stable by fetching the main information
+of the study and checking the “IsStable” key.
+param study: The study to check.
+return: True if the study is stable, False otherwise.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="internal_servers.orthanc_reciever_agent.download_study">
+<span class="sig-prename descclassname"><span class="pre">internal_servers.orthanc_reciever_agent.</span></span><span class="sig-name descname"><span class="pre">download_study</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">study_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orthanc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Orthanc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#internal_servers.orthanc_reciever_agent.download_study" title="Link to this definition">¶</a></dt>
+<dd><p>Downloads a DICOM study from an Orthanc server using pyorthanc and saves it to a specified directory as a ZIP file.</p>
+<p>Args:
+- study_id (str): The unique identifier of the DICOM study to be downloaded.
+- download_dir (str): The directory path where the ZIP file will be saved.
+- orthanc (pyorthanc.Orthanc): The Orthanc server object.</p>
+<p>This function first attempts to download the entire DICOM study associated with the given
+study_id from the Orthanc server in ZIP format using the pyorthanc client. If the download is successful,
+the ZIP file is saved to the specified directory. If the directory does not exist, it is created.</p>
+<p>The function prints a message indicating the success or failure of the download operation.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="internal_servers.orthanc_reciever_agent.get_default_output_path">
+<span class="sig-prename descclassname"><span class="pre">internal_servers.orthanc_reciever_agent.</span></span><span class="sig-name descname"><span class="pre">get_default_output_path</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#internal_servers.orthanc_reciever_agent.get_default_output_path" title="Link to this definition">¶</a></dt>
+<dd><p>Get the default output path for the agent.
+This function gets the default output path for the agent. This is useful for identifying where to save logs and
+other files.
+return: The default output path.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="internal_servers.orthanc_reciever_agent.main">
+<span class="sig-prename descclassname"><span class="pre">internal_servers.orthanc_reciever_agent.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">internal_data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#internal_servers.orthanc_reciever_agent.main" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="internal_servers.orthanc_reciever_agent.make_list_of_studies_to_process">
+<span class="sig-prename descclassname"><span class="pre">internal_servers.orthanc_reciever_agent.</span></span><span class="sig-name descname"><span class="pre">make_list_of_studies_to_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">study_processed_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orthanc_client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Orthanc</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Study</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#internal_servers.orthanc_reciever_agent.make_list_of_studies_to_process" title="Link to this definition">¶</a></dt>
+<dd><p>Fetches the list of studies to process from Orthanc.</p>
+<p>This function utilizes PyOrthanc to retrieve the list of studies from Orthanc. It then filters out invalid studies for various reasons, such as data inconsistencies or incomplete information.</p>
+<section id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>study_processed_dict<span class="classifier">dict</span></dt><dd><p>A dictionary of studies that have already been processed. The keys are the study IDs, and the values are the timestamps when each study was processed.</p>
+</dd>
+<dt>orthanc_client<span class="classifier">PyOrthanc client</span></dt><dd><p>The PyOrthanc client instance used to fetch the list of studies.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h2>Returns<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>list</dt><dd><p>A list of studies that need to be processed. Each item in the list represents a study that has not been processed yet or needs reprocessing.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="internal_servers.orthanc_reciever_agent.map_aet_to_hospital_id">
+<span class="sig-prename descclassname"><span class="pre">internal_servers.orthanc_reciever_agent.</span></span><span class="sig-name descname"><span class="pre">map_aet_to_hospital_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#internal_servers.orthanc_reciever_agent.map_aet_to_hospital_id" title="Link to this definition">¶</a></dt>
+<dd><p>Map an AET to a hospital ID.
+This function maps an AET to a hospital ID. This is useful for identifying the hospital that sent a study.
+param aet: The AET to map.
+return: The hospital ID.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="internal_servers.orthanc_reciever_agent.process_data">
+<span class="sig-prename descclassname"><span class="pre">internal_servers.orthanc_reciever_agent.</span></span><span class="sig-name descname"><span class="pre">process_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">brains_tool_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">study_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#internal_servers.orthanc_reciever_agent.process_data" title="Link to this definition">¶</a></dt>
+<dd><p>Runs a Python script to process DICOM data using subprocess, with specified paths for the script, input data, and output.</p>
+<p>Args:
+- brains_tool_path (str): The full path to the brainmask_tool.py script.
+- study_id (str): Study id for the study being processed.
+- input_data_path (str): The directory path where the input DICOM data is located.
+- output_path (str): The directory path where the processed data will be saved.</p>
+<p>This function executes the brainmask_tool.py script with specified input and output directories
+using subprocess.run. It checks for execution success and prints the script output or errors.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="internal_servers.orthanc_reciever_agent.return_to_original_hospital">
+<span class="sig-prename descclassname"><span class="pre">internal_servers.orthanc_reciever_agent.</span></span><span class="sig-name descname"><span class="pre">return_to_original_hospital</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orthanc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Orthanc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">study_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#internal_servers.orthanc_reciever_agent.return_to_original_hospital" title="Link to this definition">¶</a></dt>
+<dd><p>Return data to the original sender - Hospital PACS</p>
+<p>Args:
+- orthanc (pyorthanc.Orthanc): The Orthanc server object.
+- study_id (str): Study id for the study being processed.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="internal_servers.orthanc_reciever_agent.unzip_study">
+<span class="sig-prename descclassname"><span class="pre">internal_servers.orthanc_reciever_agent.</span></span><span class="sig-name descname"><span class="pre">unzip_study</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zip_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extract_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#internal_servers.orthanc_reciever_agent.unzip_study" title="Link to this definition">¶</a></dt>
+<dd><p>Extracts a ZIP file containing a DICOM study into a specified directory.</p>
+<p>Args:
+- zip_path (str): The path to the ZIP file to be extracted.
+- extract_dir (str): The directory path where the contents of the ZIP file will be extracted.</p>
+<p>This function attempts to extract all the contents of the ZIP file specified by zip_path
+into the directory specified by extract_dir. If the directory does not exist, it is created.</p>
+<p>The function prints a message indicating the success or failure of the extraction operation.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="internal_servers.orthanc_reciever_agent.upload_data_to_internal">
+<span class="sig-prename descclassname"><span class="pre">internal_servers.orthanc_reciever_agent.</span></span><span class="sig-name descname"><span class="pre">upload_data_to_internal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orthanc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Orthanc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#internal_servers.orthanc_reciever_agent.upload_data_to_internal" title="Link to this definition">¶</a></dt>
+<dd><p>Uploads DICOM files from a specified directory back to an Orthanc server.</p>
+<p>Args:
+- directory_path (str): The path to the directory containing DICOM files to be uploaded.
+- orthanc (pyorthanc.Orthanc): The Orthanc server object.</p>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">job_monitoring_app</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../job_monitoring_app/job_mon_app_index.html">Job_Mon_App Modules</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="internal_servers_index.html">Internal Servers Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sphinx/sphinx_index.html">Sphinx Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example_tool/example_tool_index.html">Example Tool Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example_tool_light/example_tool_light_index.html">Example Tool Light Modules</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="internal_servers_index.html">Internal Servers Modules</a><ul>
+      <li>Previous: <a href="internal_servers_index.html" title="previous chapter">Internal Servers Modules</a></li>
+      <li>Next: <a href="orthanc_data_logging.html" title="next chapter">orthanc_data_logging.py</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Zach Morris, Ivan Johnson, Audrey Powers, Michal Brzus.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="../_sources/internal_servers/orthanc_reciever_agent.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
