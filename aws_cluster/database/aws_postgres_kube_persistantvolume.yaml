@@ -7,7 +7,7 @@ spec:
   capacity:
     storage: 1Gi
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   hostPath:
     path: "/tmp/imagepro/postgres"
-  storageClassName: standard # this is the default storage class
+  storageClassName: aws-efs # this is the default storage class
