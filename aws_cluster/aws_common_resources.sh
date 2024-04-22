@@ -5,7 +5,7 @@
 # This should allow us to dry out our scripts and only have to source this file
 
 CURRENT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-CLUSTER_DIR="$(dirname "${CURRENT_DIR}"))"
+CLUSTER_DIR="$(dirname "${CURRENT_DIR}")"
 
 ## PATHS FOR JOB MONITORING APP
 JOB_MONITORING_DIR="${CLUSTER_DIR}/job_monitoring_app"
