@@ -23,7 +23,7 @@ spec:
               name: postgres
               protocol: TCP
           volumeMounts:
-            - name: postgres-data  # This name should match the volumeClaimTemplates name below
+            - name: postgres-volume-mount  # This name should match the volumeClaimTemplates name below
               mountPath: /var/lib/postgresql/data
           env:
             - name: POSTGRES_DB
@@ -45,9 +45,10 @@ spec:
       automountServiceAccountToken: false
   volumeClaimTemplates:  # Add this section to dynamically provision PVCs
     - metadata:
-        name: postgres-data  # This name matches the volumeMounts name above
+        name: postgres-volume-mount  # This name matches the volumeMounts name above
       spec:
-        accessModes: [ "ReadWriteOnce" ]
+        accessModes: [ "ReadWriteMany" ]
+        storageClassName: aws-efs
         resources:
           requests:
             storage: 1Gi
