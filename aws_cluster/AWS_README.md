@@ -39,6 +39,9 @@ aws eks --region <region> update-kubeconfig --name <cluster-name>
 ```bash
 kubectl get events --sort-by='.metadata.creationTimestamp'
 ```
+```bash
+ kubectl apply --recursive -f <Directory>
+```
 
 
 # TODO's/ possible fixes
