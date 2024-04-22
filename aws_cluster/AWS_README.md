@@ -82,7 +82,7 @@ Failures
 
 
 
-- Building frontend image in both arm64 and amd64 (it was arm64 naturally, but aws nodes use amd64 OS environment, this makes our image dual architecture compatible)
+- Building frontend image in amd64 (it was arm64 naturally, but aws nodes use amd64 OS environment, this makes our image compatible work on the proper aws OS)
 ```bash
-docker buildx build --platform linux/amd64,linux/arm64 -t 325852638497.dkr.ecr.us-east-1.amazonaws.com/manual_gui_ecr:frontend_test --file Dockerfile_frontend_aws --push .
+docker buildx build --platform linux/amd64 -t 325852638497.dkr.ecr.us-east-1.amazonaws.com/manual_gui_ecr:frontend_test --file Dockerfile_frontend_aws --push .
 ```
