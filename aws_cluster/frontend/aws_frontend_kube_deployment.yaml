@@ -26,6 +26,4 @@ spec:
           limits:
             memory: "2Gi"
             cpu: "500m"
-      imagePullSecrets:
-        - name: my-ecr-secret
 #      automountServiceAccountToken: false
