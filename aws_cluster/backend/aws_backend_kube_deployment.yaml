@@ -22,17 +22,17 @@ spec:
         - name: APP_ENV
           value: "development"
         - name: POSTGRES_SERVER
-          value: sep-database.cnlo9lncbqf0.us-east-1.rds.amazonaws.com
+          value: "postgres"
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
               name: cluster-secrets
-              key: password
+              key: pg_password
         - name: POSTGRES_USER
           valueFrom:
               secretKeyRef:
                 name: cluster-secrets
-                key: username
+                key: pg_username
         resources:
           limits:
             memory: "512Mi"
