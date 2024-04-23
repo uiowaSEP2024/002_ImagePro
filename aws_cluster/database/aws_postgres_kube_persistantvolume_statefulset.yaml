@@ -27,13 +27,13 @@ spec:
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: aws-postgres-secrets
-                  key: username
+                  name: cluster-secrets
+                  key: pg_username
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: aws-postgres-secrets
-                  key: password
+                  name: cluster-secrets
+                  key: pg_password
       volumes:
         - name: postgres-persistent-storage
           persistentVolumeClaim:
