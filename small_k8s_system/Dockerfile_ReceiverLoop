@@ -18,13 +18,13 @@ RUN apt-get update && apt-get install -y \
 RUN pip3 install --no-cache-dir pyorthanc typing_extensions requests
 
 # Copy the executable script into the container
-COPY hospital_job_configuration.json ./small_k8s_system/hospital_job_configuration.json
-COPY job-configurations-schema.generated.json ./small_k8s_system/job-configurations-schema.generated.json
-COPY receiver_loop.py ./small_k8s_system/receiver_loop.py
-COPY util_functions.py ./small_k8s_system/util_functions.py
+COPY hospital_job_configuration.json ./internal_servers/hospital_job_configuration.json
+COPY job-configurations-schema.generated.json ./internal_servers/job-configurations-schema.generated.json
+COPY receiver_loop.py ./internal_servers/receiver_loop.py
+COPY util_functions.py ./internal_servers/util_functions.py
 
 # Set the PYTHON_PATH environment variable
-ENV PYTHONPATH=/app/small_k8s_system
+ENV PYTHONPATH=/app/internal_servers
 #ENV DOCKER_ENV=1
 #ARG DEBIAN_FRONTEND=noninteractive
 #ARG API_KEY
@@ -32,4 +32,4 @@ ENV PYTHONPATH=/app/small_k8s_system
 #ARG ORTHANC_URL
 
 # Set default parameters that can be overridden
-ENTRYPOINT ["python", "/app/small_k8s_system/receiver_loop.py"]
+ENTRYPOINT ["python", "/app/internal_servers/receiver_loop.py"]

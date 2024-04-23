@@ -4,7 +4,11 @@ import pyorthanc
 import argparse
 import logging
 
-from util_functions import OrthancConnectionException, setup_custom_logger
+# from study import SingleStudyRun
+from util_functions import (
+    OrthancConnectionException,
+    setup_custom_logger,
+)
 
 # TODO: For now comment out all logic not related to Orthanc connection
 # if os.environ.get("DOCKER_ENV"):
@@ -58,24 +62,16 @@ class ReceiverLoop:
                 self.logger.error(
                     f"Connection to Orthanc timed out sleeping for {self.QUERY_INTERVAL} seconds"
                 )
-                # print(
-                #     f"Connection to Orthanc timed out sleeping for {self.QUERY_INTERVAL} seconds"
-                # )
-
                 self.max_retries -= 1
                 time.sleep(self.TIME_BETWEEN_CONNECTIONS)
             except Exception as orthanc_e:
                 self.max_retries -= 1
                 self.logger.error(f"ERROR connecting to Orthanc: {orthanc_e}")
-                # print(f"ERROR connecting to Orthanc: {orthanc_e}")
                 time.sleep(self.TIME_BETWEEN_CONNECTIONS)
         if not self.internal_orthanc:
             raise OrthancConnectionException(
                 f"Receiver Loop failed to connect to Orthanc at {self.orthanc_url} after {self.max_retries} retries"
             )
-            # print(
-            #     f"Receiver Loop failed to connect to Orthanc at {self.orthanc_url} after {self.max_retries} retries"
-            # )
         self.logger.info("connected to orthanc")
 
     # def _spawn_single_study_run(self, study_id: str):
@@ -94,14 +90,19 @@ class ReceiverLoop:
     #     return single_study_run
 
     # def _check_for_new_studies(self):
-    #     studies = pyorthanc.find_studies(self.internal_orthanc)
+    #     try:
+    #         studies = pyorthanc.find_studies(self.internal_orthanc)
+    #     except Exception as e:
+    #         self.logger.error(f"Error finding studies: {e}")
+    #         return
     #     for study in studies:
     #         if check_study_has_properties(study):
     #             self.logger.info(f"Found study {study.id_}")
     #             if study.id_ not in self.studies_dict:
-    #                 self.studies_dict[study.id_] = self._spawn_single_study_run(
-    #                     study.id_
-    #                 )
+    #                 logger.info(f"Spawning study {study.id_}")
+    #                 # self.studies_dict[study.id_] = self._spawn_single_study_run(
+    #                 #     study.id_
+    #                 # )
     #             else:
     #                 self.logger.info(
     #                     f"Study {study.id_} already in studies_dict skipping"
@@ -131,11 +132,11 @@ logger = logging.getLogger("initialization")
 logger.info("Start of Receiver Loop main")
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--orthanc_url", type=str, required=False)
-parser.add_argument("--api_key", type=str, required=False)
-parser.add_argument("--hospital_mapping_file", type=str, required=False)
-parser.add_argument("--study_config_file", type=str, required=False)
-parser.add_argument("--backend_url", type=str, required=False)
+parser.add_argument("--orthanc_url", type=str, required=True)
+parser.add_argument("--api_key", type=str, required=True)
+parser.add_argument("--hospital_mapping_file", type=str, required=True)
+parser.add_argument("--study_config_file", type=str, required=True)
+parser.add_argument("--backend_url", type=str, required=True)
 args = parser.parse_args()
 
 logger.info(args)
