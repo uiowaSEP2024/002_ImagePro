@@ -17,13 +17,13 @@ spec:
       - name: receiver
         image: receiver_loop:latest
         imagePullPolicy: IfNotPresent
-        command: ["python", "/app/small_k8s_system/receiver_loop.py"]
+        command: ["python", "/app/internal_servers/receiver_loop.py"]
         args: [
           "--api_key", "$(API_KEY)",
           "--backend_url", "$(BACKEND_URL)",
           "--orthanc_url", "$(ORTHANC_URL)",
-          "--hospital_mapping_file", "/app/small_k8s_system/hospital_job_configuration.json",
-          "--study_config_file", "/app/small_k8s_system/job-configurations-schema.generated.json"
+          "--hospital_mapping_file", "/app/internal_servers/hospital_job_configuration.json",
+          "--study_config_file", "/app/internal_servers/job-configurations-schema.generated.json"
         ]
         env:
         - name: API_KEY
