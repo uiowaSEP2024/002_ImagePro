@@ -86,4 +86,39 @@ Failures
 ```bash
 docker buildx build --platform linux/amd64 -t 325852638497.dkr.ecr.us-east-1.amazonaws.com/manual_gui_ecr:frontend_test --file Dockerfile_frontend_aws --push .
 ```
+
 - Link for setting up an ALB ingress controller for our cluster: https://aws.amazon.com/blogs/containers/using-alb-ingress-controller-with-amazon-eks-on-fargate/
+
+
+
+Trying to create the EFS Set up / 4-23-2024
+
+1. Ran the following commands:
+
+```bash
+eksctl utils associate-iam-oidc-provider --region us-east-1 --cluster SEP-Cluster --approve
+```
+Then
+
+```bash
+export cluster_name=SEP-Cluster
+export role_name=AmazonEKS_EFS_CSI_DriverRole
+eksctl create iamserviceaccount \
+    --name efs-csi-controller-sa \
+    --namespace kube-system \
+    --cluster $cluster_name \
+    --role-name $role_name \
+    --role-only \
+    --attach-policy-arn arn:aws:iam::aws:policy/service-role/AmazonEFSCSIDriverPolicy \
+    --approve
+TRUST_POLICY=$(aws iam get-role --role-name $role_name --query 'Role.AssumeRolePolicyDocument' | \
+    sed -e 's/efs-csi-controller-sa/efs-csi-*/' -e 's/StringEquals/StringLike/')
+aws iam update-assume-role-policy --role-name $role_name --policy-document "$TRUST_POLICY"
+```
+These two commands create an IAM role for EFS driver to interact with EFS file system
+
+2. Install the EFS Driver add-on to our cluster on the AWS Console
+
+3. Go to EFS and create a file system
+   - Follow the tutorial listed on the EFS CSI Driver page:
+     https://github.com/kubernetes-sigs/aws-efs-csi-driver/blob/master/docs/efs-create-filesystem.md
