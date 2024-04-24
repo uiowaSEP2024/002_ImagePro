@@ -86,3 +86,4 @@ Failures
 ```bash
 docker buildx build --platform linux/amd64 -t 325852638497.dkr.ecr.us-east-1.amazonaws.com/manual_gui_ecr:frontend_test --file Dockerfile_frontend_aws --push .
 ```
+- Link for setting up an ALB ingress controller for our cluster: https://aws.amazon.com/blogs/containers/using-alb-ingress-controller-with-amazon-eks-on-fargate/
