@@ -3,50 +3,13 @@ import time
 import pyorthanc
 import argparse
 import logging
-from kubernetes import client
+from kubernetes import client, config
 
 # from study import SingleStudyRun
 from util_functions import (
     OrthancConnectionException,
     setup_custom_logger,
 )
-
-# TODO: For now comment out all logic not related to Orthanc connection
-# if os.environ.get("DOCKER_ENV"):
-#     from util_functions import (
-#         check_study_has_properties,
-#         OrthancConnectionException,
-#         setup_custom_logger,
-#     )
-# else:
-#     from internal_servers.study import SingleStudyRun
-#     from internal_servers.util_functions import (
-#         check_study_has_properties,
-#         OrthancConnectionException,
-#         setup_custom_logger,
-#     )
-
-
-def check_job_completion(api_instance, job_name):
-    # TODO: we need to investigate how to check/assign specific kuberneted job id
-    # TODO: as there might be many instances of study being run we need to check for a specific one
-    # TODO: ideally we would create a job with an assign id and create a mapping between orthanc study and job id
-    print("Checking study job completion status...")
-    completed = False
-    try:
-        res = api_instance.read_namespaced_job_status(job_name, "default")
-        if res.status.succeeded == 1:
-            print("Job completed successfully.")
-            completed = True
-        elif res.status.failed is not None and res.status.failed > 0:
-            print("Job failed.")
-            completed = True
-        else:
-            print("Job still running.")
-            completed = False
-    except client.exceptions.ApiException as e:
-        print(f"Error checking job status: {e}")
-    return completed
 
 
 class ReceiverLoop:
@@ -75,7 +38,15 @@ class ReceiverLoop:
         self.hospital_mapping_file = hospital_mapping_file
         self.study_config_file = study_config_file
         self._init_orthanc_connection()
-        # self.studies_dict: dict[str, SingleStudyRun] = {}
+        self.kube_job_name = "study-job"
+        try:
+            # Use in-cluster configuration if running inside a pod
+            config.load_incluster_config()
+        except config.ConfigException:
+            # Use kubeconfig file if running outside the cluster (e.g., for local debugging)
+            config.load_kube_config()
+        self.batch_v1 = client.BatchV1Api()
+        self.studies_list: list[str] = []
 
     def _init_orthanc_connection(self):
         while self.max_retries > 0 and not self.internal_orthanc:
