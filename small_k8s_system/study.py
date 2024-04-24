@@ -39,6 +39,22 @@ class SingleStudyJob:
         self.study_config_file = study_config_file
         self.backend_url = backend_url
 
+        # Setup Kubernetes client
+        try:
+            # Use in-cluster configuration if running inside a pod
+            config.load_incluster_config()
+        except config.ConfigException:
+            # Use kubeconfig file if running outside the cluster (e.g., for local debugging)
+            config.load_kube_config()
+        self.kube_api_client = client.BatchV1Api()
+
+        # Setup kubernetes product job variables
+        # Trigger the BrainMask Tool job with dynamic arguments
+        self.product_job_name = f"brainmask-tool-job-{self.study_id}"
+        self.product_image = "brainmasktool_light:v0.1"
+        self.product_command = ["python", "brainmask_tool.py"]
+        self.product_job_args = ["-i", "abc123", "-s", "/data/input", "-o", "/data/output"]
+
         self.study_dir = Path(f"/tmp/{self.study_id}")
         self.study_dir.mkdir(parents=True, exist_ok=True)
 
@@ -130,7 +146,7 @@ class SingleStudyJob:
         return False
 
     def _init_study_logger(self):
-        self.study_job_tracker = OrthancStudyLogger(
+        self.study_job_tracker = StudyTracker(
             hospital_id=self.hospital_mapping["EXAMPLE_TOOL"],  # TODO make this dynamic
             study_id=self.study_id,
             tracker_api_key=self.tracker_api_key,
@@ -231,6 +247,65 @@ class SingleStudyJob:
             self.logger.info(f"Extracted DICOM study to {extract_dir}")
         except Exception as e:
             self.logger.info(f"Error to extract ZIP file {zip_path}. Error: {e}")
+
+    def _create_product_job(self):
+        self.logger.info("Creating the job with dynamic arguments...")
+        job_manifest = {
+            "apiVersion": "batch/v1",
+            "kind": "Job",
+            "metadata": {"name": self.product_job_name, "namespace": "default"},
+            "spec": {
+                "template": {
+                    "spec": {
+                        "containers": [
+                            {
+                                "name": self.product_job_name,
+                                "image": self.product_image,
+                                "command": self.product_command,
+                                "args": self.product_job_args,
+                                "volumeMounts": [
+                                    {"name": "data-volume", "mountPath": "/data"}
+                                ],
+                            }
+                        ],
+                        "restartPolicy": "Never",
+                        "volumes": [
+                            {
+                                "name": "data-volume",
+                                "persistentVolumeClaim": {"claimName": "data-pvc"},
+                            }
+                        ],
+                    }
+                }
+            },
+        }
+
+        api_response = self.kube_api_client.create_namespaced_job(
+            body=job_manifest, namespace="default"
+        )
+        self.logger.info(f"Job '{api_response.metadata.name}' created.")
+        # Wait a few seconds after job creation before returning
+        time.sleep(5)  # Adjust time based on observed API behavior
+
+    def _check_job_completion(self):
+        self.logger.info("Checking job completion status...")
+        completed = False
+        while not completed:
+            try:
+                res = self.kube_api_client.read_namespaced_job_status(self.product_job_name, "default")
+                if res.status.succeeded == 1:
+                    self.logger.info("Job completed successfully.")
+                    completed = True
+                elif res.status.failed is not None and res.status.failed > 0:
+                    self.logger.info("Job failed.")
+                    completed = True
+                else:
+                    self.logger.info("Job still running. Checking again in 5 seconds...")
+                    time.sleep(10)
+            except client.exceptions.ApiException as e:
+                self.logger.info(f"Error checking job status: {e}")
+                break
+        return completed
 
     def process_study(self):
         if self.study_status != StudyState.IN_PROGRESS:
