@@ -68,51 +68,113 @@ class ReceiverLoop:
             )
         self.logger.info("connected to orthanc")
 
-    # def _spawn_single_study_run(self, study_id: str):
-    # TODO: this code will have to be replaced with the Kubernetes API Job manifest.
-    # TODO: the study code in the future will have to be rewritten to implement actual logic and take arguments as the
-    # TODO: old function below
+    def _spawn_single_study_run(self, study_id: str):
+        # Generate a unique job name
+        job_name = f"{self.kube_job_name}-{study_id}"
 
-    #     single_study_run = SingleStudyRun(
-    #         orthanc_url=self.orthanc_url,
-    #         study_id=study_id,
-    #         tracker_api_key=self.api_key,
-    #         study_config_file=self.study_config_file,
-    #         hospital_mapping_file=self.hospital_mapping_file,
-    #         backend_url=self.backend_url,
-    #     )
-    #     return single_study_run
+        # Define the job manifest with arguments
+        job_manifest = {
+            "apiVersion": "batch/v1",
+            "kind": "Job",
+            "metadata": {
+                "name": job_name,
+                "namespace": "default"
+            },
+            "spec": {
+                "template": {
+                    "metadata": {
+                        "name": job_name
+                    },
+                    "spec": {
+                        "containers": [{
+                            "name": "script-container",
+                            "image": "study_handler:v0.1",
+                            "args": [
+                                "--orthanc_url", self.orthanc_url,
+                                "--study_id", study_id,
+                                "--tracker_api_key", self.api_key,
+                                "--study_config_file", self.study_config_file,
+                                "--hospital_mapping_file", self.hospital_mapping_file,
+                                "--backend_url", self.backend_url
+                            ],
+                            "volumeMounts": [{
+                                "name": "data-volume",
+                                "mountPath": "/data"
+                            }],
+                            "resources": {
+                                "limits": {
+                                    "memory": "512Mi",
+                                    "cpu": "500m"
+                                }
+                            }
+                        }],
+                        "automountServiceAccountToken": False,
+                        "restartPolicy": "Never",
+                        "serviceAccountName": "test-service-account",
+                        "volumes": [{
+                            "name": "data-volume",
+                            "persistentVolumeClaim": {
+                                "claimName": "data-pvc"
+                            }
+                        }]
+                    }
+                }
+            }
+        }
 
-    # def _check_for_new_studies(self):
-    #     try:
-    #         studies = pyorthanc.find_studies(self.internal_orthanc)
-    #     except Exception as e:
-    #         self.logger.error(f"Error finding studies: {e}")
-    #         return
-    #     for study in studies:
-    #         if check_study_has_properties(study):
-    #             self.logger.info(f"Found study {study.id_}")
-    #             if study.id_ not in self.studies_dict:
-    #                 logger.info(f"Spawning study {study.id_}")
-    #                 # self.studies_dict[study.id_] = self._spawn_single_study_run(
-    #                 #     study.id_
-    #                 # )
-    #             else:
-    #                 self.logger.info(
-    #                     f"Study {study.id_} already in studies_dict skipping"
-    #                 )
-    #         else:
-    #             raise ValueError(
-    #                 f"Study {study.id_} does not have the required properties"
-    #             )
-    #     else:
-    #         print("No studies found")
+        # Create the job
+        api_response = self.batch_v1.create_namespaced_job(body=job_manifest, namespace="default")
+        print(f"Job created. Name='{api_response.metadata.name}'")
+
+    def _check_for_new_studies(self):
+        try:
+            studies = pyorthanc.find_studies(self.internal_orthanc)
+        except Exception as e:
+            self.logger.error(f"Error finding studies: {e}")
+            return
+        for study in studies:
+            if check_study_has_properties(study):
+                self.logger.info(f"Found study {study.id_}")
+                if study.id_ not in self.studies_dict:
+                    logger.info(f"Spawning study {study.id_}")
+                    # self.studies_dict[study.id_] = self._spawn_single_study_run(
+                    #     study.id_
+                    # )
+                else:
+                    self.logger.info(
+                        f"Study {study.id_} already in studies_dict skipping"
+                    )
+            else:
+                raise ValueError(
+                    f"Study {study.id_} does not have the required properties"
+                )
+        else:
+            print("No studies found")
+
+    def _check_job_completion(self, api_instance, study_id: str):
+        print("Checking study job completion status...")
+        job_name = f"{self.kube_job_name}-{study_id}"
+        completed = False
+        try:
+            res = api_instance.read_namespaced_job_status(job_name, "default")
+            if res.status.succeeded == 1:
+                print("Job completed successfully.")
+                completed = True
+            elif res.status.failed is not None and res.status.failed > 0:
+                print("Job failed.")
+                completed = True
+            else:
+                print("Job still running.")
+                completed = False
+        except client.exceptions.ApiException as e:
+            print(f"Error checking job status: {e}")
+        return completed
 
     def check_for_completed_studies(self):
         studies_to_remove = []
         for study_id, single_study_run in self.studies_dict.items():
             # TODO: use the ubernetes job completion checking
-            if not single_study_run.get_study_is_in_progress():
+            if not self._check_job_completion(self.batch_v1, study_id):
                 studies_to_remove.append(study_id)
 
         for study_id in studies_to_remove:
@@ -148,6 +210,6 @@ receiver_loop = ReceiverLoop(
 while receiver_loop.continue_running:
     logger.info("Loop is running. Wait 5s")
     time.sleep(5)
-    # receiver_loop._check_for_new_studies()
-    # receiver_loop.check_for_completed_studies()
-    # time.sleep(receiver_loop.QUERY_INTERVAL)
+    receiver_loop._check_for_new_studies()
+    receiver_loop.check_for_completed_studies()
+    time.sleep(receiver_loop.QUERY_INTERVAL)
