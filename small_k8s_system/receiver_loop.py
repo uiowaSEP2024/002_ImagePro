@@ -188,7 +188,6 @@ class ReceiverLoop:
 
 
 logger = setup_custom_logger("initialization")
-logger = logging.getLogger("initialization")
 logger.info("Start of Receiver Loop main")
 
 parser = argparse.ArgumentParser()
