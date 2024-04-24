@@ -45,7 +45,7 @@ class ReceiverLoop:
         except config.ConfigException:
             # Use kubeconfig file if running outside the cluster (e.g., for local debugging)
             config.load_kube_config()
-        self.batch_v1 = client.BatchV1Api()
+        self.kube_api_client = client.BatchV1Api()
         self.studies_list: list[str] = []
 
     def _init_orthanc_connection(self):
@@ -122,7 +122,7 @@ class ReceiverLoop:
         }
 
         # Create the job
-        api_response = self.batch_v1.create_namespaced_job(
+        api_response = self.kube_api_client.create_namespaced_job(
             body=job_manifest, namespace="default"
         )
         self.logger.info(f"Job created. Name='{api_response.metadata.name}'")
@@ -175,7 +175,7 @@ class ReceiverLoop:
         studies_to_remove = []
         for study_id, single_study_run in self.studies_list:
             # TODO: use the kubernetes job completion checking
-            if not self._check_job_completion(self.batch_v1, study_id):
+            if not self._check_job_completion(self.kube_api_client, study_id):
                 studies_to_remove.append(study_id)
 
         for study_id in studies_to_remove:
