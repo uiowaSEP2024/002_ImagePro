@@ -1,24 +1,13 @@
 import zipfile
 from enum import Enum
 from pathlib import Path
-
+from util_functions import format_time_delta_human_readable, OrthancConnectionException, setup_custom_logger
+from study_tracking import StudyTracker
+import argparse
 import pyorthanc
 import logging
 import time
-import os
-
-if os.environ.get("DOCKER_ENV"):
-    from orthanc_data_logging import OrthancStudyLogger
-    from util_functions import (
-        OrthancConnectionException,
-        format_time_delta_human_readable,
-    )
-else:
-    from internal_servers.orthanc_data_logging import OrthancStudyLogger
-    from internal_servers.util_functions import (
-        OrthancConnectionException,
-        format_time_delta_human_readable,
-    )
+from kubernetes import client, config
 
 
 class StudyState(Enum):
@@ -32,7 +21,7 @@ class StudyState(Enum):
     FAILED = "Failed"
 
 
-class SingleStudyRun:
+class SingleStudyJob:
     def __init__(
         self,
         orthanc_url: str,
@@ -250,3 +239,36 @@ class SingleStudyRun:
             )
         if self.study_is_stable():
             self.study_job_tracker.update_step_status(1, "Complete")
+
+
+if __name__ == "__main__":
+    # Setup the logger and initial statements
+    logger = setup_custom_logger("study job initialization")
+    logger.info("Start of the script")
+
+    # Parse the arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--orthanc_url", type=str, required=True)
+    parser.add_argument("--study_id", type=str, required=True)
+    parser.add_argument("--tracker_api_key", type=str, required=True)
+    parser.add_argument("--hospital_mapping_file", type=str, required=True)
+    parser.add_argument("--study_config_file", type=str, required=True)
+    parser.add_argument("--backend_url", type=str, required=True)
+    args = parser.parse_args()
+
+    logger.info(args)
+
+    # Create the study job
+    study_job = SingleStudyJob(
+        orthanc_url=args.orthanc_url,
+        study_id=args.study_id,
+        tracker_api_key=args.tracker_api_key,
+        study_config_file=args.study_config_file,
+        hospital_mapping_file=args.hospital_mapping_file,
+        backend_url=args.backend_url,
+    )
+
+
+
+
+    # Process the study
