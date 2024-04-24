@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Install the Python dependencies
-RUN pip3 install --no-cache-dir pyorthanc typing_extensions requests
+RUN pip3 install --no-cache-dir pyorthanc typing_extensions requests kubernetes
 
 # Copy the executable script into the container
 COPY hospital_job_configuration.json ./internal_servers/hospital_job_configuration.json
