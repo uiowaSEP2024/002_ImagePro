@@ -3,6 +3,7 @@ import time
 import pyorthanc
 import argparse
 import logging
+from kubernetes import client
 
 # from study import SingleStudyRun
 from util_functions import (
@@ -24,6 +25,28 @@ from util_functions import (
 #         OrthancConnectionException,
 #         setup_custom_logger,
 #     )
+
+
+def check_job_completion(api_instance, job_name):
+    # TODO: we need to investigate how to check/assign specific kuberneted job id
+    # TODO: as there might be many instances of study being run we need to check for a specific one
+    # TODO: ideally we would create a job with an assign id and create a mapping between orthanc study and job id
+    print("Checking study job completion status...")
+    completed = False
+    try:
+        res = api_instance.read_namespaced_job_status(job_name, "default")
+        if res.status.succeeded == 1:
+            print("Job completed successfully.")
+            completed = True
+        elif res.status.failed is not None and res.status.failed > 0:
+            print("Job failed.")
+            completed = True
+        else:
+            print("Job still running.")
+            completed = False
+    except client.exceptions.ApiException as e:
+        print(f"Error checking job status: {e}")
+    return completed
 
 
 class ReceiverLoop:
@@ -114,17 +137,18 @@ class ReceiverLoop:
     #     else:
     #         print("No studies found")
 
-    # def check_for_completed_studies(self):
-    #     studies_to_remove = []
-    #     for study_id, single_study_run in self.studies_dict.items():
-    #         if not single_study_run.get_study_is_in_progress():
-    #             studies_to_remove.append(study_id)
-    #
-    #     for study_id in studies_to_remove:
-    #         self.studies_dict.pop(study_id)
-    #         self.logger.info(
-    #             f"Study {study_id} has been removed from studies_dict after processing for {single_study_run.get_study_is_completed()}"
-    #         )
+    def check_for_completed_studies(self):
+        studies_to_remove = []
+        for study_id, single_study_run in self.studies_dict.items():
+            # TODO: use the ubernetes job completion checking
+            if not single_study_run.get_study_is_in_progress():
+                studies_to_remove.append(study_id)
+
+        for study_id in studies_to_remove:
+            self.studies_dict.pop(study_id)
+            self.logger.info(
+                f"Study {study_id} has been removed from studies_dict after processing for {single_study_run.get_study_is_completed()}"
+            )
 
 
 logger = setup_custom_logger("initialization")
