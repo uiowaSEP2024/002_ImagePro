@@ -5,10 +5,10 @@ import argparse
 import logging
 from kubernetes import client, config
 
-# from study import SingleStudyRun
 from util_functions import (
     OrthancConnectionException,
     setup_custom_logger,
+    check_study_has_properties,
 )
 
 
@@ -76,55 +76,56 @@ class ReceiverLoop:
         job_manifest = {
             "apiVersion": "batch/v1",
             "kind": "Job",
-            "metadata": {
-                "name": job_name,
-                "namespace": "default"
-            },
+            "metadata": {"name": job_name, "namespace": "default"},
             "spec": {
                 "template": {
-                    "metadata": {
-                        "name": job_name
-                    },
+                    "metadata": {"name": job_name},
                     "spec": {
-                        "containers": [{
-                            "name": "script-container",
-                            "image": "study_handler:v0.1",
-                            "args": [
-                                "--orthanc_url", self.orthanc_url,
-                                "--study_id", study_id,
-                                "--tracker_api_key", self.api_key,
-                                "--study_config_file", self.study_config_file,
-                                "--hospital_mapping_file", self.hospital_mapping_file,
-                                "--backend_url", self.backend_url
-                            ],
-                            "volumeMounts": [{
-                                "name": "data-volume",
-                                "mountPath": "/data"
-                            }],
-                            "resources": {
-                                "limits": {
-                                    "memory": "512Mi",
-                                    "cpu": "500m"
-                                }
+                        "containers": [
+                            {
+                                "name": "script-container",
+                                "image": "study_handler:v0.1",
+                                "args": [
+                                    "--orthanc_url",
+                                    self.orthanc_url,
+                                    "--study_id",
+                                    study_id,
+                                    "--tracker_api_key",
+                                    self.api_key,
+                                    "--study_config_file",
+                                    self.study_config_file,
+                                    "--hospital_mapping_file",
+                                    self.hospital_mapping_file,
+                                    "--backend_url",
+                                    self.backend_url,
+                                ],
+                                "volumeMounts": [
+                                    {"name": "data-volume", "mountPath": "/data"}
+                                ],
+                                "resources": {
+                                    "limits": {"memory": "512Mi", "cpu": "500m"}
+                                },
                             }
-                        }],
+                        ],
                         "automountServiceAccountToken": False,
                         "restartPolicy": "Never",
                         "serviceAccountName": "test-service-account",
-                        "volumes": [{
-                            "name": "data-volume",
-                            "persistentVolumeClaim": {
-                                "claimName": "data-pvc"
+                        "volumes": [
+                            {
+                                "name": "data-volume",
+                                "persistentVolumeClaim": {"claimName": "data-pvc"},
                             }
-                        }]
-                    }
+                        ],
+                    },
                 }
-            }
+            },
         }
 
         # Create the job
-        api_response = self.batch_v1.create_namespaced_job(body=job_manifest, namespace="default")
-        print(f"Job created. Name='{api_response.metadata.name}'")
+        api_response = self.batch_v1.create_namespaced_job(
+            body=job_manifest, namespace="default"
+        )
+        self.logger.info(f"Job created. Name='{api_response.metadata.name}'")
 
     def _check_for_new_studies(self):
         try:
@@ -135,53 +136,55 @@ class ReceiverLoop:
         for study in studies:
             if check_study_has_properties(study):
                 self.logger.info(f"Found study {study.id_}")
-                if study.id_ not in self.studies_dict:
+                if study.id_ not in self.studies_list:
                     logger.info(f"Spawning study {study.id_}")
-                    # self.studies_dict[study.id_] = self._spawn_single_study_run(
+                    # self.studies_list[study.id_] = self._spawn_single_study_run(
                     #     study.id_
                     # )
                 else:
                     self.logger.info(
-                        f"Study {study.id_} already in studies_dict skipping"
+                        f"Study {study.id_} already in studies_list skipping"
                     )
             else:
                 raise ValueError(
                     f"Study {study.id_} does not have the required properties"
                 )
         else:
-            print("No studies found")
+            self.logger.info("No studies found")
 
     def _check_job_completion(self, api_instance, study_id: str):
-        print("Checking study job completion status...")
+        self.logger.info("Checking study job completion status...")
         job_name = f"{self.kube_job_name}-{study_id}"
         completed = False
         try:
             res = api_instance.read_namespaced_job_status(job_name, "default")
             if res.status.succeeded == 1:
-                print("Job completed successfully.")
+                self.logger.info("Job completed successfully.")
                 completed = True
             elif res.status.failed is not None and res.status.failed > 0:
-                print("Job failed.")
+                self.logger.info("Job failed.")
                 completed = True
             else:
-                print("Job still running.")
+                self.logger.info("Job still running.")
                 completed = False
         except client.exceptions.ApiException as e:
-            print(f"Error checking job status: {e}")
+            self.logger.info(f"Error checking job status: {e}")
         return completed
 
     def check_for_completed_studies(self):
         studies_to_remove = []
-        for study_id, single_study_run in self.studies_dict.items():
-            # TODO: use the ubernetes job completion checking
+        for study_id, single_study_run in self.studies_list:
+            # TODO: use the kubernetes job completion checking
             if not self._check_job_completion(self.batch_v1, study_id):
                 studies_to_remove.append(study_id)
 
         for study_id in studies_to_remove:
-            self.studies_dict.pop(study_id)
+            self.studies_list.pop(study_id)
             self.logger.info(
-                f"Study {study_id} has been removed from studies_dict after processing for {single_study_run.get_study_is_completed()}"
+                f"Study {study_id} has been removed from studies_list after processing for {single_study_run.get_study_is_completed()}"
             )
+
+        self.logger.info("No completed studies found")
 
 
 logger = setup_custom_logger("initialization")
@@ -208,8 +211,9 @@ receiver_loop = ReceiverLoop(
 
 
 while receiver_loop.continue_running:
-    logger.info("Loop is running. Wait 5s")
-    time.sleep(5)
+    logger.info("Checking for new studies")
     receiver_loop._check_for_new_studies()
+    logger.info("Checking for completed studies")
     receiver_loop.check_for_completed_studies()
+    logger.info("Waiting for five seconds before checking again...")
     time.sleep(receiver_loop.QUERY_INTERVAL)
