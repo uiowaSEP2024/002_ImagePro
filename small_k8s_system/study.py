@@ -389,7 +389,7 @@ class SingleStudyJob:
 
 
 if __name__ == "__main__":
-    # Setup the logger and initial statements
+    # Set up the logger and initial statements
     logger = setup_custom_logger("study job initialization")
     logger.info("Start of the script")
 
@@ -416,9 +416,6 @@ if __name__ == "__main__":
         backend_url=args.backend_url,
         original_hospital_id=args.original_hospital_id,
     )
-
-
-
 
     # Process the study
     study_job.process_study()
