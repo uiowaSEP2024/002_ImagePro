@@ -9,7 +9,6 @@ from util_functions import (
 from study_tracking import StudyTracker
 import argparse
 import pyorthanc
-import logging
 import time
 import shutil
 from kubernetes import client, config
@@ -144,7 +143,7 @@ class SingleStudyJob:
 
     def _init_study_logger(self):
         self.study_job_tracker = StudyTracker(
-            hospital_id=self.hospital_mapping["EXAMPLE_TOOL"],  # TODO make this dynamic
+            hospital_id=self.original_hospital_id,  # TODO make this dynamic
             study_id=self.study_id,
             tracker_api_key=self.tracker_api_key,
             study_config_file=self.study_config_file,
@@ -333,12 +332,12 @@ class SingleStudyJob:
             try:
                 with open(file_path, "rb") as file:
                     result = self.orthanc.post_instances(file.read())
-                    logger.debug(result.get("Status"))
-                    logger.debug(result)
-                logger.info(f"Successfully uploaded {file_path.name} to Orthanc.")
+                    self.logger.debug(result.get("Status"))
+                    self.logger.debug(result)
+                self.logger.info(f"Successfully uploaded {file_path.name} to Orthanc.")
                 return None
             except Exception as e:
-                logger.error(f"Failed to upload {file_path.name}. Error: {e}")
+                self.logger.error(f"Failed to upload {file_path.name}. Error: {e}")
                 return e
 
     def _return_to_original_hospital(self):
@@ -348,7 +347,7 @@ class SingleStudyJob:
         response = self.orthanc.post_modalities_id_store(
             self.original_hospital_id, self.study_id
         )
-        logger.info(response)
+        self.logger.info(response)
 
     def process_study(self):
         # This implementation follows the tested orthanc_receiver_agent.py logic
