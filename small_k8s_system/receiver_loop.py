@@ -69,6 +69,7 @@ class ReceiverLoop:
 
     def _get_hospital_return_aet_mapping(self):
         # TODO implement this with reading in a dictionary from a file
+        # TODO: this probably should be a mapping, ex. {"EXAMPLE_TOOL": "EXAMPLE_HOSPITAL_NAME"}
         print(f"Reading in hospital mapping from {self.hospital_mapping_file}")
         # TODO: for now reuturn id of the original Hospital
         return "EXAMPLE_HOSPITAL_NAME"
@@ -99,8 +100,6 @@ class ReceiverLoop:
                                     self.api_key,
                                     "--study_config_file",
                                     self.study_config_file,
-                                    "--hospital_mapping_file",
-                                    self.hospital_mapping_file,
                                     "--backend_url",
                                     self.backend_url,
                                     "--original_hospital_id",
@@ -188,7 +187,7 @@ class ReceiverLoop:
         for study_id in studies_to_remove:
             self.studies_list.pop(study_id)
             self.logger.info(
-                f"Study {study_id} has been removed from studies_list after processing for {single_study_run.get_study_is_completed()}"
+                f"Study {study_id} has been removed from studies_list after processing."
             )
 
         self.logger.info("No completed studies found")
