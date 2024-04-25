@@ -90,7 +90,7 @@ class ReceiverLoop:
                         "containers": [
                             {
                                 "name": "script-container",
-                                "image": "study_handler:v0.1",
+                                "image": "study_handler:latest",
                                 "args": [
                                     "--orthanc_url",
                                     self.orthanc_url,
@@ -136,6 +136,7 @@ class ReceiverLoop:
     def _check_for_new_studies(self):
         try:
             studies = pyorthanc.find_studies(self.internal_orthanc)
+            logger.info(studies)
         except Exception as e:
             self.logger.error(f"Error finding studies: {e}")
             return
@@ -144,9 +145,9 @@ class ReceiverLoop:
                 self.logger.info(f"Found study {study.id_}")
                 if study.id_ not in self.studies_list:
                     logger.info(f"Spawning study {study.id_}")
-                    # self.studies_list[study.id_] = self._spawn_single_study_run(
-                    #     study.id_
-                    # )
+                    self.studies_list[study.id_] = self._spawn_single_study_run(
+                        study.id_
+                    )
                 else:
                     self.logger.info(
                         f"Study {study.id_} already in studies_list skipping"
