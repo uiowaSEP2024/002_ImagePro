@@ -47,8 +47,14 @@ kubectl apply --recursive -f <Directory>
 kubectl delete --recursive -f <Directory>
 ```
 
+##### Testing network connectivity between pods
+```bash
+kubectl run curlpod --image=radial/busyboxplus:curl -i --tty --rm
+# Inside the pod
+curl frontend-service.default:3000
 
 
+```
 # TODO's/ possible fixes
 
 - [ ] Figure out how to interpret the cloudwatch logs https://us-east-1.console.aws.amazon.com/cloudwatch/
