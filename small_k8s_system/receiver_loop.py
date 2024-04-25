@@ -90,7 +90,7 @@ class ReceiverLoop:
                         "containers": [
                             {
                                 "name": "script-container",
-                                "image": "study_handler:latest",
+                                "image": "study:latest",
                                 "args": [
                                     "--orthanc_url",
                                     self.orthanc_url,
@@ -129,22 +129,12 @@ class ReceiverLoop:
 
         # Create the job
         try:
-            api_response = self.kube_api_client.create_namespaced_job(
+            self.kube_api_client.create_namespaced_job(
                 body=job_manifest, namespace="default"
             )
-            job_name = api_response.metadata.name  # Extracting the job name
             self.logger.info(f"Job created. Name='{job_name}'")
         except Exception as e:
             self.logger.info(f"Job creation failed: {e}")
-
-            # If job creation fails, attempt to delete the job
-            try:
-                self.kube_api_client.delete_namespaced_job(
-                    name=job_name, namespace="default"
-                )
-                self.logger.info(f"Job '{job_name}' deleted due to creation failure.")
-            except Exception as delete_error:
-                self.logger.error(f"Failed to delete job '{job_name}': {delete_error}")
 
     def _check_for_new_studies(self):
         try:
