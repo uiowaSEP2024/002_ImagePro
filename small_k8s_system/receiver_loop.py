@@ -114,7 +114,7 @@ class ReceiverLoop:
                                 },
                             }
                         ],
-                        "automountServiceAccountToken": False,
+                        "automountServiceAccountToken": True,
                         "restartPolicy": "Never",
                         "serviceAccountName": "test-service-account",
                         "volumes": [
