@@ -373,6 +373,13 @@ class SingleStudyJob:
                 # Return data to internal Orthanc
                 if self.study_job_tracker.step_is_ready(4):
                     self.study_job_tracker.update_step_status(4, "In progress")
+                    upload_status = self._upload_data_to_internal()
+                    if isinstance(upload_status, Exception):
+                        self.study_job_tracker.update_step_status(4, "Error", str(upload_status))
+                    else:
+                        self._return_to_original_hospital()
+                        self.study_job_tracker.update_step_status(4, "Complete")
+                    break
             else:
                 self.logger.info("Study not stable yet, waiting 10 seconds")
                 time.sleep(10)
@@ -414,3 +421,4 @@ if __name__ == "__main__":
 
 
     # Process the study
+    study_job.process_study()
