@@ -4,12 +4,12 @@ metadata:
   name: postgres-pv
 spec:
   capacity:
-    storage: "1Gi"
+    storage: "8Gi"
   volumeMode: Filesystem
   accessModes:
-    - ReadWriteMany
-  storageClassName: aws-efs
+    - ReadWriteOnce
+  storageClassName: gp2
   persistentVolumeReclaimPolicy: Retain
-  csi:
-    driver: efs.csi.aws.com
-    volumeHandle: fs-0f4d7a6077ddf480d
+  awsElasticBlockStore:
+    volumeID: "vol-04d261f1aa6a73442"
+    fsType: "ext4"
