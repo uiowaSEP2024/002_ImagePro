@@ -1,7 +1,11 @@
 import zipfile
 from enum import Enum
 from pathlib import Path
-from util_functions import format_time_delta_human_readable, OrthancConnectionException, setup_custom_logger
+from util_functions import (
+    format_time_delta_human_readable,
+    OrthancConnectionException,
+    setup_custom_logger,
+)
 from study_tracking import StudyTracker
 import argparse
 import pyorthanc
@@ -31,7 +35,7 @@ class SingleStudyJob:
         study_config_file: str,
         hospital_mapping_file: str,
         backend_url: str,
-        original_hospital_id: str
+        original_hospital_id: str,
     ):
         self.orthanc_url = orthanc_url
         self.study_status = StudyState.IN_PROGRESS
@@ -56,7 +60,14 @@ class SingleStudyJob:
         self.product_job_name = f"brainmask-tool-job-{self.study_id}"
         self.product_image = "brainmasktool_light:v0.1"
         self.product_command = ["python", "brainmask_tool.py"]
-        self.product_job_args = ["-i", "abc123", "-s", "/data/input", "-o", "/data/output"]
+        self.product_job_args = [
+            "-i",
+            "abc123",
+            "-s",
+            "/data/input",
+            "-o",
+            "/data/output",
+        ]
 
         # Setup the study directories
         # TODO: Ensure that this is in the path expected by the PVC
@@ -295,7 +306,9 @@ class SingleStudyJob:
         attempt = 0
         while attempt < max_retries and not completed:
             try:
-                res = self.kube_api_client.read_namespaced_job_status(self.product_job_name, "default")
+                res = self.kube_api_client.read_namespaced_job_status(
+                    self.product_job_name, "default"
+                )
                 if res.status.succeeded == 1:
                     self.logger.info("Job completed successfully.")
                     completed = True
@@ -303,7 +316,9 @@ class SingleStudyJob:
                     self.logger.info("Job failed.")
                     completed = True
                 else:
-                    self.logger.info("Job still running. Checking again in 5 seconds...")
+                    self.logger.info(
+                        "Job still running. Checking again in 5 seconds..."
+                    )
                     time.sleep(10)
                 attempt += 1
             except client.exceptions.ApiException as e:
@@ -318,7 +333,7 @@ class SingleStudyJob:
         # Iterate over each file in the directory and upload it
         directory = self._get_deliverables_dir()
         for file_path in directory.rglob(
-                "*.dcm"
+            "*.dcm"
         ):  # Assuming DICOM files have .dcm extension
             try:
                 with open(file_path, "rb") as file:
@@ -335,7 +350,9 @@ class SingleStudyJob:
         """
         Return data to the original sender - Hospital PACS
         """
-        response = self.orthanc.post_modalities_id_store(self.original_hospital_id, self.study_id)
+        response = self.orthanc.post_modalities_id_store(
+            self.original_hospital_id, self.study_id
+        )
         logger.info(response)
 
     def process_study(self):
@@ -352,11 +369,15 @@ class SingleStudyJob:
                     download_status = self._download_study()
                     extraction_status = self._unzip_study()
                     if isinstance(download_status, Exception):
-                        self.study_job_tracker.update_step_status(2, "Error", str(download_status))
+                        self.study_job_tracker.update_step_status(
+                            2, "Error", str(download_status)
+                        )
                         break
                     else:
                         if isinstance(extraction_status, Exception):
-                            self.study_job_tracker.update_step_status(2, "Error", str(download_status))
+                            self.study_job_tracker.update_step_status(
+                                2, "Error", str(download_status)
+                            )
                             break
                         else:
                             self.study_job_tracker.update_step_status(2, "Complete")
@@ -368,14 +389,18 @@ class SingleStudyJob:
                     if job_status:
                         self.study_job_tracker.update_step_status(3, "Complete")
                     else:
-                        self.study_job_tracker.update_step_status(3, "Error", str(job_status))
+                        self.study_job_tracker.update_step_status(
+                            3, "Error", str(job_status)
+                        )
                         break
                 # Return data to internal Orthanc
                 if self.study_job_tracker.step_is_ready(4):
                     self.study_job_tracker.update_step_status(4, "In progress")
                     upload_status = self._upload_data_to_internal()
                     if isinstance(upload_status, Exception):
-                        self.study_job_tracker.update_step_status(4, "Error", str(upload_status))
+                        self.study_job_tracker.update_step_status(
+                            4, "Error", str(upload_status)
+                        )
                     else:
                         self._return_to_original_hospital()
                         self.study_job_tracker.update_step_status(4, "Complete")

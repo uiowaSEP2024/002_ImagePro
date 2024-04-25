@@ -4,7 +4,12 @@ import argparse
 import datetime
 from pdf2dcm import Pdf2EncapsDCM
 from subprocess import run
-from pipeline_functions import dicom_inference_and_conversion, brainmask_inference, write_json_log, generate_uid
+from pipeline_functions import (
+    dicom_inference_and_conversion,
+    brainmask_inference,
+    write_json_log,
+    generate_uid,
+)
 from pdf_report import generate_report
 from pydicom import dcmread
 from pathlib import Path
@@ -92,7 +97,11 @@ if not Path(brainmask_output_dir).exists():
 # run inference
 try:
     print("Running brainmask inference")
-    brainmask_inference(data_dict, f"{current_dir.as_posix()}/brainmask_model.ckpt", brainmask_output_dir)
+    brainmask_inference(
+        data_dict,
+        f"{current_dir.as_posix()}/brainmask_model.ckpt",
+        brainmask_output_dir,
+    )
 except Exception as e:
     reason = f"Error in stage: {stage_name}"
     status = "failed"
@@ -151,7 +160,7 @@ try:
     pdf_dcm = dcmread(converted_dcm_path, stop_before_pixels=True)
     template_dcm = dcmread(template_dcm_path, stop_before_pixels=True)
     # propagate fields from original data
-    for tag in [0x00200010, 0x0020000d, 0x0020000e]:
+    for tag in [0x00200010, 0x0020000D, 0x0020000E]:
         data_elem = template_dcm.get(tag)
         pdf_dcm.add(data_elem)
 

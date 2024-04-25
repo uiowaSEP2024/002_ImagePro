@@ -33,7 +33,7 @@ This project was created by the following contributors:
 
 # Authors
 - **Michal Brzus**
-  - email: michal-brzus@uiowa.edu 
+  - email: michal-brzus@uiowa.edu
 - **Ivan Johnson**
   - email: ivan-johnson@uiowa.edu
 - **Audrey Powers**
@@ -52,7 +52,3 @@ Coming soon
 ## Acknowledgments
 
 We would like to express our gratitude to the Department of Electrical and Computer Engineering at The University of Iowa, suervisor Dr. Hans J. Johnson, and teaching assistant Curt Fitzgerald for their support and guidance throughout the development of this project.
-
-
-
-
