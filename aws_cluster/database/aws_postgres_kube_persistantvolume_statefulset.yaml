@@ -35,6 +35,6 @@ spec:
                   name: cluster-secrets
                   key: pg_password
       volumes:
-        - name: postgres-persistent-storage
+        - name: postgres-pv
           persistentVolumeClaim:
             claimName: postgres-pvc
