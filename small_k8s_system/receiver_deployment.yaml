@@ -13,6 +13,7 @@ spec:
       labels:
         app: receiver
     spec:
+      serviceAccountName: test-service-account
       containers:
       - name: receiver
         image: receiver_loop:latest
