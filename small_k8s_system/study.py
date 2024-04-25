@@ -55,7 +55,9 @@ class SingleStudyJob:
         self.product_command = ["python", "brainmask_tool.py"]
         self.product_job_args = ["-i", "abc123", "-s", "/data/input", "-o", "/data/output"]
 
-        self.study_dir = Path(f"/tmp/{self.study_id}")
+        # Setup the study directories
+        # TODO: Ensure that this is in the path expected by the PVC
+        self.study_dir = Path(f"/data/{self.study_id}")
         self.study_dir.mkdir(parents=True, exist_ok=True)
 
         self.logger = logging.getLogger(
@@ -101,8 +103,10 @@ class SingleStudyJob:
         return self.study_dir / "download"
 
     def _get_extract_dir(self) -> Path:
-
         return self.study_dir / "extract"
+
+    def _get_deliverables_dir(self) -> Path:
+        return self.study_dir / "deliverables"
 
     def _get_time_processing_str(self) -> str:
         time_str = ""
