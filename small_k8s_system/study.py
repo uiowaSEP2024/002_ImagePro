@@ -294,10 +294,12 @@ class SingleStudyJob:
         # Wait a few seconds after job creation before returning
         time.sleep(5)  # Adjust time based on observed API behavior
 
-    def _check_job_completion(self):
+    def _check_job_completion(self) -> bool | Exception:
         self.logger.info("Checking job completion status...")
         completed = False
-        while not completed:
+        max_retries = 10
+        attempt = 0
+        while attempt < max_retries and not completed:
             try:
                 res = self.kube_api_client.read_namespaced_job_status(self.product_job_name, "default")
                 if res.status.succeeded == 1:
