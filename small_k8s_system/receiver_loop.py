@@ -91,6 +91,7 @@ class ReceiverLoop:
                             {
                                 "name": "script-container",
                                 "image": "study:latest",
+                                "imagePullPolicy": "IfNotPresent",
                                 "args": [
                                     "--orthanc_url",
                                     self.orthanc_url,
