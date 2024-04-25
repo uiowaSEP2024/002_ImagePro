@@ -7,6 +7,7 @@ import argparse
 import pyorthanc
 import logging
 import time
+import shutil
 from kubernetes import client, config
 
 
@@ -255,6 +256,13 @@ class SingleStudyJob:
             self.logger.info(f"Error to extract ZIP file {zip_path}. Error: {e}")
             return e
 
+    def _delete_study_data(self):
+        """
+        Deletes the study data from the system.
+        """
+        shutil.rmtree(self.study_dir)
+        self.logger.info(f"Deleted study data for study ID {self.study_id}")
+
     def _create_product_job(self):
         self.logger.info("Creating the job with dynamic arguments...")
         job_manifest = {
@@ -360,9 +368,11 @@ class SingleStudyJob:
                     extraction_status = self._unzip_study()
                     if isinstance(download_status, Exception):
                         self.study_job_tracker.update_step_status(2, "Error", str(download_status))
+                        break
                     else:
                         if isinstance(extraction_status, Exception):
                             self.study_job_tracker.update_step_status(2, "Error", str(download_status))
+                            break
                         else:
                             self.study_job_tracker.update_step_status(2, "Complete")
                 # Process study data using the product job
@@ -374,6 +384,7 @@ class SingleStudyJob:
                         self.study_job_tracker.update_step_status(3, "Complete")
                     else:
                         self.study_job_tracker.update_step_status(3, "Error", str(job_status))
+                        break
                 # Return data to internal Orthanc
                 if self.study_job_tracker.step_is_ready(4):
                     self.study_job_tracker.update_step_status(4, "In progress")
@@ -382,6 +393,7 @@ class SingleStudyJob:
                 time.sleep(10)
 
         # Ensure data deletion
+        self._delete_study_data()
 
 
 if __name__ == "__main__":
