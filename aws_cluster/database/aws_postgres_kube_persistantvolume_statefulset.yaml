@@ -34,6 +34,11 @@ spec:
                 secretKeyRef:
                   name: cluster-secrets
                   key: pg_password
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata  # Set PGDATA to match your volume mount path
+          volumeMounts:
+            - name: postgres-pv
+              mountPath: /var/lib/postgresql/data  # Mount the PVC to the directory where PostgreSQL stores its data
       volumes:
         - name: postgres-pv
           persistentVolumeClaim:
