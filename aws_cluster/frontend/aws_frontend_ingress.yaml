@@ -4,12 +4,13 @@ metadata:
   name: frontend-ingress
   namespace: default
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
 spec:
-  ingressClassName: nginx
+  ingressClassName: alb
   rules:
-    - host: frontend.example.com
-      http:
+    - http:
         paths:
           - path: /
             pathType: Prefix
