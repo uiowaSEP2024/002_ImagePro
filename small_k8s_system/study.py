@@ -298,13 +298,14 @@ class SingleStudyJob:
     def _check_job_completion(self) -> bool | Exception:
         self.logger.info("Checking job completion status...")
         completed = False
-        max_retries = 10
+        max_retries = 20
         attempt = 0
         while attempt < max_retries and not completed:
             try:
                 res = self.kube_api_client.read_namespaced_job_status(
                     self.product_job_name, "default"
                 )
+                self.logger.info(f"res status: {res.status}")
                 if res.status.succeeded == 1:
                     self.logger.info("Job completed successfully.")
                     completed = True
@@ -422,6 +423,7 @@ class SingleStudyJob:
                 # Process study data using the product job
                 self._create_product_job()
                 job_status = self._check_job_completion()
+                self.logger.info(f"Job status: {job_status}")
                 if job_status:
                     pass
                 else:
