@@ -82,7 +82,7 @@ To ensure that the frontend and backend pods are connected, you can go to miniku
 frontend pod and run the following command in the exec shell:
 
 ```bash
-curl -X POST "http://backend-service/login" \
+curl -X POST "http://backend-service:8000/login" \
      -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" \
      --data-urlencode "username=admin1@admin.com" \
      --data-urlencode "password=abcdefg" \
