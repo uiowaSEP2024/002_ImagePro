@@ -56,7 +56,30 @@ kubectl apply -f postgres_kube_persistantvolume_statefulset.yaml
 kubectl apply -f postgres_kube_persistantvolumeclaim.yaml
 kubectl apply -f postgres_kube_secrets.yaml
 ```
-10. To restart all pods and services
+9. Create a deployment/services for the internal server
+```bash
+kubectl apply -f orthanc_kube_deployment.yaml
+kubectl apply -f orthanc_kube_service.yaml
+kubectl apply -f orthanc_send_dicom_service.yaml
+```
+10. If you are on MacOS add the following to /etc/hosts
+```bash
+127.0.0.1 internal-orthanc.com
+```
+11. To send data from a hospital to the internal server
+run the tmux_startup script but ONLY run the hospital. Then open up a new terminal and setup portforwarding to the internal server
+```bash
+kubectl port-forward service/orthanc-send-dicom-service 4026:4026
+```
+Open up another new terminal and run
+```bash
+minikube tunnel
+```
+Once those are running you shoul dbe able to navigate to internal-orthanc.com and localhost:8030 and send dicom data like normal.
+Then you can send data to the internal server by running the following command
+```bash
+
+12. To restart all pods and services
 ```bash
 kubectl delete all --all -n default
 ```
