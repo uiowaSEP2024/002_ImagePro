@@ -45,7 +45,7 @@ class ReceiverLoop:
             # Use kubeconfig file if running outside the cluster (e.g., for local debugging)
             config.load_kube_config()
         self.kube_api_client = client.BatchV1Api()
-        self.studies_list: list[str] = []
+        self.studies_dict = {}
 
     def _init_orthanc_connection(self):
         while self.max_retries > 0 and not self.internal_orthanc:
@@ -128,29 +128,43 @@ class ReceiverLoop:
         }
 
         # Create the job
-        api_response = self.kube_api_client.create_namespaced_job(
-            body=job_manifest, namespace="default"
-        )
-        self.logger.info(f"Job created. Name='{api_response.metadata.name}'")
+        try:
+            api_response = self.kube_api_client.create_namespaced_job(
+                body=job_manifest, namespace="default"
+            )
+            job_name = api_response.metadata.name  # Extracting the job name
+            self.logger.info(f"Job created. Name='{job_name}'")
+        except Exception as e:
+            self.logger.info(f"Job creation failed: {e}")
+
+            # If job creation fails, attempt to delete the job
+            try:
+                self.kube_api_client.delete_namespaced_job(
+                    name=job_name, namespace="default"
+                )
+                self.logger.info(f"Job '{job_name}' deleted due to creation failure.")
+            except Exception as delete_error:
+                self.logger.error(f"Failed to delete job '{job_name}': {delete_error}")
 
     def _check_for_new_studies(self):
         try:
             studies = pyorthanc.find_studies(self.internal_orthanc)
-            logger.info(studies)
+            logger.info(f"Studies from orthanc: {studies}")
         except Exception as e:
             self.logger.error(f"Error finding studies: {e}")
             return
         for study in studies:
             if check_study_has_properties(study):
                 self.logger.info(f"Found study {study.id_}")
-                if study.id_ not in self.studies_list:
+                logger.info(f"Studies list: {self.studies_dict}")
+                if study.id_ not in self.studies_dict:
                     logger.info(f"Spawning study {study.id_}")
-                    self.studies_list[study.id_] = self._spawn_single_study_run(
+                    self.studies_dict[study.id_] = self._spawn_single_study_run(
                         study.id_
                     )
                 else:
                     self.logger.info(
-                        f"Study {study.id_} already in studies_list skipping"
+                        f"Study {study.id_} already in studies_dict skipping"
                     )
             else:
                 raise ValueError(
@@ -180,15 +194,16 @@ class ReceiverLoop:
 
     def check_for_completed_studies(self):
         studies_to_remove = []
-        for study_id, single_study_run in self.studies_list:
+        for study_id, single_study_run in self.studies_dict.items():
             # TODO: use the kubernetes job completion checking
             if not self._check_job_completion(self.kube_api_client, study_id):
                 studies_to_remove.append(study_id)
 
+        logger.info(f"Studies to remove: {studies_to_remove}")
         for study_id in studies_to_remove:
-            self.studies_list.pop(study_id)
+            self.studies_dict.pop(study_id)
             self.logger.info(
-                f"Study {study_id} has been removed from studies_list after processing."
+                f"Study {study_id} has been removed from studies_dict after processing."
             )
 
         self.logger.info("No completed studies found")
