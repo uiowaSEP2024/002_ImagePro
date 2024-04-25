@@ -31,6 +31,7 @@ class SingleStudyJob:
         study_config_file: str,
         hospital_mapping_file: str,
         backend_url: str,
+        original_hospital_id: str
     ):
         self.orthanc_url = orthanc_url
         self.study_status = StudyState.IN_PROGRESS
@@ -39,6 +40,7 @@ class SingleStudyJob:
         self.tracker_api_key = tracker_api_key
         self.study_config_file = study_config_file
         self.backend_url = backend_url
+        self.original_hospital_id = original_hospital_id
 
         # Setup Kubernetes client
         try:
@@ -117,12 +119,6 @@ class SingleStudyJob:
             time_str += f"Processing still in progress, been running for {format_time_delta_human_readable(time.time() - self.start_time)}"
         return time_str
 
-    def _get_hospital_return_aet_mapping(self, hopital_mapping_file: str):
-        # TODO implement this with reading in a dictionary from a file
-
-        print(f"Reading in hospital mapping from {hopital_mapping_file}")
-        return {"EXAMPLE_TOOL": "EXAMPLE_TOOL"}
-
     def _study_is_stable(self) -> bool:
         """
         Check if the study is stable.
@@ -139,16 +135,6 @@ class SingleStudyJob:
             msg: str = f"ERROR getting study main information for {self.study_id}: {get_main_info_e}"
             self.logger.info(msg)
         return is_stable
-
-    def study_has_properties(self) -> bool:
-        # TODO Check if I can find this information without fetching the series just directly from the stuyd_object
-        for series in self.study.series:
-            if (
-                series.get_main_information()["MainDicomTags"]["SeriesDescription"]
-                == "PROPERTIES"
-            ):
-                return True
-        return False
 
     def _init_study_logger(self):
         self.study_job_tracker = StudyTracker(
@@ -349,9 +335,8 @@ class SingleStudyJob:
         """
         Return data to the original sender - Hospital PACS
         """
-        # TODO: the hospital name should be dynamic
-        response = self.orthanc.post_modalities_id_store("EXAMPLE_HOSPITAL_NAME", self.study_id)
-        print(response)
+        response = self.orthanc.post_modalities_id_store(self.original_hospital_id, self.study_id)
+        logger.info(response)
 
     def process_study(self):
         # This implementation follows the tested orthanc_receiver_agent.py logic
@@ -409,6 +394,7 @@ if __name__ == "__main__":
     parser.add_argument("--hospital_mapping_file", type=str, required=True)
     parser.add_argument("--study_config_file", type=str, required=True)
     parser.add_argument("--backend_url", type=str, required=True)
+    parser.add_argument("--original_hospital_id", type=str, required=True)
     args = parser.parse_args()
 
     logger.info(args)
@@ -421,6 +407,7 @@ if __name__ == "__main__":
         study_config_file=args.study_config_file,
         hospital_mapping_file=args.hospital_mapping_file,
         backend_url=args.backend_url,
+        original_hospital_id=args.original_hospital_id,
     )
 
 

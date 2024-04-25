@@ -68,6 +68,12 @@ class ReceiverLoop:
             )
         self.logger.info("connected to orthanc")
 
+    def _get_hospital_return_aet_mapping(self):
+        # TODO implement this with reading in a dictionary from a file
+        print(f"Reading in hospital mapping from {self.hospital_mapping_file}")
+        # TODO: for now reuturn id of the original Hospital
+        return "EXAMPLE_HOSPITAL_NAME"
+
     def _spawn_single_study_run(self, study_id: str):
         # Generate a unique job name
         job_name = f"{self.kube_job_name}-{study_id}"
@@ -98,6 +104,8 @@ class ReceiverLoop:
                                     self.hospital_mapping_file,
                                     "--backend_url",
                                     self.backend_url,
+                                    "--original_hospital_id",
+                                    self._get_hospital_return_aet_mapping(),
                                 ],
                                 "volumeMounts": [
                                     {"name": "data-volume", "mountPath": "/data"}
