@@ -2,7 +2,6 @@ import time
 
 import pyorthanc
 import argparse
-import logging
 from kubernetes import client, config
 
 from util_functions import (

@@ -4,7 +4,11 @@ import argparse
 import datetime
 from pdf2dcm import Pdf2EncapsDCM
 from subprocess import run
-from pipeline_functions import dicom_inference_and_conversion, write_json_log, generate_uid
+from pipeline_functions import (
+    dicom_inference_and_conversion,
+    write_json_log,
+    generate_uid,
+)
 from pdf_report import generate_report
 from pydicom import dcmread
 from pathlib import Path
@@ -89,9 +93,7 @@ deliverables_dir.mkdir(parents=True, exist_ok=True)
 stage_name = "Report Generation"
 print(f"Running stage: {stage_name}")
 try:
-    pdf_fn = generate_report(
-        report_output_dir
-    )
+    pdf_fn = generate_report(report_output_dir)
     print(f"Report created: {pdf_fn}")
 except Exception as e:
     reason = f"Error in stage: {stage_name}"
@@ -123,7 +125,7 @@ try:
     pdf_dcm = dcmread(converted_dcm_path, stop_before_pixels=True)
     template_dcm = dcmread(template_dcm_path, stop_before_pixels=True)
     # propagate fields from original data
-    for tag in [0x00200010, 0x0020000d, 0x0020000e]:
+    for tag in [0x00200010, 0x0020000D, 0x0020000E]:
         data_elem = template_dcm.get(tag)
         pdf_dcm.add(data_elem)
 

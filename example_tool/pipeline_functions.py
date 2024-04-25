@@ -21,7 +21,6 @@ import torch
 from pathlib import Path
 from dcm_classifier.study_processing import ProcessOneDicomStudyToVolumesMappingBase
 from dcm_classifier.image_type_inference import ImageTypeClassifierBase
-from dcm_classifier.utility_functions import itk_read_from_dicomfn_list
 import re
 from pydicom import dcmread
 from subprocess import run
@@ -94,9 +93,7 @@ def validate_session_id(session_id: str) -> str:
         return f"ses-{session_id}"
 
 
-def dicom_inference_and_conversion(
-    session_dir: str, output_dir: str
-) -> str:
+def dicom_inference_and_conversion(session_dir: str, output_dir: str) -> str:
     """
     This function takes a session directory with dicom data and converts them to NIfTI files in BIDS format.
     :param session_dir: path to the session directory with dicom data
