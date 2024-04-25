@@ -122,7 +122,7 @@ class SingleStudyJob:
         print(f"Reading in hospital mapping from {hopital_mapping_file}")
         return {"EXAMPLE_TOOL": "EXAMPLE_TOOL"}
 
-    def study_is_stable(self) -> bool:
+    def _study_is_stable(self) -> bool:
         """
         Check if the study is stable.
 
@@ -190,7 +190,7 @@ class SingleStudyJob:
             self.logger.error(f"ERROR getting study {self.study_id} from Orthanc: {e}")
             self.study_status = StudyState.ERROR
 
-    def _download_study(self) -> Path:
+    def _download_study(self) -> None | Exception:
         """
         Downloads a DICOM study from an Orthanc server using pyorthanc and saves it to a specified directory as a ZIP file.
 
@@ -217,13 +217,14 @@ class SingleStudyJob:
             with open(zip_path, "wb") as f:
                 f.write(study_archive)
             self.logger.info(f"Downloaded and saved DICOM study ZIP to {zip_path}")
-            return zip_path
+            return None
         except Exception as e:
             self.logger.info(
                 f"Error to download DICOM study for study ID {self.study_id}. Error: {e}"
             )
+            return e
 
-    def _unzip_study(self):
+    def _unzip_study(self) -> None | Exception:
         """
         Extracts a ZIP file containing a DICOM study into a specified directory.
 
@@ -249,8 +250,10 @@ class SingleStudyJob:
             with zipfile.ZipFile(zip_path, "r") as zip_ref:
                 zip_ref.extractall(extract_dir)
             self.logger.info(f"Extracted DICOM study to {extract_dir}")
+            return None
         except Exception as e:
             self.logger.info(f"Error to extract ZIP file {zip_path}. Error: {e}")
+            return e
 
     def _create_product_job(self):
         self.logger.info("Creating the job with dynamic arguments...")
