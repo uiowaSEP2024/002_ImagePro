@@ -33,7 +33,6 @@ class SingleStudyJob:
         study_id: str,
         tracker_api_key: str,
         study_config_file: str,
-        hospital_mapping_file: str,
         backend_url: str,
         original_hospital_id: str,
     ):
@@ -74,12 +73,8 @@ class SingleStudyJob:
         self.study_dir = Path(f"/data/{self.study_id}")
         self.study_dir.mkdir(parents=True, exist_ok=True)
 
-        self.logger = logging.getLogger(
-            "receiver_loop"
-        )  # Possibly change this to a different logger its fine for now
-        self.hospital_mapping = self._get_hospital_return_aet_mapping(
-            hospital_mapping_file
-        )
+        self.logger = setup_custom_logger(f"study_{self.study_id}")
+
         self.study: pyorthanc.Study | None = (
             None  # Should be overwritten the _init_study_object function
         )
@@ -414,22 +409,15 @@ class SingleStudyJob:
 
 
 if __name__ == "__main__":
-    # Set up the logger and initial statements
-    logger = setup_custom_logger("study job initialization")
-    logger.info("Start of the script")
-
     # Parse the arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("--orthanc_url", type=str, required=True)
     parser.add_argument("--study_id", type=str, required=True)
     parser.add_argument("--tracker_api_key", type=str, required=True)
-    parser.add_argument("--hospital_mapping_file", type=str, required=True)
     parser.add_argument("--study_config_file", type=str, required=True)
     parser.add_argument("--backend_url", type=str, required=True)
     parser.add_argument("--original_hospital_id", type=str, required=True)
     args = parser.parse_args()
-
-    logger.info(args)
 
     # Create the study job
     study_job = SingleStudyJob(
@@ -437,7 +425,6 @@ if __name__ == "__main__":
         study_id=args.study_id,
         tracker_api_key=args.tracker_api_key,
         study_config_file=args.study_config_file,
-        hospital_mapping_file=args.hospital_mapping_file,
         backend_url=args.backend_url,
         original_hospital_id=args.original_hospital_id,
     )
