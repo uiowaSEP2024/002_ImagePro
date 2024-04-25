@@ -311,18 +311,77 @@ class SingleStudyJob:
                 else:
                     self.logger.info("Job still running. Checking again in 5 seconds...")
                     time.sleep(10)
+                attempt += 1
             except client.exceptions.ApiException as e:
                 self.logger.info(f"Error checking job status: {e}")
-                break
+                return e
         return completed
 
+    def _upload_data_to_internal(self) -> None | Exception:
+        """
+        Uploads DICOM files from a specified directory back to an Orthanc server.
+        """
+        # Iterate over each file in the directory and upload it
+        directory = self._get_deliverables_dir()
+        for file_path in directory.rglob(
+                "*.dcm"
+        ):  # Assuming DICOM files have .dcm extension
+            try:
+                with open(file_path, "rb") as file:
+                    result = self.orthanc.post_instances(file.read())
+                    logger.debug(result.get("Status"))
+                    logger.debug(result)
+                logger.info(f"Successfully uploaded {file_path.name} to Orthanc.")
+                return None
+            except Exception as e:
+                logger.error(f"Failed to upload {file_path.name}. Error: {e}")
+                return e
+
+    def _return_to_original_hospital(self):
+        """
+        Return data to the original sender - Hospital PACS
+        """
+        # TODO: the hospital name should be dynamic
+        response = self.orthanc.post_modalities_id_store("EXAMPLE_HOSPITAL_NAME", self.study_id)
+        print(response)
+
     def process_study(self):
-        if self.study_status != StudyState.IN_PROGRESS:
-            self.logger.error(
-                f"ERROR: Study {self.study_id} is not in progress. Not processing"
-            )
-        if self.study_is_stable():
-            self.study_job_tracker.update_step_status(1, "Complete")
+        # This implementation follows the tested orthanc_receiver_agent.py logic
+        while True:
+            # Ensure the study is stable
+            if self._study_is_stable():
+                self.study_job_tracker.update_step_status(1, "Complete")
+                # Download and extract the study data
+                if self.study_job_tracker.step_is_ready(2):
+                    self.study_job_tracker.update_step_status(2, "In progress")
+                    # TODO: ensure that the download status is not an exception
+                    # TODO: Audrey, I am not sure about this code, it might cause some troubles
+                    download_status = self._download_study()
+                    extraction_status = self._unzip_study()
+                    if isinstance(download_status, Exception):
+                        self.study_job_tracker.update_step_status(2, "Error", str(download_status))
+                    else:
+                        if isinstance(extraction_status, Exception):
+                            self.study_job_tracker.update_step_status(2, "Error", str(download_status))
+                        else:
+                            self.study_job_tracker.update_step_status(2, "Complete")
+                # Process study data using the product job
+                if self.study_job_tracker.step_is_ready(3):
+                    self.study_job_tracker.update_step_status(3, "In progress")
+                    self._create_product_job()
+                    job_status = self._check_job_completion()
+                    if job_status:
+                        self.study_job_tracker.update_step_status(3, "Complete")
+                    else:
+                        self.study_job_tracker.update_step_status(3, "Error", str(job_status))
+                # Return data to internal Orthanc
+                if self.study_job_tracker.step_is_ready(4):
+                    self.study_job_tracker.update_step_status(4, "In progress")
+            else:
+                self.logger.info("Study not stable yet, waiting 10 seconds")
+                time.sleep(10)
+
+        # Ensure data deletion
 
 
 if __name__ == "__main__":
