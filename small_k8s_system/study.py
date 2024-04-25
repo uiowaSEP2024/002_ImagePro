@@ -6,7 +6,8 @@ from util_functions import (
     OrthancConnectionException,
     setup_custom_logger,
 )
-from study_tracking import StudyTracker
+
+# from study_tracking import StudyTracker
 import argparse
 import pyorthanc
 import time
@@ -142,13 +143,14 @@ class SingleStudyJob:
         return is_stable
 
     def _init_study_logger(self):
-        self.study_job_tracker = StudyTracker(
-            hospital_id=self.original_hospital_id,  # TODO make this dynamic
-            study_id=self.study_id,
-            tracker_api_key=self.tracker_api_key,
-            study_config_file=self.study_config_file,
-            backend_url=self.backend_url,
-        )
+        # self.study_job_tracker = StudyTracker(
+        #     hospital_id=self.original_hospital_id,  # TODO make this dynamic
+        #     study_id=self.study_id,
+        #     tracker_api_key=self.tracker_api_key,
+        #     study_config_file=self.study_config_file,
+        #     backend_url=self.backend_url,
+        # )
+        pass
 
     def _init_orthanc_connection(self) -> None:
         while self.max_retries > 0 and not self.orthanc:
@@ -350,61 +352,93 @@ class SingleStudyJob:
         self.logger.info(response)
 
     def process_study(self):
+        # # This implementation follows the tested orthanc_receiver_agent.py logic
+        # while True:
+        #     # Ensure the study is stable
+        #     if self._study_is_stable():
+        #         self.study_job_tracker.update_step_status(1, "Complete")
+        #         # Download and extract the study data
+        #         if self.study_job_tracker.step_is_ready(2):
+        #             self.study_job_tracker.update_step_status(2, "In progress")
+        #             # TODO: ensure that the download status is not an exception
+        #             # TODO: Audrey, I am not sure about this code, it might cause some troubles
+        #             download_status = self._download_study()
+        #             extraction_status = self._unzip_study()
+        #             if isinstance(download_status, Exception):
+        #                 self.study_job_tracker.update_step_status(
+        #                     2, "Error", str(download_status)
+        #                 )
+        #                 break
+        #             else:
+        #                 if isinstance(extraction_status, Exception):
+        #                     self.study_job_tracker.update_step_status(
+        #                         2, "Error", str(download_status)
+        #                     )
+        #                     break
+        #                 else:
+        #                     self.study_job_tracker.update_step_status(2, "Complete")
+        #         # Process study data using the product job
+        #         if self.study_job_tracker.step_is_ready(3):
+        #             self.study_job_tracker.update_step_status(3, "In progress")
+        #             self._create_product_job()
+        #             job_status = self._check_job_completion()
+        #             if job_status:
+        #                 self.study_job_tracker.update_step_status(3, "Complete")
+        #             else:
+        #                 self.study_job_tracker.update_step_status(
+        #                     3, "Error", str(job_status)
+        #                 )
+        #                 break
+        #         # Return data to internal Orthanc
+        #         if self.study_job_tracker.step_is_ready(4):
+        #             self.study_job_tracker.update_step_status(4, "In progress")
+        #             upload_status = self._upload_data_to_internal()
+        #             if isinstance(upload_status, Exception):
+        #                 self.study_job_tracker.update_step_status(
+        #                     4, "Error", str(upload_status)
+        #                 )
+        #             else:
+        #                 self._return_to_original_hospital()
+        #                 self.study_job_tracker.update_step_status(4, "Complete")
+        #             break
+        #     else:
+        #         self.logger.info("Study not stable yet, waiting 10 seconds")
+        #         time.sleep(10)
+
         # This implementation follows the tested orthanc_receiver_agent.py logic
         while True:
             # Ensure the study is stable
             if self._study_is_stable():
-                self.study_job_tracker.update_step_status(1, "Complete")
                 # Download and extract the study data
-                if self.study_job_tracker.step_is_ready(2):
-                    self.study_job_tracker.update_step_status(2, "In progress")
-                    # TODO: ensure that the download status is not an exception
-                    # TODO: Audrey, I am not sure about this code, it might cause some troubles
-                    download_status = self._download_study()
-                    extraction_status = self._unzip_study()
-                    if isinstance(download_status, Exception):
-                        self.study_job_tracker.update_step_status(
-                            2, "Error", str(download_status)
-                        )
-                        break
-                    else:
-                        if isinstance(extraction_status, Exception):
-                            self.study_job_tracker.update_step_status(
-                                2, "Error", str(download_status)
-                            )
-                            break
-                        else:
-                            self.study_job_tracker.update_step_status(2, "Complete")
-                # Process study data using the product job
-                if self.study_job_tracker.step_is_ready(3):
-                    self.study_job_tracker.update_step_status(3, "In progress")
-                    self._create_product_job()
-                    job_status = self._check_job_completion()
-                    if job_status:
-                        self.study_job_tracker.update_step_status(3, "Complete")
-                    else:
-                        self.study_job_tracker.update_step_status(
-                            3, "Error", str(job_status)
-                        )
-                        break
-                # Return data to internal Orthanc
-                if self.study_job_tracker.step_is_ready(4):
-                    self.study_job_tracker.update_step_status(4, "In progress")
-                    upload_status = self._upload_data_to_internal()
-                    if isinstance(upload_status, Exception):
-                        self.study_job_tracker.update_step_status(
-                            4, "Error", str(upload_status)
-                        )
-                    else:
-                        self._return_to_original_hospital()
-                        self.study_job_tracker.update_step_status(4, "Complete")
+                download_status = self._download_study()
+                extraction_status = self._unzip_study()
+                if isinstance(download_status, Exception):
                     break
+                else:
+                    if isinstance(extraction_status, Exception):
+                        break
+                    else:
+                        pass
+                # Process study data using the product job
+                self._create_product_job()
+                job_status = self._check_job_completion()
+                if job_status:
+                    pass
+                else:
+                    break
+                # Return data to internal Orthanc
+                upload_status = self._upload_data_to_internal()
+                if isinstance(upload_status, Exception):
+                    break
+                else:
+                    self._return_to_original_hospital()
+                break
             else:
                 self.logger.info("Study not stable yet, waiting 10 seconds")
                 time.sleep(10)
-
-        # Ensure data deletion
-        self._delete_study_data()
+        # TODO: uncomment and ensure data deletion
+        # # Ensure data deletion
+        # self._delete_study_data()
 
 
 if __name__ == "__main__":
