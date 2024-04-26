@@ -18,10 +18,10 @@ RUN apt-get update && apt-get install -y \
 RUN pip3 install --no-cache-dir pyorthanc typing_extensions requests kubernetes
 
 # Copy the executable script into the container
-COPY hospital_job_configuration.json ./internal_servers/hospital_job_configuration.json
-COPY job-configurations-schema.generated.json ./internal_servers/job-configurations-schema.generated.json
-COPY receiver_loop.py ./internal_servers/receiver_loop.py
-COPY util_functions.py ./internal_servers/util_functions.py
+COPY hospital_job_configuration.json /app/internal_servers/hospital_job_configuration.json
+#COPY job-configurations-schema.generated.json /app/internal_servers/job-configurations-schema.generated.json
+COPY receiver_loop.py /app/internal_servers/receiver_loop.py
+COPY util_functions.py /app/internal_servers/util_functions.py
 
 # Set the PYTHON_PATH environment variable
 ENV PYTHONPATH=/app/internal_servers
