@@ -187,8 +187,7 @@ class ReceiverLoop:
     def check_for_completed_studies(self):
         studies_to_remove = []
         for study_id in self.studies_list:
-            # TODO: use the kubernetes job completion checking
-            if not self._check_job_completion(self.kube_api_client, study_id):
+            if self._check_job_completion(self.kube_api_client, study_id):
                 studies_to_remove.append(study_id)
 
         logger.info(f"Studies to remove: {studies_to_remove}")
