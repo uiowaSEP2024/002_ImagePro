@@ -19,8 +19,8 @@ spec:
         ports:
         - containerPort: 3000
         env:
-        - name: NEXT_PUBLIC_BACKEND_URL
-          value: "http://backend-service:8000"
+          - name: BACKEND_URL
+            value: "http://backend-service.default.svc.cluster.local:8000"
         resources:
           limits:
             memory: "512Mi"
