@@ -22,6 +22,7 @@ COPY job_monitoring_app/frontend/fixtures ./fixtures
 COPY job_monitoring_app/frontend/next.config.js ./
 COPY job_monitoring_app/frontend/tsconfig.json ./
 
+ENV NEXT_PUBLIC_BACKEND_URL=http://backend-service:8000
 
 # Install the application dependencies
 RUN npm install
