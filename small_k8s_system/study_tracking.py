@@ -2,7 +2,7 @@ import json
 from typing import Optional
 from pathlib import Path
 from typing import Union
-from job_monitoring_app.trackerapi.trackerapi import TrackerApi, StudyConfigManager
+from trackerapi import TrackerApi, StudyConfigManager
 import os
 
 
