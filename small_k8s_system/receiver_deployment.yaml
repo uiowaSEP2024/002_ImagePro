@@ -23,18 +23,19 @@ spec:
           "--api_key", "$(API_KEY)",
           "--backend_url", "$(BACKEND_URL)",
           "--orthanc_url", "$(ORTHANC_URL)",
-          "--hospital_mapping_file", "/app/internal_servers/hospital_job_configuration.json",
-          "--study_config_file", "/app/internal_servers/job-configurations-schema.generated.json"
+          "--hospital_mapping_file", "/app/internal_servers/hospital_job_configuration.json"
         ]
+        #          "--study_config_file", "/app/internal_servers/job-configurations-schema.generated.json"
         env:
         - name: API_KEY
 #          valueFrom:
 #            secretKeyRef:
 #              name: api-key-secret
 #              key: api_key
-          value: 'dummyvalue'
+#         This is the API key for the brainmaskuser@gmail.com
+          value: 'VCm4-RBXxgtg__yqxf0SYGLHGn8'
         - name: BACKEND_URL
-          value: "http://backend-service.default.svc.cluster.local"  # Adjust as necessary
+          value: "http://backend-service.default.svc.cluster.local:8000"  # Adjust as necessary
         - name: ORTHANC_URL
           value: "http://orthanc-service.default.svc.cluster.local:8026"
         resources:
