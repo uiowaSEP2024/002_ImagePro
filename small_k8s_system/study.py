@@ -45,6 +45,11 @@ class SingleStudyJob:
         self.backend_url = backend_url
         self.original_hospital_id = original_hospital_id
 
+        # Setup the study directories
+        # TODO: Ensure that this is in the path expected by the PVC
+        self.study_dir = Path(f"/data/{self.study_id}")
+        self.study_dir.mkdir(parents=True, exist_ok=True)
+
         # Setup Kubernetes client
         try:
             # Use in-cluster configuration if running inside a pod
@@ -56,22 +61,18 @@ class SingleStudyJob:
 
         # Setup kubernetes product job variables
         # Trigger the BrainMask Tool job with dynamic arguments
-        self.product_job_name = f"brainmask-tool-job-{self.study_id}"
+        self.product_name = "brainmask-tool"
+        self.product_job_name = f"{self.product_name}-job-{self.study_id}"
         self.product_image = "brainmasktool_light:v0.1"
         self.product_command = ["python", "brainmask_tool.py"]
         self.product_job_args = [
             "-i",
             "abc123",
             "-s",
-            "/data/input",
+            self._get_extract_dir().as_posix(),
             "-o",
-            "/data/output",
+            f"{self.study_dir}/{self.product_name}-output",
         ]
-
-        # Setup the study directories
-        # TODO: Ensure that this is in the path expected by the PVC
-        self.study_dir = Path(f"/data/{self.study_id}")
-        self.study_dir.mkdir(parents=True, exist_ok=True)
 
         self.logger = setup_custom_logger(f"study_{self.study_id}")
 
