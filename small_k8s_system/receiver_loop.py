@@ -45,7 +45,7 @@ class ReceiverLoop:
             # Use kubeconfig file if running outside the cluster (e.g., for local debugging)
             config.load_kube_config()
         self.kube_api_client = client.BatchV1Api()
-        self.studies_dict = {}
+        self.studies_list = []
 
     def _init_orthanc_connection(self):
         while self.max_retries > 0 and not self.internal_orthanc:
@@ -147,10 +147,11 @@ class ReceiverLoop:
         for study in studies:
             if check_study_has_properties(study):
                 self.logger.info(f"Found study {study.id_}")
-                logger.info(f"Studies list: {self.studies_dict}")
-                if study.id_ not in self.studies_dict:
+                logger.info(f"Studies list: {self.studies_list}")
+                if study.id_ not in self.studies_list:
                     logger.info(f"Spawning study {study.id_}")
-                    self.studies_dict[study.id_] = self._spawn_single_study_run(
+                    self.studies_list.append(study.id_)
+                    self._spawn_single_study_run(
                         study.id_
                     )
                 else:
@@ -185,14 +186,14 @@ class ReceiverLoop:
 
     def check_for_completed_studies(self):
         studies_to_remove = []
-        for study_id, single_study_run in self.studies_dict.items():
+        for study_id in self.studies_list:
             # TODO: use the kubernetes job completion checking
             if not self._check_job_completion(self.kube_api_client, study_id):
                 studies_to_remove.append(study_id)
 
         logger.info(f"Studies to remove: {studies_to_remove}")
         for study_id in studies_to_remove:
-            self.studies_dict.pop(study_id)
+            self.studies_list.remove(study_id)
             self.logger.info(
                 f"Study {study_id} has been removed from studies_dict after processing."
             )
