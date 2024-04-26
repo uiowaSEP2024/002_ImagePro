@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: 002_imagepro-backend:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+        env:
+        - name: APP_ENV
+          value: "development"
+        - name: POSTGRES_SERVER
+          value: "postgres"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secrets
+              key: password
+        - name: POSTGRES_USER
+          valueFrom:
+              secretKeyRef:
+                name: postgres-secrets
+                key: username
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+      automountServiceAccountToken: false
