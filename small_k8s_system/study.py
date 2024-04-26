@@ -32,7 +32,7 @@ class SingleStudyJob:
         orthanc_url: str,
         study_id: str,
         tracker_api_key: str,
-        study_config_file: str,
+        # study_config_file: str,
         backend_url: str,
         original_hospital_id: str,
     ):
@@ -41,7 +41,9 @@ class SingleStudyJob:
         self.study_id = study_id
         self.is_processed = False
         self.tracker_api_key = tracker_api_key
-        self.study_config_file = study_config_file
+        # self.study_config_file = study_config_file
+        # TODO: parameterize the study_config_file
+        self.study_config_file = "/app/internal_servers/hospital_job_configuration.json"
         self.backend_url = backend_url
         self.original_hospital_id = original_hospital_id
 
@@ -146,20 +148,25 @@ class SingleStudyJob:
     def _init_study_logger(self):
         try:
             self.study_job_tracker = StudyTracker(
-                hospital_id=self.original_hospital_id,  # TODO make this dynamic
+                hospital_id=1,  # TODO make this dynamic
                 study_id=self.study_id,
                 tracker_api_key=self.tracker_api_key,
                 study_config_file=self.study_config_file,
                 backend_url=self.backend_url,
             )
-            self.logger.info(f"Successfully initialized study tracker for study {self.study_id}")
+            self.logger.info(
+                f"Successfully initialized study tracker for study {self.study_id}"
+            )
         except Exception as e:
-            self.logger.error(f"ERROR initializing study tracker for study {self.study_id}: {e}")
+            self.logger.error(
+                f"ERROR initializing study tracker for study {self.study_id}: {e}"
+            )
 
     def _init_orthanc_connection(self) -> None:
         while self.max_retries > 0 and not self.orthanc:
             try:
                 self.orthanc = pyorthanc.Orthanc(self.orthanc_url)
+                self.logger.info(f"Connected to Orthanc at {self.orthanc_url}")
             except Exception as orthanc_e:
                 self.max_retries -= 1
                 self.logger.error(f"ERROR connecting to Orthanc: {orthanc_e}")
@@ -377,7 +384,7 @@ class SingleStudyJob:
                     else:
                         if isinstance(extraction_status, Exception):
                             self.study_job_tracker.update_step_status(
-                                2, "Error", str(download_status)
+                                2, "Error", str(extraction_status)
                             )
                             break
                         else:
@@ -455,7 +462,7 @@ if __name__ == "__main__":
     parser.add_argument("--orthanc_url", type=str, required=True)
     parser.add_argument("--study_id", type=str, required=True)
     parser.add_argument("--tracker_api_key", type=str, required=True)
-    parser.add_argument("--study_config_file", type=str, required=True)
+    # parser.add_argument("--study_config_file", type=str, required=True)
     parser.add_argument("--backend_url", type=str, required=True)
     parser.add_argument("--original_hospital_id", type=str, required=True)
     args = parser.parse_args()
@@ -465,7 +472,6 @@ if __name__ == "__main__":
         orthanc_url=args.orthanc_url,
         study_id=args.study_id,
         tracker_api_key=args.tracker_api_key,
-        study_config_file=args.study_config_file,
         backend_url=args.backend_url,
         original_hospital_id=args.original_hospital_id,
     )

@@ -22,7 +22,7 @@ class ReceiverLoop:
         orthanc_url: str,
         api_key: str,
         hospital_mapping_file: str,
-        study_config_file: str,
+        # study_config_file: str,
         backend_url: str,
     ):
         self.continue_running = True
@@ -35,7 +35,7 @@ class ReceiverLoop:
         self.api_key = api_key
         self.backend_url = backend_url
         self.hospital_mapping_file = hospital_mapping_file
-        self.study_config_file = study_config_file
+        # self.study_config_file = study_config_file
         self._init_orthanc_connection()
         self.kube_job_name = "study-job"
         try:
@@ -99,8 +99,8 @@ class ReceiverLoop:
                                     study_id,
                                     "--tracker_api_key",
                                     self.api_key,
-                                    "--study_config_file",
-                                    self.study_config_file,
+                                    # "--study_config_file",
+                                    # self.study_config_file,
                                     "--backend_url",
                                     self.backend_url,
                                     "--original_hospital_id",
@@ -151,9 +151,7 @@ class ReceiverLoop:
                 if study.id_ not in self.studies_list:
                     logger.info(f"Spawning study {study.id_}")
                     self.studies_list.append(study.id_)
-                    self._spawn_single_study_run(
-                        study.id_
-                    )
+                    self._spawn_single_study_run(study.id_)
                 else:
                     self.logger.info(
                         f"Study {study.id_} already in studies_dict skipping"
@@ -207,7 +205,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--orthanc_url", type=str, required=True)
 parser.add_argument("--api_key", type=str, required=True)
 parser.add_argument("--hospital_mapping_file", type=str, required=True)
-parser.add_argument("--study_config_file", type=str, required=True)
+# parser.add_argument("--study_config_file", type=str, required=True)
 parser.add_argument("--backend_url", type=str, required=True)
 args = parser.parse_args()
 
@@ -217,7 +215,7 @@ receiver_loop = ReceiverLoop(
     orthanc_url=args.orthanc_url,
     api_key=args.api_key,
     hospital_mapping_file=args.hospital_mapping_file,
-    study_config_file=args.study_config_file,
+    # study_config_file=args.study_config_file,
     backend_url=args.backend_url,
 )
 
