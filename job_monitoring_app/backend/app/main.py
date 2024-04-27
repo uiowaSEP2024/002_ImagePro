@@ -24,6 +24,7 @@ allow_origins.append("http://localhost:8000")
 allow_origins.append("http://frontend:3000")
 allow_origins.append("http://frontend.example.com")
 allow_origins.append("http://backend.example.com")
+allow_origins.append("http://k8s-default-frontend.*")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allow_origins,
