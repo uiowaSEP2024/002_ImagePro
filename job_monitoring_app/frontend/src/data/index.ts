@@ -4,7 +4,7 @@ import { Study, StudyEvent, ApiKey, User, UserCreate, Hospital, Provider, UserHo
 // The base URL for the backend API.
 //TODO: change to the actual backend URL for docker deployment
 export const backendUrl = (
-  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000"
+  process.env.NEXT_PUBLIC_BACKEND_URL || "http://backend-service:8000"
 ).replace(/\/$/, "");
 
 
