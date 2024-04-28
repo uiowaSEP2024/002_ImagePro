@@ -24,7 +24,12 @@ allow_origins.append("http://localhost:8000")
 allow_origins.append("http://frontend:3000")
 allow_origins.append("http://frontend.example.com")
 allow_origins.append("http://backend.example.com")
-allow_origins.append("http://k8s-default-frontend.*")
+allow_origins.append(
+    "http://k8s-default-frontend-debecd0e37-932800458.us-east-1.elb.amazonaws.com"
+)
+allow_origins.append(
+    "http://k8s-default-backendi-0349af0e6f-2063887487.us-east-1.elb.amazonaws.com"
+)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allow_origins,
