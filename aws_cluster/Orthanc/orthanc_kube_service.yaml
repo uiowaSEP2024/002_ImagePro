@@ -4,8 +4,8 @@ metadata:
   name: orthanc-service
   namespace: default
 spec:
+  type: NodePort
   selector:
-    type: NodePort
     app: orthanc
   ports:
   - protocol: TCP
