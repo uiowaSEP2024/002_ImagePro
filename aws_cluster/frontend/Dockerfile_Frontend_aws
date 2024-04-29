@@ -22,7 +22,7 @@ COPY job_monitoring_app/frontend/fixtures ./fixtures
 COPY job_monitoring_app/frontend/next.config.js ./
 COPY job_monitoring_app/frontend/tsconfig.json ./
 
-ENV NEXT_PUBLIC_BACKEND_URL=http://k8s-default-backendi-0349af0e6f-2063887487.us-east-1.elb.amazonaws.com
+ENV NEXT_PUBLIC_BACKEND_URL=https://backend.imageinsights-sep.com
 
 # Install the application dependencies
 RUN npm install
