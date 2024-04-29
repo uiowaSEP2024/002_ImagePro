@@ -187,6 +187,8 @@
      * specify which DICOM commands are allowed, separately for each
      * remote modality, using the syntax below.
      **/
+
+     // THIS EXAMPLE HOST IF NOT VALID NEED TO REPLACE IP WITH THE HOST IP
     "EXAMPLE_HOSPITAL_NAME" :{
       "AET"   : "EXAMPLE_HOSPITAL",
       "Port"  : 4030,

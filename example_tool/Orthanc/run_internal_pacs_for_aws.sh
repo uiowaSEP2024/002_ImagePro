@@ -2,7 +2,7 @@
 orthanc_dir=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 internal_pacs_storage="${orthanc_dir}/OrthancStorage"
-internal_pacs_template="${orthanc_dir}/example_internal_pacs_for_minikube.json.in"
+internal_pacs_template="${orthanc_dir}/example_internal_pacs_for_aws.json.in"
 internal_pacs_json="${internal_pacs_storage}/internal_pacs.json"
 lua_script_path="${orthanc_dir}/example_internal_pacs.lua"
 
