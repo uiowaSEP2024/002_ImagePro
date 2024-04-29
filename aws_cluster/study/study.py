@@ -1,7 +1,7 @@
 import zipfile
 from enum import Enum
 from pathlib import Path
-from util_functions import (
+from aws_cluster.util_functions import (
     format_time_delta_human_readable,
     OrthancConnectionException,
     setup_custom_logger,
