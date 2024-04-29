@@ -15,6 +15,7 @@ source "${CURRENT_DIR}/aws_common_resources.sh"
 echo "Please select what you would like to build:"
 echo "1. Frontend"
 echo "2. Backend"
+echo "3. Orthanc"
 
 read -r BUILD_CHOICE
 
@@ -33,6 +34,15 @@ case $BUILD_CHOICE in
         DOCKERFILE_NAME="${BACKEND_DOCKERFILE}"
         IMAGE_TAG="backend_test"
         IMAGE_LABEL="backend"
+        CONTEXT_DIR="${CLUSTER_DIR}"
+
+        ;;
+    3)
+        echo "Building the Orthanc"
+        # Build the backend
+        DOCKERFILE_NAME="${ORTHANC_DOCKERFILE}"
+        IMAGE_TAG="orthanc_test"
+        IMAGE_LABEL="Orthanc"
         CONTEXT_DIR="${CLUSTER_DIR}"
 
         ;;

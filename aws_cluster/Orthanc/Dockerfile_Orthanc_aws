@@ -28,10 +28,10 @@ RUN groupadd nonroot \
 WORKDIR /usr/src/app
 
 # Copy files as root user
-COPY ../../example_tool/Orthanc/Linux /usr/src/app/Linux
-COPY example_internal_pacs_for_minikube.json.in /usr/src/app/example_internal_pacs_for_minikube.json.in
-COPY ../../example_tool/Orthanc/example_internal_pacs.lua /usr/src/app/example_internal_pacs.lua
-COPY example_tool/Orthanc/run_${ORTHANC_INSTANCE}_for_minikube.sh /usr/src/app/run_orthanc.sh
+COPY example_tool/Orthanc/Linux /usr/src/app/Linux
+COPY example_tool/example_internal_pacs_for_aws.json.in /usr/src/app/example_internal_pacs_for_aws.json.in
+COPY example_tool/Orthanc/example_internal_pacs.lua /usr/src/app/example_internal_pacs.lua
+COPY example_tool/Orthanc/run_${ORTHANC_INSTANCE}_for_aws.sh /usr/src/app/run_orthanc.sh
 
 # Make the script executable
 RUN chmod +x /usr/src/app/run_orthanc.sh

@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
       - name: orthanc
-        image: orthanc-for-kube:latest
-        imagePullPolicy: IfNotPresent
+        image: 325852638497.dkr.ecr.us-east-1.amazonaws.com/manual_gui_ecr:orthanc_test
+        imagePullPolicy: Always
         ports:
         - containerPort: 8026
         - containerPort: 4026

@@ -18,6 +18,7 @@ TRACKER_API_DIR="${JOB_MONITORING_DIR}/tracker_api"
 FRONTEND_DOCKERFILE="${CURRENT_DIR}/frontend/Dockerfile_Frontend_aws"
 # TODO - Update the Dockerfile for the backend once we move it to the cluster directory
 BACKEND_DOCKERFILE="${CURRENT_DIR}/backend/Dockerfile_Backend_aws"
+ORTHANC_DOCKERFILE="${CURRENT_DIR}/Orthanc/Dockerfile_Orthanc_aws"
 
 
 ## PATHS FOR ORTHANC and AGENT
