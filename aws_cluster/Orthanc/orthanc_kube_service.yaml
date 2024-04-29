@@ -5,6 +5,7 @@ metadata:
   namespace: default
 spec:
   selector:
+    type: NodePort
     app: orthanc
   ports:
   - protocol: TCP
