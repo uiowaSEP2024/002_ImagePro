@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: receiver-deployment
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: receiver
+  template:
+    metadata:
+      labels:
+        app: receiver
+    spec:
+      serviceAccountName: test-service-account
+      containers:
+      - name: receiver
+        image: receiver_loop:latest
+        imagePullPolicy: IfNotPresent
+        command: ["python", "/app/internal_servers/receiver_loop.py"]
+        args: [
+          "--api_key", "$(API_KEY)",
+          "--backend_url", "$(BACKEND_URL)",
+          "--orthanc_url", "$(ORTHANC_URL)",
+          "--hospital_mapping_file", "/app/internal_servers/hospital_job_configuration.json"
+        ]
+        #          "--study_config_file", "/app/internal_servers/job-configurations-schema.generated.json"
+        env:
+        - name: API_KEY
+#          valueFrom:
+#            secretKeyRef:
+#              name: api-key-secret
+#              key: api_key
+#         This is the API key for the brainmaskuser@gmail.com
+          value: 'VCm4-RBXxgtg__yqxf0SYGLHGn8'
+        - name: BACKEND_URL
+          # THIS WILL NEED TO BE UPDATED
+          value: "http://backend-service.default.svc.cluster.local:8000"
+        - name: ORTHANC_URL
+          # THIS WILL NEED TO BE UPDATED
+          value: "http://orthanc-service.default.svc.cluster.local:8026"
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "100Mi"
+          limits:
+            cpu: "200m"
+            memory: "200Mi"
