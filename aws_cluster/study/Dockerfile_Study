@@ -31,7 +31,7 @@ RUN pip install kubernetes pyorthanc requests pydantic==1.10.5
 # Copy the script into the container
 COPY study.py .
 COPY test_data /app/test_data
-COPY ./util_functions.py /app/util_functions.py
+COPY ../util_functions.py /app/util_functions.py
 COPY study_tracking.py /app/study_tracking.py
 COPY trackerapi /app/trackerapi
 COPY hospital_job_configuration.json /app/internal_servers/hospital_job_configuration.json

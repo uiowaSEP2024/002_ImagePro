@@ -16,6 +16,8 @@ echo "Please select what you would like to build:"
 echo "1. Frontend"
 echo "2. Backend"
 echo "3. Orthanc"
+echo "4. Listener"
+echo "5. Study"
 
 read -r BUILD_CHOICE
 
@@ -46,6 +48,25 @@ case $BUILD_CHOICE in
         CONTEXT_DIR="${CLUSTER_DIR}"
 
         ;;
+    4)
+            echo "Building the Listener"
+            # Build the backend
+            DOCKERFILE_NAME="${LISTENER_DOCKERFILE}"
+            IMAGE_TAG="listener_test"
+            IMAGE_LABEL="listener"
+            CONTEXT_DIR="${CLUSTER_DIR}"
+            echo "Building the Listener in ${CLUSTER_DIR}"
+            ;;
+    5)
+            echo "Building the Orthanc"
+            # Build the backend
+            DOCKERFILE_NAME="${ORTHANC_DOCKERFILE}"
+            IMAGE_TAG="orthanc_test"
+            IMAGE_LABEL="Orthanc"
+            CONTEXT_DIR="${CLUSTER_DIR}"
+
+            ;;
+
     *)
         echo "Invalid choice"
         ;;

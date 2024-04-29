@@ -19,7 +19,7 @@ FRONTEND_DOCKERFILE="${CURRENT_DIR}/frontend/Dockerfile_Frontend_aws"
 # TODO - Update the Dockerfile for the backend once we move it to the cluster directory
 BACKEND_DOCKERFILE="${CURRENT_DIR}/backend/Dockerfile_Backend_aws"
 ORTHANC_DOCKERFILE="${CURRENT_DIR}/Orthanc/Dockerfile_Orthanc_aws"
-
+LISTENER_DOCKERFILE="${CURRENT_DIR}/listening/Dockerfile_ReceiverLoop"
 
 ## PATHS FOR ORTHANC and AGENT
 
