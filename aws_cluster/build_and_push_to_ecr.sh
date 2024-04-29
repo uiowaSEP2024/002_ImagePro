@@ -55,14 +55,13 @@ case $BUILD_CHOICE in
             IMAGE_TAG="listener_test"
             IMAGE_LABEL="listener"
             CONTEXT_DIR="${CLUSTER_DIR}"
-            echo "Building the Listener in ${CLUSTER_DIR}"
             ;;
     5)
-            echo "Building the Orthanc"
+            echo "Building the Study"
             # Build the backend
-            DOCKERFILE_NAME="${ORTHANC_DOCKERFILE}"
-            IMAGE_TAG="orthanc_test"
-            IMAGE_LABEL="Orthanc"
+            DOCKERFILE_NAME="${STUDY_DOCKERFILE}"
+            IMAGE_TAG="study_test"
+            IMAGE_LABEL="Study"
             CONTEXT_DIR="${CLUSTER_DIR}"
 
             ;;
