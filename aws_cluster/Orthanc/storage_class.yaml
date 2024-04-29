@@ -6,5 +6,5 @@ provisioner: efs.csi.aws.com
 parameters:
   provisioningMode: efs-ap  # Correct mode for using an Access Point
   fileSystemId: "fs-079d266bde1dd0e12"  # Separate parameter for the FileSystem ID
-  accessPointId: "fsap-02aab6d2593e888cf"  # Separate parameter for the Access Point ID
+  accessPointId: "fsap-0cf97273243628ba8"  # Separate parameter for the Access Point ID
   directoryPerms: "777"  # Permissions for the directory
