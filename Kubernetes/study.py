@@ -418,40 +418,6 @@ class SingleStudyJob:
                 self.logger.info("Study not stable yet, waiting 10 seconds")
                 time.sleep(10)
 
-        # # This implementation follows the tested orthanc_receiver_agent.py logic
-        # while True:
-        #     # Ensure the study is stable
-        #     if self._study_is_stable():
-        #         # Download and extract the study data
-        #         download_status = self._download_study()
-        #         extraction_status = self._unzip_study()
-        #         if isinstance(download_status, Exception):
-        #             break
-        #         else:
-        #             if isinstance(extraction_status, Exception):
-        #                 break
-        #             else:
-        #                 pass
-        #         # Process study data using the product job
-        #         self._create_product_job()
-        #         job_status = self._check_job_completion()
-        #         self.logger.info(f"Job status: {job_status}")
-        #         if job_status:
-        #             pass
-        #         else:
-        #             break
-        #         # Return data to internal Orthanc
-        #         upload_status = self._upload_data_to_internal()
-        #         if isinstance(upload_status, Exception):
-        #             break
-        #         else:
-        #             self._return_to_original_hospital()
-        #         self.orthanc.delete_studies_id(self.study_id)
-        #         break
-        #     else:
-        #         self.logger.info("Study not stable yet, waiting 10 seconds")
-        #         time.sleep(10)
-
         # Ensure data deletion
         self._delete_study_data()
 
