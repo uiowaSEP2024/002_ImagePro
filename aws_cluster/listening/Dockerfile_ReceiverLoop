@@ -3,25 +3,24 @@ FROM python:3.10-slim
 LABEL authors="mbrzus and iejohnson"
 
 WORKDIR /app
-
-RUN apt-get update && apt-get install -y \
+RUN apt-get update --fix-missing && \
+    apt-get install -y --fix-missing \
     python3-dev \
     inetutils-ping \
     curl \
-    net-tools\
-    dnsutils\
-    # Clean up the apt cache to reduce image size
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    net-tools \
+    dnsutils && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install the Python dependencies
 RUN pip3 install --no-cache-dir pyorthanc typing_extensions requests kubernetes
 
 # Copy the executable script into the container
-COPY hospital_job_configuration.json /app/internal_servers/hospital_job_configuration.json
+COPY aws_cluster/study/hospital_job_configuration.json /app/internal_servers/hospital_job_configuration.json
 #COPY job-configurations-schema.generated.json /app/internal_servers/job-configurations-schema.generated.json
-COPY receiver_loop.py /app/internal_servers/receiver_loop.py
-COPY ./util_functions.py /app/internal_servers/util_functions.py
+COPY aws_cluster/listening/receiver_loop.py /app/internal_servers/receiver_loop.py
+COPY aws_cluster/util_functions.py /app/internal_servers/util_functions.py
 
 # Set the PYTHON_PATH environment variable
 ENV PYTHONPATH=/app/internal_servers
