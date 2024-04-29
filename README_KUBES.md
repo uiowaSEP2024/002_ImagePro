@@ -8,25 +8,26 @@
     minikube dashboard
     ```
 
-2. Build Frontend Image in Minikube
+2. Add ingress to Minikube and verify the nginx controller is running
+
+    ```bash
+    minikube addons enable ingress
+    kubectl get pods -n ingress-nginx
+    ```
+
+3. Build Frontend Image in Minikube
 
     ```bash
     eval $(minikube docker-env)
     docker build -t 002_imagepro-frontend:latest --file Dockerfile_Frontend .
     ```
 
-3. Create a Deployment for Frontend
+4. Create a Deployment/Ingress for Frontend
 
     ```bash
     kubectl apply -f frontend_kube_deployment.yaml
     kubectl apply -f frontend_kube_service.yaml
-    ```
-
-4. Add ingress to Minikube and verify the nginx controller is running
-
-    ```bash
-    minikube addons enable ingress
-    kubectl get pods -n ingress-nginx
+    kubectl apply -f frontend_ingress.yaml
     ```
 
 5. Verify the frontend service is running
@@ -42,11 +43,12 @@
     docker build -t 002_imagepro-backend:latest --file Dockerfile_Backend .
     ```
 
-7. Create a Deployment for Backend
+7. Create a Deployment/Ingress for Backend
 
     ```bash
     kubectl apply -f backend_kube_deployment.yaml
     kubectl apply -f backend_kube_service.yaml
+    kubectl apply -f backend_ingress.yaml
     ```
 
 8. Create A Volume for Persistent Storage
@@ -75,7 +77,7 @@
     docker build -t study:latest --file Dockerfile_Study .
     ```
 
-11. Create the image/deployment for the study kube job
+11. Create the image/deployment for the receiver loop
 
     ```bash
     docker build -t receiver_loop:latest --file Dockerfile_ReceiverLoop .
@@ -94,9 +96,11 @@
 
     ```bash
     127.0.0.1 internal-orthanc.com
+    127.0.0.1 frontend.example.com
+    127.0.0.1 backend.example.com
     ```
 
-14. To send data from a hospital to the internal server, run the tmux_startup script but ONLY run the hospital. Then open up a new terminal and set up port forwarding to the internal server
+14. To send data from a hospital to the internal server, run the tmux_startup_only_hospital script. Then open up a new terminal and set up port forwarding to the internal server
 
     ```bash
     kubectl port-forward service/orthanc-send-dicom-service 4026:4026
@@ -108,7 +112,7 @@
     minikube tunnel
     ```
 
-    Once those are running, you should be able to navigate to `internal-orthanc.com` and `localhost:8030` and send DICOM data like normal. Then you can send data to the internal server by running the following command
+    Once those are running, you should be able to navigate to `internal-orthanc.com` and `localhost:8030` and send DICOM data like normal.
 
 15. To restart all pods and services
 
