@@ -52,11 +52,11 @@ RUN apt-get update && apt-get install --no-install-recommends --no-install-sugge
 # Use the nonroot user
 USER nonroot
 # Arguments to customize ports; these can be overridden during build
-ARG DCMPORT
-ARG HTTPPORT
+# ARG DCMPORT
+# ARG HTTPPORT
 
 # Expose ports based on ARGs to make it flexible
-EXPOSE $DCMPORT $HTTPPORT
+EXPOSE 4030 8030
 
 # Command to run the application
 CMD ["/usr/src/app/run_orthanc.sh"]
