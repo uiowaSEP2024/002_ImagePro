@@ -136,6 +136,7 @@ class ReceiverLoop:
             self.logger.info(f"Job created. Name='{job_name}'")
         except Exception as e:
             self.logger.info(f"Job creation failed: {e}")
+        time.sleep(5)  # Adjust time based on observed API behavior
 
     def _check_for_new_studies(self):
         try:
