@@ -16,8 +16,8 @@ spec:
       serviceAccountName: test-service-account
       containers:
       - name: receiver
-        image: receiver_loop:latest
-        imagePullPolicy: IfNotPresent
+        image: 325852638497.dkr.ecr.us-east-1.amazonaws.com/manual_gui_ecr:listener_test
+        imagePullPolicy: Always
         command: ["python", "/app/internal_servers/receiver_loop.py"]
         args: [
           "--api_key", "$(API_KEY)",
@@ -36,10 +36,10 @@ spec:
           value: 'VCm4-RBXxgtg__yqxf0SYGLHGn8'
         - name: BACKEND_URL
           # THIS WILL NEED TO BE UPDATED
-          value: "http://backend-service.default.svc.cluster.local:8000"
+          value: "https://backend.imageinsights-sep.com"
         - name: ORTHANC_URL
           # THIS WILL NEED TO BE UPDATED
-          value: "http://orthanc-service.default.svc.cluster.local:8026"
+          value: "http://k8s-default-orthanci-5d38fb88a3-1937691424.us-east-1.elb.amazonaws.com"
         resources:
           requests:
             cpu: "100m"

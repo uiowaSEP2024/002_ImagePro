@@ -4,7 +4,7 @@ import pyorthanc
 import argparse
 from kubernetes import client, config
 
-from aws_cluster.util_functions import (
+from util_functions import (
     OrthancConnectionException,
     setup_custom_logger,
     check_study_has_properties,
@@ -90,8 +90,8 @@ class ReceiverLoop:
                         "containers": [
                             {
                                 "name": "script-container",
-                                "image": "study:latest",
-                                "imagePullPolicy": "IfNotPresent",
+                                "image": "325852638497.dkr.ecr.us-east-1.amazonaws.com/manual_gui_ecr:study_test",
+                                "imagePullPolicy": "Always",
                                 "args": [
                                     "--orthanc_url",
                                     self.orthanc_url,
