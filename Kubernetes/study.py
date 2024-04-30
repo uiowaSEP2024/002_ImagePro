@@ -413,12 +413,13 @@ class SingleStudyJob:
                         self._return_to_original_hospital()
                         self.study_job_tracker.update_step_status(4, "Complete")
                     break
-                self.orthanc.delete_studies_id(self.study_id)
             else:
                 self.logger.info("Study not stable yet, waiting 10 seconds")
                 time.sleep(10)
 
-        # Ensure data deletion
+        # Ensure data deletion from orthanc
+        self.orthanc.delete_studies_id(self.study_id)
+        # Ensure data deletion from internal system
         self._delete_study_data()
 
 
