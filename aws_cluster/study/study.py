@@ -1,11 +1,22 @@
+import os
 import zipfile
+from datetime import datetime
 from enum import Enum
 from pathlib import Path
-from aws_cluster.util_functions import (
-    format_time_delta_human_readable,
-    OrthancConnectionException,
-    setup_custom_logger,
-)
+
+if os.environ["KUBERNETES"]:
+    from util_functions import (
+        format_time_delta_human_readable,
+        OrthancConnectionException,
+        setup_custom_logger,
+    )
+else:
+    from aws_cluster.util_functions import (
+        format_time_delta_human_readable,
+        OrthancConnectionException,
+        setup_custom_logger,
+    )
+
 
 from study_tracking import StudyTracker
 import argparse
@@ -39,6 +50,7 @@ class SingleStudyJob:
         self.orthanc_url = orthanc_url
         self.study_status = StudyState.IN_PROGRESS
         self.study_id = study_id
+        self.tracker_study_id = f"{study_id}-{datetime.now().strftime('%Y%m%dT%H%M')}"
         self.is_processed = False
         self.tracker_api_key = tracker_api_key
         # self.study_config_file = study_config_file
@@ -63,9 +75,9 @@ class SingleStudyJob:
 
         # Setup kubernetes product job variables
         # Trigger the BrainMask Tool job with dynamic arguments
-        self.product_name = "brainmask-tool"
+        self.product_name = "bm-tool"
         self.product_job_name = f"{self.product_name}-job-{self.study_id}"
-        self.product_image = "brainmasktool_light:v0.1"
+        self.product_image = "325852638497.dkr.ecr.us-east-1.amazonaws.com/manual_gui_ecr:brainmasktool_test"
         self.product_command = ["python", "brainmask_tool.py"]
         self.product_job_args = [
             "-i",
@@ -76,7 +88,7 @@ class SingleStudyJob:
             f"{self.study_dir}/{self.product_name}-output",
         ]
 
-        self.logger = setup_custom_logger(f"study_{self.study_id}")
+        self.logger = setup_custom_logger(f"study_{self.tracker_study_id}")
 
         self.study: pyorthanc.Study | None = (
             None  # Should be overwritten the _get_orthanc_study_object function
@@ -108,7 +120,9 @@ class SingleStudyJob:
     def _study_completed_processing(self) -> None:
         self.study_status = StudyState.COMPLETED
         self.end_time = time.time()
-        self.logger.info(f"Study {self.study_id}: {self._get_time_processing_str()}")
+        self.logger.info(
+            f"Study {self.tracker_study_id}: {self._get_time_processing_str()}"
+        )
 
     def _get_download_dir(self) -> Path:
         return self.study_dir / "download"
@@ -150,17 +164,17 @@ class SingleStudyJob:
         try:
             self.study_job_tracker = StudyTracker(
                 hospital_id=1,  # TODO make this dynamic
-                study_id=self.study_id,
+                study_id=self.tracker_study_id,
                 tracker_api_key=self.tracker_api_key,
                 study_config_file=self.study_config_file,
                 backend_url=self.backend_url,
             )
             self.logger.info(
-                f"Successfully initialized study tracker for study {self.study_id}"
+                f"Successfully initialized study tracker for study {self.tracker_study_id}"
             )
         except Exception as e:
             self.logger.error(
-                f"ERROR initializing study tracker for study {self.study_id}: {e}"
+                f"ERROR initializing study tracker for study {self.tracker_study_id}: {e}"
             )
 
     def _init_orthanc_connection(self) -> None:
