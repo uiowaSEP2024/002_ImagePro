@@ -1,7 +1,7 @@
 import zipfile
 from enum import Enum
 from pathlib import Path
-from aws_cluster.util_functions import (
+from util_functions import (
     format_time_delta_human_readable,
     OrthancConnectionException,
     setup_custom_logger,
@@ -79,7 +79,7 @@ class SingleStudyJob:
         self.logger = setup_custom_logger(f"study_{self.study_id}")
 
         self.study: pyorthanc.Study | None = (
-            None  # Should be overwritten the _init_study_object function
+            None  # Should be overwritten the _get_orthanc_study_object function
         )
         self.orthanc: pyorthanc.Orthanc | None = None
         self.start_time = time.time()
@@ -87,7 +87,6 @@ class SingleStudyJob:
 
         self.max_retries: int = 5
         self._init_orthanc_connection()
-        self._init_study_object()
         self._init_study_logger()
 
     # Boilerplate code for the study state
@@ -139,7 +138,9 @@ class SingleStudyJob:
         """
         is_stable: bool = False
         try:
+            self._get_orthanc_study_object()
             is_stable = self.study.get_main_information().get("IsStable", False)
+            self.logger.info(f"Study stable check. STATUS: {is_stable}")
         except Exception as get_main_info_e:
             msg: str = f"ERROR getting study main information for {self.study_id}: {get_main_info_e}"
             self.logger.info(msg)
@@ -176,7 +177,7 @@ class SingleStudyJob:
                 f"Study {self.study_id} failed to connect to Orthanc at {self.orthanc_url} after {self.max_retries} retries"
             )
 
-    def _init_study_object(self):
+    def _get_orthanc_study_object(self):
         try:
             studies = pyorthanc.find(
                 self.orthanc,
@@ -274,6 +275,7 @@ class SingleStudyJob:
             "kind": "Job",
             "metadata": {"name": self.product_job_name, "namespace": "default"},
             "spec": {
+                "ttlSecondsAfterFinished": 10,
                 "template": {
                     "spec": {
                         "containers": [
@@ -295,7 +297,7 @@ class SingleStudyJob:
                             }
                         ],
                     }
-                }
+                },
             },
         }
 
@@ -372,8 +374,6 @@ class SingleStudyJob:
                 # Download and extract the study data
                 if self.study_job_tracker.step_is_ready(2):
                     self.study_job_tracker.update_step_status(2, "In progress")
-                    # TODO: ensure that the download status is not an exception
-                    # TODO: Audrey, I am not sure about this code, it might cause some troubles
                     download_status = self._download_study()
                     extraction_status = self._unzip_study()
                     if isinstance(download_status, Exception):
@@ -413,12 +413,13 @@ class SingleStudyJob:
                         self._return_to_original_hospital()
                         self.study_job_tracker.update_step_status(4, "Complete")
                     break
-                self.orthanc.delete_studies_id(self.study_id)
             else:
                 self.logger.info("Study not stable yet, waiting 10 seconds")
                 time.sleep(10)
 
-        # Ensure data deletion
+        # Ensure data deletion from orthanc
+        self.orthanc.delete_studies_id(self.study_id)
+        # Ensure data deletion from internal system
         self._delete_study_data()
 
 
