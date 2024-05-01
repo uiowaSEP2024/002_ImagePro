@@ -47,6 +47,7 @@ RUN chown -R nonroot:nonroot /usr/src/app
 RUN apt-get update && apt-get install --no-install-recommends --no-install-suggests -y \
     tzdata \
     build-essential \
+    inetutils-ping \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 

@@ -192,7 +192,7 @@
     "EXAMPLE_HOSPITAL_NAME" :{
       "AET"   : "EXAMPLE_HOSPITAL",
       "Port"  : 4030,
-      "Host"  : "host.minikube.internal",
+      "Host"  : "172.17.114.73",
       "AllowEcho"  : true,
       "AllowFind"  : false,
       "AllowMove"  : false,
