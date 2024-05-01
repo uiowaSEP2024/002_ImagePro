@@ -79,7 +79,7 @@ class SingleStudyJob:
         self.logger = setup_custom_logger(f"study_{self.study_id}")
 
         self.study: pyorthanc.Study | None = (
-            None  # Should be overwritten the _init_study_object function
+            None  # Should be overwritten the _get_orthanc_study_object function
         )
         self.orthanc: pyorthanc.Orthanc | None = None
         self.start_time = time.time()
@@ -87,7 +87,6 @@ class SingleStudyJob:
 
         self.max_retries: int = 5
         self._init_orthanc_connection()
-        self._init_study_object()
         self._init_study_logger()
 
     # Boilerplate code for the study state
@@ -139,7 +138,9 @@ class SingleStudyJob:
         """
         is_stable: bool = False
         try:
+            self._get_orthanc_study_object()
             is_stable = self.study.get_main_information().get("IsStable", False)
+            self.logger.info(f"Study stable check. STATUS: {is_stable}")
         except Exception as get_main_info_e:
             msg: str = f"ERROR getting study main information for {self.study_id}: {get_main_info_e}"
             self.logger.info(msg)
@@ -176,7 +177,7 @@ class SingleStudyJob:
                 f"Study {self.study_id} failed to connect to Orthanc at {self.orthanc_url} after {self.max_retries} retries"
             )
 
-    def _init_study_object(self):
+    def _get_orthanc_study_object(self):
         try:
             studies = pyorthanc.find(
                 self.orthanc,
