@@ -91,8 +91,8 @@ class ReceiverLoop:
                         "containers": [
                             {
                                 "name": "script-container",
-                                "image": "study:latest",
-                                "imagePullPolicy": "IfNotPresent",
+                                "image": "325852638497.dkr.ecr.us-east-1.amazonaws.com/manual_gui_ecr:study_test",
+                                "imagePullPolicy": "Always",
                                 "args": [
                                     "--orthanc_url",
                                     self.orthanc_url,
