@@ -84,14 +84,15 @@ class ReceiverLoop:
             "kind": "Job",
             "metadata": {"name": job_name, "namespace": "default"},
             "spec": {
+                "ttlSecondsAfterFinished": 10,
                 "template": {
                     "metadata": {"name": job_name},
                     "spec": {
                         "containers": [
                             {
                                 "name": "script-container",
-                                "image": "325852638497.dkr.ecr.us-east-1.amazonaws.com/manual_gui_ecr:study_test",
-                                "imagePullPolicy": "Always",
+                                "image": "study:latest",
+                                "imagePullPolicy": "IfNotPresent",
                                 "args": [
                                     "--orthanc_url",
                                     self.orthanc_url,
@@ -124,7 +125,7 @@ class ReceiverLoop:
                             }
                         ],
                     },
-                }
+                },
             },
         }
 
@@ -136,6 +137,7 @@ class ReceiverLoop:
             self.logger.info(f"Job created. Name='{job_name}'")
         except Exception as e:
             self.logger.info(f"Job creation failed: {e}")
+        time.sleep(5)  # Adjust time based on observed API behavior
 
     def _check_for_new_studies(self):
         try:
