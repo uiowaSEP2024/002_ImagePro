@@ -21,6 +21,8 @@ BACKEND_DOCKERFILE="${CURRENT_DIR}/backend/Dockerfile_Backend_aws"
 ORTHANC_DOCKERFILE="${CURRENT_DIR}/Orthanc/Dockerfile_Orthanc_aws"
 LISTENER_DOCKERFILE="${CURRENT_DIR}/listening/Dockerfile_ReceiverLoop"
 STUDY_DOCKERFILE="${CURRENT_DIR}/study/Dockerfile_Study"
+
+BRAINMASKTOOL_DOCKERFILE="${CLUSTER_DIR}/Dockerfile_BrainMaskTool_light"
 ## PATHS FOR ORTHANC and AGENT
 
 ORTHANC_DIR="${CLUSTER_DIR}/example_tool/Orthanc"
