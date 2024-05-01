@@ -39,7 +39,7 @@ spec:
           value: "https://backend.imageinsights-sep.com"
         - name: ORTHANC_URL
           # THIS WILL NEED TO BE UPDATED
-          value: "http://k8s-default-orthanci-5d38fb88a3-1937691424.us-east-1.elb.amazonaws.com"
+          value: "http://100.27.59.147:8026"
         resources:
           requests:
             cpu: "100m"
