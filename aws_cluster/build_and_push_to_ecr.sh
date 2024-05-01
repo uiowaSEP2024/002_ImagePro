@@ -18,6 +18,7 @@ echo "2. Backend"
 echo "3. Orthanc"
 echo "4. Listener"
 echo "5. Study"
+echo "6. BrainMaskTool"
 
 read -r BUILD_CHOICE
 
@@ -65,7 +66,15 @@ case $BUILD_CHOICE in
             CONTEXT_DIR="${CLUSTER_DIR}"
 
             ;;
+      6)
+              echo "Building the BrainMaskTool"
+              # Build the backend
+              DOCKERFILE_NAME="${BRAINMASKTOOL_DOCKERFILE}"
+              IMAGE_TAG="brainmasktool_test"
+              IMAGE_LABEL="BrainMaskTool"
+              CONTEXT_DIR="${CLUSTER_DIR}"
 
+              ;;
     *)
         echo "Invalid choice"
         ;;
