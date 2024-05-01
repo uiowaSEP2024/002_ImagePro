@@ -165,7 +165,7 @@ function Profile() {
             >
               <VStack alignItems="center" spacing="10px">
                 <Heading fontSize="xl">
-                  At BotImage, we strive to provide a fully extensible and
+                  At ImageInsights, we strive to provide a fully extensible and
                   scalable solution to even the most complex studies. As a valued
                   customer, you have used our site to track
                 </Heading>
