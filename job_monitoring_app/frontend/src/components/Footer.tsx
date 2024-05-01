@@ -73,7 +73,7 @@ const Footer = (): JSX.Element => {
             href={"/"}
           >
             <Heading fontWeight={"extrabold"} fontSize={"2xl"}>
-              tracker.com
+              ImageInsights.com
             </Heading>
           </Link>
           <HStack spacing={4}>
@@ -95,7 +95,7 @@ const Footer = (): JSX.Element => {
             )}
           </HStack>
 
-          <Text>©️ 2023 Tracker.com, All rights reserved.</Text>
+          <Text>©️ 2024 ImageInsights.com, All rights reserved.</Text>
         </Flex>
       </Container>
     </Center>

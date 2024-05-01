@@ -135,7 +135,7 @@ function Dashboard() {
             Your home base for all business operations you may need help with!
             From here, access all client studies, individual progress, analytics,
             and more. Generate API keys to introduce our software to your
-            existing workflow! With BotImage, we hope you find tracking progress
+            existing workflow! With ImageInsights, we hope you find tracking progress
             on studies easier than ever. Our motto: never let a client slip through
             the cracks.
           </Text>

@@ -237,10 +237,10 @@ function StudyPage({ initialIsPageLoading = true }) {
         <Text align={"center"}>
           Issue with this study? Contact system administrator at{" "}
           <Link
-            href={`mailto:admin@botimage.com?subject=Study #${studyId} Report`}
+            href={`mailto:admin@imageinsights.com?subject=Study #${studyId} Report`}
             color={"#0072f5"}
           >
-            admin@botimage.com
+            admin@imageinsights.com
           </Link>
         </Text>
       </Box>
