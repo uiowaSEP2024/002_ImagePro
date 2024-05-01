@@ -190,9 +190,9 @@
 
      // THIS EXAMPLE HOST IF NOT VALID NEED TO REPLACE IP WITH THE HOST IP
     "EXAMPLE_HOSPITAL_NAME" :{
-      "AET"   : "EXAMPLE_HOSPITAL",
+      "AET"   : "ORTHANC",
       "Port"  : 4030,
-      "Host"  : "172.17.114.73",
+      "Host"  : "52.203.232.187",
       "AllowEcho"  : true,
       "AllowFind"  : false,
       "AllowMove"  : false,
