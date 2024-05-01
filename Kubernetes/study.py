@@ -274,6 +274,7 @@ class SingleStudyJob:
             "kind": "Job",
             "metadata": {"name": self.product_job_name, "namespace": "default"},
             "spec": {
+                "ttlSecondsAfterFinished": 10,
                 "template": {
                     "spec": {
                         "containers": [
@@ -295,7 +296,7 @@ class SingleStudyJob:
                             }
                         ],
                     }
-                }
+                },
             },
         }
 
