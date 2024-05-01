@@ -1,25 +1,23 @@
-# Image Processing Backend Project
+# ImageInsights Project
 
 ## Overview
 
 This project is developed as part of ECE:5830 Software Engineering Project in the Department of Electrical and Computer Engineering at The University of Iowa.
 
 - **Group ID:** 002_ImagePro
-- **Project Title:** Image Processing Backend
+- **Project Title:** ImageInsights
 
 ## Project Description
 
-The **Image Processing Backend** project is a collaborative effort aimed at developing an enterprise-level software solution for a medical imaging company. This project addresses the complex needs of the healthcare industry by providing a comprehensive system that includes the following key features:
+The **ImageInsights** project is a collaborative effort aimed at developing an enterprise-level software solution for a medical imaging company. This project addresses the complex needs of the healthcare industry by providing a comprehensive system that includes the following key features:
 
 - **AWS Hosted System:** We have created a robust and scalable system hosted on Amazon Web Services (AWS), ensuring high availability and reliability.
 
-- **Order Processing:** Our software enables the efficient processing of orders, streamlining the workflow for the medical imaging company.
+- **Study Processing:** Our software enables the efficient processing of medical studies, streamlining the workflow for the medical imaging company.
 
-- **Compute Node Management:** We've implemented a compute node management system that hosts the company's products, allowing for efficient computation and data processing.
+- **Compute Node Management:** We've implemented a compute node management system that hosts the company's imaging products, allowing for efficient computation and data processing.
 
 - **Automated Records Organization:** The system automates the organization of medical records, making data retrieval and management more efficient.
-
-- **Billing Integration:** We've integrated a billing system that automates invoicing and payment processing, reducing administrative overhead.
 
 - **Front-End Visualization:** Our software offers a user-friendly front-end interface, providing access to crucial metrics and visualization tools for easy data interpretation.
 
@@ -30,8 +28,6 @@ This project represents a significant step forward in the field of medical imagi
 ## Authors
 
 This project was created by the following contributors:
-
-# Authors
 - **Michal Brzus**
   - email: michal-brzus@uiowa.edu
 - **Ivan Johnson**
@@ -43,7 +39,7 @@ This project was created by the following contributors:
 
 ## Getting Started
 
-Coming soon
+View our comprehensive [User and Developer Guide](https://github.com/uiowaSEP2024/002_ImagePro/wiki/User-and-Developer-Manual)
 
 ## License
 
