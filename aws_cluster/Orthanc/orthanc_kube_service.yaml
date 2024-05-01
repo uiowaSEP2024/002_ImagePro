@@ -3,16 +3,19 @@ kind: Service
 metadata:
   name: orthanc-service
   namespace: default
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    service.beta.kubernetes.io/aws-load-balancer-eip-allocations: "eipalloc-04d9fcf1fff5a39ec"
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: orthanc
   ports:
-  - protocol: TCP
-    port: 8026
-    targetPort: 8026
-    name: orthanc-http-port
-  - protocol: TCP
-    port: 4026
-    targetPort: 4026
-    name: orthanc-dicom-port
+    - protocol: TCP
+      port: 4026
+      targetPort: 4026
+      name: orthanc-dicom-port
+    - protocol: TCP
+      port: 8026
+      targetPort: 8026
+      name: orthanc-http-port
