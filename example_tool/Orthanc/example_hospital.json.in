@@ -189,7 +189,7 @@
     "EXAMPLETOOL" :{
       "AET"   : "EXAMPLETOOL",
       "Port"  : 4026,
-      "Host"  : "orthanc.imageinsights-sep.com",
+      "Host"  : "100.27.59.147",
       "AllowEcho"  : true,
       "AllowFind"  : false,
       "AllowMove"  : false,
