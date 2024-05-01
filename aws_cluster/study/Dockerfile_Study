@@ -42,5 +42,5 @@ COPY aws_cluster/util_functions.py /app/util_functions.py
 
 # Set an environment variable for the Kubernetes configuration file, if needed
 # ENV KUBECONFIG /path/to/kubeconfig
-
+ENV KUBERNETES=1
 ENTRYPOINT ["python", "study.py"]
