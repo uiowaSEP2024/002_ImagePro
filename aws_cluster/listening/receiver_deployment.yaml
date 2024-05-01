@@ -36,7 +36,7 @@ spec:
           value: 'VCm4-RBXxgtg__yqxf0SYGLHGn8'
         - name: BACKEND_URL
           # THIS WILL NEED TO BE UPDATED
-          value: "https://backend.imageinsights-sep.com"
+          value: "http://backend-service.default.svc.cluster.local:8000"
         - name: ORTHANC_URL
           # THIS WILL NEED TO BE UPDATED
           value: "http://100.27.59.147:8026"
