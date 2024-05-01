@@ -373,8 +373,6 @@ class SingleStudyJob:
                 # Download and extract the study data
                 if self.study_job_tracker.step_is_ready(2):
                     self.study_job_tracker.update_step_status(2, "In progress")
-                    # TODO: ensure that the download status is not an exception
-                    # TODO: Audrey, I am not sure about this code, it might cause some troubles
                     download_status = self._download_study()
                     extraction_status = self._unzip_study()
                     if isinstance(download_status, Exception):
