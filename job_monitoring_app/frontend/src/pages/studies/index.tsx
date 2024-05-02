@@ -127,56 +127,56 @@ function Studies() {
     setSearch(event.target.value);
   };
 
-useEffect(() => {
-  async function loadStudies() {
-    const studiesData = await fetchStudies();
-    if (studiesData) {
-      setStudies(studiesData);
+  useEffect(() => {
+    async function loadStudies() {
+      const studiesData = await fetchStudies();
+      if (studiesData) {
+        setStudies(studiesData);
 
-      const providerPromises = studiesData.map(async study => {
-        if (study.provider_id && !providerNames[study.id]) {
-          const providerData = await fetchProviderById(study.provider_id);
-          return providerData;
-        }
-        return null;
-      });
+        const providerPromises = studiesData.map(async study => {
+          if (study.provider_id && !providerNames[study.id]) {
+            const providerData = await fetchProviderById(study.provider_id);
+            return providerData;
+          }
+          return null;
+        });
 
-      const hospitalPromises = studiesData.map(async study => {
-        if (study.hospital_id && !hospitalNames[study.id]) {
-          const hospitalData = await fetchHospitalById(study.hospital_id);
-          return hospitalData;
-        }
-        return null;
-      });
+        const hospitalPromises = studiesData.map(async study => {
+          if (study.hospital_id && !hospitalNames[study.id]) {
+            const hospitalData = await fetchHospitalById(study.hospital_id);
+            return hospitalData;
+          }
+          return null;
+        });
 
-      const providerResults = await Promise.all(providerPromises);
-      const hospitalResults = await Promise.all(hospitalPromises);
+        const providerResults = await Promise.all(providerPromises);
+        const hospitalResults = await Promise.all(hospitalPromises);
 
-      console.log(providerResults);
-      console.log(hospitalResults);
+        console.log(providerResults);
+        console.log(hospitalResults);
 
-      providerResults.forEach((data, index) => {
-        if (data) {
-          setProviderNames(prev => ({
-            ...prev,
-            [studiesData[index].id]: data.provider_name
-          }));
-        }
-      });
+        providerResults.forEach((data, index) => {
+          if (data) {
+            setProviderNames(prev => ({
+              ...prev,
+              [studiesData[index].id]: data.provider_name
+            }));
+          }
+        });
 
-      hospitalResults.forEach((data, index) => {
-        if (data) {
-          setHospitalNames(prev => ({
-            ...prev,
-            [studiesData[index].id]: data.hospital_name
-          }));
-        }
-      });
+        hospitalResults.forEach((data, index) => {
+          if (data) {
+            setHospitalNames(prev => ({
+              ...prev,
+              [studiesData[index].id]: data.hospital_name
+            }));
+          }
+        });
+      }
     }
-  }
 
-  loadStudies();
-}, []);
+    loadStudies();
+  }, []);
 
 
   // Filter the studies based on the user's search input.
