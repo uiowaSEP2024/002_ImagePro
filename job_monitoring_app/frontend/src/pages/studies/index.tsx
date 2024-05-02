@@ -127,41 +127,57 @@ function Studies() {
     setSearch(event.target.value);
   };
 
-  // Fetch the studies data when the component mounts.
-  useEffect(() => {
-    async function loadStudies() {
-      const data = await fetchStudies();
-      if (data) {
-        setStudies(data);
-      }
-    }
-    loadStudies();
-  }, []);
+useEffect(() => {
+  async function loadStudies() {
+    const studiesData = await fetchStudies();
+    if (studiesData) {
+      setStudies(studiesData);
 
-  useEffect(() => {
-    studies.forEach((study) => {
-      if (study.provider_id && !providerNames[study.id]) {
-        fetchProviderById(study.provider_id).then((data) => {
-          if (data) {
-            setProviderNames((prev) => ({
-              ...prev,
-              [study.id]: data.provider_name,
-            }));
-          }
-        });
-      }
-      if (study.hospital_id && !hospitalNames[study.id]) {
-        fetchHospitalById(study.hospital_id).then((data) => {
-          if (data) {
-            setHospitalNames((prev) => ({
-              ...prev,
-              [study.id]: data.hospital_name,
-            }));
-          }
-        });
-      }
-    });
-  }, []);
+      const providerPromises = studiesData.map(async study => {
+        if (study.provider_id && !providerNames[study.id]) {
+          const providerData = await fetchProviderById(study.provider_id);
+          return providerData;
+        }
+        return null;
+      });
+
+      const hospitalPromises = studiesData.map(async study => {
+        if (study.hospital_id && !hospitalNames[study.id]) {
+          const hospitalData = await fetchHospitalById(study.hospital_id);
+          return hospitalData;
+        }
+        return null;
+      });
+
+      const providerResults = await Promise.all(providerPromises);
+      const hospitalResults = await Promise.all(hospitalPromises);
+
+      console.log(providerResults);
+      console.log(hospitalResults);
+
+      providerResults.forEach((data, index) => {
+        if (data) {
+          setProviderNames(prev => ({
+            ...prev,
+            [studiesData[index].id]: data.provider_name
+          }));
+        }
+      });
+
+      hospitalResults.forEach((data, index) => {
+        if (data) {
+          setHospitalNames(prev => ({
+            ...prev,
+            [studiesData[index].id]: data.hospital_name
+          }));
+        }
+      });
+    }
+  }
+
+  loadStudies();
+}, []);
+
 
   // Filter the studies based on the user's search input.
   const filteredStudies = useMemo(() => {
