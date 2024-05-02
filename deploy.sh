@@ -31,7 +31,9 @@ function translate-kube-dns-configmap {
 }
 
 function kube-dns-upstreamnameserver-to-coredns {
+  # shellcheck disable=SC2021
   up=$(kubectl -n kube-system get configmap kube-dns  -ojsonpath='{.data.upstreamNameservers}' 2> /dev/null | tr -d '[",]')
+  # shellcheck disable=SC2236
   if [[ ! -z ${up} ]]; then
     UPSTREAM=${up}
   fi
@@ -82,6 +84,7 @@ function kube-dns-stubdomains-to-coredns {
 # Get Opts
 while getopts "hsr:i:d:t:k:" opt; do
     # shellcheck disable=SC2220
+    # shellcheck disable=SC2213
     case "$opt" in
     h)  show_help
         ;;
