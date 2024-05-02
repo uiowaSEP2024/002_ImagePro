@@ -1,3 +1,4 @@
+#!/bin/bash
 
 kubectl delete persistentvolumeclaims postgres-pvc
 
