@@ -71,6 +71,7 @@ case $BUILD_CHOICE in
               # Build the backend
               DOCKERFILE_NAME="${BRAINMASKTOOL_DOCKERFILE}"
               IMAGE_TAG="brainmasktool_test"
+              # shellcheck disable=SC2034
               IMAGE_LABEL="BrainMaskTool"
               CONTEXT_DIR="${CLUSTER_DIR}"
 
@@ -84,7 +85,7 @@ REGISTRY="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${REPOSITORY_NAM
 echo "Registry: ${REGISTRY}"
 
 # AWS ECR login
-aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${REGISTRY}
+aws ecr get-login-password --region "${AWS_REGION}" | docker login --username AWS --password-stdin "${REGISTRY}"
 
 # Build the image and push the image to AWS ECR
 docker buildx build --platform linux/amd64 -t  "${REGISTRY}:${IMAGE_TAG}" --file "${DOCKERFILE_NAME}" --push "${CONTEXT_DIR}"

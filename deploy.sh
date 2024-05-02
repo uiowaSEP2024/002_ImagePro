@@ -51,21 +51,22 @@ function kube-dns-stubdomains-to-coredns {
   function dequote {
     str=${1#\"} # delete leading quote
     str=${str%\"} # delete trailing quote
-    echo ${str}
+    echo "${str}"
   }
 
   function parse_stub_domains() {
     sd=$1
 
   # get keys - each key is a domain
-  sd_keys=$(echo -n $sd | jq keys[])
+  sd_keys=$(echo -n "$sd" | jq keys[])
 
   # For each domain ...
   for dom in $sd_keys; do
-    dst=$(echo -n $sd | jq '.['$dom'][0]') # get the destination
+    # shellcheck disable=SC2086
+    dst=$(echo -n "$sd" | jq '.['$dom'][0]') # get the destination
 
-    dom=$(dequote $dom)
-    dst=$(dequote $dst)
+    dom=$(dequote "$dom")
+    dst=$(dequote "$dst")
 
     sd_stanza=${STUBDOMAIN_TEMPLATE/SD_DOMAIN/$dom} # replace SD_DOMAIN
     sd_stanza=${sd_stanza/SD_DESTINATION/$dst} # replace SD_DESTINATION
@@ -80,6 +81,7 @@ function kube-dns-stubdomains-to-coredns {
 
 # Get Opts
 while getopts "hsr:i:d:t:k:" opt; do
+    # shellcheck disable=SC2220
     case "$opt" in
     h)  show_help
         ;;
@@ -103,6 +105,7 @@ fi
 if [[ -z $CLUSTER_DNS_IP ]]; then
   # Default IP to kube-dns IP
   CLUSTER_DNS_IP=$(kubectl get service --namespace kube-system kube-dns -o jsonpath="{.spec.clusterIP}")
+  # shellcheck disable=SC2181
   if [ $? -ne 0 ]; then
       >&2 echo "Error! The IP address for DNS service couldn't be determined automatically. Please specify the DNS-IP with the '-i' option."
       exit 2
