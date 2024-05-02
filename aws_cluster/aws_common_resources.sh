@@ -44,5 +44,7 @@ AGENT_DIR="${CLUSTER_DIR}/internal_servers"
 ## AWS CONFIGURATION
 # shellcheck disable=SC2034
 AWS_REGION="us-east-1"
+# shellcheck disable=SC2034
 AWS_ACCOUNT_ID=325852638497
+# shellcheck disable=SC2034
 REPOSITORY_NAME="manual_gui_ecr"

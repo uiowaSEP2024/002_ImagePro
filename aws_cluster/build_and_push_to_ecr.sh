@@ -2,6 +2,7 @@
 
 
 CURRENT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+#shellcheck disable=SC1091
 source "${CURRENT_DIR}/aws_common_resources.sh"
 # Ask user what they want to build:
 # 1. Frontend
