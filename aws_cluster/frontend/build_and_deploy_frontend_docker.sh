@@ -13,7 +13,8 @@ CURRENT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 # Navigate two directories up
 # shellcheck disable=SC2046
 # shellcheck disable=SC2034
-PARENT_DIR_2X_UP="$(dirname $(dirname ${CURRENT_DIR}))"
+PARENT_DIR_2X_UP="$(dirname $(dirname "${CURRENT_DIR}"))"
+
 echo "Parent directory: ${PARENT_DIR_2X_UP}"
 
 
