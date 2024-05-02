@@ -80,37 +80,7 @@ function Studies() {
   };
 
   const StudyTableCell: React.FC<StudyTableCellProps> = ({ study, colId }) => {
-    useEffect(() => {
-      studies.forEach((study) => {
-        if (study.provider_id && !providerNames[study.id]) {
-          fetchProviderById(study.provider_id).then((data) => {
-            if (data) {
-              setProviderNames((prev) => ({
-                ...prev,
-                [study.id]: data.provider_name,
-              }));
-            }
-          });
-        }
-      });
-    }, [studies]);
-
     const providerName = providerNames[study.id];
-
-    useEffect(() => {
-      studies.forEach((study) => {
-        if (study.hospital_id && !hospitalNames[study.id]) {
-          fetchHospitalById(study.hospital_id).then((data) => {
-            if (data) {
-              setHospitalNames((prev) => ({
-                ...prev,
-                [study.id]: data.hospital_name,
-              }));
-            }
-          });
-        }
-      });
-    }, [studies]);
 
     const hospitalName = hospitalNames[study.id];
 
@@ -166,6 +136,31 @@ function Studies() {
       }
     }
     loadStudies();
+  }, []);
+
+  useEffect(() => {
+    studies.forEach((study) => {
+      if (study.provider_id && !providerNames[study.id]) {
+        fetchProviderById(study.provider_id).then((data) => {
+          if (data) {
+            setProviderNames((prev) => ({
+              ...prev,
+              [study.id]: data.provider_name,
+            }));
+          }
+        });
+      }
+      if (study.hospital_id && !hospitalNames[study.id]) {
+        fetchHospitalById(study.hospital_id).then((data) => {
+          if (data) {
+            setHospitalNames((prev) => ({
+              ...prev,
+              [study.id]: data.hospital_name,
+            }));
+          }
+        });
+      }
+    });
   }, []);
 
   // Filter the studies based on the user's search input.

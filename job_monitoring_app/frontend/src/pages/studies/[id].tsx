@@ -113,7 +113,7 @@ function StudyPage({ initialIsPageLoading = true }) {
       if (studyStatus === "success") {
         clearInterval(interval);
       }
-    }, 1000);
+    }, 10000);
 
     return () => clearInterval(interval);
   }, [study, studyId, studyStatus, events]);
