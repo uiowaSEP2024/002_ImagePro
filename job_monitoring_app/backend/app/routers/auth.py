@@ -40,13 +40,20 @@ def login(
             algorithm=config.settings.algorithm,
         )
 
-        response.set_cookie(
-            key="access_token",
-            value=f"Bearer {access_token}",
-            httponly=True,
-            secure=True,
-            samesite="none",
-        )
+        if config.settings.app_env == "test":
+            response.set_cookie(
+                key="access_token",
+                value=f"Bearer {access_token}",
+                httponly=True,
+            )
+        else:
+            response.set_cookie(
+                key="access_token",
+                value=f"Bearer {access_token}",
+                httponly=True,
+                secure=True,
+                samesite="none",
+            )
         return {"access_token": access_token, "token_type": "bearer"}
     except Exception as e:
         print(e)
