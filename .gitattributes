@@ -1,3 +1,5 @@
+# Docs
+docs/mbrzus_book_report_kubernetes.pptx    filter=lfs diff=lfs merge=lfs -text
 # Binaries and executables
 example_tool/brainmask_model.ckpt                         filter=lfs diff=lfs merge=lfs -text
 # Git lfs settings for files types
